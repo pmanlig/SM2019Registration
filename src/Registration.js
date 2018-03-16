@@ -1,4 +1,4 @@
-import { Divisions} from './Divisions';
+import { Divisions } from './Divisions';
 
 export class Registration {
 	name = '';
@@ -9,7 +9,7 @@ export class Registration {
 	eventStatus(discipline) {
 		events = [];
 		Divisions.getDivisions(discipline).forEach(division => {
-			events.push({discipline: discipline, division: division, enter: false});
+			events.push({ discipline: discipline, division: division, enter: false });
 		});
 	}
 
@@ -18,6 +18,4 @@ export class Registration {
 		this.events.concat(this.eventStatus('prec'));
 		this.events.concat(this.eventStatus('falt'));
 	}
-
-	getHeaders
 }

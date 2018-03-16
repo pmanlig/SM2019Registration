@@ -1,12 +1,7 @@
+import { ParticipantDefinition } from './ParticipantDefinition';
+
 export class RegistrationDefinition {
 	static Disciplines = { milsnabb: 1, precision: 2, field: 3 };
-
-	static ParticipantHeader = {
-		name: 'Skytt', subfields: [
-			{ name: 'Namn', width: 150, type: 'text' },
-			{ name: 'Pistolskyttekort', type: 'number' },
-			{ name: 'Förening', width: 150, type: 'text' },]
-	};
 
 	static getDivisions(discipline) {
 		var divs = [
@@ -27,22 +22,27 @@ export class RegistrationDefinition {
 		var divs = this.getDivisions(discipline);
 		var divChecks = [];
 		divs.forEach(element => {
-			divChecks.push({name: element, type: 'check'});
+			divChecks.push({ name: element, type: 'check' });
 		});
 		return divChecks;
 	}
 
 	static getRegistrationHeaders() {
-		return [this.ParticipantHeader,
-		{
-			name: 'Militär Snabbmatch', subfields: this.getDivisionCheckboxes('milsnabb')
-		},
-		{
-			name: 'Precision', subfields: this.getDivisionCheckboxes('prec')
-		},
-		{
-			name: 'Fält', subfields: this.getDivisionCheckboxes('falt')
-		},
-		]
+		return [
+			ParticipantDefinition.getParticipantHeaders(),
+			{
+				name: 'Militär Snabbmatch', subfields: this.getDivisionCheckboxes('milsnabb')
+			},
+			{
+				name: 'Precision', subfields: this.getDivisionCheckboxes('prec')
+			},
+			{
+				name: 'Fält', subfields: this.getDivisionCheckboxes('falt')
+			},
+		];
+	}
+
+	static getRegistration() {
+
 	}
 }
