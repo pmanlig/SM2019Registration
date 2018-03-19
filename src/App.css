@@ -43,7 +43,7 @@ th.vert {
   height: 55px;
   vertical-align: top;
   text-align: left;
-  border: 1px solid blue;
+  border: 1px solid #7f7fff;
   color: white;
   background-color: #7f0000;
 }
