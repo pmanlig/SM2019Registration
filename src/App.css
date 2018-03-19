@@ -40,7 +40,8 @@ th {
 }
 
 th.vert {
-  height: 60px;
+  height: 55px;
+  vertical-align: top;
   text-align: left;
   border: 1px solid blue;
   color: white;
@@ -48,9 +49,10 @@ th.vert {
 }
 
 th.vert > div {
+  /*transform-origin: left bottom;*/
   transform:
-    translate(0px, 15px)
-    rotate(270deg);
+      translate(0px, 30px)
+      rotate(270deg);
   width: 20px;
 }
 
