@@ -34,7 +34,16 @@ input {
   border: 1px solid black;
 }
 
+table {
+  border-spacing: 0px;
+}
+
+tr {
+  padding: 0px;
+}
+
 th {
+  margin: 0px;
   text-align: left;
   padding: 2px;
 }
