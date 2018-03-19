@@ -30,10 +30,28 @@ input {
   margin: 5px;
 }
 
+.major {
+  border: 1px solid black;
+}
+
 th {
   text-align: left;
-  border: 1px solid black;
   padding: 2px;
+}
+
+th.vert {
+  height: 60px;
+  text-align: left;
+  border: 1px solid blue;
+  color: white;
+  background-color: #7f0000;
+}
+
+th.vert > div {
+  transform:
+    translate(0px, 15px)
+    rotate(270deg);
+  width: 20px;
 }
 
 #summary {
