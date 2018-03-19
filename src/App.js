@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Registration } from './Registration';
 import { RegistrationForm } from './RegistrationForm';
 import { Summary } from './Summary';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { registration: [], };
+    this.state = { registration: new Registration(this.updateState.bind(this)) };
+  }
+
+  updateState() {
+    this.setState({ registration: this.state.registration });
   }
 
   render() {

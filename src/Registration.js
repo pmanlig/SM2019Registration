@@ -1,21 +1,25 @@
-import { Divisions } from './Divisions';
+import { Participant } from './Participant';
 
 export class Registration {
-	name = '';
-	cardno = '';
-	club = '';
-	events = [];
+	participants;
+	updateState;
 
-	eventStatus(discipline) {
-		events = [];
-		Divisions.getDivisions(discipline).forEach(division => {
-			events.push({ discipline: discipline, division: division, enter: false });
-		});
+	constructor(updateStateCallback) {
+		this.participants = [];
+		this.updateState = updateStateCallback;
+		this.addParticipant = this.addParticipant.bind(this);
+		this.deleteParticipant = this.deleteParticipant.bind(this);
 	}
 
-	constructor() {
-		this.events.concat(this.eventStatus('milSnabb'));
-		this.events.concat(this.eventStatus('prec'));
-		this.events.concat(this.eventStatus('falt'));
+	addParticipant() {
+		console.log("Adding new participant");
+		this.participants.push(new Participant());
+		this.updateState();
+	}
+
+	deleteParticipant(id) {
+		console.log("Deleting articipant #"+id);
+		this.participants = this.participants.filter((p) => { return p.id !== id; });
+		this.updateState();
 	}
 }

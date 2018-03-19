@@ -5,9 +5,9 @@ export class RegistrationHeader extends Component {
 		const majorHeaders = [];
 		const minorHeaders = [];
 		this.props.columns.forEach((column) => {
-			majorHeaders.push(<th colspan={column.subfields.length}>{column.name}</th>);
+			majorHeaders.push(<th key={majorHeaders.length} colSpan={column.subfields.length}>{column.name}</th>);
 			column.subfields.forEach((minor) => {
-				minorHeaders.push(<th width={minor.width}>{minor.name}</th>);
+				minorHeaders.push(<th key={minorHeaders.length} width={minor.width}>{minor.name}</th>);
 			});
 		});
 		return (
