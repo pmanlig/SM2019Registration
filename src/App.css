@@ -26,10 +26,6 @@
   margin: 10px;
 }
 
-input {
-  margin: 5px;
-}
-
 .major {
   border: 1px solid black;
 }
@@ -63,6 +59,15 @@ th.vert > div {
       translate(0px, 30px)
       rotate(270deg);
   width: 20px;
+}
+
+.left {
+  text-align: left;
+}
+
+.addButton {
+  margin-top: 5px;
+  margin-left: 1px;
 }
 
 #summary {
