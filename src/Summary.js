@@ -1,10 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-export class Summary extends Component {
-	render() {
-		return (
-			<div id='summary'>
-				<p>Antal anmälda: {this.props.registration.participants.length}</p>
-			</div>);
-	}
+function countEntries(participants) {
+	var entries = 0;
+	participants.forEach(p => { p.registrationInfo.forEach(r => { if (r) entries++; }) });
+	return entries;
+}
+
+export function Summary(props) {
+	return (
+		<div id='summary'>
+			<p>Antal anmälda: {props.registration.participants.length}<br/>Antal starter: {countEntries(props.registration.participants)}</p>
+		</div>);
 }

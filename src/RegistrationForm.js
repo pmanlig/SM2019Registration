@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 // import ReactDOM from 'react-dom';
-import { ParticipantDefinition } from './Participant';
-import {Prefixes, createTagId} from './Person';
+import { ParticipantDefinition, Prefixes, createTagId } from './Participant';
 
 function RegistrationHeader(props) {
     const majorHeaders = [];
@@ -26,14 +25,24 @@ function RegistrationHeader(props) {
     );
 }
 
+function RegistrationCheckboxes(props) {
+    let info = props.participant.registrationInfo;
+    let result = [];
+    for (let i = 0; i < info.length; i++) {
+        result.push(<td key={i}><input type="checkbox" onChange={(e) => { props.registration.setDivision(props.participant.id, i, e.target.value) }} checked={info[i]} /></td>);
+    }
+    return result;
+}
+
 function RegistrationRow(props) {
     const myId = props.participant.id;
-    var fieldId = 0;
     return <tr key={props.participant.id}>
-        <td className="left"><input type="text" value={props.participant.name} id={createTagId(Prefixes.name,myId)} onChange={props.registration.setParticipantName} /></td>
-        <td className="left"><input type="text" id={createTagId(Prefixes.competitionId, myId)} size="5" style={{ width: '40px' }} value={props.participant.competitionId} onChange={props.registration.setParticipantCompetitionId}/></td>
+        <td className="left"><input type="text" value={props.participant.name}
+         onChange={e => {props.registration.setParticipantName(myId, e.target.value)}} /></td>
+        <td className="left"><input type="text" size="5" style={{ width: '40px' }} value={props.participant.competitionId}
+            onChange={e => { props.registration.setParticipantCompetitionId(myId, e.target.value) }} /></td>
         <td className="left"><input type="text" id={createTagId(Prefixes.organization, myId)} value={props.participant.organization} onChange={props.registration.setParticipantOrganization} /></td>
-        {props.participant.registrationInfo.map((cell) => { return (<td key={fieldId++}><input type="checkbox" checked={cell} /></td>) })}
+        {RegistrationCheckboxes(props)}
         <td><button onClick={(e) => props.registration.deleteParticipant(props.participant.id)}>X</button></td></tr>;
 }
 
@@ -50,10 +59,11 @@ export class RegistrationForm extends Component {
                 <table>
                     <RegistrationHeader columns={ParticipantDefinition.getHeaders()} />
                     <RegistrationRows columns={ParticipantDefinition.getHeaders()} registration={this.props.registration} />
-                    <tbody><tr>
-                        <td className="left"><input type='button' className="addButton" onClick={this.props.registration.addParticipant} value='Lägg till deltagare' /></td></tr>
-                    </tbody>
                 </table>
+                <div className="left">
+                    <input type='button' className="toolButton" id="addButton" onClick={this.props.registration.addParticipant} value='Lägg till deltagare' />
+                    <input type='button' className="toolButton" id="registerButton" onClick={this.props.registration.register} value='Registrera' />
+                </div>
             </div>
         );
     }

@@ -65,9 +65,16 @@ th.vert > div {
   text-align: left;
 }
 
-.addButton {
+.toolButton {
   margin-top: 5px;
+}
+
+#addButton {
   margin-left: 1px;
+}
+
+#registerButton {
+  margin-left: 2px;
 }
 
 #summary {
