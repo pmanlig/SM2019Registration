@@ -1,4 +1,4 @@
-import { Participant, Prefixes, parseTagId } from './Participant';
+import { Participant } from './Participant';
 
 export class Registration {
 	participants;
@@ -36,9 +36,8 @@ export class Registration {
 		this.updateState();
 	}
 
-	setParticipantOrganization = (event) => {
-		var id = parseTagId(Prefixes.organization, event.target.id);
-		this.participants.forEach(p => { if (id === p.id) p.organization = event.target.value; });
+	setParticipantOrganization = (id, value) => {
+		this.participants.forEach(p => { if (id === p.id) p.organization = value; });
 		this.updateState();
 	}
 }

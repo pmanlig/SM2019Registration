@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-// import ReactDOM from 'react-dom';
-import { ParticipantDefinition, Prefixes, createTagId } from './Participant';
+import { ParticipantDefinition } from './Participant';
 
 function RegistrationHeader(props) {
     const majorHeaders = [];
@@ -29,7 +28,7 @@ function RegistrationCheckboxes(props) {
     let info = props.participant.registrationInfo;
     let result = [];
     for (let i = 0; i < info.length; i++) {
-        result.push(<td key={i}><input type="checkbox" onChange={(e) => { props.registration.setDivision(props.participant.id, i, e.target.value) }} checked={info[i]} /></td>);
+        result.push(<td key={i}><input type="checkbox" onChange={(e) => { props.registration.setDivision(props.participant.id, i, e.target.checked) }} checked={info[i]} /></td>);
     }
     return result;
 }
@@ -37,11 +36,12 @@ function RegistrationCheckboxes(props) {
 function RegistrationRow(props) {
     const myId = props.participant.id;
     return <tr key={props.participant.id}>
-        <td className="left"><input type="text" value={props.participant.name}
-         onChange={e => {props.registration.setParticipantName(myId, e.target.value)}} /></td>
-        <td className="left"><input type="text" size="5" style={{ width: '40px' }} value={props.participant.competitionId}
+        <td className="left"><input type="text" value={props.participant.name} placeholder="Namn"
+            onChange={e => { props.registration.setParticipantName(myId, e.target.value) }} /></td>
+        <td className="left"><input type="text" size="5" style={{ width: '40px' }} value={props.participant.competitionId} placeholder="00000"
             onChange={e => { props.registration.setParticipantCompetitionId(myId, e.target.value) }} /></td>
-        <td className="left"><input type="text" id={createTagId(Prefixes.organization, myId)} value={props.participant.organization} onChange={props.registration.setParticipantOrganization} /></td>
+        <td className="left"><input type="text" value={props.participant.organization} placeholder="Skyttegillet"
+            onChange={e => { props.registration.setParticipantOrganization(myId, e.target.value) }} /></td>
         {RegistrationCheckboxes(props)}
         <td><button onClick={(e) => props.registration.deleteParticipant(props.participant.id)}>X</button></td></tr>;
 }
