@@ -40,7 +40,7 @@ function RegistrationRow(props) {
             onChange={e => { props.registration.setParticipantName(myId, e.target.value) }} /></td>
         <td className="left"><input type="text" size="5" style={{ width: '40px' }} value={props.participant.competitionId} placeholder="00000"
             onChange={e => { props.registration.setParticipantCompetitionId(myId, e.target.value) }} /></td>
-        <td className="left"><input type="text" value={props.participant.organization} placeholder="Skyttegillet"
+        <td className="left"><input type="text" value={props.participant.organization} placeholder="Förening"
             onChange={e => { props.registration.setParticipantOrganization(myId, e.target.value) }} /></td>
         {RegistrationCheckboxes(props)}
         <td><button onClick={(e) => props.registration.deleteParticipant(props.participant.id)}>X</button></td></tr>;
