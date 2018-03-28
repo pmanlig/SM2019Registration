@@ -4,9 +4,10 @@ export class Registration {
 	participants;
 	updateState;
 
-	constructor(updateStateCallback) {
+	constructor(updateStateCallback, registerCallback) {
 		this.participants = [];
 		this.updateState = updateStateCallback;
+		this.register = registerCallback;
 	}
 
 	addParticipant = () => {

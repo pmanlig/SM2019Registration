@@ -13,30 +13,47 @@ function CookieAlert(props) {
 	return <div id="cookieAlert" className="footer" onClick={props.hideCookieAlert}><p className="centered">Sidan sparar information i cookies på din dator för att underlätta framtida anmälningar.</p></div>;
 }
 
-function extractValue(cname, value, result) {
-	if (value.startsWith(cname + "=")) {
-		result[cname] = value.split('=')[1];
-	}
-}
-
-async function loadCookies(callback) {
-	let result = {};
-	await decodeURIComponent(document.cookie).split(';').forEach(c => {
-		console.log("Cookie: " + c);
-		extractValue("cookieAlert", c, result);
-	});
-	callback(result);
-}
-
 class App extends Component {
 	timer;
 
 	constructor(props) {
 		super(props);
-		this.state = { registration: new Registration(this.updateState.bind(this)), working: true, cookieAlert: true };
-		loadCookies(c => {
+		this.state = { registration: new Registration(() => this.setState({ ...this.state }), () => this.register()), working: true, cookieAlert: false };
+		this.loadCookies(c => {
 			this.setState({ ...c, working: false });
 		});
+	}
+
+	unlimitedCookieExpiration() {
+		let d = new Date();
+		d.setFullYear(d.getFullYear() + 20);
+		return "expires=" + d.toUTCString() + ';';
+	}
+
+	setCookie(name, value, expiration) {
+		if (!expiration) {
+			expiration = this.unlimitedCookieExpiration();
+		}
+		document.cookie = name + '=' + value + ';' + expiration;
+	}
+
+	register() {
+		this.setCookie("competitors", JSON.stringify(this.state.registration.participants));
+	}
+
+	extractValue(cname, value, result) {
+		if (value.startsWith(cname + "=")) {
+			result[cname] = value.split('=')[1];
+		}
+	}
+
+	async loadCookies(callback) {
+		let result = { cookieAlert: true };
+		await decodeURIComponent(document.cookie).split(';').forEach(c => {
+			console.log("Cookie: " + c);
+			this.extractValue("cookieAlert", c, result);
+		});
+		callback(result);
 	}
 
 	updateState() {
@@ -54,7 +71,7 @@ class App extends Component {
 				<RegistrationForm registration={this.state.registration} />
 				<Summary registration={this.state.registration} />
 				{this.state.cookieAlert === true && <CookieAlert hideCookieAlert={(e) => {
-					document.cookie = "cookieAlert=false;";
+					this.setCookie("cookieAlert", "false");
 					this.setState({ cookieAlert: false });
 				}} />}
 			</div>
