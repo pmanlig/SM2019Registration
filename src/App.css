@@ -22,6 +22,41 @@
   font-size: large;
 }
 
+.fullscreen {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 99;
+}
+
+.footer {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 40px;
+	background: black;
+	color: white;
+	font-weight: bold;
+}
+
+.modal {
+	background: #1f1f1f;
+	opacity: 0.6;
+	font-weight: bold;
+	color: whitesmoke;
+}
+
+.centered {
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
 .registration {
   margin: 10px;
 }
