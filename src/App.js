@@ -4,13 +4,12 @@ import './App.css';
 import { Registration } from './Registration';
 import { RegistrationForm } from './RegistrationForm';
 import { Summary } from './Summary';
+import { ParticipantPicker } from './ParticipantPicker';
+import { CookieAlert, loadCookies, setCookie } from './Cookies';
+import { Person } from './Person';
 
 function Working(props) {
 	return <div id="working" className="fullscreen modal"><p className="centered">Working...</p></div>;
-}
-
-function CookieAlert(props) {
-	return <div id="cookieAlert" className="footer" onClick={props.hideCookieAlert}><p className="centered">Sidan sparar information i cookies på din dator för att underlätta framtida anmälningar.</p></div>;
 }
 
 class App extends Component {
@@ -18,46 +17,29 @@ class App extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = { registration: new Registration(() => this.setState({ ...this.state }), () => this.register()), working: true, cookieAlert: false };
-		this.loadCookies(c => {
-			this.setState({ ...c, working: false });
+		this.state = {
+			registration: new Registration(
+				() => this.setState({ ...this.state }),
+				() => this.register()),
+			registry: [
+				new Person("Patrik Manlig", 28283, "Gävle PK"),
+				new Person("Izabell Sjödin", 45396, "Gävle PK"),
+			],
+			working: true,
+			showPicker: false,
+			cookieAlert: false
+		};
+		loadCookies(c => {
+			this.setState({ cookieAlert: true, ...c, working: false });
 		});
-	}
-
-	unlimitedCookieExpiration() {
-		let d = new Date();
-		d.setFullYear(d.getFullYear() + 20);
-		return "expires=" + d.toUTCString() + ';';
-	}
-
-	setCookie(name, value, expiration) {
-		if (!expiration) {
-			expiration = this.unlimitedCookieExpiration();
-		}
-		document.cookie = name + '=' + value + ';' + expiration;
 	}
 
 	register() {
-		this.setCookie("competitors", JSON.stringify(this.state.registration.participants));
-	}
-
-	extractValue(cname, value, result) {
-		if (value.startsWith(cname + "=")) {
-			result[cname] = value.split('=')[1];
-		}
-	}
-
-	async loadCookies(callback) {
-		let result = { cookieAlert: true };
-		await decodeURIComponent(document.cookie).split(';').forEach(c => {
-			console.log("Cookie: " + c);
-			this.extractValue("cookieAlert", c, result);
-		});
-		callback(result);
+		setCookie("competitors", JSON.stringify(this.state.registration.participants));
 	}
 
 	updateState() {
-		this.setState({ ...this.state });
+		this.setState({});
 	}
 
 	render() {
@@ -70,10 +52,8 @@ class App extends Component {
 				</header>
 				<RegistrationForm registration={this.state.registration} />
 				<Summary registration={this.state.registration} />
-				{this.state.cookieAlert === true && <CookieAlert hideCookieAlert={(e) => {
-					this.setCookie("cookieAlert", "false");
-					this.setState({ cookieAlert: false });
-				}} />}
+				{this.state.cookieAlert === true && <CookieAlert onClick={e => this.setState({ cookieAlert: false })} />}
+				{this.state.showPicker === true && <ParticipantPicker registry={this.state.registry}/>}
 			</div>
 		);
 	}

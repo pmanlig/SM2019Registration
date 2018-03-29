@@ -49,6 +49,11 @@
 	color: whitesmoke;
 }
 
+#participantpicker {
+	width: 50%;
+	height: 50%;
+}
+
 .centered {
 	margin: 0;
 	position: absolute;
