@@ -10,9 +10,9 @@ export class Registration {
 		this.register = registerCallback;
 	}
 
-	addParticipant = () => {
+	addParticipant = p => {
 		console.log("Adding new participant");
-		this.participants.push(new Participant());
+		this.participants.push(new Participant(p));
 		this.updateState();
 	}
 

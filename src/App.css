@@ -28,7 +28,6 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	z-index: 99;
 }
 
 .footer {
@@ -42,16 +41,11 @@
 	font-weight: bold;
 }
 
-.modal {
+.shadow {
 	background: #1f1f1f;
 	opacity: 0.6;
 	font-weight: bold;
 	color: whitesmoke;
-}
-
-#participantpicker {
-	width: 50%;
-	height: 50%;
 }
 
 .centered {
@@ -60,6 +54,26 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+}
+
+.modal {
+	padding: 5px;
+	background-color: white;
+	opacity: 1.0;
+}
+
+#participantpicker {
+	border: 1px solid black;
+	border-radius: 20px;
+}
+
+table.picker {
+	border-spacing: 5px;
+	text-align: left;
+}
+
+tr.picker {
+	cursor: pointer;
 }
 
 .registration {
@@ -107,14 +121,8 @@ th.vert > div {
 
 .toolButton {
   margin-top: 5px;
-}
-
-#addButton {
   margin-left: 1px;
-}
-
-#registerButton {
-  margin-left: 2px;
+  margin-right: 1px;
 }
 
 #summary {

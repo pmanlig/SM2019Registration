@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ParticipantDefinition } from './Participant';
+import { deleteCookies } from './Cookies';
 
 function RegistrationHeader(props) {
     const majorHeaders = [];
@@ -61,8 +62,12 @@ export class RegistrationForm extends Component {
                     <RegistrationRows columns={ParticipantDefinition.getHeaders()} registration={this.props.registration} />
                 </table>
                 <div className="left">
-                    <input type='button' className="toolButton" id="addButton" onClick={this.props.registration.addParticipant} value='Lägg till deltagare' />
+                    <input type='button' className="toolButton" id="addButton" onClick={this.props.registration.addParticipant} value='Ny deltagare' />
+                    <input type='button' className="toolButton" id="getButton" onClick={this.props.getParticipant} value='Hämta deltagare' />
                     <input type='button' className="toolButton" id="registerButton" onClick={this.props.registration.register} value='Registrera' />
+
+                    {/* For debugging */}
+                    <input type='button' className="toolButton" id="deleteCookiesButton" onClick={deleteCookies} value='Radera Cookies' />
                 </div>
             </div>
         );

@@ -1,19 +1,14 @@
-import { PersonDefinition } from './Person';
+import { Person, PersonDefinition } from './Person';
 import { Discipline, DisciplineDefinition } from './Discipline';
 
-export class Participant {
+export class Participant extends Person {
 	static nextId = 0;
 	id;
-	name;
-	competitionId;
-	organization;
 	registrationInfo;
 
-	constructor() {
+	constructor(p) {
+		super(p);
 		this.id = Participant.nextId++;
-		this.name = "";
-		this.competitionId = "";
-		this.organization = "";
 		this.registrationInfo = DisciplineDefinition.getDiscipline(Discipline.milsnabb).concat(
 			DisciplineDefinition.getDiscipline(Discipline.precision),
 			DisciplineDefinition.getDiscipline(Discipline.field)).map((d) => { return false });

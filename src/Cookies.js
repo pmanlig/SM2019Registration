@@ -1,8 +1,8 @@
 import React from 'react';
 
-const COOKIE_ALERT = "cookieAlert";
+export const COOKIE_ALERT = "cookieAlert";
 // const COOKIE_COMPETITORS = "competitors";
-const COOKIE_EXPIRES = "expires";
+export const COOKIE_EXPIRES = "expires";
 
 function extractValue(cname, value, result) {
 	if (value.trim().startsWith(cname + "=")) {
@@ -14,6 +14,12 @@ function unlimitedCookieExpiration() {
 	let d = new Date();
 	d.setFullYear(d.getFullYear() + 20);
 	return COOKIE_EXPIRES + "=" + d.toUTCString() + ';';
+}
+
+export function deleteCookies() {
+	[COOKIE_ALERT].forEach(c => {
+		document.cookie = c + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+	});
 }
 
 export async function loadCookies(callback) {

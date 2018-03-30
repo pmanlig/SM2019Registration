@@ -5,16 +5,10 @@ import { Registration } from './Registration';
 import { RegistrationForm } from './RegistrationForm';
 import { Summary } from './Summary';
 import { ParticipantPicker } from './ParticipantPicker';
-import { CookieAlert, loadCookies, setCookie } from './Cookies';
+import { CookieAlert, loadCookies, setCookie, COOKIE_ALERT } from './Cookies';
 import { Person } from './Person';
 
-function Working(props) {
-	return <div id="working" className="fullscreen modal"><p className="centered">Working...</p></div>;
-}
-
 class App extends Component {
-	timer;
-
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -24,7 +18,9 @@ class App extends Component {
 			registry: [
 				new Person("Patrik Manlig", 28283, "Gävle PK"),
 				new Person("Izabell Sjödin", 45396, "Gävle PK"),
+				new Person("Johan Söderberg", 45397, "Gävle PK")
 			],
+			getParticipant: (e) => { this.setState({ showPicker: true }); },
 			working: true,
 			showPicker: false,
 			cookieAlert: false
@@ -45,15 +41,23 @@ class App extends Component {
 	render() {
 		return (
 			<div className="App">
-				{this.state.working === true && <Working />}
+				{this.state.working === true && <div className="fullscreen shadow" ><p className="centered">Working...</p></div>}
 				<header className="App-header">
 					<img src={logo} className="App-logo" alt="logo" />
 					<h1 className="App-title">Welcome to React</h1>
 				</header>
-				<RegistrationForm registration={this.state.registration} />
+				<RegistrationForm registration={this.state.registration} getParticipant={(e) => { this.setState({ showPicker: true }); }} />
 				<Summary registration={this.state.registration} />
-				{this.state.cookieAlert === true && <CookieAlert onClick={e => this.setState({ cookieAlert: false })} />}
-				{this.state.showPicker === true && <ParticipantPicker registry={this.state.registry}/>}
+				{this.state.cookieAlert === true && <CookieAlert onClick={e => {
+					this.setState({ cookieAlert: false });
+					setCookie(COOKIE_ALERT, false);
+				}} />}
+				{this.state.showPicker === true && <ParticipantPicker
+					registry={this.state.registry}
+					onClick={p => {
+						this.state.registration.addParticipant(p);
+						this.setState({ showPicker: false });
+					}} />}
 			</div>
 		);
 	}

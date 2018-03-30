@@ -1,12 +1,17 @@
 export class Person {
 	name;
-	id;
+	competitionId;
 	organization;
 
-	constructor(name, id, organization) {
-		this.name = name;
-		this.id = id;
+	constructor(nameOrPerson, id, organization) {
+		this.name = nameOrPerson;
+		this.competitionId = id;
 		this.organization = organization;
+		if (typeof nameOrPerson === "object") {
+			this.name = nameOrPerson.name;
+			this.competitionId = nameOrPerson.competitionId;
+			this.organization = nameOrPerson.organization;
+		}
 	}
 }
 
