@@ -24,7 +24,7 @@ export class ApplicationState {
 	}
 
 	deleteParticipant = (id) => {
-		console.log("Deleting articipant #" + id);
+		console.log("Deleting participant #" + id);
 		this.registration = this.registration.filter((p) => { return p.id !== id; });
 		this.updateState({});
 	}
@@ -40,8 +40,10 @@ export class ApplicationState {
 	}
 
 	setParticipantCompetitionId = (id, value) => {
-		this.registration.forEach(p => { if (id === p.id) p.competitionId = value; });
-		this.updateState({});
+		if (value.length < 6 && /^\d*$/.test(value)) {
+			this.registration.forEach(p => { if (id === p.id) p.competitionId = value; });
+			this.updateState({});
+		}
 	}
 
 	setParticipantOrganization = (id, value) => {
