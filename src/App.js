@@ -10,6 +10,8 @@ import { ApplicationState } from './ApplicationState';
 import { Footer } from './Footer';
 
 class App extends Component {
+	static messageId = 0;
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -21,7 +23,7 @@ class App extends Component {
 			this.setState.bind(this),
 			m => { this.addFooter(m); });
 		loadCookies(c => {
-			if (c.cookieAlert !== false) {
+			if (JSON.parse(c.cookieAlert) !== false) {
 				this.addCookieAlertFooter();
 			}
 			if (c.competitors) {
@@ -31,30 +33,33 @@ class App extends Component {
 		});
 	}
 
-	deleteFooter(index) {
-		let newFooters = this.state.footers.concat();
-		newFooters.splice(index, 1);
-		this.setState({ footers: newFooters });
+	deleteFooter(id) {
+		this.setState({ footers: this.state.footers.filter(f => f.id !== id) });
 	}
 
 	addFooter(f, timeout) {
 		if (timeout === undefined) { timeout = 3000 }
-		let index = this.state.footers.length;
-		this.setState({ footers: this.state.footers.concat([<div key={index} className="error"><p className="centered">{f}</p></div>]) });
-		setTimeout(() => {
-			this.deleteFooter(index);
+		let myId = App.messageId++;
+		console.log(myId);
+		this.setState({ footers: this.state.footers.concat([{ id: myId, content: <div key={myId} className="error"><p className="centered">{f}</p></div> }]) });
+		let timer = setTimeout(() => {
+			this.deleteFooter(myId);
+			clearTimeout(timer);
 		}, timeout);
 	}
 
 	addCookieAlertFooter() {
-		let index = this.state.footers.length;
+		let myId = App.messageId++;
 		this.setState({
-			footers: this.state.footers.concat([
-				<CookieAlert key={index} onClick={e => {
-					ApplicationState.instance.storeParticipants = e.target.value;
-					setCookie(COOKIE_ALERT, false);
-					this.deleteFooter(index);
-				}} />])
+			footers: this.state.footers.concat([{
+				id: myId,
+				content:
+					<CookieAlert key={myId} onClick={e => {
+						ApplicationState.instance.storeParticipants = e.target.value;
+						setCookie(COOKIE_ALERT, false);
+						this.deleteFooter(myId);
+					}} />
+			}])
 		});
 	}
 
@@ -82,7 +87,7 @@ class App extends Component {
 				<Toolbar getParticipant={() => this.setState({ showPicker: true })} />
 				<RegistrationForm />
 				<Summary />
-				<Footer footers={this.state.footers} />
+				<Footer footers={this.state.footers.map(f => f.content)} />
 				{this.state.showPicker === true && <ParticipantPicker
 					registry={ApplicationState.instance.registry}
 					onClick={this.getParticipant} />}
