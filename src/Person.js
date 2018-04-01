@@ -4,9 +4,9 @@ export class Person {
 	organization;
 
 	constructor(nameOrPerson, id, organization) {
-		this.name = nameOrPerson;
-		this.competitionId = id;
-		this.organization = organization;
+		this.name = nameOrPerson ? nameOrPerson : "";
+		this.competitionId = id ? id : "";
+		this.organization = organization ? organization : "";
 		if (typeof nameOrPerson === "object") {
 			this.name = nameOrPerson.name;
 			this.competitionId = nameOrPerson.competitionId;

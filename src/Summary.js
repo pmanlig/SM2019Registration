@@ -1,4 +1,6 @@
 import React from 'react';
+import { ApplicationState } from './ApplicationState';
+import './Summary.css';
 
 function countEntries(participants) {
 	var entries = 0;
@@ -7,8 +9,9 @@ function countEntries(participants) {
 }
 
 export function Summary(props) {
+	let appState = ApplicationState.instance;
 	return (
-		<div id='summary'>
-			<p>Antal anmälda: {props.registration.participants.length}<br/>Antal starter: {countEntries(props.registration.participants)}</p>
+		<div id='summary' className='center'>
+			<p>Antal anmälda: {appState.registration.length}<br />Antal starter: {countEntries(appState.registration)}</p>
 		</div>);
 }

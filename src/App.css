@@ -1,15 +1,17 @@
+/* Application */
+
 .App {
   text-align: center;
 }
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+	height: 80px;
+	vertical-align: middle;
 }
 
 .App-header {
   background-color: #222;
-  height: 150px;
   padding: 20px;
   color: white;
 }
@@ -21,6 +23,13 @@
 .App-intro {
   font-size: large;
 }
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Information elements */
 
 .fullscreen {
 	position: fixed;
@@ -35,10 +44,24 @@
 	left: 0;
 	bottom: 0;
 	width: 100%;
-	height: 40px;
+	/*height: 40px;*/
 	background: black;
 	color: white;
 	font-weight: bold;
+}
+
+.error {
+	height: 40px;
+	padding: 5px;
+	background: #5f1f1f;
+	position: relative;
+}
+
+#cookieAlert {
+	position: relative;
+	height: 40px;
+	width: 100%;
+	padding: 5px;
 }
 
 .shadow {
@@ -62,6 +85,8 @@
 	opacity: 1.0;
 }
 
+/* Participant picker */
+
 #participantpicker {
 	border: 1px solid black;
 	border-radius: 20px;
@@ -76,7 +101,9 @@ tr.picker {
 	cursor: pointer;
 }
 
-.registration {
+/* Main form */
+
+#registration {
   margin: 10px;
 }
 
@@ -102,7 +129,7 @@ th.vert {
   height: 55px;
   vertical-align: top;
   text-align: left;
-  border: 1px solid #7f7fff;
+  /*border: 1px solid #7f7fff;*/
   color: white;
   background-color: #7f0000;
 }
@@ -111,7 +138,7 @@ th.vert > div {
   /*transform-origin: left bottom;*/
   transform:
       translate(0px, 30px)
-      rotate(270deg);
+      rotate(315deg);
   width: 20px;
 }
 
@@ -119,18 +146,45 @@ th.vert > div {
   text-align: left;
 }
 
-.toolButton {
-  margin-top: 5px;
+.center {
+	margin: auto;
+}
+
+.buttons {
+	margin: 10px;
+}
+
+.button {
   margin-left: 1px;
-  margin-right: 1px;
+	margin-right: 1px;
+	background-color: #3f3f3f;
+	color: #f5f5f5;
+	padding: 5px 10px;
+	/*border: none;
+	text-decoration: none;*/
+	display: inline-block;
 }
 
-#summary {
-  padding: 3px;
-  text-align: left;
+.deleteButton {
+	font-size: 8px;
+	font-weight: bold;
+	background-color: #af3f3f;
+	padding: 2px 5px;
+	border-radius: 50%;
+	vertical-align: middle;
+	border: none;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.toolButton {
+	padding: 5px 15px;
+	border-radius: 15px;
+}
+
+.cookieButton {
+	padding: 5px 15px;
+	margin-top: 5px;
+	margin-right: 10px;
+	border-radius: 15px;
+	float: right;
+	vertical-align: middle;
 }

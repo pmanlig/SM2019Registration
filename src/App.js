@@ -1,41 +1,72 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Registration } from './Registration';
 import { RegistrationForm } from './RegistrationForm';
 import { Summary } from './Summary';
+import { Toolbar } from './Toolbar';
 import { ParticipantPicker } from './ParticipantPicker';
 import { CookieAlert, loadCookies, setCookie, COOKIE_ALERT } from './Cookies';
-import { Person } from './Person';
+import { ApplicationState } from './ApplicationState';
+import { Footer } from './Footer';
 
 class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			registration: new Registration(
-				() => this.setState({ ...this.state }),
-				() => this.register()),
-			registry: [
-				new Person("Patrik Manlig", 28283, "Gävle PK"),
-				new Person("Izabell Sjödin", 45396, "Gävle PK"),
-				new Person("Johan Söderberg", 45397, "Gävle PK")
-			],
-			getParticipant: (e) => { this.setState({ showPicker: true }); },
 			working: true,
 			showPicker: false,
-			cookieAlert: false
+			footers: []
 		};
+		ApplicationState.instance = new ApplicationState(
+			this.setState.bind(this),
+			m => { this.addFooter(m); });
 		loadCookies(c => {
-			this.setState({ cookieAlert: true, ...c, working: false });
+			if (c.cookieAlert !== false) {
+				this.addCookieAlertFooter();
+			}
+			if (c.competitors) {
+				ApplicationState.instance.registry = JSON.parse(c.competitors);
+			}
+			this.setState({ working: false });
 		});
 	}
 
-	register() {
-		setCookie("competitors", JSON.stringify(this.state.registration.participants));
+	deleteFooter(index) {
+		let newFooters = this.state.footers.concat();
+		newFooters.splice(index, 1);
+		this.setState({ footers: newFooters });
 	}
 
-	updateState() {
-		this.setState({});
+	addFooter(f, timeout) {
+		if (timeout === undefined) { timeout = 3000 }
+		let index = this.state.footers.length;
+		this.setState({ footers: this.state.footers.concat([<div key={index} className="error"><p className="centered">{f}</p></div>]) });
+		setTimeout(() => {
+			this.deleteFooter(index);
+		}, timeout);
+	}
+
+	addCookieAlertFooter() {
+		let index = this.state.footers.length;
+		this.setState({
+			footers: this.state.footers.concat([
+				<CookieAlert key={index} onClick={e => {
+					ApplicationState.instance.storeParticipants = e.target.value;
+					setCookie(COOKIE_ALERT, false);
+					this.deleteFooter(index);
+				}} />])
+		});
+	}
+
+	getParticipant = p => {
+		let appState = ApplicationState.instance;
+		let f = x => { return x.competitionId === p.competitionId; };
+		if (p !== undefined && appState.registration.find(f) !== undefined) {
+			this.addFooter("Deltagaren finns redan!");
+		} else {
+			ApplicationState.instance.addParticipant(p);
+		}
+		this.setState({ showPicker: false });
 	}
 
 	render() {
@@ -43,21 +74,18 @@ class App extends Component {
 			<div className="App">
 				{this.state.working === true && <div className="fullscreen shadow" ><p className="centered">Working...</p></div>}
 				<header className="App-header">
-					<img src={logo} className="App-logo" alt="logo" />
-					<h1 className="App-title">Welcome to React</h1>
+					<h1 className="App-title">
+						<img src={logo} className="App-logo" alt="logo" />
+						Anmälan till Svenska Mästerskapen 2019 i Fält, Precision och Militär Snabbmatch med Pistol och Revolver
+					</h1>
 				</header>
-				<RegistrationForm registration={this.state.registration} getParticipant={(e) => { this.setState({ showPicker: true }); }} />
-				<Summary registration={this.state.registration} />
-				{this.state.cookieAlert === true && <CookieAlert onClick={e => {
-					this.setState({ cookieAlert: false });
-					setCookie(COOKIE_ALERT, false);
-				}} />}
+				<Toolbar getParticipant={() => this.setState({ showPicker: true })} />
+				<RegistrationForm />
+				<Summary />
+				<Footer footers={this.state.footers} />
 				{this.state.showPicker === true && <ParticipantPicker
-					registry={this.state.registry}
-					onClick={p => {
-						this.state.registration.addParticipant(p);
-						this.setState({ showPicker: false });
-					}} />}
+					registry={ApplicationState.instance.registry}
+					onClick={this.getParticipant} />}
 			</div>
 		);
 	}
