@@ -23,7 +23,7 @@ class App extends Component {
 			this.setState.bind(this),
 			m => { this.addFooter(m); });
 		loadCookies(c => {
-			if (JSON.parse(c.cookieAlert) !== false) {
+			if (c.cookieAlert !== "false") {
 				this.addCookieAlertFooter();
 			}
 			if (c.competitors) {

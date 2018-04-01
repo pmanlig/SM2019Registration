@@ -8,9 +8,6 @@ export class ApplicationState {
 	updateState;
 	addMessage;
 	registry = [
-		new Person("Patrik Manlig", 28283, "Gävle PK"),
-		new Person("Izabell Sjödin", 45396, "Gävle PK"),
-		new Person("Johan Söderberg", 45397, "Gävle PK")
 	];
 	registration = [];
 	storeParticipants = "Nej";
@@ -60,5 +57,6 @@ export class ApplicationState {
 		});
 		this.registry = competitors;
 		setCookie(COOKIE_COMPETITORS, JSON.stringify(competitors));
+		this.updateState({});
 	}
 }
