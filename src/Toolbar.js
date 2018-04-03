@@ -1,4 +1,5 @@
 import React from 'react';
+import "./Toolbar.css";
 import { ApplicationState } from './ApplicationState';
 import { deleteCookies } from './Cookies';
 

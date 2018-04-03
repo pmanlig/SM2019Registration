@@ -31,6 +31,10 @@ class App extends Component {
 			}
 			this.setState({ working: false });
 		});
+		// Call WS https://dev.bitnux.com/sm2019/
+		fetch('https://dev.bitnux.com/sm2019/list/1', { mode: 'cors' })
+			.then(result => console.log(result));
+			// .then(json => { alert(json); });
 	}
 
 	deleteFooter(id) {
