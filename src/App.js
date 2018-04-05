@@ -39,7 +39,7 @@ class App extends Component {
 				.then(json => {
 					console.log(json);
 					console.log(json.id);
-					ApplicationState.instance.competitionInfo = json;
+					ApplicationState.instance.setCompetitionInfo(json);
 					this.setState({ working: false });
 				});
 		});

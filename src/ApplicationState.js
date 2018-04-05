@@ -1,5 +1,5 @@
 import { Participant } from './Participant';
-import { Person } from './Person';
+import { Person, PersonDefinition } from './Person';
 import { setCookie, COOKIE_COMPETITORS } from './Cookies';
 import { CompetitionInfo } from './CompetitionInfo';
 
@@ -10,6 +10,7 @@ export class ApplicationState {
 	registration = [];
 	storeParticipants = "Nej";
 	competitionInfo = new CompetitionInfo("noComp", "No Competition");
+	personHeader = PersonDefinition.getHeaders();
 
 	// Event handlers
 	updateState;
@@ -18,6 +19,10 @@ export class ApplicationState {
 	constructor(updateState, addMessage) {
 		this.updateState = updateState;
 		this.addMessage = addMessage;
+	}
+
+	setCompetitionInfo(info) {
+		this.competitionInfo = CompetitionInfo.fromJson(info);
 	}
 
 	addParticipant = p => {

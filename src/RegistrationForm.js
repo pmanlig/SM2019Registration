@@ -1,21 +1,22 @@
 import React from 'react';
 import { ApplicationState } from './ApplicationState';
-import { ParticipantDefinition } from './Participant';
 
 function RegistrationHeader(props) {
-	const majorHeaders = [];
+	let counter = 0;
+	const compInfo = ApplicationState.instance.competitionInfo;
+	const personHeader = ApplicationState.instance.personHeader;
+	const majorHeaders = [<th key="-1" className="major" colSpan={personHeader.subfields.length}></th>];
 	const minorHeaders = [];
-	var first = true;
-	var counter = 0;
-	props.columns.forEach((column) => {
-		majorHeaders.push(<th key={majorHeaders.length} className="major" colSpan={column.subfields.length}>{column.name}</th>);
-		column.subfields.forEach((minor) => {
-			if (first)
-				minorHeaders.push(<th key={counter++} style={{ width: minor.width, paddingRight: 10 }} className="minor">{minor.name}</th>);
-			else
-				minorHeaders.push(<th key={counter++} className="minor vert"><div>{minor.name}</div></th>);
+
+	personHeader.subfields.forEach(s => {
+		minorHeaders.push(<th key={counter++} style={{ width: s.width, paddingRight: 10 }} className="minor">{s.name}</th>);
+	});
+
+	compInfo.eventGroups.forEach(column => {
+		majorHeaders.push(<th key={column.id} className="major" colSpan={column.events.length}>{column.name}</th>);
+		column.events.forEach(event => {
+			minorHeaders.push(<th key={counter++} className="minor vert"><div>{compInfo.event(event).name}</div></th>);
 		});
-		first = false;
 	});
 	return (
 		<thead>
@@ -57,8 +58,8 @@ export function RegistrationForm(props) {
 	let appState = ApplicationState.instance;
 	return <div id='registration'>
 		<table>
-			<RegistrationHeader columns={ParticipantDefinition.getHeaders()} />
-			<RegistrationRows columns={ParticipantDefinition.getHeaders()} appState={appState} />
+			<RegistrationHeader />
+			<RegistrationRows appState={appState} />
 		</table>
 	</div>;
 }
