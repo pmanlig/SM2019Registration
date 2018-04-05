@@ -1,16 +1,19 @@
 import { Participant } from './Participant';
 import { Person } from './Person';
 import { setCookie, COOKIE_COMPETITORS } from './Cookies';
+import { CompetitionInfo } from './CompetitionInfo';
 
 export class ApplicationState {
 	static instance;
 
-	updateState;
-	addMessage;
-	registry = [
-	];
+	registry = [];
 	registration = [];
 	storeParticipants = "Nej";
+	competitionInfo = new CompetitionInfo("noComp", "No Competition");
+
+	// Event handlers
+	updateState;
+	addMessage;
 
 	constructor(updateState, addMessage) {
 		this.updateState = updateState;

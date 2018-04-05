@@ -22,6 +22,10 @@ class App extends Component {
 		ApplicationState.instance = new ApplicationState(
 			this.setState.bind(this),
 			m => { this.addFooter(m); });
+		this.loadSettings();
+	}
+
+	loadSettings() {
 		loadCookies(c => {
 			if (c.cookieAlert !== "false") {
 				this.addCookieAlertFooter();
@@ -29,12 +33,16 @@ class App extends Component {
 			if (c.competitors) {
 				ApplicationState.instance.registry = JSON.parse(c.competitors);
 			}
-			this.setState({ working: false });
+			// Call WS https://dev.bitnux.com/sm2019/list/1
+			fetch('sm2019.json')
+				.then(result => result.json())
+				.then(json => {
+					console.log(json);
+					console.log(json.id);
+					ApplicationState.instance.competitionInfo = json;
+					this.setState({ working: false });
+				});
 		});
-		// Call WS https://dev.bitnux.com/sm2019/
-		fetch('sm2019.json')
-			.then(result => result.json())
-			.then(json => { console.log(json); });
 	}
 
 	deleteFooter(id) {
@@ -79,13 +87,14 @@ class App extends Component {
 	}
 
 	render() {
+		document.title = ApplicationState.instance.competitionInfo.name;
 		return (
 			<div className="App">
 				{this.state.working === true && <div className="fullscreen shadow" ><p className="centered">Working...</p></div>}
 				<header className="App-header">
 					<h1 className="App-title">
 						<img src={logo} className="App-logo" alt="logo" />
-						Anmälan till Svenska Mästerskapen 2019 i Fält, Precision och Militär Snabbmatch med Pistol och Revolver
+						{"Anmälan till " + ApplicationState.instance.competitionInfo.description}
 					</h1>
 				</header>
 				<Toolbar getParticipant={() => this.setState({ showPicker: true })} />
