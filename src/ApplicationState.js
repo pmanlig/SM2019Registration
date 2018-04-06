@@ -25,9 +25,20 @@ export class ApplicationState {
 		this.competitionInfo = CompetitionInfo.fromJson(info);
 	}
 
+	createRegistrationInfo = () => {
+		// ToDo: Need to extend to support different scenarios
+		let registrationInfo = [];
+		this.competitionInfo.eventGroups.forEach(eg => {
+			eg.events.forEach(e => {
+				registrationInfo.push(false);
+			});
+		});
+		return registrationInfo;
+	}
+	
 	addParticipant = p => {
 		console.log("Adding new participant");
-		this.registration.push(new Participant(p));
+		this.registration.push(new Participant(p, this.createRegistrationInfo()));
 		this.updateState({});
 	}
 
@@ -59,7 +70,7 @@ export class ApplicationState {
 		this.updateState({});
 	}
 
-	register = () => {
+	storeCompetitors = () => {
 		let competitors = this.registration.map(p => new Person(p));
 		this.registry.forEach(p => {
 			if (competitors.find(e => e.competitionId === p.competitionId) === undefined)
@@ -67,6 +78,18 @@ export class ApplicationState {
 		});
 		this.registry = competitors;
 		setCookie(COOKIE_COMPETITORS, JSON.stringify(competitors));
+	}
+
+	validateRegistratio = () => {
+		return true;
+	}
+
+	register = () => {
+		if (!this.validateRegistratio()) {
+		} else {
+			this.addMessage("Starter registrerade", "info");
+		}
+		this.storeCompetitors();
 		this.updateState({});
 	}
 }

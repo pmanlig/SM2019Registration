@@ -29,6 +29,22 @@
   to { transform: rotate(360deg); }
 }
 
+.anime {
+	border-radius: 50%;
+	height: 100px;
+	width: 100px;
+	display: inline-block;
+	vertical-align: middle;
+	background: red;
+	background-image: -moz-radial-gradient(45px 45px 45deg, circle cover, yellow 0%, orange 100%, red 95%);
+	background-image: -webkit-radial-gradient(45px 45px, circle cover, yellow, orange);
+	background-image: radial-gradient(45px 45px 45deg, circle cover, yellow 0%, orange 100%, red 95%);
+	/*animation-name: App-logo-spin;
+	animation-duration: 3s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;*/
+}
+
 /* Information elements */
 
 .fullscreen {
@@ -50,11 +66,18 @@
 	font-weight: bold;
 }
 
-.error {
+.footer > div {
 	height: 40px;
 	padding: 5px;
-	background: #5f1f1f;
 	position: relative;
+}
+
+.error {
+	background: #5f1f1f;
+}
+
+.info {
+	background: green;
 }
 
 #cookieAlert {
@@ -148,6 +171,10 @@ th.vert > div {
 
 .center {
 	margin: auto;
+}
+
+.checkbox {
+	vertical-align: middle;
 }
 
 .buttons {

@@ -21,7 +21,7 @@ class App extends Component {
 		};
 		ApplicationState.instance = new ApplicationState(
 			this.setState.bind(this),
-			m => { this.addFooter(m); });
+			this.addFooter.bind(this));
 		this.loadSettings();
 	}
 
@@ -37,8 +37,6 @@ class App extends Component {
 			fetch('sm2019.json')
 				.then(result => result.json())
 				.then(json => {
-					console.log(json);
-					console.log(json.id);
 					ApplicationState.instance.setCompetitionInfo(json);
 					this.setState({ working: false });
 				});
@@ -49,11 +47,11 @@ class App extends Component {
 		this.setState({ footers: this.state.footers.filter(f => f.id !== id) });
 	}
 
-	addFooter(f, timeout) {
-		if (timeout === undefined) { timeout = 3000 }
+	addFooter(f, type, timeout) {
+		if (type === undefined) { type = "error"; }
+		if (timeout === undefined) { timeout = 3000; }
 		let myId = App.messageId++;
-		console.log(myId);
-		this.setState({ footers: this.state.footers.concat([{ id: myId, content: <div key={myId} className="error"><p className="centered">{f}</p></div> }]) });
+		this.setState({ footers: [{ id: myId, content: <div key={myId} className={type}><p className="centered">{f}</p></div> }].concat(this.state.footers) });
 		let timer = setTimeout(() => {
 			this.deleteFooter(myId);
 			clearTimeout(timer);
