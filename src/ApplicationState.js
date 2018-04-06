@@ -100,20 +100,21 @@ export class ApplicationState {
 	}
 
 	registrationJson() {
-		return JSON.stringify({
-			competition: this.competitionId,
-			contact: { name: "", email: "" },
-			registration: this.registration.map(p => {
-				return {
-					participant: {
-						name: p.name,
-						id: p.competitionId,
-						organization: p.organization
-					},
-					entries: this.eventList(p.registrationInfo)
-				};
-			})
-		})
+		return JSON.stringify(
+			{
+				competition: this.competitionInfo.id,
+				contact: { name: "", email: "" },
+				registration: this.registration.map(p => {
+					return {
+						participant: {
+							name: p.name,
+							id: p.competitionId,
+							organization: p.organization
+						},
+						entries: this.eventList(p.registrationInfo)
+					};
+				})
+			});
 	}
 
 	registrationJsonFake() {
@@ -146,8 +147,7 @@ export class ApplicationState {
 			method: 'POST',
 			body: this.registrationJson(),
 			headers: new Headers({
-				// 'Content-Type': 'application/json'
-				'Content-Type': 'text/plain'
+				'Content-Type': 'application/json'
 			})
 		})
 			.then(res => res.json())
