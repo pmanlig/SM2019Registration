@@ -1,6 +1,10 @@
 import React from 'react';
 import { ApplicationState } from './ApplicationState';
 
+function appState() {
+	return ApplicationState.instance;
+}
+
 function RegistrationHeader(props) {
 	let counter = 0;
 	const compInfo = ApplicationState.instance.competitionInfo;
@@ -30,7 +34,9 @@ function RegistrationCheckboxes(props) {
 	let info = props.participant.registrationInfo;
 	let result = [];
 	for (let i = 0; i < info.length; i++) {
-		result.push(<td key={i}><input type="checkbox" className="checkbox" onChange={(e) => { props.appState.setDivision(props.participant.id, i, e.target.checked) }} checked={info[i]} /></td>);
+		result.push(<td key={i}><input type="checkbox" className="checkbox" onChange={(e) => {
+			appState().setDivision(props.participant.id, i, e.target.checked)
+		}} checked={info[i]} /></td>);
 	}
 	return result;
 }
@@ -38,7 +44,7 @@ function RegistrationCheckboxes(props) {
 function RegistrationRow(props) {
 	let appState = ApplicationState.instance;
 	const myId = props.participant.id;
-	return <tr key={myId}>
+	return <tr key={myId} style={{ background: props.participant.error ? "red" : "white" }}>
 		<td className="left"><input type="text" value={props.participant.name} placeholder="Namn"
 			onChange={e => { appState.setParticipantName(myId, e.target.value) }} /></td>
 		<td className="left"><input type="text" size="5" style={{ width: '40px' }} value={props.participant.competitionId} placeholder="00000"

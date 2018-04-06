@@ -1,0 +1,16 @@
+[
+	{
+		"id": "sm2019",
+		"name": "SM 2019",
+		"description": "SM i precision, fält och militär snabbmatch 2019",
+		"status": 1,
+		"url": "sm2019.json"
+	},
+	{
+		"id": "gavligfalt2018",
+		"name": "Gävligfälten 2018",
+		"description": "Gävligfälten 2018, nationell fälttävling",
+		"status": 1,
+		"url": "gf2018.json"
+	}
+]

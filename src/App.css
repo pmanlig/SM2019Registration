@@ -150,7 +150,7 @@ th {
 
 th.vert {
   height: 55px;
-  vertical-align: top;
+  vertical-align: bottom;
   text-align: left;
   /*border: 1px solid #7f7fff;*/
   color: white;
@@ -158,9 +158,10 @@ th.vert {
 }
 
 th.vert > div {
-  /*transform-origin: left bottom;*/
+	transform-origin: left bottom;
+	/*border: 1px dotted white;*/
   transform:
-      translate(0px, 30px)
+      translate(12px, 0px)
       rotate(315deg);
   width: 20px;
 }
@@ -193,12 +194,15 @@ th.vert > div {
 }
 
 .deleteButton {
+	width: 15px;
+	height: 15px;
 	font-size: 8px;
 	font-weight: bold;
 	background-color: #af3f3f;
 	padding: 2px 5px;
 	border-radius: 50%;
 	vertical-align: middle;
+	text-align: center;
 	border: none;
 }
 
