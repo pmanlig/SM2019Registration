@@ -1,6 +1,6 @@
-import React from 'react';
-import { ApplicationState } from './ApplicationState';
 import './Summary.css';
+import React from 'react';
+import { ApplicationState } from './../ApplicationState';
 
 function countEntries(participants) {
 	var entries = 0;

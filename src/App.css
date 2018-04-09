@@ -1,7 +1,7 @@
 /* Application */
 
 .App {
-  text-align: center;
+  text-align: left;
 }
 
 .App-logo {
@@ -12,12 +12,13 @@
 
 .App-header {
   background-color: #222;
-  padding: 20px;
+  padding: 5px;
   color: white;
 }
 
 .App-title {
-  font-size: 1.5em;
+	font-size: 2em;
+	margin: 0px;
 }
 
 .App-intro {

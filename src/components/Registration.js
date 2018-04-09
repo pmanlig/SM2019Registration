@@ -1,9 +1,8 @@
 import React from 'react';
-import { ApplicationState } from './ApplicationState';
-
-function appState() {
-	return ApplicationState.instance;
-}
+import { ApplicationState } from './../ApplicationState';
+import { Summary } from './Summary';
+import { Toolbar } from './Toolbar';
+import { ParticipantPicker } from './ParticipantPicker';
 
 function RegistrationHeader(props) {
 	let counter = 0;
@@ -35,7 +34,7 @@ function RegistrationCheckboxes(props) {
 	let result = [];
 	for (let i = 0; i < info.length; i++) {
 		result.push(<td key={i}><input type="checkbox" className="checkbox" onChange={(e) => {
-			appState().setDivision(props.participant.id, i, e.target.checked)
+			ApplicationState.instance.setDivision(props.participant.id, i, e.target.checked)
 		}} checked={info[i]} /></td>);
 	}
 	return result;
@@ -62,11 +61,20 @@ function RegistrationRows(props) {
 	)}</tbody>;
 }
 
-export function RegistrationForm(props) {
+function RegistrationForm(props) {
 	return <div id='registration'>
 		<table>
 			<RegistrationHeader />
 			<RegistrationRows />
 		</table>
 	</div>;
+}
+
+export function Registration(props) {
+	return [
+		<Toolbar />,
+		<RegistrationForm />,
+		<Summary />,
+		<ParticipantPicker />
+	];
 }

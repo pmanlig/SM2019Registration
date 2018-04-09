@@ -1,24 +1,20 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { RegistrationForm } from './RegistrationForm';
-import { Summary } from './Summary';
-import { Toolbar } from './Toolbar';
-import { ParticipantPicker } from './ParticipantPicker';
+import React, { Component } from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { CookieAlert, loadCookies, setCookie, COOKIE_ALERT } from './Cookies';
 import { ApplicationState } from './ApplicationState';
 import { Footer } from './Footer';
+import { BusyIndicator } from './components/BusyIndicator';
+import { AppHeader } from './components/AppHeader';
+import { Competitions } from './components/Competitions';
+import { Registration } from './components/Registration';
 
 class App extends Component {
 	static messageId = 0;
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			working: true,
-			showPicker: false,
-			footers: []
-		};
+		this.state = { footers: [] };
 		ApplicationState.instance = new ApplicationState(
 			this.setState.bind(this),
 			this.addFooter.bind(this));
@@ -26,6 +22,7 @@ class App extends Component {
 	}
 
 	loadSettings() {
+		ApplicationState.instance.working = true;
 		loadCookies(c => {
 			if (c.cookieAlert !== "false") {
 				this.addCookieAlertFooter();
@@ -38,7 +35,8 @@ class App extends Component {
 				.then(result => result.json())
 				.then(json => {
 					ApplicationState.instance.setCompetitionInfo(json);
-					this.setState({ working: false });
+					ApplicationState.instance.working = false;
+					this.setState({});
 				});
 		});
 	}
@@ -73,35 +71,19 @@ class App extends Component {
 		});
 	}
 
-	getParticipant = p => {
-		let appState = ApplicationState.instance;
-		let f = x => { return x.competitionId === p.competitionId; };
-		if (p !== undefined && appState.registration.find(f) !== undefined) {
-			this.addFooter("Deltagaren finns redan!");
-		} else {
-			ApplicationState.instance.addParticipant(p);
-		}
-		this.setState({ showPicker: false });
-	}
-
 	render() {
 		document.title = ApplicationState.instance.competitionInfo.name;
 		return (
 			<div className="App">
-				{this.state.working === true && <div className="fullscreen shadow" ><p className="centered">Working...</p></div>}
-				<header className="App-header">
-					<h1 className="App-title">
-						<img src={logo} className="App-logo" alt="logo" />
-						{"Anmälan till " + ApplicationState.instance.competitionInfo.description}
-					</h1>
-				</header>
-				<Toolbar getParticipant={() => this.setState({ showPicker: true })} />
-				<RegistrationForm />
-				<Summary />
+				<BusyIndicator />
+				<AppHeader />
+				<BrowserRouter>
+					<Switch>
+						<Route exact path='/' component={Competitions} />
+						<Route exact path='/competition/:id' component={Registration} />
+					</Switch>
+				</BrowserRouter>
 				<Footer footers={this.state.footers.map(f => f.content)} />
-				{this.state.showPicker === true && <ParticipantPicker
-					registry={ApplicationState.instance.registry}
-					onClick={this.getParticipant} />}
 			</div>
 		);
 	}
