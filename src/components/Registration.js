@@ -2,7 +2,6 @@ import React from 'react';
 import { ApplicationState } from './../ApplicationState';
 import { Summary } from './Summary';
 import { Toolbar } from './Toolbar';
-import { ParticipantPicker } from './ParticipantPicker';
 
 function RegistrationHeader(props) {
 	let counter = 0;
@@ -71,10 +70,15 @@ function RegistrationForm(props) {
 }
 
 export function Registration(props) {
+	const ParticipantPicker = props.injector.inject("ParticipantPicker");
 	return [
-		<Toolbar />,
-		<RegistrationForm />,
-		<Summary />,
-		<ParticipantPicker />
+		<Toolbar key="1"/>,
+		<RegistrationForm key="2"/>,
+		<Summary key="3"/>,
+		<ParticipantPicker key="4"/>
 	];
+}
+
+export function registerRegistration(injector) {
+	injector.register("Registration", (props) => Registration({injector: injector, ...props}));
 }

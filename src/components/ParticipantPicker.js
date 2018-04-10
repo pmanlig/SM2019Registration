@@ -1,10 +1,10 @@
 import React from 'react';
 import { ApplicationState } from '../ApplicationState';
 
-function getParticipant(p) {
+function getParticipant(p, props) {
 	let f = x => { return x.competitionId === p.competitionId; };
 	if (p !== undefined && ApplicationState.instance.registration.find(f) !== undefined) {
-		this.addFooter("Deltagaren finns redan!");
+		props.addFooter("Deltagaren finns redan!");
 	} else {
 		ApplicationState.instance.addParticipant(p);
 	}
@@ -35,9 +35,13 @@ export function ParticipantPicker(props) {
 					</tr>
 				</thead>
 				<tbody>
-					{registry.map(p => <Competitor key={p.competitionId} person={p} onClick={e => getParticipant(p)} />)}
+					{registry.map(p => <Competitor key={p.competitionId} person={p} onClick={e => getParticipant(p, props)} />)}
 				</tbody>
 			</table>
 		</div>
 	</div>;
+}
+
+export function registerParticipantPicker(injector) {
+	injector.register("ParticipantPicker", (props) => ParticipantPicker({addFooter: injector.inject("addFooter"), ...props}));
 }
