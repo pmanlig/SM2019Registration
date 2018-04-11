@@ -22,7 +22,7 @@ export function addFooter(injector, msg, type = "error", timeout = 3000) {
 
 export function registerFooter(injector) {
 	injector.state = { footers: [], ...injector.state };
-	injector.register("Footer", (props) => Footer({ footers: injector.app.state.footers.map(f => f.content), ...props }));
+	injector.register("Footer", (props) => Footer({ footers: injector.app.state.footers.map(f => f.content), injector: injector, ...props }));
 	injector.register("addFooter", (msg, type, timeout) => addFooter(injector, msg, type));
 	injector.register("deleteFooter", (id) => deleteFooter(injector, id));
 	injector.register("addFooter2", () => { });
