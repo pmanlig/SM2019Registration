@@ -1,7 +1,7 @@
 import "./Toolbar.css";
 import React from 'react';
+import { AppInjector } from '../AppInjector';
 import { ApplicationState } from './../ApplicationState';
-import { deleteCookies } from './../Cookies';
 
 function getParticipant() {
 	ApplicationState.instance.showPicker = true;
@@ -32,6 +32,6 @@ export function Toolbar(props) {
 		<Register />
 
 		{/* For debugging */}
-		<input type='button' className="button toolButton" id="deleteCookiesButton" onClick={deleteCookies} value='Radera Cookies' />
+		<input type='button' className="button toolButton" id="deleteCookiesButton" onClick={() => props.injector.inject(AppInjector.Cookies).deleteCookies()} value='Radera Cookies' />
 	</div>
 }

@@ -1,8 +1,8 @@
 import { Participant } from './Participant';
 import { Person, PersonDefinition } from './Person';
-import { setCookie, COOKIE_COMPETITORS } from './Cookies';
 import { CompetitionInfo } from './CompetitionInfo';
 import { Validation } from './Validation';
+// import { setCookie, COOKIE_COMPETITORS } from './Cookies';
 
 export class ApplicationState {
 	static instance;
@@ -78,7 +78,7 @@ export class ApplicationState {
 				competitors.push(p);
 		});
 		this.registry = competitors;
-		setCookie(COOKIE_COMPETITORS, JSON.stringify(competitors));
+		// setCookie(COOKIE_COMPETITORS, JSON.stringify(competitors));
 	}
 
 	validateRegistration = () => {

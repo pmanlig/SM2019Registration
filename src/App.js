@@ -1,9 +1,8 @@
 import './App.css';
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { CookieAlert, loadCookies, setCookie, COOKIE_ALERT } from './Cookies';
 import { ApplicationState } from './ApplicationState';
-import { BusyIndicator } from './components/BusyIndicator';
+import { BusyIndicator } from './components';
 import { AppHeader } from './components/AppHeader';
 import { Competitions } from './components/Competitions';
 import { AppInjector } from './AppInjector';
@@ -13,20 +12,19 @@ class App extends Component {
 
 	constructor(props) {
 		super(props);
-		this.injector = new AppInjector(this);
-		this.state = { footers: [] };
+		this.injector = new AppInjector();
 		ApplicationState.instance = new ApplicationState(this.setState.bind(this));
+		this.state = { working: true };
 		this.loadSettings();
 	}
 
 	loadSettings() {
 		ApplicationState.instance.working = true;
-		loadCookies(c => {
-			if (c.cookieAlert !== "false") {
-				this.addCookieAlertFooter();
-			}
-			if (c.competitors) {
-				ApplicationState.instance.registry = JSON.parse(c.competitors);
+		let cookies = this.injector.inject("Cookies")
+		cookies.loadCookies(() => {
+			ApplicationState.instance.storeParticipants = cookies.storeCookies ? "Ja" : "Nej";
+			if (cookies.competitors) {
+				ApplicationState.instance.registry = JSON.parse(cookies.competitors);
 			}
 			// Call WS https://dev.bitnux.com/sm2019/list/1
 			fetch('/sm2019.json')
@@ -34,11 +32,12 @@ class App extends Component {
 				.then(json => {
 					ApplicationState.instance.setCompetitionInfo(json);
 					ApplicationState.instance.working = false;
-					this.setState({});
+					this.setState({ working: false });
 				});
 		});
 	}
 
+	/*
 	addCookieAlertFooter() {
 		let myId = App.messageId++;
 		this.setState({
@@ -53,13 +52,14 @@ class App extends Component {
 			}])
 		});
 	}
+		*/
 
 	render() {
-		const Footer = this.injector.inject("Footer");
+		const Footer = this.injector.inject(AppInjector.Footer);
 		document.title = ApplicationState.instance.competitionInfo.name;
 		return (
 			<div className="App">
-				<BusyIndicator />
+				{this.working && <BusyIndicator />}
 				<AppHeader />
 				<BrowserRouter>
 					<Switch>

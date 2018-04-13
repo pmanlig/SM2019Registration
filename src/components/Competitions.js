@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export function Competitions(props) {
+export function Competitions(props, context) {
 	return <div>
 		<ul>
 			<li><Link to='/competition/sm2019'>SM 2019</Link></li>

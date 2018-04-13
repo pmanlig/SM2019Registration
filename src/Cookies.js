@@ -1,49 +1,80 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { AppInjector } from './AppInjector';
 
-export const COOKIE_ALERT = "cookieAlert";
-export const COOKIE_COMPETITORS = "competitors";
-export const COOKIE_EXPIRES = "expires";
+class CookieAlert extends Component {
+	constructor(props) {
+		super(props);
+		this.state = { visible: true };
+	}
 
-function extractValue(cname, value, result) {
-	if (value.trim().startsWith(cname + "=")) {
-		result[cname] = value.split('=')[1];
+	hide(save) {
+		let cookies = this.props.injector.inject("Cookies");
+		cookies.storeCookies = save;
+		cookies.setCookie(Cookies.storeCookies, save);
+		this.setState({ visible: false });
+	}
+
+	render() {
+		return this.state.visible && <div id="cookieAlert">
+			<p className="centered">Vill du att information om anmälda skyttar sparas så att det blir lättare att anmäla nästa gång?</p>
+			<input className="button cookieButton" type="button" value="Nej" onClick={() => this.hide(false)} />
+			<input className="button cookieButton" type="button" value="Ja" onClick={() => this.hide(true)} />
+		</div >;
 	}
 }
 
-function unlimitedCookieExpiration() {
-	let d = new Date();
-	d.setFullYear(d.getFullYear() + 20);
-	return COOKIE_EXPIRES + "=" + d.toUTCString() + ';';
-}
+export class Cookies {
+	static alert = "cookieAlert";
+	static storeCookies = "storeCookies";
+	static competitors = "competitors";
+	static expires = "expires";
+	static all = [Cookies.alert, Cookies.storeCookies, Cookies.competitors];
 
-export function deleteCookie(c) {
-	document.cookie = c + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-}
-
-export function deleteCookies() {
-	[COOKIE_ALERT, COOKIE_COMPETITORS].forEach(c => deleteCookie(c));
-}
-
-export async function loadCookies(callback) {
-	var result = {};
-	await decodeURIComponent(document.cookie).split(';').forEach(c => {
-		extractValue(COOKIE_ALERT, c, result);
-		extractValue(COOKIE_COMPETITORS, c, result);
-	});
-	callback(result);
-}
-
-export function setCookie(name, value, expiration) {
-	if (!expiration) {
-		expiration = unlimitedCookieExpiration();
+	constructor(injector) {
+		this.injector = injector;
 	}
-	document.cookie = name + '=' + value + ';' + expiration;
+
+	extractValue(cname, value) {
+		if (value.trim().startsWith(cname + "=")) {
+			this[cname] = value.split('=')[1];
+		}
+	}
+
+	deleteCookie(c) {
+		console.log("Deleting cookie " + c);
+		document.cookie = c + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+	}
+
+	deleteCookies() {
+		Cookies.all.forEach(c => this.deleteCookie(c));
+	}
+
+	unlimitedCookieExpiration() {
+		let d = new Date();
+		d.setFullYear(d.getFullYear() + 20);
+		return Cookies.expires + "=" + d.toUTCString() + ';';
+	}
+
+	setCookie(name, value, expiration) {
+		if (!expiration) {
+			expiration = this.unlimitedCookieExpiration();
+		}
+		console.log("Setting cookie: " + name);
+		document.cookie = name + '=' + value + ';' + expiration + '; path=/;';
+	}
+
+	async loadCookies(callback) {
+		await decodeURIComponent(document.cookie).split(';').forEach(v => {
+			console.log("Loading cookie: " + v);
+			Cookies.all.forEach(c => {
+				this.extractValue(c, v);
+			});
+		});
+
+		if (this.storeCookies === undefined) {
+			this.injector.inject(AppInjector.Footers).addCustomFooter(<CookieAlert key="cookieAlert" injector={this.injector} />);
+		}
+		callback();
+	}
 }
 
-export function CookieAlert(props) {
-	return <div id="cookieAlert">
-		<p className="centered">Vill du att information om anmälda skyttar sparas så att det blir lättare att anmäla nästa gång?</p>
-		<input className="button cookieButton" type="button" value="Nej" onClick={props.onClick} />
-		<input className="button cookieButton" type="button" value="Ja" onClick={props.onClick} />
-	</div >;
-}

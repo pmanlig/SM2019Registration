@@ -1,10 +1,11 @@
 import React from 'react';
+import { AppInjector } from '../AppInjector';
 import { ApplicationState } from '../ApplicationState';
 
 function getParticipant(p, props) {
 	let f = x => { return x.competitionId === p.competitionId; };
 	if (p !== undefined && ApplicationState.instance.registration.find(f) !== undefined) {
-		props.addFooter("Deltagaren finns redan!");
+		props.injector.inject(AppInjector.Footers).addFooter("Deltagaren finns redan!");
 	} else {
 		ApplicationState.instance.addParticipant(p);
 	}
@@ -40,8 +41,4 @@ export function ParticipantPicker(props) {
 			</table>
 		</div>
 	</div>;
-}
-
-export function registerParticipantPicker(injector) {
-	injector.register("ParticipantPicker", (props) => ParticipantPicker({addFooter: injector.inject("addFooter"), ...props}));
 }

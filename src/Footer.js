@@ -1,29 +1,51 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { EventBus } from './EventBus';
+import { AppInjector } from './AppInjector';
 
-var messageId = 1;
+export class Footers {
+	messageId = 1;
+	footers = [];
 
-export function Footer(props) {
-	return <div id="footer" className="footer">{props.footers}</div>;
+	constructor(injector) {
+		this.injector = injector;
+	}
+
+	addCustomFooter(content) {
+		let myId = this.messageId++;
+		this.footers = this.footers.concat([{
+			id: myId,
+			content: content
+		}]);
+		this.injector.inject("EventBus").fire(EventBus.footersChanged, myId);
+	}
+
+	addFooter(msg, type = "error", timeout = 3000) {
+		let myId = this.messageId++;
+		let newFooter = { id: myId, content: <div key={myId} className={type}><p className="centered">{msg}</p></div> };
+		this.footers = [newFooter].concat(this.footers);
+		let timer = setTimeout(() => {
+			this.deleteFooter(myId);
+			clearTimeout(timer);
+		}, timeout);
+		this.injector.inject("EventBus").fire(EventBus.footersChanged, myId);
+	}
+
+	deleteFooter(id) {
+		this.footers = this.footers.filter(f => f.id !== id);
+		this.injector.inject("EventBus").fire(EventBus.footersChanged, id);
+	}
 }
 
-export function deleteFooter(injector, id) {
-	injector.app.setState({ footers: injector.app.state.footers.filter(f => f.id !== id) });
-}
+export class Footer extends Component {
+	componentDidMount() {
+		this.subscription = this.props.injector.inject(AppInjector.EventBus).subscribe(EventBus.footersChanged, () => this.setState({}));
+	}
 
-export function addFooter(injector, msg, type = "error", timeout = 3000) {
-	let myId = messageId++;
-	let newFooter = { id: myId, content: <div key={myId} className={type}><p className="centered">{msg}</p></div> };
-	injector.app.setState({ footers: [newFooter].concat(injector.app.state.footers) });
-	let timer = setTimeout(() => {
-		deleteFooter(injector, myId);
-		clearTimeout(timer);
-	}, timeout);
-}
+	componentWillUnmount() {
+		this.subscription.unsubscribe();
+	}
 
-export function registerFooter(injector) {
-	injector.state = { footers: [], ...injector.state };
-	injector.register("Footer", (props) => Footer({ footers: injector.app.state.footers.map(f => f.content), injector: injector, ...props }));
-	injector.register("addFooter", (msg, type, timeout) => addFooter(injector, msg, type));
-	injector.register("deleteFooter", (id) => deleteFooter(injector, id));
-	injector.register("addFooter2", () => { });
+	render() {
+		return <div id="footer" className="footer">{this.props.injector.inject("Footers").footers.map(f => f.content)}</div>;
+	}
 }

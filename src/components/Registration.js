@@ -1,7 +1,6 @@
 import React from 'react';
 import { ApplicationState } from './../ApplicationState';
 import { Summary } from './Summary';
-import { Toolbar } from './Toolbar';
 
 function RegistrationHeader(props) {
 	let counter = 0;
@@ -71,6 +70,7 @@ function RegistrationForm(props) {
 
 export function Registration(props) {
 	const ParticipantPicker = props.injector.inject("ParticipantPicker");
+	const Toolbar = props.injector.inject("Toolbar");
 	return [
 		<Toolbar key="1"/>,
 		<RegistrationForm key="2"/>,
