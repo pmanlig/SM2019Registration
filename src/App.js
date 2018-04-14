@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ApplicationState } from './ApplicationState';
 import { BusyIndicator } from './components';
-import { AppHeader } from './components/AppHeader';
-import { Competitions } from './components/Competitions';
 import { AppInjector } from './AppInjector';
 
 class App extends Component {
@@ -19,7 +17,6 @@ class App extends Component {
 	}
 
 	loadSettings() {
-		ApplicationState.instance.working = true;
 		let cookies = this.injector.inject("Cookies")
 		cookies.loadCookies(() => {
 			ApplicationState.instance.storeParticipants = cookies.storeCookies ? "Ja" : "Nej";
@@ -37,25 +34,9 @@ class App extends Component {
 		});
 	}
 
-	/*
-	addCookieAlertFooter() {
-		let myId = App.messageId++;
-		this.setState({
-			footers: this.state.footers.concat([{
-				id: myId,
-				content:
-					<CookieAlert key={myId} onClick={e => {
-						ApplicationState.instance.storeParticipants = e.target.value;
-						setCookie(COOKIE_ALERT, false);
-						this.deleteFooter(myId);
-					}} />
-			}])
-		});
-	}
-		*/
-
 	render() {
 		const Footer = this.injector.inject(AppInjector.Footer);
+		const AppHeader = this.injector.inject(AppInjector.AppHeader);
 		document.title = ApplicationState.instance.competitionInfo.name;
 		return (
 			<div className="App">
@@ -63,8 +44,8 @@ class App extends Component {
 				<AppHeader />
 				<BrowserRouter>
 					<Switch>
-						<Route exact path='/' component={Competitions} />
-						<Route exact path='/competition/:id' component={this.injector.inject("Registration")} />
+						<Route exact path='/' component={this.injector.inject(AppInjector.Competitions)} />
+						<Route exact path='/competition/:id' component={this.injector.inject(AppInjector.Registration)} />
 					</Switch>
 				</BrowserRouter>
 				<Footer />
