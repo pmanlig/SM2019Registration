@@ -77,6 +77,7 @@ export class Registration extends Component {
 		this.state = { info: new CompetitionInfo(props.match.params.id, "", ""), participants: [] };
 		this.props.injector.inject("EventBus").fire(EventBus.titleChanged, "Anmälan till " + this.state.info.description);
 		let id = parseInt(props.match.params.id, 10);
+		props.injector.inject("Busy").setBusy("Registration", true);
 		fetch(isNaN(id) ? '/' + props.match.params.id + '.json' : 'https://dev.bitnux.com/sm2019/competition/' + id)
 			.then(result => result.json())
 			.then(this.updateRegistrationDefinition.bind(this))
@@ -85,6 +86,7 @@ export class Registration extends Component {
 
 	updateRegistrationDefinition(json) {
 		this.setState({ info: CompetitionInfo.fromJson(json) });
+		this.props.injector.inject("Busy").setBusy("Registration", false);
 		this.props.injector.inject("EventBus").fire(EventBus.titleChanged, "Anmälan till " + json.description);
 	}
 

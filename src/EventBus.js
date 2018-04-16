@@ -3,6 +3,7 @@ import Rx from 'rxjs';
 export class EventBus {
 	static footersChanged = 1;
 	static titleChanged = 2;
+	static busyChanged = 3;
 
 	constructor() {
 		this.bus = new Rx.Subject();

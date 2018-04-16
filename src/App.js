@@ -2,22 +2,21 @@ import './App.css';
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ApplicationState } from './ApplicationState';
-import { BusyIndicator } from './components';
 import { AppInjector } from './AppInjector';
 
 class App extends Component {
-	static messageId = 0;
-
 	constructor(props) {
 		super(props);
 		this.injector = new AppInjector();
 		ApplicationState.instance = new ApplicationState(this.setState.bind(this));
-		this.state = { working: true };
 		this.loadSettings();
 	}
 
 	loadSettings() {
-		let cookies = this.injector.inject("Cookies")
+		const myName = "App";
+		let busy = this.injector.inject("Busy");
+		let cookies = this.injector.inject("Cookies");
+		busy.setBusy(myName, true);
 		cookies.loadCookies(() => {
 			ApplicationState.instance.storeParticipants = cookies.storeCookies ? "Ja" : "Nej";
 			if (cookies.competitors) {
@@ -28,19 +27,19 @@ class App extends Component {
 				.then(result => result.json())
 				.then(json => {
 					ApplicationState.instance.setCompetitionInfo(json);
-					ApplicationState.instance.working = false;
-					this.setState({ working: false });
+					busy.setBusy(myName, false);
 				});
 		});
 	}
 
 	render() {
+		const BusyIndicator = this.injector.inject(AppInjector.BusyIndicator);
 		const Footer = this.injector.inject(AppInjector.Footer);
 		const AppHeader = this.injector.inject(AppInjector.AppHeader);
 		document.title = ApplicationState.instance.competitionInfo.name;
 		return (
 			<div className="App">
-				{this.working && <BusyIndicator />}
+				<BusyIndicator />
 				<AppHeader />
 				<BrowserRouter>
 					<Switch>
