@@ -38,17 +38,17 @@ class App extends Component {
 		const AppHeader = this.injector.inject(AppInjector.AppHeader);
 		document.title = ApplicationState.instance.competitionInfo.name;
 		return (
-			<div className="App">
-				<BusyIndicator />
-				<AppHeader />
-				<BrowserRouter>
+			<BrowserRouter>
+				<div className="App">
+					<BusyIndicator />
+					<AppHeader />
 					<Switch>
 						<Route exact path='/' component={this.injector.inject(AppInjector.Competitions)} />
 						<Route exact path='/competition/:id' component={this.injector.inject(AppInjector.Registration)} />
 					</Switch>
-				</BrowserRouter>
-				<Footer />
-			</div>
+					<Footer />
+				</div>
+			</BrowserRouter>
 		);
 	}
 }

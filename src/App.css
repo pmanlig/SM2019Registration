@@ -127,8 +127,9 @@ tr.picker {
 
 /* Main form */
 
-#registration {
-  margin: 10px;
+.registration {
+	margin: 10px;
+	margin-bottom: 25px;
 }
 
 .major {
@@ -192,6 +193,16 @@ th.vert > div {
 	/*border: none;
 	text-decoration: none;*/
 	display: inline-block;
+}
+
+/* Tools */
+
+.globaltool {
+	font-size: 20px;
+	border-radius: 15px;
+	float: right;
+	vertical-align: middle;
+	margin-top: 10px;
 }
 
 .deleteButton {

@@ -4,7 +4,7 @@ import { EventBus } from './EventBus';
 import { Cookies } from './Cookies';
 import { Footers, Footer } from './Footer';
 import { Registration, Competitions } from './views';
-import { Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy } from './components';
+import { Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm } from './components';
 
 export class AppInjector extends Injector {
 	static EventBus = "EventBus";
@@ -18,6 +18,8 @@ export class AppInjector extends Injector {
 	static AppHeader = "AppHeader";
 	static BusyIndicator = "BusyIndicator";
 	static Busy = "Busy";
+	static RegistrationContact = "RegistrationContact";
+	static RegistrationForm = "RegistrationForm";
 
 	registerComponent(id, Component) {
 		this.register(id, props => <Component injector={this} {...props} />);
@@ -36,5 +38,7 @@ export class AppInjector extends Injector {
 		this.registerComponent(AppInjector.Competitions, Competitions);
 		this.registerComponent(AppInjector.AppHeader, AppHeader);
 		this.registerComponent(AppInjector.BusyIndicator, BusyIndicator);
+		this.registerComponent(AppInjector.RegistrationContact, RegistrationContact);
+		this.registerComponent(AppInjector.RegistrationForm, RegistrationForm);
 	}
 }

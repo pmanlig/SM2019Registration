@@ -1,6 +1,4 @@
-import { Participant } from './Participant';
-import { Person, PersonDefinition } from './Person';
-import { CompetitionInfo } from './CompetitionInfo';
+import { Participant, Person, PersonDefinition, CompetitionInfo } from './models';
 import { Validation } from './Validation';
 // import { setCookie, COOKIE_COMPETITORS } from './Cookies';
 

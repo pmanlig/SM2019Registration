@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
 import logo from './../logo.svg';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { AppInjector } from '../AppInjector';
 import { EventBus } from '../EventBus';
 
@@ -15,7 +16,7 @@ export class AppHeader extends Component {
 	}
 
 	componentDidMount() {
-		this.subscription = this.props.injector.inject(AppInjector.EventBus).subscribe(EventBus.titleChanged, this.updateTitle.bind(this));
+		this.subscription = this.props.injector.inject(AppInjector.EventBus).subscribe(EventBus.changeTitle, this.updateTitle.bind(this));
 	}
 
 	componentWillUnmount() {
@@ -27,6 +28,8 @@ export class AppHeader extends Component {
 			<h1 className="App-title">
 				<img src={logo} className="App-logo" alt="logo" />
 				{this.state.title}
+				<Link to='/' className='button globaltool'>Tävlingar</Link>
+				<Link to='/administration' className='button globaltool'>Administrera</Link>
 			</h1>
 		</header>
 	}

@@ -31,7 +31,7 @@ export class Competitions extends Component {
 	}
 
 	componentDidMount() {
-		this.props.injector.inject("EventBus").fire(EventBus.titleChanged, "Anmälningssytem Gävle PK");
+		this.props.injector.inject("EventBus").fire(EventBus.changeTitle, "Anmälningssytem Gävle PK");
 	}
 
 	render() {

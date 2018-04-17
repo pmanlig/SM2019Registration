@@ -27,8 +27,9 @@ export class Cookies {
 	static alert = "cookieAlert";
 	static storeCookies = "storeCookies";
 	static competitors = "competitors";
+	static contact = "contact";
 	static expires = "expires";
-	static all = [Cookies.alert, Cookies.storeCookies, Cookies.competitors];
+	static all = [Cookies.alert, Cookies.storeCookies, Cookies.contact, Cookies.competitors];
 
 	constructor(injector) {
 		this.injector = injector;
@@ -65,7 +66,6 @@ export class Cookies {
 
 	async loadCookies(callback) {
 		await decodeURIComponent(document.cookie).split(';').forEach(v => {
-			console.log("Loading cookie: " + v);
 			Cookies.all.forEach(c => {
 				this.extractValue(c, v);
 			});
