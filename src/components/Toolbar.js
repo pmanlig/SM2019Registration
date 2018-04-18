@@ -18,14 +18,14 @@ export function AddParticipant(props) {
 }
 
 export function Register(props) {
-	return <input type='button' className="button toolButton" id="registerButton" onClick={ApplicationState.instance.register} value='Registrera' />;
+	return <input type='button' className="button toolButton" id="registerButton" onClick={props.onClick} value='Registrera' />;
 }
 
 export function Toolbar(props) {
 	return <div className="buttons center">
 		<GetParticipant />
 		<AddParticipant onClick={e => props.injector.inject("EventBus").fire(EventBus.addParticipant)} />
-		<Register />
+		<Register onClick={e => props.injector.inject("EventBus").fire(EventBus.register)} />
 
 		{/* For debugging */}
 		<input type='button' className="button toolButton" id="deleteCookiesButton" onClick={() => props.injector.inject(AppInjector.Cookies).deleteCookies()} value='Radera Cookies' />

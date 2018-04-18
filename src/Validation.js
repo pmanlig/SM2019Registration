@@ -3,11 +3,9 @@
 
 export class Validation {
 	competitionInfo;
-	errors;
 
 	constructor(competitionInfo, errors) {
 		this.competitionInfo = competitionInfo;
-		this.errors = errors;
 	}
 
 	error(desc, p) {
@@ -15,25 +13,35 @@ export class Validation {
 	}
 
 	validateParticipantInfo(p) {
+		p.errors = [];
 		if (p.name === undefined || p.name === "") {
-			this.errors.push(this.error("Namn saknas!", p));
+			p.errors.push(this.error("Namn saknas!", p));
 		}
 		if (p.competitionId === undefined || p.competitionId === "") {
-			this.errors.push(this.error(p.name !== undefined && p.name !== "" ? p.name + " saknar ID!" : "Ogiltigt ID!", p));
+			p.errors.push(this.error(p.name !== undefined && p.name !== "" ? p.name + " saknar ID!" : "Ogiltigt ID!", p));
 		}
 		if (p.organization === undefined || p.organization === "") {
-			this.errors.push(this.error(p.name !== undefined && p.name !== "" ? p.name + " har ingen förening!" : "Ogiltig förening!", p));
+			p.errors.push(this.error(p.name !== undefined && p.name !== "" ? p.name + " har ingen förening!" : "Ogiltig förening!", p));
 		}
 	}
 
 	validateAtLeastOneRegistration(p) {
 		let pReg = false;
 		p.registrationInfo.forEach(r => { if (r) { pReg = true; } });
-		if (!pReg) { this.errors.push(this.error("Ingen start vald för " + p.name, p)); }
+		if (!pReg) { p.errors.push(this.error("Ingen start vald!", p)); }
 	}
 
 	validateParticipant(p) {
 		this.validateParticipantInfo(p);
 		this.validateAtLeastOneRegistration(p);
+	}
+
+	validate(participants) {
+		let errors = [];
+		participants.forEach(p => {
+			this.validateParticipant(p);
+			errors = errors.concat(p.errors);
+		});
+		return errors;
 	}
 }

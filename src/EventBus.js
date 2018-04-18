@@ -1,10 +1,13 @@
 import Rx from 'rxjs';
 
 export class EventBus {
-	static footersChanged = 1;
-	static changeTitle = 2;
-	static busyChanged = 3;
-	static addParticipant = 4;
+	static eventId = 1;
+	static footersChanged = EventBus.eventId++;
+	static changeTitle = EventBus.eventId++;
+	static busyChanged = EventBus.eventId++;
+	static addParticipant = EventBus.eventId++;
+	static deleteParticipant = EventBus.eventId++;
+	static register = EventBus.eventId++;
 
 	constructor() {
 		this.bus = new Rx.Subject();

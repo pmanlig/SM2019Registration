@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { EventBus } from './EventBus';
-import { AppInjector } from './AppInjector';
+import { EventBus } from '../EventBus';
 
 export class Footers {
 	messageId = 1;
@@ -38,7 +37,7 @@ export class Footers {
 
 export class Footer extends Component {
 	componentDidMount() {
-		this.subscription = this.props.injector.inject(AppInjector.EventBus).subscribe(EventBus.footersChanged, () => this.setState({}));
+		this.subscription = this.props.injector.inject("EventBus").subscribe(EventBus.footersChanged, () => this.setState({}));
 	}
 
 	componentWillUnmount() {

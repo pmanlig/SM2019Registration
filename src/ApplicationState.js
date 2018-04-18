@@ -1,4 +1,4 @@
-import { Participant, Person, PersonDefinition, CompetitionInfo } from './models';
+import { Person, PersonDefinition, CompetitionInfo } from './models';
 import { Validation } from './Validation';
 // import { setCookie, COOKIE_COMPETITORS } from './Cookies';
 
@@ -22,23 +22,6 @@ export class ApplicationState {
 
 	setCompetitionInfo(info) {
 		this.competitionInfo = CompetitionInfo.fromJson(info);
-	}
-
-	createRegistrationInfo = () => {
-		// ToDo: Need to extend to support different scenarios
-		let registrationInfo = [];
-		this.competitionInfo.eventGroups.forEach(eg => {
-			eg.events.forEach(e => {
-				registrationInfo.push(false);
-			});
-		});
-		return registrationInfo;
-	}
-
-	addParticipant = p => {
-		console.log("Adding new participant");
-		this.registration.push(new Participant(p, this.createRegistrationInfo()));
-		this.updateState({});
 	}
 
 	deleteParticipant = (id) => {

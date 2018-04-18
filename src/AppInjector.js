@@ -2,9 +2,8 @@ import React from 'react';
 import { Injector } from './Injector';
 import { EventBus } from './EventBus';
 import { Cookies } from './Cookies';
-import { Footers, Footer } from './Footer';
 import { Registration, Competitions } from './views';
-import { Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm } from './components';
+import { Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer } from './components';
 
 export class AppInjector extends Injector {
 	static EventBus = "EventBus";

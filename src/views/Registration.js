@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 import { Summary } from '../components';
 import { EventBus } from '../EventBus';
 import { CompetitionInfo, Participant } from '../models';
+import { Validation } from '../Validation';
 
 export class Registration extends Component {
+
+	/*** Initialization & Liftcycle ***************************************************************************************/
+
 	constructor(props) {
 		super(props);
 		this.state = { info: new CompetitionInfo(props.match.params.id, "", ""), participants: [] };
@@ -11,8 +15,16 @@ export class Registration extends Component {
 		this.loadRegistrationDefinition();
 	}
 
-	setTitle(title) {
-		this.props.injector.inject("EventBus").fire(EventBus.changeTitle, title);
+	componentDidMount() {
+		this.addSubscription = this.props.injector.inject("EventBus").subscribe(EventBus.addParticipant, this.addParticipant.bind(this));
+		this.deleteSubscription = this.props.injector.inject("EventBus").subscribe(EventBus.deleteParticipant, this.deleteParticipant.bind(this));
+		this.registerSubscription = this.props.injector.inject("EventBus").subscribe(EventBus.register, this.register.bind(this));
+	}
+
+	componentWillUnmount() {
+		this.addSubscription.unsubscribe();
+		this.deleteSubscription.unsubscribe();
+		this.registerSubscription.unsubscribe();
 	}
 
 	loadRegistrationDefinition() {
@@ -28,7 +40,13 @@ export class Registration extends Component {
 			.catch(e => console.log(e));
 	}
 
-	addParticipant = p => {
+	/*** Event handlers ***************************************************************************************/
+
+	setTitle(title) {
+		this.props.injector.inject("EventBus").fire(EventBus.changeTitle, title);
+	}
+
+	addParticipant(p) {
 		console.log("Adding new participant");
 
 		// ToDo: Need to extend to support different scenarios
@@ -39,16 +57,32 @@ export class Registration extends Component {
 			});
 		});
 
-		this.setState({participants: this.state.participants.concat([new Participant(p, registrationInfo)])});
+		this.setState({ participants: this.state.participants.concat([new Participant(p, registrationInfo)]) });
 	}
 
-	componentDidMount() {
-		this.addSubscription = this.props.injector.inject("EventBus").subscribe(EventBus.addParticipant, this.addParticipant);
+	deleteParticipant(id) {
+		console.log("Deleting participant #" + id);
+		this.setState({participants: this.state.participants.filter(p => { return p.id !== id; })});
 	}
 
-	componentWillUnmount() {
-		this.addSubscription.unsubscribe();
+	register() {
+		let errors = new Validation(this.state.info).validate(this.state.participants);
+		switch (errors.length) {
+			case 0:
+				// this.sendRegistration();
+				this.props.injector.inject("Footers").addFooter("Starter registrerade", "info");
+				break;
+			case 1:
+				this.props.injector.inject("Footers").addFooter(errors[0].error);
+				break;
+			default:
+				this.props.injector.inject("Footers").addFooter(errors.length + " fel hindrar registrering!");
+				break;
+		}
+		this.setState({});
 	}
+
+	/*** render() ***************************************************************************************/
 
 	render() {
 		const ParticipantPicker = this.props.injector.inject("ParticipantPicker");
@@ -60,7 +94,7 @@ export class Registration extends Component {
 			<RegistrationContact key={id++} />,
 			<Toolbar key={id++} />,
 			<RegistrationForm key={id++} info={this.state.info} participants={this.state.participants} />,
-			<Summary key={id++} participants={this.state.participants}/>,
+			<Summary key={id++} participants={this.state.participants} />,
 			<ParticipantPicker key={id++} />
 		];
 	}
