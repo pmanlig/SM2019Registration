@@ -1,4 +1,4 @@
-export default class Injector {
+export class Injector {
 	entities = {};
 
 	register(key, entity) {

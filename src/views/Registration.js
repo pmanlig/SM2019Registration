@@ -1,7 +1,6 @@
 import React from 'react';
-import { InjectedComponent } from '../components';
 import { Components, Events } from '.';
-import { Summary } from '../components';
+import { InjectedComponent } from '../components';
 import { CompetitionInfo, Participant } from '../models';
 import { Validation } from '../logic';
 
@@ -19,12 +18,20 @@ export class Registration extends InjectedComponent {
 	componentDidMount() {
 		this.addSubscription = this.subscribe(Events.addParticipant, this.addParticipant.bind(this));
 		this.deleteSubscription = this.subscribe(Events.deleteParticipant, this.deleteParticipant.bind(this));
+		this.setNameSubscription = this.subscribe(Events.setParticipantName, this.setParticipantName.bind(this));
+		this.setCompetitionIdSubscription = this.subscribe(Events.setParticipantCompetitionId, this.setParticipantCompetitionId.bind(this));
+		this.setOrganizationSubscription = this.subscribe(Events.setParticipantOrganization, this.setParticipantOrganization.bind(this));
+		this.setDivisionSubscription = this.subscribe(Events.setParticipantDivision, this.setParticipantDivision.bind(this));
 		this.registerSubscription = this.subscribe(Events.register, this.register.bind(this));
 	}
 
 	componentWillUnmount() {
 		this.addSubscription.unsubscribe();
 		this.deleteSubscription.unsubscribe();
+		this.setNameSubscription.unsubscribe();
+		this.setCompetitionIdSubscription.unsubscribe();
+		this.setOrganizationSubscription.unsubscribe();
+		this.setDivisionSubscription.unsubscribe();
 		this.registerSubscription.unsubscribe();
 	}
 
@@ -67,18 +74,40 @@ export class Registration extends InjectedComponent {
 		this.setState({ participants: this.state.participants.filter(p => { return p.id !== id; }) });
 	}
 
+	setParticipantName(id, value) {
+		this.state.participants.forEach(p => { if (id === p.id) p.name = value; });
+		this.setState({});
+	}
+
+	setParticipantCompetitionId(id, value) {
+		if (value.length < 6 && /^\d*$/.test(value)) {
+			this.state.participants.forEach(p => { if (id === p.id) p.competitionId = value; });
+			this.setState({});
+		}
+	}
+
+	setParticipantOrganization(id, value) {
+		this.state.participants.forEach(p => { if (id === p.id) p.organization = value; });
+		this.setState({});
+	}
+
+	setParticipantDivision(participant, division, value) {
+		this.state.participants.forEach(p => { if (participant === p.id) p.registrationInfo[division] = value; });
+		this.setState({});
+	}
+
 	register() {
 		let errors = new Validation(this.state.info).validate(this.state.participants);
 		switch (errors.length) {
 			case 0:
 				// this.sendRegistration();
-				this.props.injector.inject("Footers").addFooter("Starter registrerade", "info");
+				this.inject(Components.Footers).addFooter("Starter registrerade", "info");
 				break;
 			case 1:
-				this.props.injector.inject("Footers").addFooter(errors[0].error);
+				this.inject(Components.Footers).addFooter(errors[0].error);
 				break;
 			default:
-				this.props.injector.inject("Footers").addFooter(errors.length + " fel hindrar registrering!");
+				this.inject(Components.Footers).addFooter(errors.length + " fel hindrar registrering!");
 				break;
 		}
 		this.setState({});
@@ -91,6 +120,7 @@ export class Registration extends InjectedComponent {
 		const Toolbar = this.inject(Components.Toolbar);
 		const RegistrationContact = this.inject(Components.RegistrationContact);
 		const RegistrationForm = this.inject(Components.RegistrationForm);
+		const Summary = this.inject(Components.Summary);
 		let id = 0;
 		return [
 			<RegistrationContact key={id++} />,

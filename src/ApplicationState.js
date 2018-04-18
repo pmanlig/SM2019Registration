@@ -1,4 +1,4 @@
-import { Person, PersonDefinition, CompetitionInfo } from './models';
+import { Person, CompetitionInfo } from './models';
 import { Validation } from './logic';
 
 export class ApplicationState {
@@ -8,7 +8,6 @@ export class ApplicationState {
 	registration = [];
 	storeParticipants = "Nej";
 	competitionInfo = new CompetitionInfo("noComp", "No Competition");
-	personHeader = PersonDefinition.getHeaders();
 
 	// Event handlers
 	updateState;
@@ -23,34 +22,6 @@ export class ApplicationState {
 		this.competitionInfo = CompetitionInfo.fromJson(info);
 	}
 
-	deleteParticipant = (id) => {
-		console.log("Deleting participant #" + id);
-		this.registration = this.registration.filter((p) => { return p.id !== id; });
-		this.updateState({});
-	}
-
-	setDivision = (participant, division, value) => {
-		this.registration.forEach(p => { if (participant === p.id) p.registrationInfo[division] = value; });
-		this.updateState({});
-	}
-
-	setParticipantName = (id, value) => {
-		this.registration.forEach(p => { if (id === p.id) p.name = value; });
-		this.updateState({});
-	}
-
-	setParticipantCompetitionId = (id, value) => {
-		if (value.length < 6 && /^\d*$/.test(value)) {
-			this.registration.forEach(p => { if (id === p.id) p.competitionId = value; });
-			this.updateState({});
-		}
-	}
-
-	setParticipantOrganization = (id, value) => {
-		this.registration.forEach(p => { if (id === p.id) p.organization = value; });
-		this.updateState({});
-	}
-
 	storeCompetitors = () => {
 		let competitors = this.registration.map(p => new Person(p));
 		this.registry.forEach(p => {
@@ -58,7 +29,6 @@ export class ApplicationState {
 				competitors.push(p);
 		});
 		this.registry = competitors;
-		// setCookie(COOKIE_COMPETITORS, JSON.stringify(competitors));
 	}
 
 	validateRegistration = () => {

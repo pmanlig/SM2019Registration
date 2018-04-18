@@ -1,6 +1,6 @@
 import React from 'react';
 import { Injector, EventBus, Cookies } from './logic';
-import { Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer } from './components';
+import { Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary } from './components';
 import { Registration, Competitions } from './views';
 import { App } from './App';
 
@@ -14,6 +14,7 @@ export class Events {
 	static setParticipantName = Events.eventId++;
 	static setParticipantCompetitionId = Events.eventId++;
 	static setParticipantOrganization = Events.eventId++;
+	static setParticipantDivision = Events.eventId++;
 	static register = Events.eventId++;
 }
 
@@ -33,16 +34,11 @@ export class Components {
 	static Busy = Components.componentId++;
 	static RegistrationContact = Components.componentId++;
 	static RegistrationForm = Components.componentId++;
+	static Summary = Components.componentId++;
 }
 
 export class AppInjector extends Injector {
 	registerComponent(id, Component) {
-		if (typeof Component === "object") {
-			console.log("Extending class");
-			Component.prototype.inject = function (id) { this.props.inject(id); };
-			Component.prototype.subscribe = this.subscribe.bind(this);
-			Component.prototype.fire = this.fire.bind(this);
-		}
 		this.register(id, props =>
 			<Component
 				injector={this}
@@ -71,5 +67,6 @@ export class AppInjector extends Injector {
 		this.registerComponent(Components.BusyIndicator, BusyIndicator);
 		this.registerComponent(Components.RegistrationContact, RegistrationContact);
 		this.registerComponent(Components.RegistrationForm, RegistrationForm);
+		this.registerComponent(Components.Summary, Summary);
 	}
 }

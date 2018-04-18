@@ -23,7 +23,7 @@ class CookieAlert extends Component {
 	}
 }
 
-export default class Cookies {
+export class Cookies {
 	static alert = "cookieAlert";
 	static storeCookies = "storeCookies";
 	static competitors = "competitors";

@@ -14,20 +14,3 @@ export class Person {
 		}
 	}
 }
-
-export class PersonDefinition {
-	static ParticipantHeader = {
-		name: 'Skytt', subfields: [
-			{ name: 'Namn', width: 200, type: 'text' },
-			{ name: 'Pistolskyttekort', type: 'number' },
-			{ name: 'Förening', width: 200, type: 'text' },]
-	};
-
-	static getHeaders() {
-		return PersonDefinition.ParticipantHeader;
-	}
-
-	static getParticipant() {
-		return new Person('', '', '');
-	}
-}

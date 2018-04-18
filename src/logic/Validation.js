@@ -1,6 +1,3 @@
-// import { Participant } from './Participant';
-// import { CompetitionInfo } from './CompetitionInfo';
-
 export class Validation {
 	competitionInfo;
 

@@ -1,6 +1,6 @@
 import Rx from 'rxjs';
 
-export default class EventBus {
+export class EventBus {
 	constructor() {
 		this.bus = new Rx.Subject();
 	}

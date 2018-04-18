@@ -1,7 +1,5 @@
-import Cookies from './Cookies';
-import EventBus from './EventBus';
-import Injector from './Injector';
-import Validation from './Validation';
-import { Components, Events } from '../AppInjector';
-
-export { Cookies, EventBus, Injector, Validation, Components, Events };
+export { Components, Events } from '../AppInjector';
+export { Cookies } from './Cookies';
+export { EventBus } from './EventBus';
+export { Injector } from './Injector';
+export { Validation } from './Validation';

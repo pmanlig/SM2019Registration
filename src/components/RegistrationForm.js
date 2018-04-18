@@ -1,12 +1,15 @@
 import React from 'react';
-import { ApplicationState } from '../ApplicationState';
-import { PersonDefinition } from '../models';
 import { Events } from '.';
 
 function RegistrationHeader(props) {
 	let counter = 0;
 	const compInfo = props.info;
-	const personHeader = PersonDefinition.getHeaders();
+	const personHeader = {
+		name: 'Skytt', subfields: [
+			{ name: 'Namn', width: 200, type: 'text' },
+			{ name: 'Pistolskyttekort', type: 'number' },
+			{ name: 'Förening', width: 200, type: 'text' },]
+	};
 	const majorHeaders = [<th key="-1" className="major" colSpan={personHeader.subfields.length}>{personHeader.name}</th>];
 	const minorHeaders = [];
 
@@ -32,9 +35,9 @@ function RegistrationCheckboxes(props) {
 	let info = props.participant.registrationInfo;
 	let result = [];
 	for (let i = 0; i < info.length; i++) {
-		result.push(<td key={i}><input type="checkbox" className="checkbox" onChange={(e) => {
-			ApplicationState.instance.setDivision(props.participant.id, i, e.target.checked)
-		}} checked={info[i]} /></td>);
+		result.push(<td key={i}><input type="checkbox" className="checkbox" onChange={(e) =>
+			props.fire(Events.setParticipantDivision, props.participant.id, i, e.target.checked)
+		} checked={info[i]} /></td>);
 	}
 	return result;
 }
@@ -43,11 +46,11 @@ function RegistrationRow(props) {
 	const myId = props.participant.id;
 	return <tr key={myId} style={{ background: props.participant.errors.length > 0 ? "red" : "white" }}>
 		<td className="left"><input type="text" value={props.participant.name} placeholder="Namn"
-			onChange={e => props.fire(Events.setParticipantName, myId, e.target.value) /*appState.setParticipantName(myId, e.target.value)*/} /></td>
+			onChange={e => props.fire(Events.setParticipantName, myId, e.target.value)} /></td>
 		<td className="left"><input type="text" size="5" style={{ width: '40px' }} value={props.participant.competitionId} placeholder="00000"
-			onChange={e => { /*appState.setParticipantCompetitionId(myId, e.target.value)*/ }} /></td>
+			onChange={e => props.fire(Events.setParticipantCompetitionId, myId, e.target.value)} /></td>
 		<td className="left"><input type="text" value={props.participant.organization} placeholder="Förening"
-			onChange={e => { /*appState.setParticipantOrganization(myId, e.target.value)*/ }} /></td>
+			onChange={e => props.fire(Events.setParticipantOrganization, myId, e.target.value)} /></td>
 		{RegistrationCheckboxes(props)}
 		<td><button className="deleteButton button" onClick={e => props.fire(Events.deleteParticipant, myId)}>x</button></td></tr>;
 }

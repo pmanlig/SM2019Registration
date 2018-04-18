@@ -22,13 +22,7 @@ export class App extends InjectedComponent {
 			if (cookies.competitors) {
 				ApplicationState.instance.registry = JSON.parse(cookies.competitors);
 			}
-			// Call WS https://dev.bitnux.com/sm2019/list/1
-			fetch('/sm2019.json')
-				.then(result => result.json())
-				.then(json => {
-					ApplicationState.instance.setCompetitionInfo(json);
-					busy.setBusy(myName, false);
-				});
+			busy.setBusy(myName, false);
 		});
 	}
 
@@ -36,7 +30,6 @@ export class App extends InjectedComponent {
 		const BusyIndicator = this.inject(Components.BusyIndicator);
 		const Footer = this.inject(Components.Footer);
 		const AppHeader = this.inject(Components.AppHeader);
-		document.title = ApplicationState.instance.competitionInfo.name;
 		// return <div><h1>Testing</h1></div>;
 		return (
 			<BrowserRouter>

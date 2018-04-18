@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { InjectedComponent } from '../components';
 import { Link } from 'react-router-dom';
 import { Events } from '.';
 
-export class Competitions extends Component {
+export class Competitions extends InjectedComponent {
 	static initial = [
 		{
 			id: "sm2019",
@@ -31,7 +32,7 @@ export class Competitions extends Component {
 	}
 
 	componentDidMount() {
-		this.props.injector.inject("EventBus").fire(Events.changeTitle, "Anmälningssytem Gävle PK");
+		this.fire(Events.changeTitle, "Anmälningssytem Gävle PK");
 	}
 
 	render() {

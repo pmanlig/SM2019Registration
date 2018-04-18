@@ -15,7 +15,7 @@ export class Footers {
 			id: myId,
 			content: content
 		}]);
-		this.injector.inject("EventBus").fire(Events.footersChanged, myId);
+		this.injector.fire(Events.footersChanged, myId);
 	}
 
 	addFooter(msg, type = "error", timeout = 3000) {
@@ -26,12 +26,12 @@ export class Footers {
 			this.deleteFooter(myId);
 			clearTimeout(timer);
 		}, timeout);
-		this.injector.inject("EventBus").fire(Events.footersChanged, myId);
+		this.injector.fire(Events.footersChanged, myId);
 	}
 
 	deleteFooter(id) {
 		this.footers = this.footers.filter(f => f.id !== id);
-		this.injector.inject("EventBus").fire(Events.footersChanged, id);
+		this.injector.fire(Events.footersChanged, id);
 	}
 }
 
