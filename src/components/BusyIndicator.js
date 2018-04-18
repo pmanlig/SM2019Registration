@@ -1,6 +1,5 @@
 import React from 'react';
-import { InjectedComponent } from '../components/InjectedComponent';
-import { Components, Events } from '.';
+import { InjectedComponent, Components, Events } from '.';
 
 export class Busy {
 	constructor(injector) {

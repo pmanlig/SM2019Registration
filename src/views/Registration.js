@@ -1,5 +1,5 @@
 import React from 'react';
-import { InjectedComponent } from '../components/InjectedComponent';
+import { InjectedComponent } from '../components';
 import { Components, Events } from '.';
 import { Summary } from '../components';
 import { CompetitionInfo, Participant } from '../models';
@@ -17,9 +17,9 @@ export class Registration extends InjectedComponent {
 	}
 
 	componentDidMount() {
-		this.addSubscription = this.props.subscribe(Events.addParticipant, this.addParticipant.bind(this));
-		this.deleteSubscription = this.props.subscribe(Events.deleteParticipant, this.deleteParticipant.bind(this));
-		this.registerSubscription = this.props.subscribe(Events.register, this.register.bind(this));
+		this.addSubscription = this.subscribe(Events.addParticipant, this.addParticipant.bind(this));
+		this.deleteSubscription = this.subscribe(Events.deleteParticipant, this.deleteParticipant.bind(this));
+		this.registerSubscription = this.subscribe(Events.register, this.register.bind(this));
 	}
 
 	componentWillUnmount() {
@@ -87,10 +87,10 @@ export class Registration extends InjectedComponent {
 	/*** render() ***************************************************************************************/
 
 	render() {
-		const ParticipantPicker = this.props.injector.inject("ParticipantPicker");
-		const Toolbar = this.props.injector.inject("Toolbar");
-		const RegistrationContact = this.props.injector.inject("RegistrationContact");
-		const RegistrationForm = this.props.injector.inject("RegistrationForm");
+		const ParticipantPicker = this.inject(Components.ParticipantPicker);
+		const Toolbar = this.inject(Components.Toolbar);
+		const RegistrationContact = this.inject(Components.RegistrationContact);
+		const RegistrationForm = this.inject(Components.RegistrationForm);
 		let id = 0;
 		return [
 			<RegistrationContact key={id++} />,

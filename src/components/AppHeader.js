@@ -1,8 +1,7 @@
 import logo from './../gpk_logo_wht.png';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { InjectedComponent } from './InjectedComponent';
-import { Events } from '.';
+import { InjectedComponent, Events } from '.';
 
 export class AppHeader extends InjectedComponent {
 	constructor(props) {

@@ -2,7 +2,7 @@ import React from 'react';
 import { Injector, EventBus, Cookies } from './logic';
 import { Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer } from './components';
 import { Registration, Competitions } from './views';
-import App from './App';
+import { App } from './App';
 
 export class Events {
 	static eventId = 1;

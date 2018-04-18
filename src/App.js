@@ -1,11 +1,11 @@
 import './App.css';
 import React from 'react';
-import { InjectedComponent } from './components/InjectedComponent';
+import { InjectedComponent } from './components';
 import { Components } from './AppInjector';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ApplicationState } from './ApplicationState';
 
-class App extends React.Component {
+export class App extends InjectedComponent {
 	constructor(props) {
 		super(props);
 		ApplicationState.instance = new ApplicationState(this.setState.bind(this));
@@ -37,6 +37,7 @@ class App extends React.Component {
 		const Footer = this.inject(Components.Footer);
 		const AppHeader = this.inject(Components.AppHeader);
 		document.title = ApplicationState.instance.competitionInfo.name;
+		// return <div><h1>Testing</h1></div>;
 		return (
 			<BrowserRouter>
 				<div className="App">
@@ -52,5 +53,3 @@ class App extends React.Component {
 		);
 	}
 }
-
-export default App;

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Events } from '.';
+import React from 'react';
+import { InjectedComponent, Components, Events } from '.';
 
 export class Footers {
 	messageId = 1;
@@ -35,9 +35,9 @@ export class Footers {
 	}
 }
 
-export class Footer extends Component {
+export class Footer extends InjectedComponent {
 	componentDidMount() {
-		this.subscription = this.props.injector.inject("EventBus").subscribe(Events.footersChanged, () => this.setState({}));
+		this.subscription = this.subscribe(Events.footersChanged, () => this.setState({}));
 	}
 
 	componentWillUnmount() {
@@ -45,6 +45,6 @@ export class Footer extends Component {
 	}
 
 	render() {
-		return <div id="footer" className="footer">{this.props.injector.inject("Footers").footers.map(f => f.content)}</div>;
+		return <div id="footer" className="footer">{this.inject(Components.Footers).footers.map(f => f.content)}</div>;
 	}
 }
