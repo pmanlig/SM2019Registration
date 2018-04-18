@@ -1,19 +1,15 @@
 import Rx from 'rxjs';
 
-export class EventBus {
-	static eventId = 1;
-	static footersChanged = EventBus.eventId++;
-	static changeTitle = EventBus.eventId++;
-	static busyChanged = EventBus.eventId++;
-	static addParticipant = EventBus.eventId++;
-	static deleteParticipant = EventBus.eventId++;
-	static register = EventBus.eventId++;
-
+export default class EventBus {
 	constructor() {
 		this.bus = new Rx.Subject();
 	}
 
 	subscribe(event, action) {
+		if (event === undefined) {
+			throw new Error("Cannot subscribe to undefined event!");
+		}
+
 		// ToDo: add error handling?
 		return this.bus.subscribe(({ ev, params }) => {
 			if (ev === event) {

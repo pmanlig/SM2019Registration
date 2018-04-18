@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { InjectedComponent } from '../components/InjectedComponent';
+import { Components, Events } from '.';
 import { Summary } from '../components';
-import { EventBus } from '../EventBus';
 import { CompetitionInfo, Participant } from '../models';
-import { Validation } from '../Validation';
+import { Validation } from '../logic';
 
-export class Registration extends Component {
+export class Registration extends InjectedComponent {
 
 	/*** Initialization & Liftcycle ***************************************************************************************/
 
@@ -16,9 +17,9 @@ export class Registration extends Component {
 	}
 
 	componentDidMount() {
-		this.addSubscription = this.props.injector.inject("EventBus").subscribe(EventBus.addParticipant, this.addParticipant.bind(this));
-		this.deleteSubscription = this.props.injector.inject("EventBus").subscribe(EventBus.deleteParticipant, this.deleteParticipant.bind(this));
-		this.registerSubscription = this.props.injector.inject("EventBus").subscribe(EventBus.register, this.register.bind(this));
+		this.addSubscription = this.props.subscribe(Events.addParticipant, this.addParticipant.bind(this));
+		this.deleteSubscription = this.props.subscribe(Events.deleteParticipant, this.deleteParticipant.bind(this));
+		this.registerSubscription = this.props.subscribe(Events.register, this.register.bind(this));
 	}
 
 	componentWillUnmount() {
@@ -28,13 +29,14 @@ export class Registration extends Component {
 	}
 
 	loadRegistrationDefinition() {
-		this.props.injector.inject("Busy").setBusy("Registration", true);
+		const myId = "Registration";
+		this.inject(Components.Busy).setBusy(myId, true);
 		let id = parseInt(this.props.match.params.id, 10);
 		fetch(isNaN(id) ? '/' + this.props.match.params.id + '.json' : 'https://dev.bitnux.com/sm2019/competition/' + id)
 			.then(result => result.json())
 			.then(json => {
 				this.setState({ info: CompetitionInfo.fromJson(json) });
-				this.props.injector.inject("Busy").setBusy("Registration", false);
+				this.inject(Components.Busy).setBusy(myId, false);
 				this.setTitle("Anmälan till " + json.description);
 			})
 			.catch(e => console.log(e));
@@ -43,7 +45,7 @@ export class Registration extends Component {
 	/*** Event handlers ***************************************************************************************/
 
 	setTitle(title) {
-		this.props.injector.inject("EventBus").fire(EventBus.changeTitle, title);
+		this.fire(Events.changeTitle, title);
 	}
 
 	addParticipant(p) {
@@ -62,7 +64,7 @@ export class Registration extends Component {
 
 	deleteParticipant(id) {
 		console.log("Deleting participant #" + id);
-		this.setState({participants: this.state.participants.filter(p => { return p.id !== id; })});
+		this.setState({ participants: this.state.participants.filter(p => { return p.id !== id; }) });
 	}
 
 	register() {

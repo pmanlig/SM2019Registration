@@ -1,11 +1,11 @@
 import React from 'react';
-import { AppInjector } from '../AppInjector';
+import { Components } from '.';
 import { ApplicationState } from '../ApplicationState';
 
 function getParticipant(p, props) {
 	let f = x => { return x.competitionId === p.competitionId; };
 	if (p !== undefined && ApplicationState.instance.registration.find(f) !== undefined) {
-		props.injector.inject(AppInjector.Footers).addFooter("Deltagaren finns redan!");
+		props.inject(Components.Footers).addFooter("Deltagaren finns redan!");
 	} else {
 		ApplicationState.instance.addParticipant(p);
 	}

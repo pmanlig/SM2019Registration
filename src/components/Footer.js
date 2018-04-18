@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { EventBus } from '../EventBus';
+import { Events } from '.';
 
 export class Footers {
 	messageId = 1;
@@ -15,7 +15,7 @@ export class Footers {
 			id: myId,
 			content: content
 		}]);
-		this.injector.inject("EventBus").fire(EventBus.footersChanged, myId);
+		this.injector.inject("EventBus").fire(Events.footersChanged, myId);
 	}
 
 	addFooter(msg, type = "error", timeout = 3000) {
@@ -26,18 +26,18 @@ export class Footers {
 			this.deleteFooter(myId);
 			clearTimeout(timer);
 		}, timeout);
-		this.injector.inject("EventBus").fire(EventBus.footersChanged, myId);
+		this.injector.inject("EventBus").fire(Events.footersChanged, myId);
 	}
 
 	deleteFooter(id) {
 		this.footers = this.footers.filter(f => f.id !== id);
-		this.injector.inject("EventBus").fire(EventBus.footersChanged, id);
+		this.injector.inject("EventBus").fire(Events.footersChanged, id);
 	}
 }
 
 export class Footer extends Component {
 	componentDidMount() {
-		this.subscription = this.props.injector.inject("EventBus").subscribe(EventBus.footersChanged, () => this.setState({}));
+		this.subscription = this.props.injector.inject("EventBus").subscribe(Events.footersChanged, () => this.setState({}));
 	}
 
 	componentWillUnmount() {

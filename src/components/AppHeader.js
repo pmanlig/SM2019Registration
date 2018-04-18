@@ -1,10 +1,10 @@
 import logo from './../gpk_logo_wht.png';
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { AppInjector } from '../AppInjector';
-import { EventBus } from '../EventBus';
+import { InjectedComponent } from './InjectedComponent';
+import { Events } from '.';
 
-export class AppHeader extends Component {
+export class AppHeader extends InjectedComponent {
 	constructor(props) {
 		super(props);
 		this.state = { title: "Anmälningssystem Gävle PK" };
@@ -16,7 +16,7 @@ export class AppHeader extends Component {
 	}
 
 	componentDidMount() {
-		this.subscription = this.props.injector.inject(AppInjector.EventBus).subscribe(EventBus.changeTitle, this.updateTitle.bind(this));
+		this.subscription = this.subscribe(Events.changeTitle, this.updateTitle.bind(this));
 	}
 
 	componentWillUnmount() {

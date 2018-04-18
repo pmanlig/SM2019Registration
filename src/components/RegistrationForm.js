@@ -1,7 +1,7 @@
 import React from 'react';
 import { ApplicationState } from '../ApplicationState';
 import { PersonDefinition } from '../models';
-import { EventBus } from '../EventBus';
+import { Events } from '.';
 
 function RegistrationHeader(props) {
 	let counter = 0;
@@ -43,13 +43,13 @@ function RegistrationRow(props) {
 	const myId = props.participant.id;
 	return <tr key={myId} style={{ background: props.participant.errors.length > 0 ? "red" : "white" }}>
 		<td className="left"><input type="text" value={props.participant.name} placeholder="Namn"
-			onChange={e => { /*appState.setParticipantName(myId, e.target.value)*/ }} /></td>
+			onChange={e => props.fire(Events.setParticipantName, myId, e.target.value) /*appState.setParticipantName(myId, e.target.value)*/} /></td>
 		<td className="left"><input type="text" size="5" style={{ width: '40px' }} value={props.participant.competitionId} placeholder="00000"
 			onChange={e => { /*appState.setParticipantCompetitionId(myId, e.target.value)*/ }} /></td>
 		<td className="left"><input type="text" value={props.participant.organization} placeholder="Förening"
 			onChange={e => { /*appState.setParticipantOrganization(myId, e.target.value)*/ }} /></td>
 		{RegistrationCheckboxes(props)}
-		<td><button className="deleteButton button" onClick={e => props.injector.inject("EventBus").fire(EventBus.deleteParticipant, myId)}>x</button></td></tr>;
+		<td><button className="deleteButton button" onClick={e => props.fire(Events.deleteParticipant, myId)}>x</button></td></tr>;
 }
 
 function RegistrationRows(props) {

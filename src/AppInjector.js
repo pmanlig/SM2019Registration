@@ -1,43 +1,75 @@
 import React from 'react';
-import { Injector } from './Injector';
-import { EventBus } from './EventBus';
-import { Cookies } from './Cookies';
-import { Registration, Competitions } from './views';
+import { Injector, EventBus, Cookies } from './logic';
 import { Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer } from './components';
+import { Registration, Competitions } from './views';
+import App from './App';
+
+export class Events {
+	static eventId = 1;
+	static footersChanged = Events.eventId++;
+	static changeTitle = Events.eventId++;
+	static busyChanged = Events.eventId++;
+	static addParticipant = Events.eventId++;
+	static deleteParticipant = Events.eventId++;
+	static setParticipantName = Events.eventId++;
+	static setParticipantCompetitionId = Events.eventId++;
+	static setParticipantOrganization = Events.eventId++;
+	static register = Events.eventId++;
+}
+
+export class Components {
+	static componentId = 1;
+	static App = Components.componentId++;
+	static EventBus = Components.componentId++;
+	static Cookies = Components.componentId++;
+	static Footers = Components.componentId++;
+	static Footer = Components.componentId++;
+	static ParticipantPicker = Components.componentId++;
+	static Toolbar = Components.componentId++;
+	static Registration = Components.componentId++;
+	static Competitions = Components.componentId++;
+	static AppHeader = Components.componentId++;
+	static BusyIndicator = Components.componentId++;
+	static Busy = Components.componentId++;
+	static RegistrationContact = Components.componentId++;
+	static RegistrationForm = Components.componentId++;
+}
 
 export class AppInjector extends Injector {
-	static EventBus = "EventBus";
-	static Cookies = "Cookies";
-	static Footers = "Footers";
-	static Footer = "Footer";
-	static ParticipantPicker = "ParticipantPicker";
-	static Toolbar = "Toolbar";
-	static Registration = "Registration";
-	static Competitions = "Competitions";
-	static AppHeader = "AppHeader";
-	static BusyIndicator = "BusyIndicator";
-	static Busy = "Busy";
-	static RegistrationContact = "RegistrationContact";
-	static RegistrationForm = "RegistrationForm";
-
 	registerComponent(id, Component) {
-		this.register(id, props => <Component injector={this} {...props} />);
+		if (typeof Component === "object") {
+			console.log("Extending class");
+			Component.prototype.inject = function (id) { this.props.inject(id); };
+			Component.prototype.subscribe = this.subscribe.bind(this);
+			Component.prototype.fire = this.fire.bind(this);
+		}
+		this.register(id, props =>
+			<Component
+				injector={this}
+				inject={this.inject.bind(this)}
+				subscribe={this.subscribe.bind(this)}
+				fire={this.fire.bind(this)}
+				{...props} />);
 	}
 
 	constructor() {
 		super();
-		this.register(AppInjector.EventBus, new EventBus());
-		this.register(AppInjector.Cookies, new Cookies(this));
-		this.register(AppInjector.Footers, new Footers(this));
-		this.register(AppInjector.Busy, new Busy(this));
-		this.registerComponent(AppInjector.Footer, Footer);
-		this.registerComponent(AppInjector.ParticipantPicker, ParticipantPicker);
-		this.registerComponent(AppInjector.Toolbar, Toolbar);
-		this.registerComponent(AppInjector.Registration, Registration);
-		this.registerComponent(AppInjector.Competitions, Competitions);
-		this.registerComponent(AppInjector.AppHeader, AppHeader);
-		this.registerComponent(AppInjector.BusyIndicator, BusyIndicator);
-		this.registerComponent(AppInjector.RegistrationContact, RegistrationContact);
-		this.registerComponent(AppInjector.RegistrationForm, RegistrationForm);
+		let ev = new EventBus();
+		this.subscribe = ev.subscribe.bind(ev);
+		this.fire = ev.fire.bind(ev);
+		this.register(Components.EventBus, ev);
+		this.register(Components.Cookies, new Cookies(this));
+		this.register(Components.Footers, new Footers(this));
+		this.register(Components.Busy, new Busy(this));
+		this.registerComponent(Components.App, App);
+		this.registerComponent(Components.Footer, Footer);
+		this.registerComponent(Components.ParticipantPicker, ParticipantPicker);
+		this.registerComponent(Components.Toolbar, Toolbar);
+		this.registerComponent(Components.Registration, Registration);
+		this.registerComponent(Components.Competitions, Competitions);
+		this.registerComponent(Components.AppHeader, AppHeader);
+		this.registerComponent(Components.BusyIndicator, BusyIndicator);
+		this.registerComponent(Components.RegistrationContact, RegistrationContact);
+		this.registerComponent(Components.RegistrationForm, RegistrationForm);
 	}
 }

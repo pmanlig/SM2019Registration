@@ -1,10 +1,10 @@
-import { BusyIndicator, Busy } from './BusyIndicator';
-import { Toolbar } from './Toolbar';
-import { Summary } from './Summary';
-import { ParticipantPicker } from './ParticipantPicker';
-import { AppHeader } from './AppHeader';
-import { RegistrationContact } from './RegistrationContact';
-import { RegistrationForm } from './RegistrationForm';
-import { Footer, Footers } from './Footer';
-
-export { BusyIndicator, Busy, Toolbar, Summary, AppHeader, ParticipantPicker, RegistrationContact, RegistrationForm, Footer, Footers };
+export { BusyIndicator, Busy } from './BusyIndicator';
+export { Toolbar } from './Toolbar';
+export { Summary } from './Summary';
+export { ParticipantPicker } from './ParticipantPicker';
+export { AppHeader } from './AppHeader';
+export { RegistrationContact } from './RegistrationContact';
+export { RegistrationForm } from './RegistrationForm';
+export { Footer, Footers } from './Footer';
+export { InjectedComponent } from './InjectedComponent';
+export { Events, Components } from '../AppInjector';

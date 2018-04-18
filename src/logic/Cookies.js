@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppInjector } from './AppInjector';
+import { Components } from '.';
 
 class CookieAlert extends Component {
 	constructor(props) {
@@ -23,7 +23,7 @@ class CookieAlert extends Component {
 	}
 }
 
-export class Cookies {
+export default class Cookies {
 	static alert = "cookieAlert";
 	static storeCookies = "storeCookies";
 	static competitors = "competitors";
@@ -72,7 +72,7 @@ export class Cookies {
 		});
 
 		if (this.storeCookies === undefined) {
-			this.injector.inject(AppInjector.Footers).addCustomFooter(<CookieAlert key="cookieAlert" injector={this.injector} />);
+			this.injector.inject(Components.Footers).addCustomFooter(<CookieAlert key="cookieAlert" injector={this.injector} />);
 		}
 		callback();
 	}

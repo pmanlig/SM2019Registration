@@ -1,6 +1,5 @@
 import { Person, PersonDefinition, CompetitionInfo } from './models';
-import { Validation } from './Validation';
-// import { setCookie, COOKIE_COMPETITORS } from './Cookies';
+import { Validation } from './logic';
 
 export class ApplicationState {
 	static instance;

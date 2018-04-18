@@ -1,21 +1,21 @@
 import './App.css';
-import React, { Component } from 'react';
+import React from 'react';
+import { InjectedComponent } from './components/InjectedComponent';
+import { Components } from './AppInjector';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ApplicationState } from './ApplicationState';
-import { AppInjector } from './AppInjector';
 
-class App extends Component {
+class App extends React.Component {
 	constructor(props) {
 		super(props);
-		this.injector = new AppInjector();
 		ApplicationState.instance = new ApplicationState(this.setState.bind(this));
 		this.loadSettings();
 	}
 
 	loadSettings() {
 		const myName = "App";
-		let busy = this.injector.inject("Busy");
-		let cookies = this.injector.inject("Cookies");
+		let busy = this.inject(Components.Busy);
+		let cookies = this.inject(Components.Cookies);
 		busy.setBusy(myName, true);
 		cookies.loadCookies(() => {
 			ApplicationState.instance.storeParticipants = cookies.storeCookies ? "Ja" : "Nej";
@@ -33,9 +33,9 @@ class App extends Component {
 	}
 
 	render() {
-		const BusyIndicator = this.injector.inject(AppInjector.BusyIndicator);
-		const Footer = this.injector.inject(AppInjector.Footer);
-		const AppHeader = this.injector.inject(AppInjector.AppHeader);
+		const BusyIndicator = this.inject(Components.BusyIndicator);
+		const Footer = this.inject(Components.Footer);
+		const AppHeader = this.inject(Components.AppHeader);
 		document.title = ApplicationState.instance.competitionInfo.name;
 		return (
 			<BrowserRouter>
@@ -43,8 +43,8 @@ class App extends Component {
 					<BusyIndicator />
 					<AppHeader />
 					<Switch>
-						<Route exact path='/' component={this.injector.inject(AppInjector.Competitions)} />
-						<Route exact path='/competition/:id' component={this.injector.inject(AppInjector.Registration)} />
+						<Route exact path='/' component={this.inject(Components.Competitions)} />
+						<Route exact path='/competition/:id' component={this.inject(Components.Registration)} />
 					</Switch>
 					<Footer />
 				</div>

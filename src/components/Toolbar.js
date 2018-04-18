@@ -1,7 +1,6 @@
 import "./Toolbar.css";
 import React from 'react';
-import { EventBus } from '../EventBus';
-import { AppInjector } from '../AppInjector';
+import { Components, EventBus } from '../logic';
 import { ApplicationState } from './../ApplicationState';
 
 function getParticipant() {
@@ -28,6 +27,6 @@ export function Toolbar(props) {
 		<Register onClick={e => props.injector.inject("EventBus").fire(EventBus.register)} />
 
 		{/* For debugging */}
-		<input type='button' className="button toolButton" id="deleteCookiesButton" onClick={() => props.injector.inject(AppInjector.Cookies).deleteCookies()} value='Radera Cookies' />
+		<input type='button' className="button toolButton" id="deleteCookiesButton" onClick={() => props.injector.inject(Components.Cookies).deleteCookies()} value='Radera Cookies' />
 	</div>
 }

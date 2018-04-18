@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import { EventBus } from '../EventBus';
+import React from 'react';
+import { InjectedComponent } from '../components/InjectedComponent';
+import { Components, Events } from '.';
 
 export class Busy {
 	constructor(injector) {
-		this.eventBus = injector.inject("EventBus");
+		this.fire = injector.fire;
 		this.busy = [];
 	}
 
@@ -13,13 +14,13 @@ export class Busy {
 		} else {
 			this.busy = this.busy.filter(e => e !== id);
 		}
-		this.eventBus.fire(EventBus.busyChanged);
+		this.fire(Events.busyChanged);
 	}
 }
 
-export class BusyIndicator extends Component {
+export class BusyIndicator extends InjectedComponent {
 	componentDidMount() {
-		this.subscription = this.props.injector.inject("EventBus").subscribe(EventBus.busyChanged, () => this.setState({}));
+		this.subscription = this.props.subscribe(Events.busyChanged, () => this.setState({}));
 	}
 
 	componentWillUnmount() {
@@ -27,6 +28,6 @@ export class BusyIndicator extends Component {
 	}
 
 	render() {
-		return this.props.injector.inject("Busy").busy.length > 0 && <div className="fullscreen shadow"><p className="centered">Working...</p></div >;
+		return this.inject(Components.Busy).busy.length > 0 && <div className="fullscreen shadow"><p className="centered">Working...</p></div >;
 	}
 }
