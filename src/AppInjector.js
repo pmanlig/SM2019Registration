@@ -1,5 +1,5 @@
 import { Injector, EventBus, Cookies } from './logic';
-import { Registry } from './models';
+import { Registry, RegistrationInfo } from './models';
 import { Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary } from './components';
 import { Registration, Competitions } from './views';
 import { App } from './App';
@@ -43,6 +43,7 @@ export class Components {
 	static Busy = Components.componentId++;
 	static RegistrationContact = Components.componentId++;
 	static RegistrationForm = Components.componentId++;
+	static RegistrationInfo = Components.componentId++;
 	static Summary = Components.componentId++;
 	static Registry = Components.componentId++;
 }
