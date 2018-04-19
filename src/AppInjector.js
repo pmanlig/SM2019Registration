@@ -1,5 +1,6 @@
 import React from 'react';
 import { Injector, EventBus, Cookies } from './logic';
+import { Registry } from './models';
 import { Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary } from './components';
 import { Registration, Competitions } from './views';
 import { App } from './App';
@@ -35,6 +36,7 @@ export class Components {
 	static RegistrationContact = Components.componentId++;
 	static RegistrationForm = Components.componentId++;
 	static Summary = Components.componentId++;
+	static Registry = Components.componentId++;
 }
 
 export class AppInjector extends Injector {
@@ -68,5 +70,6 @@ export class AppInjector extends Injector {
 		this.registerComponent(Components.RegistrationContact, RegistrationContact);
 		this.registerComponent(Components.RegistrationForm, RegistrationForm);
 		this.registerComponent(Components.Summary, Summary);
+		this.registerComponent(Components.Registry, Registry);
 	}
 }

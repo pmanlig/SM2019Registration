@@ -1,4 +1,4 @@
-export { InjectedComponent } from './InjectedComponent';
+export { InjectedComponent, InjectedClass } from './InjectionHelpers';
 export { BusyIndicator, Busy } from './BusyIndicator';
 export { Toolbar } from './Toolbar';
 export { Summary } from './Summary';

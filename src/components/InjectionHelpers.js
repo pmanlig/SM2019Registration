@@ -8,3 +8,12 @@ export class InjectedComponent extends React.Component {
 		this.fire = props.fire;
 	}
 }
+
+export class InjectedClass {
+	constructor(injector) {
+		this.injector = injector;
+		this.inject = injector.inject;
+		this.subscribe = injector.subscribe;
+		this.fire = injector.fire;
+	}
+}
