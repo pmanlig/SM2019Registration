@@ -1,4 +1,9 @@
 import React from 'react';
+import { AsyncSubject } from 'rxjs';
+
+export class AsyncResource {
+
+}
 
 export class InjectedComponent extends React.Component {
 	handlers = [];
@@ -41,9 +46,23 @@ export class InjectedClass {
 
 export class Injector {
 	entities = {};
+	resources = {};
+
+	resource(key) { 
+		if (this.resources[key] === undefined){
+			this.resources[key] = new AsyncSubject();
+		}
+		return this.resources[key];
+	}
 
 	register(key, entity) {
 		this.entities[key] = entity;
+	}
+
+	registerResource(key, resource) {
+		let resourceAsync = this.resource(key);
+		resourceAsync.next(resource);
+		resourceAsync.complete();
 	}
 
 	registerComponent(id, Component) {
@@ -62,5 +81,9 @@ export class Injector {
 
 	inject(key) {
 		return this.entities[key];
+	}
+
+	loadResource(key, handler) {
+		this.resource(key).subscribe(handler);
 	}
 }

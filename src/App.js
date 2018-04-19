@@ -5,11 +5,6 @@ import { Components } from './AppInjector';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 export class App extends InjectedComponent {
-	constructor(props) {
-		super(props);
-		this.inject(Components.Cookies).loadCookies();
-	}
-
 	render() {
 		const BusyIndicator = this.inject(Components.BusyIndicator);
 		const Footer = this.inject(Components.Footer);

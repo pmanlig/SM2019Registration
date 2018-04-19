@@ -16,7 +16,7 @@ export class Toolbar extends InjectedComponent {
 			<input type='button' className="button toolButton" id="registerButton" onClick={e => this.fire(Events.register)} value='Registrera' />
 
 			{/* For debugging */}
-			<input type='button' className="button toolButton" id="deleteCookiesButton" onClick={() => this.inject(Components.Cookies).deleteCookies()} value='Radera Cookies' />
+			<input type='button' className="button toolButton" id="deleteCookiesButton" onClick={e => this.inject(Components.Cookies).deleteCookies()} value='Radera Cookies' />
 		</div>
 	}
 }

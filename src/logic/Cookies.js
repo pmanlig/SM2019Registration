@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { InjectedClass, Components, Events } from '.';
+import { InjectedClass, Components, Resources } from '.';
 
 class CookieAlert extends Component {
 	constructor(props) {
@@ -8,9 +8,8 @@ class CookieAlert extends Component {
 	}
 
 	hide(save) {
-		let cookies = this.props.injector.inject(Components.Cookies);
-		cookies.storeCookies = save;
-		cookies.setCookie(Cookies.storeCookies, save);
+		this.props.cookies.storeCookies = save;
+		this.props.cookies.setCookie(Cookies.storeCookies, save);
 		this.setState({ visible: false });
 	}
 
@@ -30,6 +29,11 @@ export class Cookies extends InjectedClass {
 	static contact = "contact";
 	static expires = "expires";
 	static all = [Cookies.alert, Cookies.storeCookies, Cookies.contact, Cookies.competitors];
+
+	constructor(injector) {
+		super(injector);
+		this.loadCookies();
+	}
 
 	extractValue(cname, value) {
 		if (value.trim().startsWith(cname + "=")) {
@@ -62,6 +66,7 @@ export class Cookies extends InjectedClass {
 	}
 
 	async loadCookies() {
+		console.log("Loading cookies");
 		const myName = "Cookies";
 		let busy = this.inject(Components.Busy);
 		busy.setBusy(myName, true);
@@ -73,10 +78,10 @@ export class Cookies extends InjectedClass {
 		});
 
 		if (this.storeCookies === undefined) {
-			this.injector.inject(Components.Footers).addCustomFooter(<CookieAlert key="cookieAlert" injector={this.injector} />);
+			this.injector.inject(Components.Footers).addCustomFooter(<CookieAlert key="cookieAlert" cookies={this} />);
 		}
-		this.fire(Events.cookiesLoaded, this);
 		busy.setBusy(myName, false);
+		this.injector.registerResource(Resources.cookies, this);
 	}
 }
 

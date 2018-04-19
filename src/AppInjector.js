@@ -4,6 +4,11 @@ import { Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, Registratio
 import { Registration, Competitions } from './views';
 import { App } from './App';
 
+export class Resources {
+	static resourceId = 1;
+	static cookies = Resources.resourceId++;
+}
+
 export class Events {
 	static eventId = 1;
 	static footersChanged = Events.eventId++;
@@ -26,6 +31,7 @@ export class Components {
 	static App = Components.componentId++;
 	static EventBus = Components.componentId++;
 	static Cookies = Components.componentId++;
+	static CookiesAsync = Components.componentId++;
 	static Footers = Components.componentId++;
 	static Footer = Components.componentId++;
 	static ParticipantPicker = Components.componentId++;
@@ -48,9 +54,9 @@ export class AppInjector extends Injector {
 		this.subscribe = ev.subscribe.bind(ev);
 		this.fire = ev.fire.bind(ev);
 		this.register(Components.EventBus, ev);
-		this.register(Components.Cookies, new Cookies(this));
 		this.register(Components.Footers, new Footers(this));
 		this.register(Components.Busy, new Busy(this));
+		this.register(Components.Cookies, new Cookies(this));
 		this.register(Components.Registry, new Registry(this));
 		this.registerComponent(Components.App, App);
 		this.registerComponent(Components.Footer, Footer);

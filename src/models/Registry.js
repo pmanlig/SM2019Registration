@@ -1,14 +1,14 @@
 import { InjectedClass, Cookies } from '../logic';
-import { Components, Events, Person } from '.';
+import { Components, Events, Resources, Person } from '.';
 
 export class Registry extends InjectedClass {
 	competitors = [];
 
 	constructor(injector) {
 		super(injector);
-		this.subscription = this.subscribe(Events.cookiesLoaded, cookies => {
+		injector.loadResource(Resources.cookies, cookies => {
+			console.log(cookies);
 			if (cookies.competitors) {
-				this.subscription.unsubscribe();
 				this.competitors = JSON.parse(cookies.competitors);
 				this.fire(Events.registryUpdated);
 			}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Components, Events } from '.';
 import { InjectedComponent } from '../components';
-import { CompetitionInfo, Participant } from '../models';
+import { CompetitionInfo, Participant, Person } from '../models';
 import { Validation } from '../logic';
 
 export class Registration extends InjectedComponent {
@@ -10,7 +10,7 @@ export class Registration extends InjectedComponent {
 
 	constructor(props) {
 		super(props);
-		this.state = { info: new CompetitionInfo(props.match.params.id, "", ""), participants: [] };
+		this.state = { info: new CompetitionInfo(props.match.params.id, "", ""), participants: [], registrationContact: new Person() };
 		this.fire(Events.changeTitle, "Anmälan till " + this.state.info.description);
 		this.subscribe(Events.addParticipant, this.addParticipant.bind(this));
 		this.subscribe(Events.deleteParticipant, this.deleteParticipant.bind(this));
@@ -32,7 +32,7 @@ export class Registration extends InjectedComponent {
 				console.log(json);
 				this.setState({ info: CompetitionInfo.fromJson(json) });
 				this.inject(Components.Busy).setBusy(myId, false);
-				this.setTitle("Anmälan till " + json.description);
+				this.fire(Events.changeTitle, "Anmälan till " + json.description);
 			})
 			.catch(e => console.log(e));
 	}
