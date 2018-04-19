@@ -36,12 +36,9 @@ export class Footers {
 }
 
 export class Footer extends InjectedComponent {
-	componentDidMount() {
-		this.subscription = this.subscribe(Events.footersChanged, () => this.setState({}));
-	}
-
-	componentWillUnmount() {
-		this.subscription.unsubscribe();
+	constructor(props) {
+		super(props);
+		this.subscribe(Events.footersChanged, () => this.setState({}));
 	}
 
 	render() {

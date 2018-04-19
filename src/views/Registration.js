@@ -12,27 +12,14 @@ export class Registration extends InjectedComponent {
 		super(props);
 		this.state = { info: new CompetitionInfo(props.match.params.id, "", ""), participants: [] };
 		this.setTitle("Anmälan till " + this.state.info.description);
+		this.subscribe(Events.addParticipant, this.addParticipant.bind(this));
+		this.subscribe(Events.deleteParticipant, this.deleteParticipant.bind(this));
+		this.subscribe(Events.setParticipantName, this.setParticipantName.bind(this));
+		this.subscribe(Events.setParticipantCompetitionId, this.setParticipantCompetitionId.bind(this));
+		this.subscribe(Events.setParticipantOrganization, this.setParticipantOrganization.bind(this));
+		this.subscribe(Events.setParticipantDivision, this.setParticipantDivision.bind(this));
+		this.subscribe(Events.register, this.register.bind(this));
 		this.loadRegistrationDefinition();
-	}
-
-	componentDidMount() {
-		this.addSubscription = this.subscribe(Events.addParticipant, this.addParticipant.bind(this));
-		this.deleteSubscription = this.subscribe(Events.deleteParticipant, this.deleteParticipant.bind(this));
-		this.setNameSubscription = this.subscribe(Events.setParticipantName, this.setParticipantName.bind(this));
-		this.setCompetitionIdSubscription = this.subscribe(Events.setParticipantCompetitionId, this.setParticipantCompetitionId.bind(this));
-		this.setOrganizationSubscription = this.subscribe(Events.setParticipantOrganization, this.setParticipantOrganization.bind(this));
-		this.setDivisionSubscription = this.subscribe(Events.setParticipantDivision, this.setParticipantDivision.bind(this));
-		this.registerSubscription = this.subscribe(Events.register, this.register.bind(this));
-	}
-
-	componentWillUnmount() {
-		this.addSubscription.unsubscribe();
-		this.deleteSubscription.unsubscribe();
-		this.setNameSubscription.unsubscribe();
-		this.setCompetitionIdSubscription.unsubscribe();
-		this.setOrganizationSubscription.unsubscribe();
-		this.setDivisionSubscription.unsubscribe();
-		this.registerSubscription.unsubscribe();
 	}
 
 	loadRegistrationDefinition() {
@@ -42,6 +29,7 @@ export class Registration extends InjectedComponent {
 		fetch(isNaN(id) ? '/' + this.props.match.params.id + '.json' : 'https://dev.bitnux.com/sm2019/competition/' + id)
 			.then(result => result.json())
 			.then(json => {
+				console.log(json);
 				this.setState({ info: CompetitionInfo.fromJson(json) });
 				this.inject(Components.Busy).setBusy(myId, false);
 				this.setTitle("Anmälan till " + json.description);
@@ -58,15 +46,19 @@ export class Registration extends InjectedComponent {
 	addParticipant(p) {
 		console.log("Adding new participant");
 
-		// ToDo: Need to extend to support different scenarios
-		let registrationInfo = [];
-		this.state.info.eventGroups.forEach(eg => {
-			eg.events.forEach(e => {
-				registrationInfo.push(false);
+		if (p !== undefined && this.state.participants.find(f => f.competitionId === p.competitionId) !== undefined) {
+			this.inject(Components.Footers).addFooter("Deltagaren finns redan!");
+		} else {
+			// ToDo: Need to extend to support different scenarios
+			let registrationInfo = [];
+			this.state.info.eventGroups.forEach(eg => {
+				eg.events.forEach(e => {
+					registrationInfo.push(false);
+				});
 			});
-		});
 
-		this.setState({ participants: this.state.participants.concat([new Participant(p, registrationInfo)]) });
+			this.setState({ participants: this.state.participants.concat([new Participant(p, registrationInfo)]) });
+		}
 	}
 
 	deleteParticipant(id) {
@@ -102,12 +94,23 @@ export class Registration extends InjectedComponent {
 		return events;
 	}
 
+	eventList(registrationInfo) {
+		let events = [];
+		for (let i = 0; i < registrationInfo.length; i++) {
+			if (registrationInfo[i]) {
+				events.push({ event: this.state.info.events[i].id });
+			}
+		}
+		return events;
+	}
+
 	registrationJson() {
+		// ToDo: replace test name/email with form data
 		return JSON.stringify(
 			{
-				competition: this.competitionInfo.id,
-				contact: { name: "", email: "" },
-				registration: this.registration.map(p => {
+				competition: this.state.info.id,
+				contact: { name: "Patrik Manlig", email: "patrik@manlig.org" },
+				registration: this.state.participants.map(p => {
 					return {
 						participant: {
 							name: p.name,
@@ -141,7 +144,6 @@ export class Registration extends InjectedComponent {
 	}
 
 	sendRegistration() {
-		this.inject(Components.Footers).addFooter(this.countEvents() + " starter registrerade", "info");
 		this.inject(Components.Registry).storeCompetitors(this.state.participants);
 		console.log(JSON.parse(this.registrationJson()));
 		fetch("https://dev.bitnux.com/sm2019/register", {
@@ -152,10 +154,22 @@ export class Registration extends InjectedComponent {
 				'Content-Type': 'application/json'
 			})
 		})
-			.then(res => res.json())
-			.catch(error => console.error('Error:', error))
-			.then(response => console.log('Success:', response));
-		this.updateState({ waiting: false });
+			.then(res => {
+				console.log(res);
+				if (res.ok) {
+					this.inject(Components.Footers).addFooter(this.countEvents() + " starter registrerade", "info");
+				} else {
+					res.json().then(json => {
+						console.log(json);
+						this.inject(Components.Footers).addFooter("Registreringen misslyckades! (" + json.message + ")")
+					});
+				}
+			})
+			.catch(error => {
+				console.error('Error:', error);
+				this.inject(Components.Footers).addFooter("Registreringen misslyckades! (" + error + ")");
+			});
+		// ToDo: show 
 	}
 
 	register() {

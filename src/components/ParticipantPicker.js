@@ -1,17 +1,5 @@
 import React from 'react';
-import { Components } from '.';
-import { ApplicationState } from '../ApplicationState';
-
-function getParticipant(p, props) {
-	let f = x => { return x.competitionId === p.competitionId; };
-	if (p !== undefined && ApplicationState.instance.registration.find(f) !== undefined) {
-		props.inject(Components.Footers).addFooter("Deltagaren finns redan!");
-	} else {
-		ApplicationState.instance.addParticipant(p);
-	}
-	ApplicationState.instance.showPicker = false;
-	ApplicationState.instance.updateState({});
-}
+import { Components, Events, InjectedComponent } from '.';
 
 function Competitor(props) {
 	return <tr className="picker" onClick={props.onClick}>
@@ -21,24 +9,35 @@ function Competitor(props) {
 	</tr>
 }
 
-export function ParticipantPicker(props) {
-	const registry = ApplicationState.instance.registry;
-	return ApplicationState.instance.showPicker === true && <div>
-		<div className="fullscreen shadow" />
-		<div id="participantpicker" className="centered modal">
-			<h1>Hämta deltagare</h1>
-			<table className="picker">
-				<thead>
-					<tr>
-						<th>Namn</th>
-						<th>Pistolskyttekort</th>
-						<th>Förening</th>
-					</tr>
-				</thead>
-				<tbody>
-					{registry.map(p => <Competitor key={p.competitionId} person={p} onClick={e => getParticipant(p, props)} />)}
-				</tbody>
-			</table>
-		</div>
-	</div>;
+export class ParticipantPicker extends InjectedComponent {
+	constructor(props) {
+		super(props);
+		this.state = { visible: false };
+		this.subscribe(Events.showParticipantPicker, () => this.setState({ visible: true }));
+	}
+
+	render() {
+		return !this.state.visible ? null : <div>
+			<div className="fullscreen shadow" />
+			<div id="participantpicker" className="centered modal">
+				<h1>Hämta deltagare</h1>
+				<table className="picker">
+					<thead>
+						<tr>
+							<th>Namn</th>
+							<th>Pistolskyttekort</th>
+							<th>Förening</th>
+						</tr>
+					</thead>
+					<tbody>
+						{this.inject(Components.Registry).competitors.map(p =>
+							<Competitor key={p.competitionId} person={p} onClick={e => {
+								this.setState({ visible: false });
+								this.fire(Events.addParticipant, p);
+							}} />)}
+					</tbody>
+				</table>
+			</div>
+		</div>;
+	};
 }

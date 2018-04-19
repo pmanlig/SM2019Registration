@@ -18,12 +18,9 @@ export class Busy {
 }
 
 export class BusyIndicator extends InjectedComponent {
-	componentDidMount() {
-		this.subscription = this.props.subscribe(Events.busyChanged, () => this.setState({}));
-	}
-
-	componentWillUnmount() {
-		this.subscription.unsubscribe();
+	constructor(props) {
+		super(props);
+		this.props.subscribe(Events.busyChanged, () => this.setState({}));
 	}
 
 	render() {

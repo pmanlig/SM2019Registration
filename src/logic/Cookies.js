@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Components } from '.';
+import { InjectedClass, Components, Events } from '.';
 
 class CookieAlert extends Component {
 	constructor(props) {
@@ -16,24 +16,20 @@ class CookieAlert extends Component {
 
 	render() {
 		return this.state.visible && <div id="cookieAlert">
-			<p className="centered">Vill du att information om anmälda skyttar sparas så att det blir lättare att anmäla nästa gång?</p>
+			<p className="centered">Vill du att information du matar in ska sparas så att det blir lättare att anmäla nästa gång?</p>
 			<input className="button cookieButton" type="button" value="Nej" onClick={() => this.hide(false)} />
 			<input className="button cookieButton" type="button" value="Ja" onClick={() => this.hide(true)} />
 		</div >;
 	}
 }
 
-export class Cookies {
+export class Cookies extends InjectedClass {
 	static alert = "cookieAlert";
 	static storeCookies = "storeCookies";
 	static competitors = "competitors";
 	static contact = "contact";
 	static expires = "expires";
 	static all = [Cookies.alert, Cookies.storeCookies, Cookies.contact, Cookies.competitors];
-
-	constructor(injector) {
-		this.injector = injector;
-	}
 
 	extractValue(cname, value) {
 		if (value.trim().startsWith(cname + "=")) {
@@ -57,6 +53,7 @@ export class Cookies {
 	}
 
 	setCookie(name, value, expiration) {
+		// ToDo: should prevent saving if save cookies = false
 		if (!expiration) {
 			expiration = this.unlimitedCookieExpiration();
 		}
@@ -64,7 +61,11 @@ export class Cookies {
 		document.cookie = name + '=' + value + ';' + expiration + '; path=/;';
 	}
 
-	async loadCookies(callback) {
+	async loadCookies() {
+		const myName = "Cookies";
+		let busy = this.inject(Components.Busy);
+		busy.setBusy(myName, true);
+
 		await decodeURIComponent(document.cookie).split(';').forEach(v => {
 			Cookies.all.forEach(c => {
 				this.extractValue(c, v);
@@ -74,7 +75,8 @@ export class Cookies {
 		if (this.storeCookies === undefined) {
 			this.injector.inject(Components.Footers).addCustomFooter(<CookieAlert key="cookieAlert" injector={this.injector} />);
 		}
-		callback();
+		this.fire(Events.cookiesLoaded, this);
+		busy.setBusy(myName, false);
 	}
 }
 

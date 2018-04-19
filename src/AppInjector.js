@@ -1,4 +1,3 @@
-import React from 'react';
 import { Injector, EventBus, Cookies } from './logic';
 import { Registry } from './models';
 import { Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary } from './components';
@@ -16,6 +15,9 @@ export class Events {
 	static setParticipantCompetitionId = Events.eventId++;
 	static setParticipantOrganization = Events.eventId++;
 	static setParticipantDivision = Events.eventId++;
+	static showParticipantPicker = Events.eventId++;
+	static cookiesLoaded = Events.eventId++;
+	static registryUpdated = Events.eventId++;
 	static register = Events.eventId++;
 }
 
@@ -40,16 +42,6 @@ export class Components {
 }
 
 export class AppInjector extends Injector {
-	registerComponent(id, Component) {
-		this.register(id, props =>
-			<Component
-				injector={this}
-				inject={this.inject.bind(this)}
-				subscribe={this.subscribe.bind(this)}
-				fire={this.fire.bind(this)}
-				{...props} />);
-	}
-
 	constructor() {
 		super();
 		let ev = new EventBus();
@@ -59,6 +51,7 @@ export class AppInjector extends Injector {
 		this.register(Components.Cookies, new Cookies(this));
 		this.register(Components.Footers, new Footers(this));
 		this.register(Components.Busy, new Busy(this));
+		this.register(Components.Registry, new Registry(this));
 		this.registerComponent(Components.App, App);
 		this.registerComponent(Components.Footer, Footer);
 		this.registerComponent(Components.ParticipantPicker, ParticipantPicker);
@@ -70,6 +63,5 @@ export class AppInjector extends Injector {
 		this.registerComponent(Components.RegistrationContact, RegistrationContact);
 		this.registerComponent(Components.RegistrationForm, RegistrationForm);
 		this.registerComponent(Components.Summary, Summary);
-		this.registerComponent(Components.Registry, Registry);
 	}
 }

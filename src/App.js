@@ -3,27 +3,11 @@ import React from 'react';
 import { InjectedComponent } from './components';
 import { Components } from './AppInjector';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { ApplicationState } from './ApplicationState';
 
 export class App extends InjectedComponent {
 	constructor(props) {
 		super(props);
-		ApplicationState.instance = new ApplicationState(this.setState.bind(this));
-		this.loadSettings();
-	}
-
-	loadSettings() {
-		const myName = "App";
-		let busy = this.inject(Components.Busy);
-		let cookies = this.inject(Components.Cookies);
-		busy.setBusy(myName, true);
-		cookies.loadCookies(() => {
-			ApplicationState.instance.storeParticipants = cookies.storeCookies ? "Ja" : "Nej";
-			if (cookies.competitors) {
-				ApplicationState.instance.registry = JSON.parse(cookies.competitors);
-			}
-			busy.setBusy(myName, false);
-		});
+		this.inject(Components.Cookies).loadCookies();
 	}
 
 	render() {

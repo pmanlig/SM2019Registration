@@ -26,13 +26,10 @@ export class Competitions extends InjectedComponent {
 		this.state = {
 			competitions: Competitions.initial
 		};
+		this.fire(Events.changeTitle, "Anmälningssytem Gävle PK");
 		fetch('https://dev.bitnux.com/sm2019/competition')
 			.then(result => result.json())
 			.then(json => this.setState({ competitions: this.state.competitions.concat(json) }));
-	}
-
-	componentDidMount() {
-		this.fire(Events.changeTitle, "Anmälningssytem Gävle PK");
 	}
 
 	render() {

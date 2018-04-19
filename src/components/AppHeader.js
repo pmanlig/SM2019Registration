@@ -7,19 +7,12 @@ export class AppHeader extends InjectedComponent {
 	constructor(props) {
 		super(props);
 		this.state = { title: "Anmälningssystem Gävle PK" };
+		this.subscribe(Events.changeTitle, this.updateTitle.bind(this));
 	}
 
 	updateTitle(t) {
 		this.setState({ title: t });
 		document.title = t;
-	}
-
-	componentDidMount() {
-		this.subscription = this.subscribe(Events.changeTitle, this.updateTitle.bind(this));
-	}
-
-	componentWillUnmount() {
-		this.subscription.unsubscribe();
 	}
 
 	render() {
