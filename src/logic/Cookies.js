@@ -8,7 +8,7 @@ class CookieAlert extends Component {
 	}
 
 	hide(save) {
-		let cookies = this.props.injector.inject("Cookies");
+		let cookies = this.props.injector.inject(Components.Cookies);
 		cookies.storeCookies = save;
 		cookies.setCookie(Cookies.storeCookies, save);
 		this.setState({ visible: false });

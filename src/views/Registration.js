@@ -11,7 +11,7 @@ export class Registration extends InjectedComponent {
 	constructor(props) {
 		super(props);
 		this.state = { info: new CompetitionInfo(props.match.params.id, "", ""), participants: [] };
-		this.setTitle("Anmälan till " + this.state.info.description);
+		this.fire(Events.changeTitle, "Anmälan till " + this.state.info.description);
 		this.subscribe(Events.addParticipant, this.addParticipant.bind(this));
 		this.subscribe(Events.deleteParticipant, this.deleteParticipant.bind(this));
 		this.subscribe(Events.setParticipantName, this.setParticipantName.bind(this));
@@ -38,10 +38,6 @@ export class Registration extends InjectedComponent {
 	}
 
 	/*** Event handlers ***************************************************************************************/
-
-	setTitle(title) {
-		this.fire(Events.changeTitle, title);
-	}
 
 	addParticipant(p) {
 		console.log("Adding new participant");
