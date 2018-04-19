@@ -10,6 +10,10 @@ export class CompetitionInfo {
 
 	static fromJson(obj) {
 		let newObj = new CompetitionInfo(obj.id, obj.name, obj.description);
+		// ToDo: remove when service is fixed!
+		if (newObj.id === undefined && obj.competition_id !== undefined) {
+			newObj.id = obj.competition_id;
+		}
 		newObj.divisionGroups = obj.divisionGroups;
 		newObj.classGroups = obj.classGroups;
 		newObj.eventGroups = obj.eventGroups;
