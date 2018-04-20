@@ -11,6 +11,7 @@ export class Resources {
 
 export class Events {
 	static eventId = 1;
+	static addFooter = Events.eventId++;
 	static footersChanged = Events.eventId++;
 	static changeTitle = Events.eventId++;
 	static busyChanged = Events.eventId++;
@@ -23,6 +24,8 @@ export class Events {
 	static showParticipantPicker = Events.eventId++;
 	static cookiesLoaded = Events.eventId++;
 	static registryUpdated = Events.eventId++;
+	static setRegistrationInfo = Events.eventId++;
+	static registrationUpdated = Events.eventId++;
 	static register = Events.eventId++;
 }
 
@@ -59,6 +62,7 @@ export class AppInjector extends Injector {
 		this.register(Components.Busy, new Busy(this));
 		this.register(Components.Cookies, new Cookies(this));
 		this.register(Components.Registry, new Registry(this));
+		this.register(Components.RegistrationInfo, new RegistrationInfo(this));
 		this.registerComponent(Components.App, App);
 		this.registerComponent(Components.Footer, Footer);
 		this.registerComponent(Components.ParticipantPicker, ParticipantPicker);

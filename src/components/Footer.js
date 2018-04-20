@@ -1,12 +1,13 @@
 import React from 'react';
-import { InjectedComponent, Components, Events } from '.';
+import { InjectedClass, InjectedComponent, Components, Events } from '.';
 
-export class Footers {
+export class Footers extends InjectedClass {
 	messageId = 1;
 	footers = [];
 
 	constructor(injector) {
-		this.injector = injector;
+		super(injector);
+		this.subscribe(Events.addFooter, (msg, type, timeout) => this.addFooter(msg, type, timeout));
 	}
 
 	addCustomFooter(content) {

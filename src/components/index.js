@@ -1,4 +1,4 @@
-export { InjectedComponent } from '../logic';
+export { InjectedClass, InjectedComponent } from '../logic';
 export { BusyIndicator, Busy } from './BusyIndicator';
 export { Toolbar } from './Toolbar';
 export { Summary } from './Summary';
