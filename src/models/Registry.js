@@ -7,7 +7,6 @@ export class Registry extends InjectedClass {
 	constructor(injector) {
 		super(injector);
 		injector.loadResource(Resources.cookies, cookies => {
-			console.log(cookies);
 			if (cookies.competitors) {
 				this.competitors = JSON.parse(cookies.competitors);
 				this.fire(Events.registryUpdated);

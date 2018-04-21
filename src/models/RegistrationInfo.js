@@ -139,6 +139,7 @@ export class RegistrationInfo extends InjectedClass {
 		fetch(isNaN(numId) ? '/' + id + '.json' : 'https://dev.bitnux.com/sm2019/competition/' + id)
 			.then(result => result.json())
 			.then(json => {
+				console.log("Competition information:");
 				console.log(json);
 				this.competition = CompetitionInfo.fromJson(json);
 				this.inject(Components.Busy).setBusy(myId, false);
