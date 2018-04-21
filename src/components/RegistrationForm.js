@@ -44,18 +44,19 @@ function RegistrationCheckboxes(props) {
 }
 
 function RegistrationField(props) {
-	return <td className="left" key={props.header.name}><input type="text" value={props.participant.name}
+	return <td className="left" key={props.header.name}><input type="text" value={props.value}
 		placeholder={props.header.placeholder || props.header.name} style={{ width: props.header.width }}
-		onChange={e => props.fire(props.event, props.participant.id, e.target.value)}
+		onChange={e => props.fire(props.event, props.id, e.target.value)}
 		size={props.header.size} /></td>;
 }
 
 function RegistrationRow(props) {
-	const myId = props.participant.id;
+	const p = props.participant;
+	const myId = p.id;
 	return <tr key={myId} style={{ background: props.participant.errors.length > 0 ? "red" : "white" }}>
-		<RegistrationField participant={props.participant} header={personHeader.subfields[0]} event={Events.setParticipantName} />
-		<RegistrationField participant={props.participant} header={personHeader.subfields[1]} event={Events.setParticipantCompetitionId} />
-		<RegistrationField participant={props.participant} header={personHeader.subfields[2]} event={Events.setParticipantOrganization} />
+		<RegistrationField id={myId} value={p.name} header={personHeader.subfields[0]} event={Events.setParticipantName} {...props} />
+		<RegistrationField id={myId} value={p.competitionId} header={personHeader.subfields[1]} event={Events.setParticipantCompetitionId} {...props} />
+		<RegistrationField id={myId} value={p.organization} header={personHeader.subfields[2]} event={Events.setParticipantOrganization} {...props} />
 		{RegistrationCheckboxes(props)}
 		<td><button className="deleteButton button" onClick={e => props.fire(Events.deleteParticipant, myId)}>x</button></td></tr>;
 }
