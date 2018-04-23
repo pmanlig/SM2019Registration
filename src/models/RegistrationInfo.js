@@ -1,4 +1,4 @@
-import { InjectedClass, Components, Resources, Events } from '../logic';
+import { InjectedClass, Components, Resources, Events, Cookies } from '../logic';
 import { CompetitionInfo, Participant, Person } from '.';
 import { Validation } from '../logic';
 
@@ -65,6 +65,7 @@ class SendRegistration extends InjectedClass {
 
 	sendRegistration() {
 		this.inject(Components.Registry).storeCompetitors(this.registration.participants);
+		this.inject(Components.Cookies).setCookie(Cookies.contact, JSON.stringify(this.registration.contact));
 		console.log(JSON.parse(this.registrationJson()));
 		fetch("https://dev.bitnux.com/sm2019/register", {
 			crossDomain: true,
@@ -124,11 +125,11 @@ export class RegistrationInfo extends InjectedClass {
 		this.subscribe(Events.setParticipantDivision, this.setParticipantDivision.bind(this));
 		this.subscribe(Events.register, () => { new SendRegistration(this).register() });
 		injector.loadResource(Resources.cookies, c => {
-			// ToDo: read cookie information here
-			this.contact.name = "fromCookie";
-			this.contact.organization = "fromCookie";
-			this.contact.email = "from@cookie.com";
-			injector.fire(Events.registrationUpdated, this);
+			let storedContact = JSON.parse(this.inject(Components.Cookies).contact);
+			if (storedContact !== undefined) {
+				this.contact = storedContact;
+				injector.fire(Events.registrationUpdated, this);
+			}
 		});
 	}
 
