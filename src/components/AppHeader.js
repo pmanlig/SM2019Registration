@@ -22,6 +22,7 @@ export class AppHeader extends InjectedComponent {
 				{this.state.title}
 				<Link to='/' className='button globaltool'>Tävlingar</Link>
 				<Link to='/administration' className='button globaltool'>Administrera</Link>
+				<Link to='/about' className='button globaltool'>Om...</Link>
 			</h1>
 		</header>
 	}

@@ -8,7 +8,7 @@ export function RegistrationContact(props) {
 		{ name: 'Email', width: 200, type: 'email', field: 'email' }];
 	let model = props.inject(Components.RegistrationInfo).contact;
 
-	return <div id='registrationContact' className='registration'>
+	return <div id='registrationContact' className='content'>
 		<table>
 			<thead>
 				<tr><th className='major' colSpan={minor.length}>Anmälare</th></tr>

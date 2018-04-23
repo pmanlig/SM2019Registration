@@ -1,6 +1,6 @@
 import React from 'react';
-import { InjectedComponent } from '../components';
 import { Link } from 'react-router-dom';
+import { InjectedComponent } from '../logic';
 import { Events } from '.';
 
 export class Competitions extends InjectedComponent {
@@ -33,7 +33,7 @@ export class Competitions extends InjectedComponent {
 	}
 
 	render() {
-		return <div>
+		return <div id='competitions' className='content'>
 			<ul>
 				{this.state.competitions.map(c => <li key={c.id}><Link to={"/competition/" + c.id}>{c.name}</Link></li>)}
 			</ul>

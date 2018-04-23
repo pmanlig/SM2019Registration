@@ -68,7 +68,7 @@ function RegistrationRows(props) {
 }
 
 export function RegistrationForm(props) {
-	return <div id='registration' className='registration'>
+	return <div id='registration' className='content'>
 		<table>
 			<RegistrationHeader {...props} />
 			<RegistrationRows {...props} />

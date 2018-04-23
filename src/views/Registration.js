@@ -1,6 +1,6 @@
 import React from 'react';
 import { Components, Events } from '.';
-import { InjectedComponent } from '../components';
+import { InjectedComponent } from '../logic';
 import { CompetitionInfo, Person } from '../models';
 
 export class Registration extends InjectedComponent {

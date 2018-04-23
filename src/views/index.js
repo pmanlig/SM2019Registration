@@ -1,5 +1,4 @@
-import { Registration } from './Registration';
-import { Competitions } from './Competitions';
-import { Events, Components } from '../AppInjector';
-
-export { Registration, Competitions, Events, Components };
+export { Events, Components } from '../AppInjector';
+export { Registration } from './Registration';
+export { Competitions } from './Competitions';
+export { About } from './About';

@@ -9,7 +9,7 @@ export class Toolbar extends InjectedComponent {
 	}
 
 	render() {
-		return <div className="buttons center">
+		return <div className="buttons center content">
 			{this.inject(Components.Registry).competitors.length > 0 &&
 				<input type='button' className="button toolButton" id="getButton" onClick={e => this.fire(Events.showParticipantPicker)} value='Hämta deltagare' />}
 			<input type='button' className="button toolButton" id="addButton" onClick={e => this.fire(Events.addParticipant)} value='Ny deltagare' />
