@@ -125,8 +125,9 @@ export class RegistrationInfo extends InjectedClass {
 		this.subscribe(Events.setParticipantDivision, this.setParticipantDivision.bind(this));
 		this.subscribe(Events.register, () => { new SendRegistration(this).register() });
 		injector.loadResource(Resources.cookies, c => {
-			let storedContact = JSON.parse(this.inject(Components.Cookies).contact);
+			let storedContact = this.inject(Components.Cookies).contact;
 			if (storedContact !== undefined) {
+				storedContact = JSON.parse(storedContact);
 				this.contact = storedContact;
 				injector.fire(Events.registrationUpdated, this);
 			}
