@@ -25,48 +25,27 @@ class SendRegistration extends InjectedClass {
 	}
 
 	registrationJson() {
-		// ToDo: replace test name/email with form data
-		return JSON.stringify(
-			{
-				competition: this.registration.competition.id,
-				contact: { name: "Patrik Manlig", email: "patrik@manlig.org" },
-				registration: this.registration.participants.map(p => {
-					return {
-						participant: {
-							name: p.name,
-							id: p.competitionId,
-							organization: p.organization
-						},
-						entries: this.eventList(p.registrationInfo)
-					};
-				})
-			});
-	}
-
-	registrationJsonFake() {
 		return JSON.stringify({
-			"id": "1",
-			"list": [{
-				"name": "Johan S",
-				"card_number": "12345",
-				"club": "Gävle PK",
-				"milsnabb": "ÖpC,B,A",
-				"precision": "B,A"
-			}, {
-				"name": "Patrik M",
-				"card_number": "5555",
-				"club": "Gävle PK",
-				"milsnabb": "ÖpC,B,A,R",
-				"precision": "B,A",
-				"falt": "ÖpC,B,A,R"
-			}]
+			competition: this.registration.competition.id,
+			contact: { name: this.registration.contact.name, email: this.registration.contact.email },
+			token: this.registration.token,
+			registration: this.registration.participants.map(p => {
+				return {
+					participant: {
+						name: p.name,
+						id: p.competitionId,
+						organization: p.organization
+					},
+					entries: this.eventList(p.registrationInfo)
+				};
+			})
 		});
 	}
 
 	sendRegistration() {
 		this.inject(Components.Registry).storeCompetitors(this.registration.participants);
 		this.inject(Components.Cookies).setCookie(Cookies.contact, JSON.stringify(this.registration.contact));
-		console.log(JSON.parse(this.registrationJson()));
+		console.log(this.registrationJson());
 		fetch("https://dev.bitnux.com/sm2019/register", {
 			crossDomain: true,
 			method: 'POST',
@@ -79,6 +58,9 @@ class SendRegistration extends InjectedClass {
 				console.log(res);
 				if (res.ok) {
 					this.inject(Components.Footers).addFooter(this.countEvents() + " starter registrerade", "info");
+					res.json().then(json => {
+						this.registration.token = json.token;
+					});
 				} else {
 					res.json().then(json => {
 						console.log(json);
@@ -135,6 +117,7 @@ export class RegistrationInfo extends InjectedClass {
 	}
 
 	loadCompetition(id) {
+		const test_token = "28459934f5768acbcddb1a7bff4a27b707a394cfebd88427c558cfe6c405505fef98e947210dc0e616fdc9adb0f2f6bbe6928b01094437d9a203d12d36eadcb6";
 		const myId = "Registration";
 		this.inject(Components.Busy).setBusy(myId, true);
 		let numId = parseInt(id, 10);
