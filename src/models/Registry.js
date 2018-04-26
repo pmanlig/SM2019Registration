@@ -1,17 +1,10 @@
-import { InjectedClass, Cookies } from '../logic';
-import { Components, Events, Resources, Person } from '.';
+import { InjectedClass } from '../logic';
+import { Components, Events, Person } from '.';
 
 export class Registry extends InjectedClass {
-	competitors = [];
-
 	constructor(injector) {
 		super(injector);
-		injector.loadResource(Resources.cookies, cookies => {
-			if (cookies.competitors) {
-				this.competitors = JSON.parse(cookies.competitors);
-				this.fire(Events.registryUpdated);
-			}
-		});
+		this.competitors = injector.inject(Components.Storage).get(Components.Registry) || [];
 	}
 
 	storeCompetitors(participants) {
@@ -21,7 +14,7 @@ export class Registry extends InjectedClass {
 				competitors.push(p);
 		});
 		this.competitors = competitors;
-		this.inject(Components.Cookies).setCookie(Cookies.competitors, JSON.stringify(this.competitors));
+		this.inject(Components.Storage).set(Components.Registry, this.competitors);
 		this.fire(Events.registryUpdated);
 	}
 }

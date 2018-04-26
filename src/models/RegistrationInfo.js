@@ -41,6 +41,7 @@ export class RegistrationInfo extends InjectedClass {
 		console.log("Adding new participant");
 		if (p !== undefined && this.participants.find(f => f.competitionId === p.competitionId) !== undefined) {
 			this.fire(Events.addFooter, "Deltagaren finns redan!");
+			return;
 		}
 		this.participants.push(new Participant(p, this.createRegistrationInfo(reg)));
 		this.fire(Events.registrationUpdated, this);
@@ -132,16 +133,11 @@ export class RegistrationInfo extends InjectedClass {
 
 	register() {
 		let errors = new Validation(this.competition).validate(this.participants);
-		switch (errors.length) {
-			case 0:
-				this.sendRegistration();
-				break;
-			case 1:
-				this.inject(Components.Footers).addFooter(errors[0].error);
-				break;
-			default:
-				this.inject(Components.Footers).addFooter(errors.length + " fel hindrar registrering!");
-				break;
+		if (errors.length === 0) {
+			this.sendRegistration();
+		} else {
+			this.inject(Components.Footers).addFooter(errors.length === 1 ? errors[0].error : errors.length + " fel hindrar registrering!");
 		}
+		this.fire(Events.registrationUpdated, this);
 	}
 }
