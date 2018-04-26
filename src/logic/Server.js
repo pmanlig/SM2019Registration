@@ -61,6 +61,7 @@ export class Server extends InjectedClass {
 	sendRegistration(reg) {
 		console.log("Sending registration");
 		console.log(JSON.parse(this.registrationJson(reg)));
+		this.inject(Components.Busy).setBusy(Components.Server, true);
 		return fetch("https://dev.bitnux.com/sm2019/register", {
 			crossDomain: true,
 			method: 'POST',
@@ -68,6 +69,7 @@ export class Server extends InjectedClass {
 			headers: new Headers({ 'Content-Type': 'application/json' })
 		})
 			.then(res => {
+				this.inject(Components.Busy).setBusy(Components.Server, false);
 				console.log(res);
 				if (res.ok) {
 					return res.json();
