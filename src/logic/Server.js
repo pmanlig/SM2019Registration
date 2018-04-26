@@ -1,6 +1,8 @@
 import { InjectedClass, Components } from '.';
 
 export class Server extends InjectedClass {
+	static baseUrl = 'https://dev.bitnux.com/sm2019/';
+
 	load(url, callback) {
 		this.inject(Components.Busy).setBusy(Components.Server, true);
 		fetch(url)
@@ -21,13 +23,13 @@ export class Server extends InjectedClass {
 	loadCompetition(id, callback) {
 		console.log("Loading competition data");
 		let numId = parseInt(id, 10);
-		this.load(isNaN(numId) ? '/' + id + '.json' : 'https://dev.bitnux.com/sm2019/competition/' + id, callback);
+		this.load(isNaN(numId) ? '/' + id + '.json' : Server.baseUrl + 'competition/' + id, callback);
 	}
 
 	loadRegistration(id, token, callback) {
 		console.log("Loading competition registration data");
 		let numId = parseInt(id, 10);
-		this.load(isNaN(numId) ? '/' + id + '_token.json' : 'https://dev.bitnux.com/sm2019/competition/' + id + '/' + token, callback);
+		this.load(isNaN(numId) ? '/' + id + '_token.json' : Server.baseUrl + 'competition/' + id + '/' + token, callback);
 	}
 
 	eventList(reg, participant) {
@@ -62,7 +64,7 @@ export class Server extends InjectedClass {
 		console.log("Sending registration");
 		console.log(JSON.parse(this.registrationJson(reg)));
 		this.inject(Components.Busy).setBusy(Components.Server, true);
-		return fetch("https://dev.bitnux.com/sm2019/register", {
+		return fetch(Server.baseUrl + "register", {
 			crossDomain: true,
 			method: 'POST',
 			body: this.registrationJson(reg),

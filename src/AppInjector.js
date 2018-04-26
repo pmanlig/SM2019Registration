@@ -1,4 +1,4 @@
-import { Injector, EventBus, Cookies, Server, Storage } from './logic';
+import { Injector, EventBus, Server, Storage } from './logic';
 import { Registry, RegistrationInfo } from './models';
 import { Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary } from './components';
 import { Registration, Competitions, About } from './views';
@@ -6,7 +6,6 @@ import { App } from './App';
 
 export class Resources {
 	static resourceId = 1;
-	static cookies = Resources.resourceId++;
 }
 
 export class Events {
@@ -22,7 +21,6 @@ export class Events {
 	static setParticipantOrganization = Events.eventId++;
 	static setParticipantDivision = Events.eventId++;
 	static showParticipantPicker = Events.eventId++;
-	static cookiesLoaded = Events.eventId++;
 	static registryUpdated = Events.eventId++;
 	static setRegistrationInfo = Events.eventId++;
 	static registrationUpdated = Events.eventId++;
@@ -33,10 +31,8 @@ export class Components {
 	static componentId = 1;
 	static App = Components.componentId++;
 	static EventBus = Components.componentId++;
-	static Cookies = Components.componentId++;
 	static Server = Components.componentId++;
 	static Storage = Components.componentId++;
-	static CookiesAsync = Components.componentId++;
 	static Footers = Components.componentId++;
 	static Footer = Components.componentId++;
 	static ParticipantPicker = Components.componentId++;
@@ -63,7 +59,6 @@ export class AppInjector extends Injector {
 		this.register(Components.EventBus, ev);
 		this.register(Components.Footers, new Footers(this));
 		this.register(Components.Busy, new Busy(this));
-		this.register(Components.Cookies, new Cookies(this));
 		this.register(Components.Server, new Server(this));
 		this.register(Components.Storage, new Storage(this));
 		this.register(Components.Registry, new Registry(this));

@@ -4,7 +4,7 @@ import { Components, Events, Person } from '.';
 export class Registry extends InjectedClass {
 	constructor(injector) {
 		super(injector);
-		this.competitors = injector.inject(Components.Storage).get(Components.Registry) || [];
+		this.competitors = injector.inject(Components.Storage).get("Registry") || [];
 	}
 
 	storeCompetitors(participants) {
@@ -14,7 +14,7 @@ export class Registry extends InjectedClass {
 				competitors.push(p);
 		});
 		this.competitors = competitors;
-		this.inject(Components.Storage).set(Components.Registry, this.competitors);
+		this.inject(Components.Storage).set("Registry", this.competitors);
 		this.fire(Events.registryUpdated);
 	}
 }

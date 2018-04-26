@@ -1,11 +1,10 @@
-import { InjectedClass, Components, Resources, Events, Cookies } from '../logic';
+import { InjectedClass, Components, Events } from '../logic';
 import { CompetitionInfo, Participant, Person } from '.';
 import { Validation } from '../logic';
 
 export class RegistrationInfo extends InjectedClass {
 	competition = new CompetitionInfo(0, "", "");
 	participants = [];
-	contact = new Person();
 
 	constructor(injector) {
 		super(injector);
@@ -18,14 +17,7 @@ export class RegistrationInfo extends InjectedClass {
 		this.subscribe(Events.setParticipantOrganization, this.setParticipantOrganization.bind(this));
 		this.subscribe(Events.setParticipantDivision, this.setParticipantDivision.bind(this));
 		this.subscribe(Events.register, () => this.register());
-		injector.loadResource(Resources.cookies, c => {
-			let storedContact = this.inject(Components.Cookies).contact;
-			if (storedContact !== undefined) {
-				storedContact = JSON.parse(storedContact);
-				this.contact = storedContact;
-				injector.fire(Events.registrationUpdated, this);
-			}
-		});
+		this.contact = this.inject(Components.Storage).get("Contact") || new Person();
 	}
 
 	createRegistrationInfo(reg) {
@@ -116,7 +108,6 @@ export class RegistrationInfo extends InjectedClass {
 
 	sendRegistration() {
 		this.inject(Components.Registry).storeCompetitors(this.participants);
-		this.inject(Components.Cookies).setCookie(Cookies.contact, JSON.stringify(this.contact));
 		this.inject(Components.Storage).set("Contact", this.contact);
 		this.inject(Components.Server).sendRegistration(this)
 			.then(res => {
