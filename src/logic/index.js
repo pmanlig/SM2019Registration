@@ -3,3 +3,5 @@ export { Components, Events, Resources } from '../AppInjector';
 export { Cookies } from './Cookies';
 export { EventBus } from './EventBus';
 export { Validation } from './Validation';
+export { Server } from './Server';
+export { Storage } from './Storage';

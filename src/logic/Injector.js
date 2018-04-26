@@ -1,10 +1,6 @@
 import React from 'react';
 import { AsyncSubject } from 'rxjs';
 
-export class AsyncResource {
-
-}
-
 export class InjectedComponent extends React.Component {
 	handlers = [];
 

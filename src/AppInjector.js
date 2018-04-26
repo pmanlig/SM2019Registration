@@ -1,4 +1,4 @@
-import { Injector, EventBus, Cookies } from './logic';
+import { Injector, EventBus, Cookies, Server, Storage } from './logic';
 import { Registry, RegistrationInfo } from './models';
 import { Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary } from './components';
 import { Registration, Competitions, About } from './views';
@@ -34,6 +34,8 @@ export class Components {
 	static App = Components.componentId++;
 	static EventBus = Components.componentId++;
 	static Cookies = Components.componentId++;
+	static Server = Components.componentId++;
+	static Storage = Components.componentId++;
 	static CookiesAsync = Components.componentId++;
 	static Footers = Components.componentId++;
 	static Footer = Components.componentId++;
@@ -62,6 +64,8 @@ export class AppInjector extends Injector {
 		this.register(Components.Footers, new Footers(this));
 		this.register(Components.Busy, new Busy(this));
 		this.register(Components.Cookies, new Cookies(this));
+		this.register(Components.Server, new Server(this));
+		this.register(Components.Storage, new Storage(this));
 		this.register(Components.Registry, new Registry(this));
 		this.register(Components.RegistrationInfo, new RegistrationInfo(this));
 		this.registerComponent(Components.App, App);

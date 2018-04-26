@@ -1,21 +1,14 @@
 import React from 'react';
 import { Components, Events } from '.';
 import { InjectedComponent } from '../logic';
-import { CompetitionInfo, Person } from '../models';
 
 export class Registration extends InjectedComponent {
-
-	/*** Initialization & Liftcycle ***************************************************************************************/
-
 	constructor(props) {
 		super(props);
-		this.state = { info: new CompetitionInfo(props.match.params.id, "", ""), participants: [], registrationContact: new Person() }; // Remove
-		this.fire(Events.changeTitle, "Anmälan till " + this.state.info.description); // Remove
+		
+		this.inject(Components.RegistrationInfo).loadCompetition(this.props.match.params.id, this.props.match.params.token);
 		this.subscribe(Events.registrationUpdated, () => this.setState({}));
-		this.inject(Components.RegistrationInfo).loadCompetition(props.match.params.id);
 	}
-
-	/*** render() ***************************************************************************************/
 
 	render() {
 		const registrationInfo = this.inject(Components.RegistrationInfo);

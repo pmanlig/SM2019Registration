@@ -11,8 +11,8 @@ export class Person {
 		this.email = email || "";
 		if (typeof nameOrPerson === "object") {
 			this.name = nameOrPerson.name;
-			this.competitionId = nameOrPerson.competitionId;
-			this.organization = nameOrPerson.organization;
+			this.competitionId = nameOrPerson.competitionId || "";
+			this.organization = nameOrPerson.organization || "";
 			this.email = nameOrPerson.email;
 		}
 	}

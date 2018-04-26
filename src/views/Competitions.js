@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { InjectedComponent } from '../logic';
-import { Events } from '.';
+import { Events, Components } from '.';
 
 export class Competitions extends InjectedComponent {
 	static initial = [
@@ -33,9 +33,11 @@ export class Competitions extends InjectedComponent {
 	}
 
 	render() {
+		let tokens = this.inject(Components.Storage).get("Tokens");
 		return <div id='competitions' className='content'>
 			<ul>
-				{this.state.competitions.map(c => <li key={c.id}><Link to={"/competition/" + c.id}>{c.name}</Link></li>)}
+				{this.state.competitions.map(c => <li key={c.id}><Link
+					to={"/competition/" + c.id + (tokens[c.id] !== undefined ? "/" + tokens[c.id] : "")}>{c.name}</Link></li>)}
 			</ul>
 		</div>;
 	}
