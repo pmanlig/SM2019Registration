@@ -1,17 +1,23 @@
-class CookieAlert extends Component {
+import React, { Component } from 'react';
+
+export class StoreQuestion extends Component {
+	static myStorageKey = "allowStore";
+
 	constructor(props) {
 		super(props);
 		this.state = { visible: true };
+		this.props.storage.registerKey(StoreQuestion.myStorageKey);
 	}
 
 	hide(save) {
-		this.props.cookies.storeCookies = save;
-		this.props.cookies.setCookie(Cookies.storeCookies, save);
+		if (save) {
+			this.props.storage.set(StoreQuestion.myStorageKey, true);
+		}
 		this.setState({ visible: false });
 	}
 
 	render() {
-		return this.state.visible && <div id="cookieAlert">
+		return this.state.visible && <div id="storeQuestion">
 			<p className="centered">Vill du att information du matar in ska sparas så att det blir lättare att anmäla nästa gång?</p>
 			<input className="button cookieButton" type="button" value="Nej" onClick={() => this.hide(false)} />
 			<input className="button cookieButton" type="button" value="Ja" onClick={() => this.hide(true)} />
@@ -19,66 +25,4 @@ class CookieAlert extends Component {
 	}
 }
 
-export class Cookies extends InjectedClass {
-	static alert = "cookieAlert";
-	static storeCookies = "storeCookies";
-	static competitors = "competitors";
-	static contact = "contact";
-	static expires = "expires";
-	static all = [Cookies.alert, Cookies.storeCookies, Cookies.contact, Cookies.competitors];
-
-	constructor(injector) {
-		super(injector);
-		this.loadCookies();
-	}
-
-	extractValue(cname, value) {
-		if (value.trim().startsWith(cname + "=")) {
-			this[cname] = value.split('=')[1];
-		}
-	}
-
-	deleteCookie(c) {
-		console.log("Deleting cookie " + c);
-		document.cookie = c + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-	}
-
-	deleteCookies() {
-		Cookies.all.forEach(c => this.deleteCookie(c));
-	}
-
-	unlimitedCookieExpiration() {
-		let d = new Date();
-		d.setFullYear(d.getFullYear() + 20);
-		return Cookies.expires + "=" + d.toUTCString() + ';';
-	}
-
-	setCookie(name, value, expiration) {
-		// ToDo: should prevent saving if save cookies = false
-		if (!expiration) {
-			expiration = this.unlimitedCookieExpiration();
-		}
-		console.log("Setting cookie: " + name);
-		document.cookie = name + '=' + value + ';' + expiration + '; path=/;';
-	}
-
-	async loadCookies() {
-		console.log("Loading cookies");
-		const myName = "Cookies";
-		let busy = this.inject(Components.Busy);
-		busy.setBusy(myName, true);
-
-		await decodeURIComponent(document.cookie).split(';').forEach(v => {
-			Cookies.all.forEach(c => {
-				this.extractValue(c, v);
-			});
-		});
-
-		if (this.storeCookies === undefined) {
-			this.injector.inject(Components.Footers).addCustomFooter(<CookieAlert key="cookieAlert" cookies={this} />);
-		}
-		busy.setBusy(myName, false);
-		this.injector.registerResource(Resources.cookies, this);
-	}
-}
-
+// 			this.injector.inject(Components.Footers).addCustomFooter(<CookieAlert key="cookieAlert" cookies={this} />);

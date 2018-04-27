@@ -9,7 +9,12 @@ export class App extends InjectedComponent {
 		const BusyIndicator = this.inject(Components.BusyIndicator);
 		const Footer = this.inject(Components.Footer);
 		const AppHeader = this.inject(Components.AppHeader);
-		// return <div><h1>Testing</h1></div>;
+		const StoreQuestion = this.inject(Components.StoreQuestion);
+		const storage = this.inject(Components.Storage);
+		if (storage.get("allowStore") === undefined) {
+			this.inject(Components.Footers).addCustomFooter(<StoreQuestion key="cookieAlert" storage={storage} />);
+		}
+
 		return (
 			<BrowserRouter>
 				<div className="App">

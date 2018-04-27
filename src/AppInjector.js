@@ -1,6 +1,6 @@
 import { Injector, EventBus, Server, Storage } from './logic';
 import { Registry, RegistrationInfo, Session } from './models';
-import { Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary } from './components';
+import { Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary, StoreQuestion } from './components';
 import { Registration, Competitions, About, Login } from './views';
 import { App } from './App';
 
@@ -50,6 +50,7 @@ export class Components {
 	static Session = Components.componentId++;
 	static About = Components.componentId++;
 	static Login = Components.componentId++;
+	static StoreQuestion = Components.componentId++;
 }
 
 export class AppInjector extends Injector {
@@ -79,5 +80,6 @@ export class AppInjector extends Injector {
 		this.registerComponent(Components.Summary, Summary);
 		this.registerComponent(Components.About, About);
 		this.registerComponent(Components.Login, Login);
+		this.registerComponent(Components.StoreQuestion, StoreQuestion);
 	}
 }

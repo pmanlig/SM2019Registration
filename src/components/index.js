@@ -6,5 +6,6 @@ export { ParticipantPicker } from './ParticipantPicker';
 export { AppHeader } from './AppHeader';
 export { RegistrationContact } from './RegistrationContact';
 export { RegistrationForm } from './RegistrationForm';
+export { StoreQuestion } from './StoreQuestion';
 export { Footer, Footers } from './Footer';
 export { Events, Components } from '../AppInjector';
