@@ -1,6 +1,6 @@
-import { InjectedClass, Components, Events } from '../logic';
+import { InjectedClass, Validation } from '../logic';
+import { Components, Events, StorageKeys } from '../AppInjector';
 import { CompetitionInfo, Participant, Person } from '.';
-import { Validation } from '../logic';
 
 export class RegistrationInfo extends InjectedClass {
 	competition = new CompetitionInfo(0, "", "");
@@ -8,7 +8,6 @@ export class RegistrationInfo extends InjectedClass {
 
 	constructor(injector) {
 		super(injector);
-		this.tokens = this.inject(Components.Storage).get("Tokens");
 		this.subscribe(Events.setRegistrationInfo, this.updateContactField.bind(this));
 		this.subscribe(Events.addParticipant, this.addParticipant.bind(this));
 		this.subscribe(Events.deleteParticipant, this.deleteParticipant.bind(this));
@@ -112,9 +111,13 @@ export class RegistrationInfo extends InjectedClass {
 		this.inject(Components.Server).sendRegistration(this)
 			.then(res => {
 				console.log(res.token);
-				this.tokens[this.competition.id] = res.token;
-				this.inject(Components.Storage).set("Tokens", this.tokens);
+				this.competition.token = res.token;
+				let tokens = this.inject(Components.Storage).get("Tokens") || [];
+				tokens[this.competition.id] = res.token;
+				this.inject(Components.Storage).set("Tokens", tokens);
+				this.inject(Components.Storage).set(StorageKeys.tokens, tokens);
 				this.inject(Components.Footers).addFooter(this.countEvents() + " starter registrerade", "info");
+				this.fire(Events.registrationUpdated, this);
 			})
 			.catch(error => {
 				console.log(error);
@@ -128,7 +131,7 @@ export class RegistrationInfo extends InjectedClass {
 			this.sendRegistration();
 		} else {
 			this.inject(Components.Footers).addFooter(errors.length === 1 ? errors[0].error : errors.length + " fel hindrar registrering!");
+			this.fire(Events.registrationUpdated, this);
 		}
-		this.fire(Events.registrationUpdated, this);
 	}
 }

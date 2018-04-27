@@ -1,16 +1,21 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { Components, Events } from '.';
 import { InjectedComponent } from '../logic';
 
 export class Registration extends InjectedComponent {
 	constructor(props) {
 		super(props);
-		
+		this.state = { token: this.props.match.params.token };
 		this.inject(Components.RegistrationInfo).loadCompetition(this.props.match.params.id, this.props.match.params.token);
-		this.subscribe(Events.registrationUpdated, () => this.setState({}));
+		this.subscribe(Events.registrationUpdated, r => this.setState({ token: r.competition.token }));
 	}
 
 	render() {
+		if (this.state.token !== undefined && this.state.token !== this.props.match.params.token) {
+			return <Redirect to={'/competition/' + this.props.match.params.id + '/' + this.state.token} />
+		}
+
 		const registrationInfo = this.inject(Components.RegistrationInfo);
 		const ParticipantPicker = this.inject(Components.ParticipantPicker);
 		const Toolbar = this.inject(Components.Toolbar);

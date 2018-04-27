@@ -37,7 +37,7 @@ export class Competitions extends InjectedComponent {
 		return <div id='competitions' className='content'>
 			<ul>
 				{this.state.competitions.map(c => <li key={c.id}><Link
-					to={"/competition/" + c.id + (tokens[c.id] !== undefined ? "/" + tokens[c.id] : "")}>{c.name}</Link></li>)}
+					to={"/competition/" + c.id + ((tokens !== undefined && tokens[c.id] !== undefined) ? "/" + tokens[c.id] : "")}>{c.name}</Link></li>)}
 			</ul>
 		</div>;
 	}
