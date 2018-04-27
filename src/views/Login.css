@@ -1,0 +1,28 @@
+.login {
+	color: white;
+	background-color: #222;
+	padding: 20px;
+	width: 300px;
+	border-radius: 10px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.login > table {
+	margin: auto;
+}
+
+.login > h3 {
+	padding: 0;
+	margin: 0;
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+.login > .button {
+	border-radius: 10px;
+	margin-left: 120px;
+	margin-top: 15px;
+}

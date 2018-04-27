@@ -1,7 +1,7 @@
 import { Injector, EventBus, Server, Storage } from './logic';
-import { Registry, RegistrationInfo } from './models';
+import { Registry, RegistrationInfo, Session } from './models';
 import { Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary } from './components';
-import { Registration, Competitions, About } from './views';
+import { Registration, Competitions, About, Login } from './views';
 import { App } from './App';
 
 export class Resources {
@@ -47,7 +47,9 @@ export class Components {
 	static RegistrationInfo = Components.componentId++;
 	static Summary = Components.componentId++;
 	static Registry = Components.componentId++;
+	static Session = Components.componentId++;
 	static About = Components.componentId++;
+	static Login = Components.componentId++;
 }
 
 export class AppInjector extends Injector {
@@ -61,6 +63,7 @@ export class AppInjector extends Injector {
 		this.register(Components.Busy, new Busy(this));
 		this.register(Components.Server, new Server(this));
 		this.register(Components.Storage, new Storage(this));
+		this.register(Components.Session, new Session(this));
 		this.register(Components.Registry, new Registry(this));
 		this.register(Components.RegistrationInfo, new RegistrationInfo(this));
 		this.registerComponent(Components.App, App);
@@ -75,5 +78,6 @@ export class AppInjector extends Injector {
 		this.registerComponent(Components.RegistrationForm, RegistrationForm);
 		this.registerComponent(Components.Summary, Summary);
 		this.registerComponent(Components.About, About);
+		this.registerComponent(Components.Login, Login);
 	}
 }
