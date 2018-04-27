@@ -4,6 +4,12 @@ import { Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, Registratio
 import { Registration, Competitions, About, Login } from './views';
 import { App } from './App';
 
+export class StorageKeys {
+	static allowStorage = "allowStorage";
+	static lastContact = "lastContact";
+	static registry = "registry";
+}
+
 export class Resources {
 	static resourceId = 1;
 }
@@ -60,11 +66,15 @@ export class AppInjector extends Injector {
 		this.subscribe = ev.subscribe.bind(ev);
 		this.fire = ev.fire.bind(ev);
 		this.register(Components.EventBus, ev);
+		let storage = new Storage(this);
+		storage.registerKey(StorageKeys.allowStorage);
+		storage.registerKey(StorageKeys.lastContact);
+		storage.registerKey(StorageKeys.registry);
+		this.register(Components.Storage, storage);
+		this.register(Components.Server, new Server(this));
+		this.register(Components.Session, new Session(this));
 		this.register(Components.Footers, new Footers(this));
 		this.register(Components.Busy, new Busy(this));
-		this.register(Components.Server, new Server(this));
-		this.register(Components.Storage, new Storage(this));
-		this.register(Components.Session, new Session(this));
 		this.register(Components.Registry, new Registry(this));
 		this.register(Components.RegistrationInfo, new RegistrationInfo(this));
 		this.registerComponent(Components.App, App);

@@ -1,4 +1,4 @@
-export { Events, Components } from '../AppInjector';
+export { Events, Components, StorageKeys } from '../AppInjector';
 export { Registration } from './Registration';
 export { Competitions } from './Competitions';
 export { About } from './About';

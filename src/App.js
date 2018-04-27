@@ -1,7 +1,7 @@
 import './App.css';
 import React from 'react';
 import { InjectedComponent } from './components';
-import { Components } from './AppInjector';
+import { Components, StorageKeys } from './AppInjector';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 export class App extends InjectedComponent {
@@ -11,7 +11,7 @@ export class App extends InjectedComponent {
 		const AppHeader = this.inject(Components.AppHeader);
 		const StoreQuestion = this.inject(Components.StoreQuestion);
 		const storage = this.inject(Components.Storage);
-		if (storage.get("allowStore") === undefined) {
+		if (storage.get(StorageKeys.allowStorage) === undefined) {
 			this.inject(Components.Footers).addCustomFooter(<StoreQuestion key="cookieAlert" storage={storage} />);
 		}
 

@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
+import { StorageKeys } from '.';
 
 export class StoreQuestion extends Component {
-	static myStorageKey = "allowStore";
-
 	constructor(props) {
 		super(props);
 		this.state = { visible: true };
-		this.props.storage.registerKey(StoreQuestion.myStorageKey);
 	}
 
 	hide(save) {
 		if (save) {
-			this.props.storage.set(StoreQuestion.myStorageKey, true);
+			this.props.storage.set(StorageKeys.allowStorage, true);
 		}
 		this.setState({ visible: false });
 	}

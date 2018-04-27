@@ -20,6 +20,8 @@ export class Storage extends InjectedClass {
 	}
 
 	delete() {
+		console.log("Deleting storage");
+		console.log(this.keys);
 		this.keys.forEach(k => window.localStorage.removeItem(k));
 	}
 }
