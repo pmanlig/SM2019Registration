@@ -1,3 +1,4 @@
+import './ParticipantPicker.css';
 import React from 'react';
 import { Components, Events, InjectedComponent } from '.';
 
@@ -20,10 +21,13 @@ export class ParticipantPicker extends InjectedComponent {
 		return !this.state.visible ? null : <div>
 			<div className="fullscreen shadow" />
 			<div id="participantpicker" className="centered modal">
-				<h1>Hämta deltagare</h1>
+				<input id='closePicker' type='button' className='round' value='X' onClick={e => this.setState({ visible: false })} />
+				<h1>
+					Hämta deltagare
+				</h1>
 				<table className="picker">
 					<thead>
-						<tr>
+						<tr className='picker'>
 							<th>Namn</th>
 							<th>Pistolskyttekort</th>
 							<th>Förening</th>

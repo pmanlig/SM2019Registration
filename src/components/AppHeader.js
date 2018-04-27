@@ -16,16 +16,18 @@ export class AppHeader extends InjectedComponent {
 	}
 
 	render() {
+		let session = this.inject(Components.Session);
 		return <header className="App-header">
 			<h1 className="App-title">
 				<img src={logo} className="Gpk-logo" alt="logo" />
 				{this.state.title}
 				<Link to='/' className='button globaltool'>Tävlingar</Link>
-				{this.inject(Components.Session).loggedIn && <Link to='' className='button globaltool' onClick={e => {
-					this.inject(Components.Session).loggedIn = false;
+				{session.loggedIn && <Link to='' className='button globaltool' onClick={e => {
+					session.loggedIn = false;
 					this.setState({});
-				}}>Logga ut</Link>}
-				{!this.inject(Components.Session).loggedIn && <Link to='/login' className='button globaltool'>Logga in</Link>}
+					e.preventDefault();
+				}}>{'Logga ut ' + session.user}</Link>}
+				{!session.loggedIn && <Link to='/login' className='button globaltool'>Logga in</Link>}
 				<Link to='/administration' className='button globaltool'>Administrera</Link>
 				<Link to='/about' className='button globaltool'>Om...</Link>
 			</h1>

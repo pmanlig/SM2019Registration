@@ -1,0 +1,48 @@
+/* Participant picker */
+
+#participantpicker {
+	border: 1px solid black;
+	border-radius: 10px;
+	padding: 0;
+}
+
+table.picker {
+	margin: 5px 15px;
+	border-spacing: 0px;
+	text-align: left;
+}
+
+tr.picker {
+	cursor: pointer;
+}
+
+tbody > tr.picker:hover {
+	background-color: yellow;
+}
+
+tr.picker > th {
+	padding: 3px 10px;
+}
+
+tr.picker > td {
+	padding: 3px 10px;
+}
+
+#participantpicker > h1 {
+	margin: 0;
+	color: whitesmoke;
+	background-color: #222;
+	padding: 5px 15px;
+}
+
+#closePicker {
+	color: whitesmoke;
+	background-color: #222;
+	font-weight: bold;
+	margin: 7px 7px 0 0;
+	float: right;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	border: 2px solid whitesmoke;
+}

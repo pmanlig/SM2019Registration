@@ -76,6 +76,7 @@ export class RegistrationInfo extends InjectedClass {
 		this.inject(Components.Server).loadCompetition(id, json => {
 			this.competition = CompetitionInfo.fromJson(json);
 			this.fire(Events.changeTitle, "Anmälan till " + json.description);
+			this.participants = [];
 			this.fire(Events.registrationUpdated, this);
 			if (token !== undefined) {
 				this.inject(Components.Server).loadRegistration(id, token, json => {
@@ -88,7 +89,6 @@ export class RegistrationInfo extends InjectedClass {
 					this.contact = newContact;
 
 					// Loading participants from json
-					this.participants = [];
 					json.registration.forEach(entry => {
 						let p = entry.participant;
 						this.addParticipant({ name: p.name, competitionId: p.id, organization: p.organization }, entry.entries);

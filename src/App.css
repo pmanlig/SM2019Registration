@@ -115,22 +115,6 @@
 	opacity: 1.0;
 }
 
-/* Participant picker */
-
-#participantpicker {
-	border: 1px solid black;
-	border-radius: 20px;
-}
-
-table.picker {
-	border-spacing: 5px;
-	text-align: left;
-}
-
-tr.picker {
-	cursor: pointer;
-}
-
 /* Main form */
 
 .content {
