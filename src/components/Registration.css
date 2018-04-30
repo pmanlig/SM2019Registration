@@ -1,0 +1,38 @@
+.major {
+  border: 1px solid black;
+}
+
+table {
+  border-spacing: 0px;
+}
+
+tr {
+  padding: 0px;
+}
+
+th {
+  margin: 0px;
+  text-align: left;
+  padding: 2px;
+}
+
+.entry {
+  color: white;
+  background-color: #7f0000;
+}
+
+th.vert {
+  height: 55px;
+  vertical-align: bottom;
+  text-align: left;
+  /*border: 1px solid #7f7fff;*/
+}
+
+th.vert > div {
+	transform-origin: left bottom;
+	/*border: 1px dotted white;*/
+  transform:
+      translate(12px, 0px)
+      rotate(315deg);
+  width: 20px;
+}

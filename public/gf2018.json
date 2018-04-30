@@ -2,63 +2,47 @@
 	"id": "gavligfalt2018",
 	"name": "Gävligfälten 2018",
 	"description": "Gävligfälten 2018, nationell fälttävling",
-	"divisionGroups": [],
-	"classGroups": [],
+	"divisionGroups": [
+		{
+			"id": 1,
+			"description": "SPSF Fält",
+			"divisions": [
+				"C",
+				"B",
+				"A",
+				"R"
+			]
+		}
+	],
+	"classGroups": [
+		{
+			"id": 1,
+			"description": "SPSF Standard",
+			"classes": [
+				"1",
+				"2",
+				"3",
+				"Dam1/1",
+				"Dam2/2",
+				"Dam3/3",
+				"Junior/1",
+				"Junior/2",
+				"Junior/3",
+				"VetY/1",
+				"VetY/2",
+				"VetY/3",
+				"VetÄ/1",
+				"VetÄ/2",
+				"VetÄ/3"
+			]
+		}
+	],
 	"events": [
 		{
 			"id": 1,
-			"name": "ÖpC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
-		},
-		{
-			"id": 2,
-			"name": "JunC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
-		},
-		{
-			"id": 3,
-			"name": "DamC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
-		},
-		{
-			"id": 4,
-			"name": "VetYC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
-		},
-		{
-			"id": 5,
-			"name": "VetÄC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
-		},
-		{
-			"id": 6,
-			"name": "B",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
-		},
-		{
-			"id": 7,
-			"name": "A",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
-		},
-		{
-			"id": 8,
-			"name": "R",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
+			"name": "Gävligfälten 2018",
+			"maxRegistrations": 4,
+			"divisions": 1,
 			"classes": 1
 		}
 	],
@@ -67,14 +51,7 @@
 			"id": 1,
 			"name": "Gävligfälten 2018",
 			"events": [
-				1,
-				2,
-				3,
-				4,
-				5,
-				6,
-				7,
-				8
+				1
 			]
 		}
 	],

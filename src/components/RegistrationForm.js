@@ -1,3 +1,4 @@
+import './Registration.css';
 import React from 'react';
 import { Events } from '.';
 
@@ -8,21 +9,35 @@ const personHeader = {
 		{ name: 'Förening', field: 'organization', width: 200, type: 'text' }]
 };
 
+function addMinorHeadersFor(event, minorHeaders) {
+	if (!event.divisions) {
+		minorHeaders.push(<th key={minorHeaders.length} className="minor entry vert"><div>{event.name}</div></th>);
+		return;
+	}
+	if (event.classes) {
+		minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Klass</th>);
+	}
+	if (event.divisions) {
+		minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Vapengrupp</th>);
+	}
+	if (event.maxRegistrations > 1) {
+		minorHeaders.push(<th key={minorHeaders.length} className="minor entry">&nbsp;</th>);
+	}
+}
+
 function RegistrationHeader(props) {
-	let counter = 0;
 	const compInfo = props.info;
 	const majorHeaders = [<th key="-1" className="major" colSpan={personHeader.subFields.length}>{personHeader.name}</th>];
 	const minorHeaders = [];
 
 	personHeader.subFields.forEach(s => {
-		minorHeaders.push(<th key={counter++} style={{ width: s.width, paddingRight: 10, verticalAlign: "bottom" }} className="minor">{s.name}</th>);
+		minorHeaders.push(<th key={minorHeaders.length} style={{ width: s.width, paddingRight: 10, verticalAlign: "bottom" }} className="minor">{s.name}</th>);
 	});
 
-	compInfo.eventGroups.forEach(column => {
-		majorHeaders.push(<th key={column.id} className="major" colSpan={column.events.length}>{column.name}</th>);
-		column.events.forEach(event => {
-			minorHeaders.push(<th key={counter++} className="minor vert"><div>{compInfo.event(event).name}</div></th>);
-		});
+	compInfo.eventGroups.forEach(group => {
+		let initial = minorHeaders.length;
+		group.events.forEach(event => { addMinorHeadersFor(compInfo.event(event), minorHeaders); });
+		majorHeaders.push(<th key={group.id} className="major" colSpan={minorHeaders.length - initial}>{group.name}</th>);
 	});
 	return (
 		<thead>

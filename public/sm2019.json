@@ -8,163 +8,117 @@
 		{
 			"id": 1,
 			"name": "ÖpC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 2,
 			"name": "JunC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 3,
 			"name": "DamC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 4,
 			"name": "VetYC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 5,
 			"name": "VetÄC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 6,
 			"name": "B",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 7,
 			"name": "A",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 8,
 			"name": "R",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 9,
 			"name": "ÖpC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 10,
 			"name": "JunC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 11,
 			"name": "DamC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 12,
 			"name": "VetYC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 13,
 			"name": "VetÄC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 14,
 			"name": "B",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 15,
 			"name": "A",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 16,
 			"name": "ÖpC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 17,
 			"name": "JunC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 18,
 			"name": "DamC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 19,
 			"name": "VetYC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 20,
 			"name": "VetÄC",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 21,
 			"name": "B",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 22,
 			"name": "A",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		},
 		{
 			"id": 23,
 			"name": "R",
-			"maxRegistrations": 1,
-			"divisionGroup": 1,
-			"classes": 1
+			"maxRegistrations": 1
 		}
 	],
 	"eventGroups": [
