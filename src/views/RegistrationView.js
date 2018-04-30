@@ -7,7 +7,7 @@ export class RegistrationView extends InjectedComponent {
 	constructor(props) {
 		super(props);
 		this.state = { token: this.props.match.params.token };
-		this.inject(Components.RegistrationInfo).loadCompetition(this.props.match.params.id, this.props.match.params.token);
+		this.inject(Components.Registration).loadCompetition(this.props.match.params.id, this.props.match.params.token);
 		this.subscribe(Events.registrationUpdated, r => this.setState({ token: r.competition.token }));
 	}
 
@@ -16,7 +16,7 @@ export class RegistrationView extends InjectedComponent {
 			return <Redirect to={'/competition/' + this.props.match.params.id + '/' + this.state.token} />
 		}
 
-		const registrationInfo = this.inject(Components.RegistrationInfo);
+		const registrationInfo = this.inject(Components.Registration);
 		const ParticipantPicker = this.inject(Components.ParticipantPicker);
 		const Toolbar = this.inject(Components.Toolbar);
 		const RegistrationContact = this.inject(Components.RegistrationContact);

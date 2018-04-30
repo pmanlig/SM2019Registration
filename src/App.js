@@ -23,8 +23,8 @@ export class App extends InjectedComponent {
 					<Switch>
 						<Route exact path='/' component={this.inject(Components.Competitions)} />
 						<Route path='/login' component={this.inject(Components.Login)} />
-						<Route path='/competition/:id/:token' component={this.inject(Components.Registration)} />
-						<Route path='/competition/:id' component={this.inject(Components.Registration)} />
+						<Route path='/competition/:id/:token' component={this.inject(Components.RegistrationView)} />
+						<Route path='/competition/:id' component={this.inject(Components.RegistView)} />
 						<Route exact path='/about' component={this.inject(Components.About)} />
 					</Switch>
 					<Footer />

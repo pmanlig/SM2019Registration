@@ -2,21 +2,20 @@ import { InjectedClass, Validation } from '../logic';
 import { Components, Events, StorageKeys } from '../AppInjector';
 import { Competition, Participant, Person } from '.';
 
-export class RegistrationInfo extends InjectedClass {
+export class Registration extends InjectedClass {
 	competition = new Competition(0, "", "");
 	participants = [];
 
 	constructor(injector) {
 		super(injector);
-		this.subscribe(Events.setRegistrationInfo, this.updateContactField.bind(this));
+		this.subscribe(Events.setRegistrationInfo, this.setContactField.bind(this));
 		this.subscribe(Events.addParticipant, this.addParticipant.bind(this));
 		this.subscribe(Events.deleteParticipant, this.deleteParticipant.bind(this));
-		this.subscribe(Events.setParticipantName, this.setParticipantName.bind(this));
-		this.subscribe(Events.setParticipantCompetitionId, this.setParticipantCompetitionId.bind(this));
-		this.subscribe(Events.setParticipantOrganization, this.setParticipantOrganization.bind(this));
+		this.subscribe(Events.setParticipantField, this.setParticipantField.bind(this));
 		this.subscribe(Events.setParticipantDivision, this.setParticipantDivision.bind(this));
 		this.subscribe(Events.register, () => this.register());
 		this.contact = this.inject(Components.Storage).get("Contact") || new Person();
+		this.contact.account = this.contact.account || ""; // Patch to handle stored information without account
 	}
 
 	createRegistrationInfo(reg) {
@@ -44,20 +43,9 @@ export class RegistrationInfo extends InjectedClass {
 		this.fire(Events.registrationUpdated, this);
 	}
 
-	setParticipantName(id, value) {
-		this.participants.forEach(p => { if (id === p.id) p.name = value; });
-		this.fire(Events.registrationUpdated, this);
-	}
-
-	setParticipantCompetitionId(id, value) {
-		if (value.length < 6 && /^\d*$/.test(value)) {
-			this.participants.forEach(p => { if (id === p.id) p.competitionId = value; });
-			this.fire(Events.registrationUpdated, this);
-		}
-	}
-
-	setParticipantOrganization(id, value) {
-		this.participants.forEach(p => { if (id === p.id) p.organization = value; });
+	setParticipantField(id, field, value) {
+		if (field === "competitionId" && (value.length > 5 || !(/^\d*$/.test(value)))) { return; } // Add more validation rules later?
+		this.participants.forEach(p => { if (p.id === id) p[field] = value });
 		this.fire(Events.registrationUpdated, this);
 	}
 
@@ -66,7 +54,9 @@ export class RegistrationInfo extends InjectedClass {
 		this.fire(Events.registrationUpdated, this);
 	}
 
-	updateContactField(field, value) {
+	setContactField(field, value) {
+		if (field === "account" && (value.length > 8 || !(/^\d*[-]?\d*$/.test(value)))) { return; } // Add more validation rules later?
+		console.log("Updating field");
 		this.contact[field] = value;
 		this.fire(Events.registrationUpdated, this);
 	}
