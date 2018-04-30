@@ -6,8 +6,8 @@ import { InjectedComponent } from '../logic';
 export class RegistrationView extends InjectedComponent {
 	constructor(props) {
 		super(props);
-		this.state = { token: this.props.match.params.token };
-		this.inject(Components.Registration).loadCompetition(this.props.match.params.id, this.props.match.params.token);
+		this.state = { token: props.match.params.token };
+		this.inject(Components.Registration).loadCompetition(props.match.params.id, props.match.params.token);
 		this.subscribe(Events.registrationUpdated, r => this.setState({ token: r.competition.token }));
 	}
 
