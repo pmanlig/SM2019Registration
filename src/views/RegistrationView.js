@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { Components, Events } from '.';
 import { InjectedComponent } from '../logic';
 
-export class Registration extends InjectedComponent {
+export class RegistrationView extends InjectedComponent {
 	constructor(props) {
 		super(props);
 		this.state = { token: this.props.match.params.token };

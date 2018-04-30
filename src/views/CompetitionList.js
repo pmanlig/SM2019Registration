@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { InjectedComponent } from '../logic';
 import { Events, Components } from '.';
 
-export class Competitions extends InjectedComponent {
+export class CompetitionList extends InjectedComponent {
 	static initial = [
 		{
 			id: "sm2019",
@@ -24,7 +24,7 @@ export class Competitions extends InjectedComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			competitions: Competitions.initial
+			competitions: CompetitionList.initial
 		};
 		this.fire(Events.changeTitle, "Anmälningssytem Gävle PK");
 		fetch('https://dev.bitnux.com/sm2019/competition')

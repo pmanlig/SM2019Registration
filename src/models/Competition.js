@@ -1,4 +1,4 @@
-export class CompetitionInfo {
+export class Competition {
 	id;
 	name;
 	description;
@@ -9,7 +9,7 @@ export class CompetitionInfo {
 	rules = [];
 
 	static fromJson(obj) {
-		let newObj = new CompetitionInfo(obj.id, obj.name, obj.description);
+		let newObj = new Competition(obj.id, obj.name, obj.description);
 		// ToDo: remove when service is fixed!
 		if (newObj.id === undefined && obj.competition_id !== undefined) {
 			newObj.id = obj.competition_id;

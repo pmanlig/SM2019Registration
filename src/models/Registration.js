@@ -1,9 +1,9 @@
 import { InjectedClass, Validation } from '../logic';
 import { Components, Events, StorageKeys } from '../AppInjector';
-import { CompetitionInfo, Participant, Person } from '.';
+import { Competition, Participant, Person } from '.';
 
 export class RegistrationInfo extends InjectedClass {
-	competition = new CompetitionInfo(0, "", "");
+	competition = new Competition(0, "", "");
 	participants = [];
 
 	constructor(injector) {
@@ -73,7 +73,7 @@ export class RegistrationInfo extends InjectedClass {
 
 	loadCompetition(id, token) {
 		this.inject(Components.Server).loadCompetition(id, json => {
-			this.competition = CompetitionInfo.fromJson(json);
+			this.competition = Competition.fromJson(json);
 			this.fire(Events.changeTitle, "Anmälan till " + json.description);
 			this.participants = [];
 			this.fire(Events.registrationUpdated, this);

@@ -1,5 +1,5 @@
 export { Events, Components, StorageKeys } from '../AppInjector';
-export { Registration } from './Registration';
-export { Competitions } from './Competitions';
+export { RegistrationView } from './RegistrationView';
+export { CompetitionList } from './CompetitionList';
 export { About } from './About';
 export { Login } from './Login';
