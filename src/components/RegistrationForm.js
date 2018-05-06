@@ -21,8 +21,9 @@ function addMinorHeadersFor(event, minorHeaders) {
 		minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Vapengrupp</th>);
 	}
 	if (event.maxRegistrations > 1) {
-		minorHeaders.push(<th key={minorHeaders.length} className="minor entry">&nbsp;</th>);
+		minorHeaders.push(<th key={minorHeaders.length} className="minor entry" style={{width: "20px"}}>&nbsp;</th>);
 	}
+	// ToDo: Handle schedule
 }
 
 function RegistrationHeader(props) {
@@ -47,12 +48,12 @@ function RegistrationHeader(props) {
 	);
 }
 
-function RegistrationCheckboxes(props) {
-	let info = props.participant.registrationInfo;
+function RegistrationControls({ participant, fire }) {
+	let info = participant.registrationInfo;
 	let result = [];
 	for (let i = 0; i < info.length; i++) {
 		result.push(<td key={i}><input type="checkbox" className="checkbox" onChange={(e) =>
-			props.fire(Events.setParticipantDivision, props.participant.id, i, e.target.checked)
+			fire(Events.setParticipantDivision, participant.id, i, e.target.checked)
 		} checked={info[i]} /></td>);
 	}
 	return result;
@@ -68,9 +69,9 @@ function RegistrationField({ id, participant, header, fire }) {
 function RegistrationRow(props) {
 	const p = props.participant;
 	const myId = p.id;
-	return <tr key={myId} style={{ background: props.participant.errors.length > 0 ? "red" : "white" }}>
+	return <tr key={myId} style={{ background: p.errors.length > 0 ? "red" : "white" }}>
 		{personHeader.subFields.map(h => <RegistrationField key={h.field} id={myId} participant={p} header={h} {...props} />)}
-		{RegistrationCheckboxes(props)}
+		{RegistrationControls(props)}
 		<td><button className="deleteButton button" onClick={e => props.fire(Events.deleteParticipant, myId)}>x</button></td></tr>;
 }
 
