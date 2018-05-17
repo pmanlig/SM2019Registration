@@ -6,7 +6,8 @@ import { InjectedComponent, Components, Events } from '.';
 export class AppHeader extends InjectedComponent {
 	constructor(props) {
 		super(props);
-		this.state = { title: "Anmälningssystem Gävle PK" };
+		this.state = { title: props.title };
+		document.title = props.title;
 		this.subscribe(Events.changeTitle, this.updateTitle.bind(this));
 	}
 
@@ -19,17 +20,15 @@ export class AppHeader extends InjectedComponent {
 		let session = this.inject(Components.Session);
 		return <header className="App-header">
 			<h1 className="App-title">
-				<img src={logo} className="Gpk-logo" alt="logo" />
+				<Link to="/"><img src={logo} className="Gpk-logo" alt="logo" /></Link>
 				{this.state.title}
-				<Link to='/' className='button globaltool'>Tävlingar</Link>
+				<Link to='/about' className='button globaltool'>Om...</Link>
 				{session.loggedIn && <Link to='' className='button globaltool' onClick={e => {
 					session.loggedIn = false;
 					this.setState({});
 					e.preventDefault();
 				}}>{'Logga ut ' + session.user}</Link>}
 				{!session.loggedIn && <Link to='/login' className='button globaltool'>Logga in</Link>}
-				<Link to='/administration' className='button globaltool'>Administrera</Link>
-				<Link to='/about' className='button globaltool'>Om...</Link>
 			</h1>
 		</header>
 	}

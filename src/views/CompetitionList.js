@@ -33,11 +33,17 @@ export class CompetitionList extends InjectedComponent {
 	}
 
 	render() {
+		let session = this.inject(Components.Session);
+		let loggedIn = session.loggedIn;
 		let tokens = this.inject(Components.Storage).get("Tokens");
+		// ToDo: Should check permissions on a per-competition basis
 		return <div id='competitions' className='content'>
 			<ul>
-				{this.state.competitions.map(c => <li key={c.id}><Link
-					to={"/competition/" + c.id + ((tokens !== undefined && tokens[c.id] !== undefined) ? "/" + tokens[c.id] : "")}>{c.name}</Link></li>)}
+				{this.state.competitions.map(c => <li key={c.id}>
+					<Link to={"/competition/" + c.id + ((tokens !== undefined && tokens[c.id] !== undefined) ? "/" + tokens[c.id] : "")}>{c.name}</Link>
+					{loggedIn && (<span>&nbsp;<Link to={"/admin/" + c.id}>(Administrera)</Link></span>)}
+				</li>)}
+				{loggedIn && <li><Link to="/create">Skapa ny tävling</Link></li>}
 			</ul>
 		</div>;
 	}
