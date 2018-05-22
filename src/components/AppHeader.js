@@ -8,7 +8,9 @@ export class AppHeader extends InjectedComponent {
 		super(props);
 		this.state = { title: props.title };
 		document.title = props.title;
+		// ToDo: Do this more React:y
 		this.subscribe(Events.changeTitle, this.updateTitle.bind(this));
+		this.subscribe(Events.userChanged, () => this.setState({}));
 	}
 
 	updateTitle(t) {
@@ -23,12 +25,11 @@ export class AppHeader extends InjectedComponent {
 				<Link to="/"><img src={logo} className="Gpk-logo" alt="logo" /></Link>
 				{this.state.title}
 				<Link to='/about' className='button globaltool'>Om...</Link>
-				{session.loggedIn && <Link to='' className='button globaltool' onClick={e => {
-					session.loggedIn = false;
-					this.setState({});
+				{session.user !== "" && <Link to='' className='button globaltool' onClick={e => {
+					session.logout();
 					e.preventDefault();
 				}}>{'Logga ut ' + session.user}</Link>}
-				{!session.loggedIn && <Link to='/login' className='button globaltool'>Logga in</Link>}
+				{session.user === "" && <Link to='/login' className='button globaltool'>Logga in</Link>}
 			</h1>
 		</header>
 	}

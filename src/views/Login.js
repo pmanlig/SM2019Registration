@@ -7,7 +7,9 @@ export function withLogin(View) {
 	return class extends InjectedComponent {
 		constructor(props) {
 			super(props);
-			this.subscribe(Events.userChanged, () => this.setState({}));
+			this.subscribe(Events.userChanged, () => {
+				this.setState({});
+			});
 		}
 
 		componentDidMount() {
@@ -15,7 +17,6 @@ export function withLogin(View) {
 		}
 
 		login = (e) => {
-			console.log("Logging in");
 			e.preventDefault();
 			this.inject(Components.Session).login(this.user.value, this.password.value);
 		}
