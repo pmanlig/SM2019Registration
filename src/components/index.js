@@ -7,5 +7,6 @@ export { AppHeader } from './AppHeader';
 export { RegistrationContact } from './RegistrationContact';
 export { RegistrationForm } from './RegistrationForm';
 export { StoreQuestion } from './StoreQuestion';
+export { EventInfo } from './EventInfo';
 export { Footer, Footers } from './Footer';
 export { Events, Components, StorageKeys } from '../AppInjector';

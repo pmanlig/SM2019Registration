@@ -1,42 +1,57 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { AsyncSubject } from 'rxjs';
+import { EventBus } from '.';
 
-export class InjectedComponent extends React.Component {
-	handlers = [];
+export function withEvents(BaseComponent) {
+	return class extends Component {
+		handlers = [];
 
-	constructor(props) {
-		super(props);
-		this.inject = props.inject;
-		this.subscribe = (e, h) => {
+		subscribe = (e, h) => {
 			this.handlers.push({
 				event: e,
 				handler: h,
 				subscription: null
 			});
 		}
+
+		componentDidMount() {
+			this.handlers.forEach(h => {
+				h.subscription = this.props.subscribe(h.event, h.handler);
+			});
+		}
+
+		componentWillUnmount() {
+			this.handlers.forEach(h => {
+				if (h.subscription !== null) {
+					h.subscription.unsubscribe();
+					h.subscription = null;
+				}
+			});
+		}
+
+		render() {
+			return <BaseComponent
+				{...this.props}
+				subscribe={this.subscribe} />;
+		}
+	}
+}
+
+export class InjectedComponent extends Component {
+	constructor(props) {
+		super(props);
+		this.inject = props.inject;
+		this.subscribe = props.subscribe;
 		this.fire = props.fire;
-	}
-
-	componentDidMount() {
-		this.handlers.forEach(h => {
-			h.subscription = this.props.subscribe(h.event, h.handler);
-		});
-	}
-
-	componentWillUnmount() {
-		this.handlers.forEach(h => {
-			h.subscription.unsubscribe();
-			h.subscription = null;
-		});
 	}
 }
 
 export class InjectedClass {
 	constructor(injector) {
 		this.injector = injector;
-		this.inject = injector.inject.bind(injector);
-		this.subscribe = injector.subscribe.bind(injector);
-		this.fire = injector.fire.bind(injector);
+		this.inject = injector.inject;
+		this.subscribe = injector.subscribe;
+		this.fire = injector.fire;
 	}
 }
 
@@ -44,8 +59,14 @@ export class Injector {
 	entities = {};
 	resources = {};
 
-	resource(key) { 
-		if (this.resources[key] === undefined){
+	constructor() {
+		let ev = new EventBus();
+		this.subscribe = ev.subscribe.bind(ev);
+		this.fire = ev.fire.bind(ev);
+	}
+
+	resource(key) {
+		if (this.resources[key] === undefined) {
 			this.resources[key] = new AsyncSubject();
 		}
 		return this.resources[key];
@@ -62,24 +83,25 @@ export class Injector {
 	}
 
 	registerComponent(id, Component) {
+		let ComponentWithEvents = withEvents(Component);
 		this.register(id, props =>
-			<Component
+			<ComponentWithEvents
 				injector={this}
-				inject={this.inject.bind(this)}
-				subscribe={this.subscribe.bind(this)}
-				fire={this.fire.bind(this)}
+				inject={this.inject}
+				subscribe={this.subscribe}
+				fire={this.fire}
 				{...props} />);
 	}
 
-	unregister(key) {
-		// ToDo: remove
+	unregister = (key) => {
+		// ToDo: implement
 	}
 
-	inject(key) {
+	inject = (key) => {
 		return this.entities[key];
 	}
 
-	loadResource(key, handler) {
+	loadResource = (key, handler) => {
 		this.resource(key).subscribe(handler);
 	}
 }

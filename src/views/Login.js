@@ -3,31 +3,41 @@ import React from 'react';
 import { InjectedComponent } from '../logic';
 import { Components, Events } from '.';
 
-export class Login extends InjectedComponent {
-	componentDidMount() {
-		this.fire(Events.changeTitle, "Anmälningssytem Gävle PK");
-	}
+export function withLogin(View) {
+	return class extends InjectedComponent {
+		constructor(props) {
+			super(props);
+			this.subscribe(Events.userChanged, () => this.setState({}));
+		}
 
-	render() {
-		let session = this.inject(Components.Session);
-		return <div className='login'>
-			<form className='login' onSubmit={e => {
-				e.preventDefault();
-				if (session.user !== undefined && session.user !== "") {
-					session.loggedIn = true;
-					this.props.history.goBack();
-				}
-				// ToDo: handle denied
-			}}>
-				<h3>Inloggning</h3>
-				<table>
-					<tbody>
-						<tr><td>Användarnamn:&nbsp;</td><td><input id='userName' type='text' size='20' value={session.user || ""} onChange={e => { session.user = e.target.value; this.setState({}); }} /></td></tr>
-						<tr><td>Lösenord:</td><td><input id='password' type='password' size='20' /></td></tr>
-					</tbody>
-				</table>
-				<button className="button" type="submit">Logga in</button>
-			</form>
-		</div>;
+		componentDidMount() {
+			this.fire(Events.changeTitle, "Anmälningssytem Gävle PK");
+		}
+
+		login = (e) => {
+			console.log("Logging in");
+			e.preventDefault();
+			this.inject(Components.Session).login(this.user.value, this.password.value);
+		}
+
+		render() {
+			if (this.inject(Components.Session).user === "") {
+				return <div className='login'>
+					<form className='login' onSubmit={this.login}>
+						<h3>Inloggning</h3>
+						<table>
+							<tbody>
+								<tr><td>Användarnamn:&nbsp;</td><td><input id='userName' type='text' size='20' ref={input => this.user = input} /></td></tr>
+								<tr><td>Lösenord:</td><td><input id='password' type='password' size='20' ref={input => this.password = input} /></td></tr>
+							</tbody>
+						</table>
+						<button className="button" type="submit">Logga in</button>
+					</form>
+				</div>;
+			}
+			return <View {...this.props} />;
+		}
 	}
 }
+
+export const Login = withLogin(props => { props.history.goBack(); return null; });

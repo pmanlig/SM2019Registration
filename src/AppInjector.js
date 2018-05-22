@@ -1,7 +1,10 @@
-import { Injector, EventBus, Server, Storage } from './logic';
+import { Injector, Server, Storage } from './logic';
 import { Registry, Registration, Session } from './models';
-import { Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary, StoreQuestion } from './components';
-import { RegistrationView, CreateCompetition, CompetitionList, About, Login } from './views';
+import {
+	Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary,
+	StoreQuestion, EventInfo
+} from './components';
+import { RegistrationView, CreateCompetition, CompetitionList, About, Login, withLogin } from './views';
 import { App } from './App';
 
 export class StorageKeys {
@@ -29,12 +32,12 @@ export class Events {
 	static setRegistrationInfo = Events.eventId++;
 	static registrationUpdated = Events.eventId++;
 	static register = Events.eventId++;
+	static userChanged = Events.eventId++;
 }
 
 export class Components {
 	static componentId = 1;
 	static App = Components.componentId++;
-	static EventBus = Components.componentId++;
 	static Server = Components.componentId++;
 	static Storage = Components.componentId++;
 	static Footers = Components.componentId++;
@@ -56,15 +59,12 @@ export class Components {
 	static About = Components.componentId++;
 	static Login = Components.componentId++;
 	static StoreQuestion = Components.componentId++;
+	static EventInfo = Components.componentId++;
 }
 
 export class AppInjector extends Injector {
 	constructor() {
 		super();
-		let ev = new EventBus();
-		this.subscribe = ev.subscribe.bind(ev);
-		this.fire = ev.fire.bind(ev);
-		this.register(Components.EventBus, ev);
 		let storage = new Storage(this);
 		storage.registerKey(StorageKeys.allowStorage);
 		storage.registerKey(StorageKeys.lastContact);
@@ -82,7 +82,7 @@ export class AppInjector extends Injector {
 		this.registerComponent(Components.Toolbar, Toolbar);
 		this.registerComponent(Components.RegistrationView, RegistrationView);
 		this.registerComponent(Components.Competitions, CompetitionList);
-		this.registerComponent(Components.CreateCompetition, CreateCompetition);
+		this.registerComponent(Components.CreateCompetition, withLogin(CreateCompetition));
 		this.registerComponent(Components.AppHeader, AppHeader);
 		this.registerComponent(Components.BusyIndicator, BusyIndicator);
 		this.registerComponent(Components.RegistrationContact, RegistrationContact);
@@ -91,5 +91,6 @@ export class AppInjector extends Injector {
 		this.registerComponent(Components.About, About);
 		this.registerComponent(Components.Login, Login);
 		this.registerComponent(Components.StoreQuestion, StoreQuestion);
+		this.registerComponent(Components.EventInfo, EventInfo);
 	}
 }

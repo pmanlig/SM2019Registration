@@ -1,0 +1,36 @@
+#saveButton {
+	margin-top: 15px;
+	padding: 8px 12px;
+	border: none;
+	border-radius: 15px;
+}
+
+.addEvent {
+	background-color: #4CAF50;
+	border: none;
+	color: white;
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+	text-align: center;
+	vertical-align: middle;
+	margin-left: 5px;
+}
+
+.eventInfo {
+	margin-left: 5px;
+}
+
+ul.events {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+ul.events > li {
+	margin: 2px;
+	padding: 7px;
+	border-radius: 4px;
+	color: white;
+	background-color: #a0cfff;
+}

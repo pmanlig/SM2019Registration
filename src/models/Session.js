@@ -1,5 +1,15 @@
-import { InjectedClass } from '../logic';
+import { Events, InjectedClass } from '../logic';
 
 export class Session extends InjectedClass {
-	loggedIn = false;
+	user = "";
+
+	login(user, password) {
+		this.user = user;
+		this.fire(Events.userChanged);
+	}
+
+	logout() {
+		this.user = "";
+		this.fire(Events.userChanged);
+	}
 }

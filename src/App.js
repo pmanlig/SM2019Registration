@@ -1,8 +1,8 @@
 import './App.css';
 import React from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { InjectedComponent } from './components';
 import { Components, StorageKeys } from './AppInjector';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 export class App extends InjectedComponent {
 	render() {
@@ -19,7 +19,7 @@ export class App extends InjectedComponent {
 			<BrowserRouter>
 				<div className="App">
 					<BusyIndicator />
-					<AppHeader title="Anmälningssystem Gävle PK"/>
+					<AppHeader title="Anmälningssystem Gävle PK" />
 					<Switch>
 						<Route exact path='/' component={this.inject(Components.Competitions)} />
 						<Route path='/login' component={this.inject(Components.Login)} />
