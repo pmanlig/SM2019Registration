@@ -1,3 +1,4 @@
+import "./CompetitionList.css";
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { InjectedComponent } from '../logic';
@@ -38,7 +39,8 @@ export class CompetitionList extends InjectedComponent {
 		let tokens = this.inject(Components.Storage).get("Tokens");
 		// ToDo: Should check permissions on a per-competition basis
 		return <div id='competitions' className='content'>
-			<ul>
+			<h1 style={{textAlign: "center", marginTop: "40px"}}>Tävlingar</h1>
+			<ul className="competitions">
 				{this.state.competitions.map(c => <li key={c.id}>
 					<Link to={"/competition/" + c.id + ((tokens !== undefined && tokens[c.id] !== undefined) ? "/" + tokens[c.id] : "")}>{c.name}</Link>
 					{loggedIn && (<span>&nbsp;<Link to={"/admin/" + c.id}>(Administrera)</Link></span>)}

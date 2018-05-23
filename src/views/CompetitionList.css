@@ -1,0 +1,16 @@
+ul.competitions {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	width: 30%;
+	text-align: center;
+	margin: auto;
+}
+
+ul.competitions > li {
+	margin: 3px;
+	padding: 7px;
+	border-radius: 4px;
+	color: white;
+	background-color: #a0cfff;
+}
