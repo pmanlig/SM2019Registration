@@ -2,9 +2,10 @@ import "./CompetitionList.css";
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { InjectedComponent } from '../logic';
-import { Events, Components } from '.';
+import { withTitle } from '../components';
+import { Components } from '.';
 
-export class CompetitionList extends InjectedComponent {
+export const CompetitionList = withTitle("Anmälningssytem Gävle PK", class extends InjectedComponent {
 	static initial = [
 		{
 			id: "sm2019",
@@ -27,7 +28,6 @@ export class CompetitionList extends InjectedComponent {
 		this.state = {
 			competitions: CompetitionList.initial
 		};
-		this.fire(Events.changeTitle, "Anmälningssytem Gävle PK");
 		fetch('https://dev.bitnux.com/sm2019/competition')
 			.then(result => result.json())
 			.then(json => this.setState({ competitions: this.state.competitions.concat(json) }));
@@ -49,4 +49,4 @@ export class CompetitionList extends InjectedComponent {
 			</ul>
 		</div>;
 	}
-}
+});

@@ -3,7 +3,7 @@ export { BusyIndicator, Busy } from './BusyIndicator';
 export { Toolbar } from './Toolbar';
 export { Summary } from './Summary';
 export { ParticipantPicker } from './ParticipantPicker';
-export { AppHeader } from './AppHeader';
+export { AppHeader, withTitle } from './AppHeader';
 export { RegistrationContact } from './RegistrationContact';
 export { RegistrationForm } from './RegistrationForm';
 export { StoreQuestion } from './StoreQuestion';

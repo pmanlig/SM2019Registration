@@ -4,6 +4,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { InjectedComponent, Components, Events } from '.';
 
+export function withTitle(title, View) {
+	return class extends InjectedComponent {
+		componentDidMount() {
+			this.fire(Events.changeTitle, title);
+		}
+
+		render() {
+			return <View {...this.props} />;
+		}
+	}
+}
+
 export class AppHeader extends InjectedComponent {
 	constructor(props) {
 		super(props);

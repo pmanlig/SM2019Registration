@@ -1,12 +1,8 @@
 import React from 'react';
 import { InjectedComponent } from '../logic';
-import { Events } from '.';
+import { withTitle } from '../components';
 
-export class About extends InjectedComponent {
-	componentDidMount() {
-		this.fire(Events.changeTitle, "Om Systemet");
-	}
-
+export const About = withTitle("Om systemet", class extends InjectedComponent {
 	render(props) {
 		return <div id='about' className='content'>
 			<h2>Om tävlingsanmälan Gävle PK</h2>
@@ -34,4 +30,4 @@ export class About extends InjectedComponent {
 				och Johan Söderberg (tjänster och databas).</p>
 		</div>
 	}
-}
+});

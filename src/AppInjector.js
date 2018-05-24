@@ -11,6 +11,7 @@ export class StorageKeys {
 	static allowStorage = "allowStorage";
 	static lastContact = "lastContact";
 	static registry = "registry";
+	static newCompetition = "newCompetition";
 }
 
 export class Resources {
@@ -80,17 +81,17 @@ export class AppInjector extends Injector {
 		this.registerComponent(Components.Footer, Footer);
 		this.registerComponent(Components.ParticipantPicker, ParticipantPicker);
 		this.registerComponent(Components.Toolbar, Toolbar);
-		this.registerComponent(Components.RegistrationView, RegistrationView);
-		this.registerComponent(Components.Competitions, CompetitionList);
-		this.registerComponent(Components.CreateCompetition, withLogin(CreateCompetition));
 		this.registerComponent(Components.AppHeader, AppHeader);
 		this.registerComponent(Components.BusyIndicator, BusyIndicator);
 		this.registerComponent(Components.RegistrationContact, RegistrationContact);
 		this.registerComponent(Components.RegistrationForm, RegistrationForm);
 		this.registerComponent(Components.Summary, Summary);
-		this.registerComponent(Components.About, About);
 		this.registerComponent(Components.Login, Login);
 		this.registerComponent(Components.StoreQuestion, StoreQuestion);
 		this.registerComponent(Components.EventInfo, EventInfo);
+		this.registerComponent(Components.RegistrationView, RegistrationView);
+		this.registerComponent(Components.About, About);
+		this.registerComponent(Components.Competitions, CompetitionList);
+		this.registerComponent(Components.CreateCompetition, withLogin(CreateCompetition));
 	}
 }

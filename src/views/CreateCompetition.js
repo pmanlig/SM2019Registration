@@ -1,10 +1,14 @@
 import "./CreateCompetition.css";
 import React from 'react';
-import { Events, InjectedComponent } from '../logic';
+import { Components, Events, InjectedComponent, StorageKeys } from '../logic';
+import { withTitle } from '../components';
 
 function Event({ event }) {
 	return <li>
-		<div>{event.name}</div>
+		<div className="eventTitle">
+			<span>{event.name}</span>
+			<button className="delete">x</button>
+		</div>
 		<input type="text" size="15" placeholder="Inget datum valt" />
 		<select className="eventInfo">
 			<option value="none">Inget schema</option>
@@ -21,18 +25,16 @@ function Event({ event }) {
 	</li>;
 }
 
-export class CreateCompetition extends InjectedComponent {
+export const CreateCompetition = withTitle("Skapa ny tävling", class extends InjectedComponent {
 	constructor(props) {
 		super(props);
+		// ToDo: Load settings
+		this.inject(Components.Storage).get(StorageKeys.newCompetition);
 		this.state = {
 			name: "",
 			description: "",
 			events: []
 		};
-	}
-
-	componentDidMount() {
-		this.fire(Events.changeTitle, "Skapa ny tävling");
 	}
 
 	addEvent = () => {
@@ -66,4 +68,4 @@ export class CreateCompetition extends InjectedComponent {
 			<button id="saveButton" className="button">Skapa</button>
 		</div>;
 	}
-}
+});
