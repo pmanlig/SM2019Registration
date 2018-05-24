@@ -13,7 +13,9 @@ export function withLogin(View) {
 		}
 
 		componentDidMount() {
-			this.fire(Events.changeTitle, "Anmälningssytem Gävle PK");
+			if (this.inject(Components.Session).user === "") {
+				this.fire(Events.changeTitle, "Anmälningssytem Gävle PK");
+			}
 		}
 
 		login = (e) => {
