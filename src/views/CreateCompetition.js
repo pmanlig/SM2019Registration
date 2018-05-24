@@ -1,6 +1,6 @@
 import "./CreateCompetition.css";
 import React from 'react';
-import { Components, Events, InjectedComponent, StorageKeys } from '../logic';
+import { Events, InjectedComponent, setCookie, getCookie } from '../logic';
 import { withTitle } from '../components';
 
 function Event({ event }) {
@@ -28,19 +28,21 @@ function Event({ event }) {
 export const CreateCompetition = withTitle("Skapa ny tävling", class extends InjectedComponent {
 	constructor(props) {
 		super(props);
-		// ToDo: Load settings
-		this.inject(Components.Storage).get(StorageKeys.newCompetition);
-		this.state = {
-			name: "",
-			description: "",
-			events: []
-		};
+		this.state =
+			JSON.parse(getCookie("newCompetition", undefined)) ||
+			{
+				name: "",
+				description: "",
+				events: []
+			};
 	}
 
 	addEvent = () => {
 		let newEvent = this.newEventName.value;
 		if (this.state.events.filter(e => e.name === newEvent).length === 0) {
-			this.setState({ events: this.state.events.concat([{ name: newEvent }]) });
+			let newState = { ...this.state, events: [...this.state.events, { name: newEvent }] }
+			this.setState(newState);
+			setCookie("newCompetition", JSON.stringify(newState))
 		} else {
 			this.fire(Events.addFooter, "Deltävlingen finns redan, välj ett unikt namn för att skapa ny deltävling!");
 		}
