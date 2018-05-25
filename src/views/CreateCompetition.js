@@ -7,7 +7,7 @@ function Event({ event }) {
 	return <li>
 		<div className="eventTitle">
 			<span>{event.name}</span>
-			<button className="delete">x</button>
+			<button className="deleteButton">x</button>
 		</div>
 		<input type="text" size="15" placeholder="Inget datum valt" />
 		<select className="eventInfo">

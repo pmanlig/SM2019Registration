@@ -36,3 +36,16 @@ ul.events > li {
 	color: white;
 	background-color: #a0cfff;
 }
+
+.eventTitle {
+	display: flex;
+}
+
+.eventTitle > span {
+	flex-grow: 1;
+}
+
+.eventTitle > button {
+	flex-grow: 0;
+	background-color: #ff5050;
+}
