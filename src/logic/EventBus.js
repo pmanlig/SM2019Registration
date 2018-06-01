@@ -1,8 +1,8 @@
-import Rx from 'rxjs';
+import { Subject } from 'rxjs';
 
 export class EventBus {
 	constructor() {
-		this.bus = new Rx.Subject();
+		this.bus = new Subject();
 	}
 
 	subscribe(event, action) {

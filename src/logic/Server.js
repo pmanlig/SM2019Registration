@@ -46,7 +46,7 @@ export class Server extends InjectedClass {
 		return JSON.stringify({
 			competition: reg.competition.id,
 			token: reg.competition.token,
-			contact: { name: reg.contact.name, email: reg.contact.email, organization: reg.contact.organization },
+			contact: { name: reg.contact.name, email: reg.contact.email, organization: reg.contact.organization, account: reg.contact.account },
 			registration: reg.participants.map(p => {
 				return {
 					participant: {
@@ -76,8 +76,12 @@ export class Server extends InjectedClass {
 				if (res.ok) {
 					return res.json();
 				}
-				if (res.statusText)
+				/*
+				// Don't remember why this was used before...?
+				if (res.statusText) {
 					throw Error(res.statusText);
+				}
+				*/
 				return res.json().then(json => {
 					console.log(json);
 					throw Error(json.message);
