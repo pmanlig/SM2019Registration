@@ -20,8 +20,9 @@ export class Footers extends InjectedClass {
 	}
 
 	addFooter(msg, type = "error", timeout = 3000) {
+		if (this.footers.filter(f => f.msg === msg).length > 0) { return; }
 		let myId = this.messageId++;
-		let newFooter = { id: myId, content: <div key={myId} className={type}><p className="centered">{msg}</p></div> };
+		let newFooter = { id: myId, msg: msg, content: <div key={myId} className={type}><p className="centered">{msg}</p></div> };
 		this.footers = [newFooter].concat(this.footers);
 		let timer = setTimeout(() => {
 			this.deleteFooter(myId);
