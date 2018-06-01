@@ -9,7 +9,11 @@ export const CreateCompetition = withTitle("Skapa ny tävling", class extends In
 		let data = JSON.parse(getCookie("newCompetition", undefined));
 		if (data) {
 			data.events.forEach(e => e.date = new Date(e.date));
-			data.event.date = new Date(data.event.date);
+			if (data.event) {
+				data.event.date = new Date(data.event.date);
+			} else {
+				data.event = { name: "", date: new Date() };
+			}
 		}
 		this.state = data ||
 			{
