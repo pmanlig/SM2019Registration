@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { InjectedComponent } from '../logic';
 import { withTitle } from '../components';
-import { Components } from '.';
+import { Components, Events } from '.';
 
 const initialCompetitions = [
 	{
@@ -11,16 +11,27 @@ const initialCompetitions = [
 		name: "SM 2019 (Test)",
 		url: "/sm2019.json",
 		description: "SM i precision, fält och milsnabb 2019",
-		status: "open"
+		status: "Open",
+		permissions: "Own"
 	},
 	{
 		id: "gf2018",
 		name: "Gävligfälten 2018 (Test)",
 		url: "/gf2018.json",
 		description: "Gävligfälten 2018",
-		status: "open"
+		status: "Open",
+		permissions: "Admin"
 	}
 ];
+
+function Competition({ competition, token }) {
+	let link = "/competition/" + competition.id + (token !== undefined ? "/" + token : "");
+	return <li>
+		<Link to={link}>{competition.name}</Link>
+		{competition.permissions === "Own" && (<span>&nbsp;<Link to={"/admin/" + competition.id}>(Administrera)</Link></span>)}
+		{competition.permissions !== "Participate" && (<span>&nbsp;<Link to={"/report/" + competition.id}>(Rapportera)</Link></span>)}
+	</li>
+}
 
 export const CompetitionList = withTitle("Anmälningssytem Gävle PK", class extends InjectedComponent {
 	constructor(props) {
@@ -28,23 +39,26 @@ export const CompetitionList = withTitle("Anmälningssytem Gävle PK", class ext
 		this.state = {
 			competitions: initialCompetitions
 		};
+		this.subscribe(Events.userChanged, () => this.setState({}));
 		fetch('https://dev.bitnux.com/sm2019/competition')
 			.then(result => result.json())
-			.then(json => this.setState({ competitions: this.state.competitions.concat(json) }));
+			.then(json => this.setState({ competitions: this.state.competitions.concat(json.map(c => { return { permissions: "Participate", ...c }; })) }));
+	}
+
+	getToken(c) {
+		let tokens = this.inject(Components.Storage).get("Tokens");
+		if (!tokens) { return undefined; }
+		return tokens[c.id];
 	}
 
 	render() {
 		let session = this.inject(Components.Session);
 		let loggedIn = session.user !== "";
-		let tokens = this.inject(Components.Storage).get("Tokens");
 		// ToDo: Should check permissions on a per-competition basis
 		return <div id='competitions' className='content'>
 			<h1>Tävlingar</h1>
 			<ul>
-				{this.state.competitions.map(c => <li key={c.id}>
-					<Link to={"/competition/" + c.id + ((tokens !== undefined && tokens[c.id] !== undefined) ? "/" + tokens[c.id] : "")}>{c.name}</Link>
-					{loggedIn && (<span>&nbsp;<Link to={"/admin/" + c.id}>(Administrera)</Link></span>)}
-				</li>)}
+				{this.state.competitions.map(c => <Competition key={c.id} competition={c} token={this.getToken(c)} />)}
 				{loggedIn && <li><Link to="/create">Skapa ny tävling</Link></li>}
 			</ul>
 		</div>;
