@@ -9,4 +9,6 @@ export { RegistrationForm } from './RegistrationForm';
 export { StoreQuestion } from './StoreQuestion';
 export { EventInfo } from './EventInfo';
 export { Footer, Footers } from './Footer';
+export { Event } from './Event';
+export { EventList } from './EventList';
 export { Events, Components, StorageKeys } from '../AppInjector';

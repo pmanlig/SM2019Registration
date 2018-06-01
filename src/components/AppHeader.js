@@ -37,13 +37,13 @@ export class AppHeader extends InjectedComponent {
 			<h1 className="App-title">
 				<Link to="/"><img src={logo} className="Gpk-logo" alt="logo" /></Link>
 				{this.state.title}
-				<Link to='/about' className='button globaltool'>Om...</Link>
-				{session.user !== "" && <Link to='' className='button globaltool' onClick={e => {
-					session.logout();
-					e.preventDefault();
-				}}>{'Logga ut ' + session.user}</Link>}
-				{session.user === "" && <Link to='/login' className='button globaltool'>Logga in</Link>}
 			</h1>
+			{session.user !== "" && <Link to='' className='globaltool' onClick={e => {
+				session.logout();
+				e.preventDefault();
+			}}>{'Logga ut ' + session.user}</Link>}
+			{session.user === "" && <Link to='/login' className='globaltool'>Logga in</Link>}
+			<Link to='/about' className='globaltool'>Om...</Link>
 		</header>
 	}
 }

@@ -5,28 +5,28 @@ import { InjectedComponent } from '../logic';
 import { withTitle } from '../components';
 import { Components } from '.';
 
-export const CompetitionList = withTitle("Anmälningssytem Gävle PK", class extends InjectedComponent {
-	static initial = [
-		{
-			id: "sm2019",
-			name: "SM 2019 (Test)",
-			url: "/sm2019.json",
-			description: "SM i precision, fält och milsnabb 2019",
-			status: "open"
-		},
-		{
-			id: "gf2018",
-			name: "Gävligfälten 2018 (Test)",
-			url: "/gf2018.json",
-			description: "Gävligfälten 2018",
-			status: "open"
-		}
-	];
+const initialCompetitions = [
+	{
+		id: "sm2019",
+		name: "SM 2019 (Test)",
+		url: "/sm2019.json",
+		description: "SM i precision, fält och milsnabb 2019",
+		status: "open"
+	},
+	{
+		id: "gf2018",
+		name: "Gävligfälten 2018 (Test)",
+		url: "/gf2018.json",
+		description: "Gävligfälten 2018",
+		status: "open"
+	}
+];
 
+export const CompetitionList = withTitle("Anmälningssytem Gävle PK", class extends InjectedComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			competitions: CompetitionList.initial
+			competitions: initialCompetitions
 		};
 		fetch('https://dev.bitnux.com/sm2019/competition')
 			.then(result => result.json())
