@@ -7,7 +7,10 @@ import { Components, Events } from '.';
 export class ReportView extends InjectedComponent {
 	constructor(props) {
 		super(props);
-		this.state = { event: "none", results: [] };
+		this.state = {
+			eventId: "none",
+			results: []
+		};
 		this.inject(Components.Registration).loadCompetition(props.match.params.id, undefined);
 		this.subscribe(Events.registrationUpdated, r => {
 			this.fire(Events.changeTitle, "Registrera resultat för " + r.competition.name);
@@ -16,16 +19,25 @@ export class ReportView extends InjectedComponent {
 	}
 
 	changeEvent(newEvent) {
-		this.inject(Components.Server).loadResults(this.state.competition.id, newEvent, r => this.setState({ results: r }));
+		this.inject(Components.Server).loadResults(this.state.competition.id, newEvent, r => this.setState({ eventId: newEvent, results: r }));
+	}
+
+	getSelectedEvent() {
+		if (this.state.eventId === "none") {
+			return null;
+		}
+		return this.state.competition.events.filter(e => toString(e.id) === toString(this.state.eventId))[0];
 	}
 
 	render() {
+		let selectedEvent = this.getSelectedEvent();
+		console.log(selectedEvent);
 		return <div id="results" className="content">
-			<div>Resultat för deltävling <select value={this.state.event} onChange={e => this.changeEvent(e.target.value)}>
+			<div>Resultat för deltävling <select value={this.state.eventId} onChange={e => this.changeEvent(e.target.value)}>
 				<option value="none">Välj deltävling</option>
 				{this.inject(Components.Registration).competition.events.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
 			</select></div>
-			<Results value={this.state.results} />
+			<Results value={this.state.results} event={selectedEvent} />
 		</div>;
 	}
 }

@@ -43,7 +43,9 @@
 			"name": "Gävligfälten 2018",
 			"maxRegistrations": 4,
 			"divisions": 1,
-			"classes": 1
+			"classes": 1,
+			"series": 8,
+			"scores": 2
 		}
 	],
 	"eventGroups": [

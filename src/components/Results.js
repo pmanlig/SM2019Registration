@@ -5,24 +5,28 @@ function Scores({ participant }) {
 	return participant.score.map(s => <td key={field++}><input value={s} size="2" /></td>);
 }
 
-export function Results(props) {
+function series(event) {
+	if (null === event) {
+		return null;
+	}
+	let s = [];
+	for (let i = 1; i <= event.series; i++) {
+		s.push(<th key={i} className="round">{i}</th>);
+	}
+	return s;
+}
+
+export function Results({ value, event }) {
 	return <table>
 		<thead>
 			<tr>
 				<th>Namn</th>
 				<th>Förening</th>
-				<th className="round">1</th>
-				<th className="round">2</th>
-				<th className="round">3</th>
-				<th className="round">4</th>
-				<th className="round">5</th>
-				<th className="round">6</th>
-				<th className="round">7</th>
-				<th className="round">8</th>
+				{series(event)}
 			</tr>
 		</thead>
 		<tbody>
-			{props.value.map(r => <tr key={r.id}>
+			{value.map(r => <tr key={r.id}>
 				<td>{r.name}</td>
 				<td>{r.organization}</td>
 				<Scores participant={r} />
