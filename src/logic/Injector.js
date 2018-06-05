@@ -86,11 +86,12 @@ export class Injector {
 		let ComponentWithEvents = withEvents(Component);
 		this.register(id, props =>
 			<ComponentWithEvents
+				{...props}
 				injector={this}
 				inject={this.inject}
 				subscribe={this.subscribe}
 				fire={this.fire}
-				{...props} />);
+			/>);
 	}
 
 	unregister = (key) => {
