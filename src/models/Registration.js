@@ -77,6 +77,7 @@ export class Registration extends InjectedClass {
 					this.contact = newContact;
 
 					// Loading participants from json
+					this.participants = [];
 					json.registration.forEach(entry => {
 						let p = entry.participant;
 						this.addParticipant({ name: p.name, competitionId: p.id, organization: p.organization }, entry.entries);

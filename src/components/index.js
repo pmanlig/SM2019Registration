@@ -12,4 +12,5 @@ export { Footer, Footers } from './Footer';
 export { Event } from './Event';
 export { EventList } from './EventList';
 export { Results } from './Results';
+export { CompetitionTabs } from './CompetitionTabs';
 export { Events, Components, StorageKeys } from '../AppInjector';

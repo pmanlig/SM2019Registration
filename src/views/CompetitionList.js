@@ -25,11 +25,11 @@ const initialCompetitions = [
 ];
 
 function Competition({ competition, token }) {
-	let link = "/competition/" + competition.id + (token !== undefined ? "/" + token : "");
+	let link = "/competition/" + competition.id + "/register" + (token !== undefined ? "/" + token : "");
 	return <li>
 		<Link to={link}>{competition.name}</Link>
-		{competition.permissions === "Own" && (<span>&nbsp;<Link to={"/admin/" + competition.id}>(Administrera)</Link></span>)}
-		{competition.permissions !== "Participate" && (<span>&nbsp;<Link to={"/report/" + competition.id}>(Rapportera)</Link></span>)}
+		{competition.permissions === "Own" && (<span>&nbsp;<Link to={"/competition/" + competition.id + "/admin"}>(Administrera)</Link></span>)}
+		{competition.permissions !== "Participate" && (<span>&nbsp;<Link to={"/competition/" + competition.id + "/report"}>(Rapportera)</Link></span>)}
 	</li>
 }
 
