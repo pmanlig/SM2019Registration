@@ -64,7 +64,6 @@ export class Registration extends InjectedClass {
 	loadCompetition(id, token) {
 		this.inject(Components.Server).loadCompetition(id, json => {
 			this.competition = Competition.fromJson(json);
-			this.fire(Events.changeTitle, "Anmälan till " + json.description);
 			this.participants = [];
 			this.fire(Events.registrationUpdated, this);
 			if (token !== undefined) {

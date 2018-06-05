@@ -4,7 +4,7 @@ import {
 	Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary,
 	StoreQuestion, EventInfo
 } from './components';
-import { RegistrationView, CreateCompetition, CompetitionList, About, Login, withLogin } from './views';
+import { RegistrationView, ReportView, CreateCompetition, CompetitionList, About, Login, withLogin } from './views';
 import { App } from './App';
 
 export class StorageKeys {
@@ -52,6 +52,7 @@ export class Components {
 	static BusyIndicator = Components.componentId++;
 	static Busy = Components.componentId++;
 	static RegistrationView = Components.componentId++;
+	static ReportView = Components.componentId++;
 	static RegistrationContact = Components.componentId++;
 	static RegistrationForm = Components.componentId++;
 	static Summary = Components.componentId++;
@@ -90,6 +91,7 @@ export class AppInjector extends Injector {
 		this.registerComponent(Components.StoreQuestion, StoreQuestion);
 		this.registerComponent(Components.EventInfo, EventInfo);
 		this.registerComponent(Components.RegistrationView, RegistrationView);
+		this.registerComponent(Components.ReportView, ReportView);
 		this.registerComponent(Components.About, About);
 		this.registerComponent(Components.Competitions, CompetitionList);
 		this.registerComponent(Components.CreateCompetition, withLogin(CreateCompetition));

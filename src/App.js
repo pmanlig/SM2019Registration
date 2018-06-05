@@ -25,6 +25,7 @@ export class App extends InjectedComponent {
 						<Route path='/login' component={this.inject(Components.Login)} />
 						<Route path='/competition/:id/:token' component={this.inject(Components.RegistrationView)} />
 						<Route path='/competition/:id' component={this.inject(Components.RegistrationView)} />
+						<Route path='/report/:id' component={this.inject(Components.ReportView)} />
 						<Route exact path='/create' component={this.inject(Components.CreateCompetition)} />
 						<Route exact path='/about' component={this.inject(Components.About)} />
 					</Switch>

@@ -5,6 +5,7 @@ export class Server extends InjectedClass {
 
 	load(url, callback) {
 		this.inject(Components.Busy).setBusy(Components.Server, true);
+		console.log("Fetching URL " + url);
 		fetch(url)
 			.then(result => result.json())
 			.then(json => {
@@ -20,16 +21,22 @@ export class Server extends InjectedClass {
 		// .finally(() => this.inject(Components.Busy).setBusy(Server.id, false));
 	}
 
-	loadCompetition(id, callback) {
+	loadCompetition(competitionId, callback) {
 		console.log("Loading competition data");
-		let numId = parseInt(id, 10);
-		this.load(isNaN(numId) ? '/' + id + '.json' : Server.baseUrl + 'competition/' + id, callback);
+		let numId = parseInt(competitionId, 10);
+		this.load(isNaN(numId) ? '/' + competitionId + '.json' : Server.baseUrl + 'competition/' + competitionId, callback);
 	}
 
-	loadRegistration(id, token, callback) {
-		console.log("Loading competition registration data");
-		let numId = parseInt(id, 10);
-		this.load(isNaN(numId) ? '/' + id + '_token.json' : Server.baseUrl + 'competition/' + id + '/' + token, callback);
+	loadRegistration(competitionId, token, callback) {
+		console.log("Loading competition registration data for competition " + competitionId);
+		let numId = parseInt(competitionId, 10);
+		this.load(isNaN(numId) ? '/' + competitionId + '_token.json' : Server.baseUrl + 'competition/' + competitionId + '/' + token, callback);
+	}
+
+	loadResults(competitionId, eventId, callback) {
+		console.log("Loading competition results for competition " + competitionId);
+		let numId = parseInt(competitionId, 10);
+		this.load(isNaN(numId) ? '/' + competitionId + '_result.json' : Server.baseUrl + 'result/' + competitionId, callback);
 	}
 
 	eventList(reg, participant) {

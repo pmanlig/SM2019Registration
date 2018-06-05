@@ -8,7 +8,10 @@ export class RegistrationView extends InjectedComponent {
 		super(props);
 		this.state = { token: props.match.params.token };
 		this.inject(Components.Registration).loadCompetition(props.match.params.id, props.match.params.token);
-		this.subscribe(Events.registrationUpdated, r => this.setState({ token: r.competition.token }));
+		this.subscribe(Events.registrationUpdated, r => {
+			this.fire(Events.changeTitle, "Anmälan till " + r.competition.description);
+			this.setState({ token: r.competition.token })
+		});
 	}
 
 	render() {
