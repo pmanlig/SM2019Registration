@@ -6,20 +6,22 @@ import { InjectedComponent } from '../logic';
 export class RegistrationView extends InjectedComponent {
 	constructor(props) {
 		super(props);
-		this.state = { token: props.match.params.token };
-		this.inject(Components.Registration).loadCompetition(props.match.params.id, props.match.params.token);
-		this.subscribe(Events.registrationUpdated, r => {
-			this.fire(Events.changeTitle, "Anmälan till " + r.competition.description);
-			this.setState({ token: r.competition.token })
-		});
+		let state = this.inject(Components.CompetitionState);
+		this.subscribe(Events.registrationUpdated, () => this.setState({}));
+		this.fire(Events.changeTitle, "Anmälan till " + state.competition.name);
+		state.loadRegistration(props.match.params.id, props.match.params.token);
 	}
 
 	render() {
+		// ToDo: rewrite to make this unnecessary
+		/*
 		if (this.state.token !== undefined && this.state.token !== this.props.match.params.token) {
 			return <Redirect to={'/competition/' + this.props.match.params.id + '/' + this.state.token} />
 		}
+		*/
 
-		const registrationInfo = this.inject(Components.Registration);
+		const state = this.inject(Components.CompetitionState);
+		const registrationInfo = state.registration;
 		const ParticipantPicker = this.inject(Components.ParticipantPicker);
 		const Toolbar = this.inject(Components.Toolbar);
 		const RegistrationContact = this.inject(Components.RegistrationContact);

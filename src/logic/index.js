@@ -4,4 +4,5 @@ export { EventBus } from './EventBus';
 export { Validation } from './Validation';
 export { Server } from './Server';
 export { Storage } from './Storage';
+export { CompetitionState } from './CompetitionState';
 export { setCookie, getCookie, deleteCookie } from './Cookies';

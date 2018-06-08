@@ -1,21 +1,41 @@
+import "./CompetitionView.css";
 import React from 'react';
-import { Redirect } from 'react-router-dom';
-import { CompetitionTabs } from '../components';
+import { Link, Redirect } from 'react-router-dom';
 import { InjectedComponent } from '../logic';
 import { Components, Events } from '.';
 
 export class CompetitionView extends InjectedComponent {
 	constructor(props) {
 		super(props);
-		// this.subscribe(Events.registrationUpdated, r => this.setState({}));
-		this.inject(Components.Registration).loadCompetition(props.match.params.id, props.match.params.token);
+		this.subscribe(Events.competitionUpdated, () => this.setState({}));
+		this.inject(Components.CompetitionState).loadCompetition(props.match.params.id);
 	}
 
 	render() {
-		if (this.props.match.params.operation === "register") {
-			const RegistrationView = this.inject(Components.RegistrationView);
-			return <div><CompetitionTabs {...this.props} /><RegistrationView {...this.props} /></div>;
+		let operation = this.props.match.params.operation;
+		let tabs = [
+			{ name: "Anmälan", path: "register", component: this.inject(Components.RegistrationView) },
+			{ name: "Rapportera", path: "report", component: () => <h5>Rapportera resultat</h5> },
+			{ name: "Administrera", path: "admin", component: () => <h5>Administrera</h5> }
+		];
+
+		let Content = null;
+		tabs.forEach(t => { if (operation === t.path) { Content = t.component; } });
+		if (Content === null) {
+			return <Redirect to='/' />;
 		}
-		return <Redirect to='/' />;
+
+		return <div className="tabs">
+			{
+				tabs.map(t => {
+					// ToDo: implement permissions
+					if (operation === t.path) {
+						return <p key={t.path} className="tab">{t.name}</p>
+					}
+					return <Link key={t.path} className="tab" to={"/competition/" + this.props.match.params.id + "/" + t.path}>{t.name}</Link>;
+				})
+			}
+			<Content {...this.props} />
+		</div>;
 	}
 }

@@ -3,7 +3,7 @@
 	background-color: #222;
 }
 
-.tabs > a {
+.tab {
 	display: inline-block;
 	text-decoration: none;
 	background-color: white;
@@ -14,14 +14,16 @@
 	border-bottom: 1px solid black;
 }
 
-.tabs > a:first-child {
-	margin-left: 5px;
-}
-
-a.selected {
+p.tab {
 	border-bottom: 1px solid white;
 }
 
 .tabs > a:visited {
 	color: black;
+}
+
+h5 {
+	background-color: white;
+	margin: 0;
+	padding: 10px;
 }

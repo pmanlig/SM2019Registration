@@ -1,7 +1,7 @@
 export class Competition {
-	id;
-	name;
-	description;
+	id = 0;
+	name = "";
+	description = "";
 	divisionGroups = [];
 	classGroups = [];
 	eventGroups = [];
@@ -9,23 +9,17 @@ export class Competition {
 	rules = [];
 
 	static fromJson(obj) {
-		let newObj = new Competition(obj.id, obj.name, obj.description);
+		let newObj = new Competition();
 		// ToDo: remove when service is fixed!
-		if (newObj.id === undefined && obj.competition_id !== undefined) {
-			newObj.id = obj.competition_id;
-		}
+		newObj.id = obj.id || obj.competition_id;
+		newObj.name = obj.name;
+		newObj.description = obj.description;
 		newObj.divisionGroups = obj.divisionGroups;
 		newObj.classGroups = obj.classGroups;
 		newObj.eventGroups = obj.eventGroups;
 		newObj.events = obj.events;
 		newObj.rules = obj.rules;
 		return newObj;
-	}
-
-	constructor(id, name, description) {
-		this.id = id;
-		this.name = name;
-		this.description = description;
 	}
 
 	event(id) {

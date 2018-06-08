@@ -1,5 +1,5 @@
-import { Injector, Server, Storage } from './logic';
-import { Registry, Registration, Session } from './models';
+import { Injector, Server, Storage, CompetitionState } from './logic';
+import { Registry, Session } from './models';
 import {
 	Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary,
 	StoreQuestion, EventInfo
@@ -31,6 +31,7 @@ export class Events {
 	static showParticipantPicker = Events.eventId++;
 	static registryUpdated = Events.eventId++;
 	static setRegistrationInfo = Events.eventId++;
+	static competitionUpdated = Events.eventId++;
 	static registrationUpdated = Events.eventId++;
 	static register = Events.eventId++;
 	static userChanged = Events.eventId++;
@@ -45,8 +46,8 @@ export class Components {
 	static Footer = Components.componentId++;
 	static ParticipantPicker = Components.componentId++;
 	static Toolbar = Components.componentId++;
-	static Registration = Components.componentId++;
 	static Competitions = Components.componentId++;
+	static CompetitionState = Components.componentId++;
 	static CompetitionView = Components.componentId++;
 	static CreateCompetition = Components.componentId++;
 	static AppHeader = Components.componentId++;
@@ -78,7 +79,7 @@ export class AppInjector extends Injector {
 		this.register(Components.Footers, new Footers(this));
 		this.register(Components.Busy, new Busy(this));
 		this.register(Components.Registry, new Registry(this));
-		this.register(Components.Registration, new Registration(this));
+		this.register(Components.CompetitionState, new CompetitionState(this));
 		this.registerComponent(Components.App, App);
 		this.registerComponent(Components.Footer, Footer);
 		this.registerComponent(Components.ParticipantPicker, ParticipantPicker);

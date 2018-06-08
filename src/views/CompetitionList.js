@@ -28,8 +28,12 @@ function Competition({ competition, token }) {
 	let link = "/competition/" + competition.id + "/register" + (token !== undefined ? "/" + token : "");
 	return <li>
 		<Link to={link}>{competition.name}</Link>
-		{competition.permissions === "Own" && (<span>&nbsp;<Link to={"/competition/" + competition.id + "/admin"}>(Administrera)</Link></span>)}
 		{competition.permissions !== "Participate" && (<span>&nbsp;<Link to={"/competition/" + competition.id + "/report"}>(Rapportera)</Link></span>)}
+		{/*
+			// ToDo: figure out what links should be shown
+			competition.permissions === "Participate" && (<span>&nbsp;<Link to={"/competition/" + competition.id + "/result"}>(Resultat)</Link></span>)
+		*/}
+		{competition.permissions === "Own" && (<span>&nbsp;<Link to={"/competition/" + competition.id + "/admin"}>(Administrera)</Link></span>)}
 	</li>
 }
 
