@@ -1,4 +1,4 @@
-import { Injector, Server, Storage, CompetitionState } from './logic';
+import { Injector, Server, Storage } from './logic';
 import { Registry, Session, Registration, Competition } from './models';
 import {
 	Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary,
@@ -46,9 +46,9 @@ export class Components {
 	static Footer = Components.componentId++;
 	static ParticipantPicker = Components.componentId++;
 	static Toolbar = Components.componentId++;
-	static Competitions = Components.componentId++;
+	static Competition = Components.componentId++;
 	static Registration = Components.componentId++;
-	static CompetitionState = Components.componentId++;
+	static Competitions = Components.componentId++;
 	static CompetitionView = Components.componentId++;
 	static CreateCompetition = Components.componentId++;
 	static AppHeader = Components.componentId++;
@@ -80,7 +80,7 @@ export class AppInjector extends Injector {
 		this.register(Components.Footers, new Footers(this));
 		this.register(Components.Busy, new Busy(this));
 		this.register(Components.Registry, new Registry(this));
-		this.register(Components.CompetitionState, new CompetitionState(this));
+		this.register(Components.Competition, new Competition(this));
 		this.register(Components.Registration, new Registration(this));
 		this.registerComponent(Components.App, App);
 		this.registerComponent(Components.Footer, Footer);

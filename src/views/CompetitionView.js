@@ -8,7 +8,7 @@ export class CompetitionView extends InjectedComponent {
 	constructor(props) {
 		super(props);
 		this.subscribe(Events.competitionUpdated, () => this.setState({}));
-		this.inject(Components.CompetitionState).loadCompetition(props.match.params.id);
+		this.inject(Components.Competition).load(props.match.params.id);
 	}
 
 	render() {
@@ -25,16 +25,18 @@ export class CompetitionView extends InjectedComponent {
 			return <Redirect to='/' />;
 		}
 
-		return <div className="tabs">
-			{
-				tabs.map(t => {
-					// ToDo: implement permissions
-					if (operation === t.path) {
-						return <p key={t.path} className="tab">{t.name}</p>
-					}
-					return <Link key={t.path} className="tab" to={"/competition/" + this.props.match.params.id + "/" + t.path}>{t.name}</Link>;
-				})
-			}
+		return <div>
+			<div className="tabs">
+				{
+					tabs.map(t => {
+						// ToDo: implement permissions
+						if (operation === t.path) {
+							return <p key={t.path} className="tab">{t.name}</p>
+						}
+						return <Link key={t.path} className="tab" to={"/competition/" + this.props.match.params.id + "/" + t.path}>{t.name}</Link>;
+					})
+				}
+			</div>
 			<Content {...this.props} />
 		</div>;
 	}

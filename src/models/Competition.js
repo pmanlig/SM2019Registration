@@ -1,4 +1,7 @@
-export class Competition {
+import { InjectedClass } from '../logic';
+import { Components, Events } from '.';
+
+export class Competition extends InjectedClass {
 	id = 0;
 	name = "";
 	description = "";
@@ -8,18 +11,24 @@ export class Competition {
 	events = [];
 	rules = [];
 
-	static fromJson(obj) {
-		let newObj = new Competition();
-		// ToDo: remove when service is fixed!
-		newObj.id = obj.id || obj.competition_id;
-		newObj.name = obj.name;
-		newObj.description = obj.description;
-		newObj.divisionGroups = obj.divisionGroups;
-		newObj.classGroups = obj.classGroups;
-		newObj.eventGroups = obj.eventGroups;
-		newObj.events = obj.events;
-		newObj.rules = obj.rules;
-		return newObj;
+	load(id) {
+		if (this.id !== id) {
+			this.inject(Components.Server).loadCompetition(id, obj => {
+				// Prevent multiple requests from screwing up the state
+				if (obj.id !== this.id) {
+					// ToDo: remove when service is fixed!
+					this.id = obj.id || obj.competition_id;
+					this.name = obj.name;
+					this.description = obj.description;
+					this.divisionGroups = obj.divisionGroups;
+					this.classGroups = obj.classGroups;
+					this.eventGroups = obj.eventGroups;
+					this.events = obj.events;
+					this.rules = obj.rules;
+					this.fire(Events.competitionUpdated);
+				}
+			});
+		}
 	}
 
 	event(id) {

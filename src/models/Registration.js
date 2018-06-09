@@ -1,10 +1,12 @@
 import { Events, StorageKeys, Components, Validation, InjectedClass } from '../logic';
-import { Person, Participant, Competition } from '.';
+import { Person, Participant } from '.';
 
 export class Registration extends InjectedClass {
-	participants = [];
+	token = undefined;
 	contact = new Person();
+	participants = [];
 
+	// ToDo: Rewrite to not use event handlers
 	constructor(injector) {
 		super(injector);
 		this.subscribe(Events.setRegistrationInfo, this.setContactField.bind(this));
@@ -15,6 +17,30 @@ export class Registration extends InjectedClass {
 		this.subscribe(Events.register, () => this.register());
 		this.contact = this.inject(Components.Storage).get("Contact") || new Person();
 		this.contact.account = this.contact.account || ""; // Patch to handle stored information without account
+	}
+
+	load(id, token) {
+		if (token !== undefined) {
+			this.inject(Components.Server).loadRegistration(id, token, json => {
+				this.token = token;
+
+				// Hack to compensate for server not storing organization
+				// this.contact = new Person(json.contact);
+				let newContact = new Person(json.contact);
+				newContact.organization = this.contact.organization;
+				this.contact = newContact;
+
+				// Loading participants from json
+				let newParticipants = [];
+				json.registration.forEach(entry => {
+					let p = entry.participant;
+					newParticipants.push(new Participant({ name: p.name, competitionId: p.id, organization: p.organization }, this.createRegistrationInfo(entry.entries)));
+				});
+				this.participants = newParticipants;
+
+				this.fire(Events.registrationUpdated, this);
+			});
+		}
 	}
 
 	createRegistrationInfo(reg) {
@@ -58,34 +84,6 @@ export class Registration extends InjectedClass {
 		console.log("Updating field");
 		this.contact[field] = value;
 		this.fire(Events.registrationUpdated, this);
-	}
-
-	loadCompetition(id, token) {
-		this.inject(Components.Server).loadCompetition(id, json => {
-			this.competition = Competition.fromJson(json);
-			this.participants = [];
-			this.fire(Events.registrationUpdated, this);
-			if (token !== undefined) {
-				this.inject(Components.Server).loadRegistration(id, token, json => {
-					this.competition.token = token;
-
-					// Hack to compensate for server not storing organization
-					// this.contact = new Person(json.contact);
-					let newContact = new Person(json.contact);
-					newContact.organization = this.contact.organization;
-					this.contact = newContact;
-
-					// Loading participants from json
-					this.participants = [];
-					json.registration.forEach(entry => {
-						let p = entry.participant;
-						this.addParticipant({ name: p.name, competitionId: p.id, organization: p.organization }, entry.entries);
-					});
-
-					this.fire(Events.registrationUpdated, this);
-				});
-			}
-		});
 	}
 
 	countEvents() {
