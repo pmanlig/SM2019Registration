@@ -4,7 +4,6 @@ import { Competition, Registration } from '../models';
 export class CompetitionState extends InjectedClass {
 	competitionId = null;
 	competition = new Competition();
-	registration = new Registration();
 
 	loadCompetition(id) {
 		this.competitionId = id;

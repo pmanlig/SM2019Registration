@@ -1,11 +1,12 @@
-import { Validation } from '../logic';
-import { Components, Events, StorageKeys } from '../AppInjector';
-import { Competition, Participant, Person } from '.';
+import { Events, StorageKeys, Components, Validation, InjectedClass } from '../logic';
+import { Person, Participant, Competition } from '.';
 
-export class Registration {
+export class Registration extends InjectedClass {
 	participants = [];
+	contact = new Person();
 
 	constructor(injector) {
+		super(injector);
 		this.subscribe(Events.setRegistrationInfo, this.setContactField.bind(this));
 		this.subscribe(Events.addParticipant, this.addParticipant.bind(this));
 		this.subscribe(Events.deleteParticipant, this.deleteParticipant.bind(this));
