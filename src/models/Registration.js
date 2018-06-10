@@ -2,6 +2,7 @@ import { Events, StorageKeys, Components, Validation, InjectedClass } from '../l
 import { Person, Participant } from '.';
 
 export class Registration extends InjectedClass {
+	competition = undefined;
 	token = undefined;
 	contact = new Person();
 	participants = [];
@@ -9,6 +10,7 @@ export class Registration extends InjectedClass {
 	// ToDo: Rewrite to not use event handlers
 	constructor(injector) {
 		super(injector);
+		this.competition = this.inject(Components.Competition);
 		this.subscribe(Events.setRegistrationInfo, this.setContactField.bind(this));
 		this.subscribe(Events.addParticipant, this.addParticipant.bind(this));
 		this.subscribe(Events.deleteParticipant, this.deleteParticipant.bind(this));
@@ -98,7 +100,7 @@ export class Registration extends InjectedClass {
 		this.inject(Components.Server).sendRegistration(this)
 			.then(res => {
 				console.log(res.token);
-				this.competition.token = res.token;
+				this.token = res.token;
 				let tokens = this.inject(Components.Storage).get("Tokens") || [];
 				tokens[this.competition.id] = res.token;
 				this.inject(Components.Storage).set("Tokens", tokens);

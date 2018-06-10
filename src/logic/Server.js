@@ -52,7 +52,7 @@ export class Server extends InjectedClass {
 	registrationJson(reg) {
 		return JSON.stringify({
 			competition: reg.competition.id,
-			token: reg.competition.token,
+			token: reg.token,
 			contact: { name: reg.contact.name, email: reg.contact.email, organization: reg.contact.organization, account: reg.contact.account },
 			registration: reg.participants.map(p => {
 				return {
