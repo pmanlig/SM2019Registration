@@ -23,7 +23,7 @@ export class RegistrationView extends InjectedComponent {
 
 		// if (registrationInfo.token !== undefined && registrationInfo.token !== this.props.match.params.token) {
 		if (registrationInfo.token !== undefined && this.props.match.params.token === undefined) {
-			return <Redirect to={'/competition/' + this.props.match.params.id + '/' + this.state.token} />
+			return <Redirect to={'/competition/' + this.props.match.params.id + '/register/' + registrationInfo.token} />
 		}
 
 		return [
