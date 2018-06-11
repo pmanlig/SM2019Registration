@@ -15,7 +15,8 @@ export class CompetitionView extends InjectedComponent {
 		let operation = this.props.match.params.operation;
 		let tabs = [
 			{ name: "Anmälan", path: "register", component: this.inject(Components.RegistrationView) },
-			{ name: "Rapportera", path: "report", component: () => <h5>Rapportera resultat</h5> },
+			{ name: "Rapportera", path: "report", component: this.inject(Components.ReportView) },
+			{ name: "Resultat", path: "results", component: () => <h5>Resultat</h5> },
 			{ name: "Administrera", path: "admin", component: () => <h5>Administrera</h5> }
 		];
 
