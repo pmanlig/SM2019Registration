@@ -2,7 +2,7 @@ import { Injector, Server, Storage } from './logic';
 import { Registry, Session, Competition, Registration, Results } from './models';
 import {
 	Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary,
-	StoreQuestion, EventInfo
+	StoreQuestion, EventInfo, LoginLogout
 } from './components';
 import { RegistrationView, ReportView, CreateCompetition, CompetitionView, CompetitionList, About, Login, withLogin } from './views';
 import { App } from './App';
@@ -12,6 +12,8 @@ export class StorageKeys {
 	static lastContact = "lastContact";
 	static registry = "registry";
 	static newCompetition = "newCompetition";
+	static tokens = "tokens";
+	static results = "results";
 }
 
 export class Resources {
@@ -53,6 +55,7 @@ export class Components {
 	static Competitions = Components.componentId++;
 	static CompetitionView = Components.componentId++;
 	static CreateCompetition = Components.componentId++;
+	static LoginLogout = Components.componentId++;
 	static AppHeader = Components.componentId++;
 	static BusyIndicator = Components.componentId++;
 	static Busy = Components.componentId++;
@@ -89,6 +92,7 @@ export class AppInjector extends Injector {
 		this.registerComponent(Components.Footer, Footer);
 		this.registerComponent(Components.ParticipantPicker, ParticipantPicker);
 		this.registerComponent(Components.Toolbar, Toolbar);
+		this.registerComponent(Components.LoginLogout, LoginLogout);
 		this.registerComponent(Components.AppHeader, AppHeader);
 		this.registerComponent(Components.BusyIndicator, BusyIndicator);
 		this.registerComponent(Components.RegistrationContact, RegistrationContact);

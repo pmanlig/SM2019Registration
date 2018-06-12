@@ -32,17 +32,13 @@ export class AppHeader extends InjectedComponent {
 	}
 
 	render() {
-		let session = this.inject(Components.Session);
+		const LoginLogout = this.inject(Components.LoginLogout);
 		return <header className="App-header">
 			<h1 className="App-title">
 				<Link to="/"><img src={logo} className="Gpk-logo" alt="logo" /></Link>
 				{this.state.title}
 			</h1>
-			{session.user !== "" && <Link to='' className='globaltool' onClick={e => {
-				session.logout();
-				e.preventDefault();
-			}}>{'Logga ut ' + session.user}</Link>}
-			{session.user === "" && <Link to='/login' className='globaltool'>Logga in</Link>}
+			<LoginLogout />
 			<Link to='/about' className='globaltool'>Om...</Link>
 		</header>
 	}

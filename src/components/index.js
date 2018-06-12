@@ -1,5 +1,6 @@
 export { InjectedClass, InjectedComponent } from '../logic';
 export { BusyIndicator, Busy } from './BusyIndicator';
+export { LoginLogout } from './LoginLogout';
 export { Toolbar } from './Toolbar';
 export { Summary } from './Summary';
 export { ParticipantPicker } from './ParticipantPicker';

@@ -1,13 +1,28 @@
 import React from 'react';
 
-function Scores({ participant }) {
-	let field = 1;
-	return participant.score.map(s => <td key={field++} className="score"><input className="score" value={s} size="2" /></td>);
+function Round({ participant, round, change }) {
+	let rounds = [];
+	for (let j = 0; j < participant.score[round].length; j++) {
+		if (j > 0) {
+			rounds.push(" / ");
+		}
+		rounds.push(<input key={j} className="score" value={participant.score[round][j]} size="2" onChange={e => change(round, j, e.target.value)} />);
+	}
+	return rounds;
+}
+
+function Scores({ participant, change }) {
+	let scores = [];
+	for (let i = 0; i < participant.score.length; i++) {
+		scores.push(<td key={i} className="score">
+			<Round participant={participant} round={i} change={change} />
+		</td>);
+	}
+	return scores;
 }
 
 function Sum({ participant }) {
-	console.log(participant);
-	return <td className="score">{participant.score.reduce((acc, curr) => parseInt(acc, 10) + parseInt(curr, 10))}</td>;
+	return <td className="score">{participant.total.join("/")}</td>;
 }
 
 function series(event) {
@@ -21,7 +36,7 @@ function series(event) {
 	return s;
 }
 
-export function ResultsTable({ value, event }) {
+export function ResultsTable({ results, event }) {
 	return <table>
 		<thead>
 			<tr>
@@ -32,11 +47,11 @@ export function ResultsTable({ value, event }) {
 			</tr>
 		</thead>
 		<tbody>
-			{value.scores.map(r => <tr key={r.id}>
-				<td>{r.name}</td>
-				<td>{r.organization}</td>
-				<Scores participant={r} />
-				<Sum participant={r} />
+			{results.scores.map(p => <tr key={p.id} className={p.dirty && "dirty"}>
+				<td>{p.name}</td>
+				<td>{p.organization}</td>
+				<Scores participant={p} change={(i, j, value) => results.update(p, i, j, value)} />
+				<Sum participant={p} />
 			</tr>)}
 		</tbody>
 	</table>;

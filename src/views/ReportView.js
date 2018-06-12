@@ -42,14 +42,16 @@ export class ReportView extends InjectedComponent {
 	render() {
 		let competition = this.inject(Components.Competition);
 		let selectedEvent = this.getSelectedEvent(competition);
-		console.log(selectedEvent);
+		let results = this.inject(Components.Results);
 		return <div id="results" className="content">
 			{competition.events.length > 1 &&
 				<div>Resultat för deltävling <select value={this.state.eventId} onChange={e => this.changeEvent(e.target.value)}>
 					<option value="none">Välj deltävling</option>
 					{this.inject(Components.Registration).competition.events.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
 				</select></div>}
-			<ResultsTable value={this.inject(Components.Results)} event={selectedEvent} />
+			<ResultsTable results={results} event={selectedEvent} />
+			<button className={results.isDirty() ? "button" : "button disabled"} style={{ marginTop: "10px" }} onClick={() => results.store()}>Spara</button>
+			<button className="button" onClick={() => results.sort()}>Sortera</button>
 		</div>;
 	}
 }

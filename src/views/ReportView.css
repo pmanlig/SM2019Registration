@@ -23,3 +23,15 @@
 #results .score {
 	text-align: center;
 }
+
+#results input.score {
+	width: 20px;
+}
+
+#results tr.dirty {
+	background-color: lightgreen;
+}
+
+#results button.disabled {
+	background-color: lightgray;
+}

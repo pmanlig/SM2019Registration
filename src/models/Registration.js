@@ -100,11 +100,11 @@ export class Registration extends InjectedClass {
 		this.inject(Components.Server).sendRegistration(this)
 			.then(res => {
 				console.log(res.token);
+				let storage = this.inject(Components.Storage);
 				this.token = res.token;
-				let tokens = this.inject(Components.Storage).get("Tokens") || [];
+				let tokens = storage.get(StorageKeys.tokens) || storage.get("Tokens") || [];
 				tokens[this.competition.id] = res.token;
-				this.inject(Components.Storage).set("Tokens", tokens);
-				this.inject(Components.Storage).set(StorageKeys.tokens, tokens);
+				storage.set(StorageKeys.tokens, tokens);
 				this.inject(Components.Footers).addFooter(this.countEvents() + " starter registrerade", "info");
 				this.fire(Events.registrationUpdated, this);
 			})
