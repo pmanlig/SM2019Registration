@@ -32,7 +32,7 @@ export function ResultsTable({ value, event }) {
 			</tr>
 		</thead>
 		<tbody>
-			{value.map(r => <tr key={r.id}>
+			{value.scores.map(r => <tr key={r.id}>
 				<td>{r.name}</td>
 				<td>{r.organization}</td>
 				<Scores participant={r} />
