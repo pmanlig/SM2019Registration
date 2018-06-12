@@ -33,6 +33,7 @@ export class Events {
 	static setRegistrationInfo = Events.eventId++;
 	static competitionUpdated = Events.eventId++;
 	static registrationUpdated = Events.eventId++;
+	static resultsUpdated = Events.eventId++;
 	static register = Events.eventId++;
 	static userChanged = Events.eventId++;
 }

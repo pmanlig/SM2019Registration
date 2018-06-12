@@ -11,5 +11,5 @@ export { EventInfo } from './EventInfo';
 export { Footer, Footers } from './Footer';
 export { Event } from './Event';
 export { EventList } from './EventList';
-export { Results } from './Results';
+export { ResultsTable } from './ResultsTable';
 export { Events, Components, StorageKeys } from '../AppInjector';

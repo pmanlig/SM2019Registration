@@ -1,6 +1,6 @@
 import './ReportView.css';
 import React from 'react';
-import { Results } from '../components';
+import { ResultsTable } from '../components';
 import { InjectedComponent } from '../logic';
 import { Components, Events } from '.';
 
@@ -8,13 +8,15 @@ export class ReportView extends InjectedComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
+			competition: this.inject(Components.Competition),
 			eventId: "none",
 			results: []
 		};
-		this.inject(Components.Registration).loadCompetition(props.match.params.id, undefined);
-		this.subscribe(Events.registrationUpdated, r => {
-			this.fire(Events.changeTitle, "Registrera resultat för " + r.competition.name);
-			this.setState({ competition: r.competition });
+		this.inject(Components.Results).load(props.match.params.id);
+		this.fire(Events.changeTitle, "Registrera resultat för " + this.state.competition.name);
+		this.subscribe(Events.competitionUpdated, () => {
+			this.fire(Events.changeTitle, "Registrera resultat för " + this.state.competition.name);
+			this.setState({});
 		});
 	}
 
@@ -37,7 +39,7 @@ export class ReportView extends InjectedComponent {
 				<option value="none">Välj deltävling</option>
 				{this.inject(Components.Registration).competition.events.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
 			</select></div>
-			<Results value={this.state.results} event={selectedEvent} />
+			<ResultsTable value={this.state.results} event={selectedEvent} />
 		</div>;
 	}
 }

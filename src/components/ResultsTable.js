@@ -21,7 +21,7 @@ function series(event) {
 	return s;
 }
 
-export function Results({ value, event }) {
+export function ResultsTable({ value, event }) {
 	return <table>
 		<thead>
 			<tr>
