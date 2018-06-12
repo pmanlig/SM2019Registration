@@ -2,12 +2,12 @@ import React from 'react';
 
 function Scores({ participant }) {
 	let field = 1;
-	return participant.score.map(s => <td key={field++}><input value={s} size="2" /></td>);
+	return participant.score.map(s => <td key={field++} className="score"><input className="score" value={s} size="2" /></td>);
 }
 
 function Sum({ participant }) {
 	console.log(participant);
-	return <td>{participant.score.reduce((acc, curr) => parseInt(acc, 10) + parseInt(curr, 10))}</td>;
+	return <td className="score">{participant.score.reduce((acc, curr) => parseInt(acc, 10) + parseInt(curr, 10))}</td>;
 }
 
 function series(event) {
@@ -26,7 +26,7 @@ export function ResultsTable({ value, event }) {
 		<thead>
 			<tr>
 				<th>Namn</th>
-				<th>Förening</th>
+				<th style={{ paddingRight: "40px" }}>Förening</th>
 				{series(event)}
 				<th>Summa</th>
 			</tr>

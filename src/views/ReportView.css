@@ -19,3 +19,7 @@
 #results table > tbody > tr > td {
 	padding: 3px 5px 3px 5px;
 }
+
+#results .score {
+	text-align: center;
+}
