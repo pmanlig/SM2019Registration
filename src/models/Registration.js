@@ -22,6 +22,12 @@ export class Registration extends InjectedClass {
 	}
 
 	load(id, token) {
+		if (token === undefined) {
+			let storage = this.inject(Components.Storage);
+			let tokens = storage.get(StorageKeys.tokens) || storage.get("Tokens") || {};
+			token = tokens[this.competition.id];
+		}
+
 		if (token !== undefined) {
 			this.inject(Components.Server).loadRegistration(id, token, json => {
 				this.token = token;
@@ -42,6 +48,10 @@ export class Registration extends InjectedClass {
 
 				this.fire(Events.registrationUpdated, this);
 			});
+		} else {
+			this.token = undefined;
+			this.contact = new Person();
+			this.participants = [];
 		}
 	}
 

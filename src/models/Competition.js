@@ -1,10 +1,11 @@
 import { InjectedClass } from '../logic';
-import { Components, Events } from '.';
+import { Components, Events, Permissions } from '.';
 
 export class Competition extends InjectedClass {
 	id = 0;
 	name = "";
 	description = "";
+	permissions = Permissions.Any;
 	divisionGroups = [];
 	classGroups = [];
 	eventGroups = [];
@@ -20,6 +21,10 @@ export class Competition extends InjectedClass {
 					this.id = obj.id || obj.competition_id;
 					this.name = obj.name;
 					this.description = obj.description;
+					this.permissions = obj.permissions;
+					if (this.id === "gf2018") { this.permissions = Permissions.Admin }
+					if (this.id === "sm2019") { this.permissions = Permissions.Own }
+					if (this.permissions === undefined) { this.permissions = Permissions.Any }
 					this.divisionGroups = obj.divisionGroups;
 					this.classGroups = obj.classGroups;
 					this.eventGroups = obj.eventGroups;
@@ -28,6 +33,8 @@ export class Competition extends InjectedClass {
 					this.fire(Events.competitionUpdated);
 				}
 			});
+		} else {
+			this.fire(Events.competitionUpdated);
 		}
 	}
 

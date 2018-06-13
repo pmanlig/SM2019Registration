@@ -6,8 +6,8 @@ import { InjectedComponent } from '../logic';
 export class RegistrationView extends InjectedComponent {
 	constructor(props) {
 		super(props);
-		this.subscribe(Events.registrationUpdated, () => this.setState({}));
 		this.fire(Events.changeTitle, "Anmälan till " + this.inject(Components.Competition).name);
+		this.subscribe(Events.registrationUpdated, () => this.setState({}));
 		this.inject(Components.Registration).load(props.match.params.id, props.match.params.token);
 	}
 
@@ -21,7 +21,6 @@ export class RegistrationView extends InjectedComponent {
 		const Summary = this.inject(Components.Summary);
 		let id = 0;
 
-		// if (registrationInfo.token !== undefined && registrationInfo.token !== this.props.match.params.token) {
 		if (registrationInfo.token !== undefined && this.props.match.params.token === undefined) {
 			return <Redirect to={'/competition/' + this.props.match.params.id + '/register/' + registrationInfo.token} />
 		}

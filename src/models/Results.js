@@ -9,18 +9,21 @@ export class Results extends InjectedClass {
 		this.competition = this.inject(Components.Competition);
 	}
 
-	load(competitionId) {
+	load(competitionId, eventId) {
+		console.log("Loading results for " + competitionId + "/" + eventId);
 		this.inject(Components.Server).loadResults(competitionId, undefined, json => {
 			this.scores = json;
 			let localScores = this.inject(Components.Storage).get(StorageKeys.results);
-			localScores.forEach(ls => {
-				this.scores.forEach(s => {
-					if (s.id === ls.id) {
-						s.score = ls.score;
-						s.dirty = true;
-					}
+			if (localScores) {
+				localScores.forEach(ls => {
+					this.scores.forEach(s => {
+						if (s.id === ls.id) {
+							s.score = ls.score;
+							s.dirty = true;
+						}
+					});
 				});
-			});
+			}
 			this.scores.forEach(p => this.calculate(p));
 			this.sort();
 			this.fire(Events.resultsUpdated);

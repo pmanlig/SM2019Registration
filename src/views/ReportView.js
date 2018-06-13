@@ -13,16 +13,12 @@ export class ReportView extends InjectedComponent {
 		this.inject(Components.Results).load(props.match.params.id);
 		this.fire(Events.changeTitle, "Registrera resultat för " + this.inject(Components.Competition).name);
 		this.subscribe(Events.competitionUpdated, this.updateCompetition);
-		this.subscribe(Events.resultsUpdated, this.updateResults);
+		this.subscribe(Events.resultsUpdated, () => this.setState({}));
 	}
 
 	updateCompetition = () => {
 		this.fire(Events.changeTitle, "Registrera resultat för " + this.inject(Components.Competition).name);
 		this.setState({ eventId: "none" });
-	}
-
-	updateResults = () => {
-		this.setState({});
 	}
 
 	changeEvent(newEvent) {

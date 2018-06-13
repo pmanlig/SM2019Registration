@@ -6,3 +6,4 @@ export { Competition } from './Competition';
 export { Registration } from './Registration';
 export { Results } from './Results';
 export { Session } from './Session';
+export { Permissions } from './Permissions';
