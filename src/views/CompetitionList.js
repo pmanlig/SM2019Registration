@@ -3,8 +3,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { InjectedComponent } from '../logic';
 import { withTitle } from '../components';
+import { Permissions, Status, Operations } from '../models';
 import { Components, Events } from '.';
-import { Permissions, Status } from '../models';
 
 const initialCompetitions = [
 	{
@@ -36,7 +36,7 @@ export const CompetitionList = withTitle("Anmälningssytem Gävle PK", class ext
 	loadCompetitions() {
 		fetch('https://dev.bitnux.com/sm2019/competition')
 			.then(result => result.json())
-			.then(json => this.setState({ competitions: initialCompetitions.concat(json.map(c => { return { permissions: Permissions.Any, ...c }; })) }));
+			.then(json => this.setState({ competitions: initialCompetitions.concat(json.map(c => { return { permissions: Permissions.Any, ...c, status: Status.Open }; })) }));
 	}
 
 	getToken(c) {
@@ -46,13 +46,14 @@ export const CompetitionList = withTitle("Anmälningssytem Gävle PK", class ext
 	}
 
 	competition(competition) {
-		let token = this.getToken(competition);
+		let links = Operations.filter(o => (
+			competition.permissions === Permissions.Own ||
+			(competition.permissions >= o.permission && (o.status === undefined || o.status === competition.status))
+		));
 		return <li key={competition.id}>
-			<Link to={"/competition/" + competition.id}>{competition.name}</Link>
-			{competition.permissions >= Permissions.Any && (<span>&nbsp;<Link to={"/competition/" + competition.id + "/register" + (token !== undefined ? "/" + token : "")}>(Anmälan)</Link></span>)}
-			{competition.permissions >= Permissions.Admin && (<span>&nbsp;<Link to={"/competition/" + competition.id + "/report"}>(Rapportera)</Link></span>)}
-			{competition.permissions >= Permissions.Any && (<span>&nbsp;<Link to={"/competition/" + competition.id + "/results"}>(Resultat)</Link></span>)}
-			{competition.permissions >= Permissions.Own && (<span>&nbsp;<Link to={"/competition/" + competition.id + "/admin"}>(Administrera)</Link></span>)}
+			<Link className="competitionLink" to={"/competition/" + competition.id}>{competition.name}</Link>
+			{links.length > 1 && links.map(l =>
+				<span key={l.name}>&nbsp;<Link to={"/competition/" + competition.id + "/" + l.path}>{l.name}</Link>&nbsp;</span>)}
 		</li>
 	}
 
@@ -63,7 +64,7 @@ export const CompetitionList = withTitle("Anmälningssytem Gävle PK", class ext
 			<h1>Tävlingar</h1>
 			<ul>
 				{this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own)).map(c => this.competition(c))}
-				{loggedIn && <li><Link to="/create">Skapa ny tävling</Link></li>}
+				{loggedIn && <li><Link className="competitionLink" to="/create">Skapa ny tävling</Link></li>}
 			</ul>
 		</div>;
 	}

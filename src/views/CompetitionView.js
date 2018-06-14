@@ -2,16 +2,16 @@ import "./CompetitionView.css";
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { InjectedComponent } from '../logic';
-import { Permissions, Status } from '../models';
+import { Permissions, Operations } from '../models';
 import { Components, Events } from '.';
 
 export class CompetitionView extends InjectedComponent {
-	tabs = [
-		{ name: "Anmälan", path: "register", permission: Permissions.Any, status: Status.Open, component: this.inject(Components.RegistrationView) },
-		{ name: "Rapportera", path: "report", permission: Permissions.Admin, component: this.inject(Components.ReportView) },
-		{ name: "Resultat", path: "results", permission: Permissions.Any, status: Status.Closed, component: this.inject(Components.ResultView) },
-		{ name: "Administrera", path: "admin", permission: Permissions.Own, component: () => <h5>Administrera</h5> }
-	];
+	tabs = {
+		register: this.inject(Components.RegistrationView),
+		report: this.inject(Components.ReportView),
+		results: this.inject(Components.ResultView),
+		admin: () => <h5>Administrera</h5>
+	}
 
 	constructor(props) {
 		super(props);
@@ -21,7 +21,7 @@ export class CompetitionView extends InjectedComponent {
 
 	findContent(tabs) {
 		let content = null;
-		tabs.forEach(t => { if (this.props.match.params.operation === t.path) { content = t.component; } });
+		tabs.forEach(t => { if (this.props.match.params.operation === t.path) { content = this.tabs[t.path]; } });
 		return content;
 	}
 
@@ -31,7 +31,7 @@ export class CompetitionView extends InjectedComponent {
 		// Wait; competition is loading
 		if (competition.id !== this.props.match.params.id) { return null; }
 
-		let tabs = this.tabs.filter(t =>
+		let tabs = Operations.filter(t =>
 			competition.permissions === Permissions.Own ||
 			(
 				t.permission <= competition.permissions &&
@@ -48,7 +48,7 @@ export class CompetitionView extends InjectedComponent {
 
 		return <div>
 			<div className="tabs">
-				{tabs.map(t => {
+				{tabs.length > 1 && tabs.map(t => {
 					if (this.props.match.params.operation === t.path) { return <p key={t.path} className="tab">{t.name}</p> }
 					return <Link key={t.path} className="tab" to={"/competition/" + competition.id + "/" + t.path}>{t.name}</Link>;
 				})}

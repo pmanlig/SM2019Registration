@@ -13,12 +13,12 @@ export class Status {
 	static Closed = 2;
 }
 
-export class Operations {
-	static Register = 0;
-	static Report = 1;
-	static Results = 2;
-	static Administer = 3;
-}
+export const Operations = [
+	{ name: "Anmälan", path: "register", permission: Permissions.Any, status: Status.Open },
+	{ name: "Rapportera", path: "report", permission: Permissions.Admin },
+	{ name: "Resultat", path: "results", permission: Permissions.Any, status: Status.Closed },
+	{ name: "Administrera", path: "admin", permission: Permissions.Own }
+];
 
 export class Competition extends InjectedClass {
 	id = 0;
