@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { InjectedComponent } from '../logic';
 import { withTitle } from '../components';
 import { Components, Events } from '.';
-import { Permissions } from '../models';
+import { Permissions, Status } from '../models';
 
 const initialCompetitions = [
 	{
@@ -12,7 +12,7 @@ const initialCompetitions = [
 		name: "SM 2019 (Test)",
 		url: "/sm2019.json",
 		description: "SM i precision, fält och milsnabb 2019",
-		status: "Open",
+		status: Status.Hidden,
 		permissions: Permissions.Own
 	},
 	{
@@ -20,7 +20,7 @@ const initialCompetitions = [
 		name: "Gävligfälten 2018 (Test)",
 		url: "/gf2018.json",
 		description: "Gävligfälten 2018",
-		status: "Open",
+		status: Status.Open,
 		permissions: Permissions.Admin
 	}
 ];
@@ -62,7 +62,7 @@ export const CompetitionList = withTitle("Anmälningssytem Gävle PK", class ext
 		return <div id='competitions' className='content'>
 			<h1>Tävlingar</h1>
 			<ul>
-				{this.state.competitions.map(c => this.competition(c))}
+				{this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own)).map(c => this.competition(c))}
 				{loggedIn && <li><Link to="/create">Skapa ny tävling</Link></li>}
 			</ul>
 		</div>;

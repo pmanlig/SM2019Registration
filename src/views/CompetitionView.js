@@ -2,14 +2,14 @@ import "./CompetitionView.css";
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { InjectedComponent } from '../logic';
-import { Permissions } from '../models';
+import { Permissions, Status } from '../models';
 import { Components, Events } from '.';
 
 export class CompetitionView extends InjectedComponent {
 	tabs = [
-		{ name: "Anmälan", path: "register", permission: Permissions.Any, component: this.inject(Components.RegistrationView) },
+		{ name: "Anmälan", path: "register", permission: Permissions.Any, status: Status.Open, component: this.inject(Components.RegistrationView) },
 		{ name: "Rapportera", path: "report", permission: Permissions.Admin, component: this.inject(Components.ReportView) },
-		{ name: "Resultat", path: "results", permission: Permissions.Any, component: this.inject(Components.ResultView) },
+		{ name: "Resultat", path: "results", permission: Permissions.Any, status: Status.Closed, component: this.inject(Components.ResultView) },
 		{ name: "Administrera", path: "admin", permission: Permissions.Own, component: () => <h5>Administrera</h5> }
 	];
 
@@ -31,7 +31,14 @@ export class CompetitionView extends InjectedComponent {
 		// Wait; competition is loading
 		if (competition.id !== this.props.match.params.id) { return null; }
 
-		let tabs = this.tabs.filter(t => t.permission <= competition.permissions);
+		let tabs = this.tabs.filter(t =>
+			competition.permissions === Permissions.Own ||
+			(
+				t.permission <= competition.permissions &&
+				(
+					t.status === undefined ||
+					t.status === competition.status
+				)));
 
 		// Handle links to the competition in general
 		if (this.props.match.params.operation === undefined) { return <Redirect to={"/competition/" + competition.id + "/" + tabs[0].path} /> }

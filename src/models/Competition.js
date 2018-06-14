@@ -1,11 +1,31 @@
 import { InjectedClass } from '../logic';
-import { Components, Events, Permissions } from '.';
+import { Components, Events } from '.';
+
+export class Permissions {
+	static Any = 0;
+	static Admin = 1;
+	static Own = 2;
+}
+
+export class Status {
+	static Hidden = 0;
+	static Open = 1;
+	static Closed = 2;
+}
+
+export class Operations {
+	static Register = 0;
+	static Report = 1;
+	static Results = 2;
+	static Administer = 3;
+}
 
 export class Competition extends InjectedClass {
 	id = 0;
 	name = "";
 	description = "";
 	permissions = Permissions.Any;
+	status = Status.Hidden;
 	divisionGroups = [];
 	classGroups = [];
 	eventGroups = [];
@@ -21,10 +41,8 @@ export class Competition extends InjectedClass {
 					this.id = obj.id || obj.competition_id;
 					this.name = obj.name;
 					this.description = obj.description;
-					this.permissions = obj.permissions;
-					if (this.id === "gf2018") { this.permissions = Permissions.Admin }
-					if (this.id === "sm2019") { this.permissions = Permissions.Own }
-					if (this.permissions === undefined) { this.permissions = Permissions.Any }
+					this.permissions = obj.permissions || Permissions.Any;
+					this.status = /*obj.status ||*/ Status.Open;
 					this.divisionGroups = obj.divisionGroups;
 					this.classGroups = obj.classGroups;
 					this.eventGroups = obj.eventGroups;

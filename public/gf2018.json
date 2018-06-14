@@ -2,6 +2,8 @@
 	"id": "gf2018",
 	"name": "Gävligfälten 2018",
 	"description": "Gävligfälten 2018, nationell fälttävling",
+	"permissions": 1,
+	"status": 1,
 	"divisionGroups": [
 		{
 			"id": 1,
