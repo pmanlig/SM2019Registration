@@ -22,7 +22,12 @@
 	background-color: #a0cfff;
 }
 
+#competitions a {
+	text-decoration: none;
+}
+
 .competitionLink {
 	font-size: 20px;
 	display: block;
+	margin: 3px;
 }

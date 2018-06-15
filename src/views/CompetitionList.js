@@ -52,7 +52,7 @@ export const CompetitionList = withTitle("Anmälningssytem Gävle PK", class ext
 		));
 		return <li key={competition.id}>
 			<Link className="competitionLink" to={"/competition/" + competition.id}>{competition.name}</Link>
-			{links.length > 1 && links.map(l =>
+			{links.map(l =>
 				<span key={l.name}>&nbsp;<Link to={"/competition/" + competition.id + "/" + l.path}>{l.name}</Link>&nbsp;</span>)}
 		</li>
 	}
