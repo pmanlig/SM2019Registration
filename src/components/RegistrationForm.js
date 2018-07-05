@@ -49,11 +49,10 @@ export class RegistrationForm extends InjectedComponent {
 		);
 	}
 
-	RegistrationControls({ participant, fire, competition }) {
-		let regInfo = participant.registrationInfo;
+	RegistrationControls({ participant, competition, inject }) {
 		let result = [];
 		competition.eventList().forEach(e => result.push(<td key={e.id}><input type="checkbox" className="checkbox" onChange={c =>
-			fire(Events.setParticipantDivision, participant.id, e.id, c.target.checked)
+			inject(Components.Registration).setParticipantDivision(participant.id, e.id, c.target.checked)
 		} checked={participant.participate(e.id)} /></td>));
 		return result;
 	}
