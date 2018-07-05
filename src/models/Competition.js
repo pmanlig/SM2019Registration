@@ -48,6 +48,7 @@ export class Competition extends InjectedClass {
 					this.eventGroups = obj.eventGroups;
 					this.events = obj.events;
 					this.rules = obj.rules;
+					this.schedule = obj.schedule;
 					this.fire(Events.competitionUpdated);
 				}
 			});
@@ -56,10 +57,13 @@ export class Competition extends InjectedClass {
 		}
 	}
 
+	/**
+	 * Gets the event with the given ID
+	 * @param id - Event ID
+	 * @return {object} The event object or undefined if no event with the given ID exists
+	 */
 	event(id) {
-		let result = null;
-		this.events.forEach(e => { if (e.id === id) result = e; });
-		return result;
+		return this.events.find(e => e.id === id);
 	}
 
 	eventList(eventGroup) {
@@ -75,5 +79,13 @@ export class Competition extends InjectedClass {
 				{ name: 'Pistolskyttekort', field: 'competitionId', size: '5', placeholder: '00000', width: 40, type: 'number' },
 				{ name: 'Förening', field: 'organization', width: 200, type: 'text' }]
 		};
+	}
+
+	classes(classGroupId) {
+		return this.classGroups.find(c => c.id === classGroupId).classes;
+	}
+
+	divisions(divisionGroupId) {
+		return this.divisionGroups.find(d => d.id === divisionGroupId).divisions;
 	}
 }

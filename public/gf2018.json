@@ -30,10 +30,8 @@
 				"Junior/1",
 				"Junior/2",
 				"Junior/3",
-				"VetY/1",
 				"VetY/2",
 				"VetY/3",
-				"VetÄ/1",
 				"VetÄ/2",
 				"VetÄ/3"
 			]
@@ -70,5 +68,6 @@
 				5
 			]
 		}
-	]
+	],
+	"schedule": 1
 }

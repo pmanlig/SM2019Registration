@@ -1,0 +1,126 @@
+.button {
+  margin-left: 1px;
+	margin-right: 1px;
+	background-color: #3f3f3f;
+	color: #f5f5f5;
+	padding: 5px 10px;
+	/*border: none;
+	text-decoration: none;*/
+	display: inline-block;
+	border-radius: 15px;
+}
+
+.disabled {
+	opacity: 0.7;
+}
+
+.small-round {
+	display: inline-block;
+	vertical-align: middle;
+	width: 15px;
+	height: 15px;
+	margin: auto 1px;
+	border-radius: 50%;
+	font-size: 8px;
+	font-weight: bold;
+	padding: 0;
+	border: none;
+}
+
+.deleteButton {
+	color: white;
+	background-color: #af3f3f;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.toolButton {
+	padding: 5px 15px;
+	border-radius: 15px;
+}
+
+.cookieButton {
+	padding: 5px 15px;
+	margin-top: 5px;
+	margin-right: 10px;
+	border-radius: 15px;
+	float: right;
+	vertical-align: middle;
+}
+
+.x-button {
+	position: relative;
+	flex-grow: 0;
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	border-width: 2px;
+	border-style: solid;
+	margin: 4px 5px 4px 5px;
+	font-weight: bolder;
+	font-size: 0.4em;
+	opacity: 0.3;
+}
+
+.x-button:hover {
+	opacity: 1;
+}
+
+.x-close::before, .close::after {
+	position: absolute;
+	left: 9px;
+	bottom: 2px;
+  content: ' ';
+  height: 15px;
+	width: 0px;
+	border-width: 1px;
+	border-style: solid;
+}
+
+.x-close::before {
+  transform: rotate(45deg);
+}
+
+.x-close::after {
+  transform: rotate(-45deg);
+}
+
+.x-next::before, .next::after {
+	position: absolute;
+	right: 6px;
+	bottom: 2px;
+  content: ' ';
+  height: 7px;
+	width: 0px;
+	border-width: 1px;
+	border-style: solid;
+	transform-origin: 50% 1px;
+}
+
+.x-next::before {
+  transform: rotate(135deg);
+}
+
+.x-next::after {
+  transform: rotate(45deg);
+}
+
+.x-previous::before, .previous::after {
+  content: ' ';
+	position: absolute;
+	left: 6px;
+	bottom: 2px;
+  height: 7px;
+	width: 0px;
+	border-width: 1px;
+	border-style: solid;
+	transform-origin: 50% 1px;
+}
+
+.x-previous::before {
+  transform: rotate(-135deg);
+}
+
+.x-previous::after {
+  transform: rotate(-45deg);
+}

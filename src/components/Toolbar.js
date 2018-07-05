@@ -1,4 +1,5 @@
 import "./Toolbar.css";
+import "./Buttons.css";
 import React from 'react';
 import { Components, Events, InjectedComponent } from '../logic';
 

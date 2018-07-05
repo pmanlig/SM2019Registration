@@ -1,17 +1,11 @@
-import './Dropdown.css';
 import React from 'react';
 import { InjectedComponent } from '../logic';
 
 export class Dropdown extends InjectedComponent {
-	constructor(props) {
-		super(props);
-		this.state = { text: props.text, drop: false, valueList: [] };
-	}
-
 	render() {
-		return <div className="dropdown">
-			{this.state.text} <button className="dropbutton" onClick={e => this.setState({ drop: !this.state.drop })}>V</button>
-			{this.state.drop && <div className="droplist">SomeList</div>}
-		</div>;
+		return <select value={this.props.value} onChange={this.props.onChange}>
+			<option value="placeholder" hidden>{this.props.placeholder}</option>
+			{this.props.items.map(i => <option key={i} value={i}>{i}</option>)}
+		</select>;
 	}
 }

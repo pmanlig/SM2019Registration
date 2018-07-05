@@ -74,8 +74,18 @@ export class Registration extends InjectedClass {
 		this.fire(Events.registrationUpdated, this);
 	}
 
-	setParticipantDivision(participant, event, value) {
+	setParticipantEvent(participant, event, value) {
 		this.participants.find(p => participant === p.id).setParticipate(event, value);
+		this.fire(Events.registrationUpdated, this);
+	}
+
+	setParticipantClass(participant, event, value) {
+		this.participants.find(p => participant === p.id).setCompetitionClass(event, value);
+		this.fire(Events.registrationUpdated, this);
+	}
+
+	setParticipantDivision(participant, event, value) {
+		this.participants.find(p => participant === p.id).setDivision(event, value);
 		this.fire(Events.registrationUpdated, this);
 	}
 

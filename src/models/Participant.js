@@ -25,4 +25,32 @@ export class Participant extends Person {
 			this.registrationInfo = this.registrationInfo.filter(e => e.event !== id);
 		}
 	}
+
+	competitionClass(id) {
+		let eventInfo = this.registrationInfo.find(e => e.event === id);
+		return eventInfo && eventInfo.competitionClass;
+	}
+
+	setCompetitionClass(id, competitionClass) {
+		let eventInfo = this.registrationInfo.find(e => e.event === id);
+		if (eventInfo) {
+			eventInfo.competitionClass = competitionClass;
+		} else {
+			this.registrationInfo.push({ event: id, competitionClass: competitionClass });
+		}
+	}
+
+	division(id) {
+		let eventInfo = this.registrationInfo.find(e => e.event === id);
+		return eventInfo && eventInfo.division;
+	}
+
+	setDivision(id, division) {
+		let eventInfo = this.registrationInfo.find(e => e.event === id);
+		if (eventInfo) {
+			eventInfo.division = division;
+		} else {
+			this.registrationInfo.push({ event: id, division: division });
+		}
+	}
 }

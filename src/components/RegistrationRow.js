@@ -1,11 +1,25 @@
+import "./Buttons.css";
 import React from 'react';
 import { InjectedComponent } from '../logic';
+import { Dropdown } from './Dropdown';
 import { Components } from '.';
 
 export class RegistrationRow extends InjectedComponent {
 	eventControls = ({ participant, event }) => {
+		if (event.classes && event.divisions) {
+			const competition = this.inject(Components.Competition);
+			const registration = this.inject(Components.Registration);
+			let competitionClass = participant.competitionClass(event.id);
+			let classList = competition.classes(event.classes);
+			let division = participant.division(event.id);
+			let divisionList = competition.divisions(event.divisions);
+			return [
+				<td key="class"><Dropdown placeholder="Välj klass..." value={competitionClass} items={classList} onChange={e => registration.setParticipantClass(participant.id, event.id, e.target.value)}/></td>,
+				<td key="division"><Dropdown placeholder="Välj vapengrupp..." value={division} items={divisionList} onChange={e => registration.setParticipantDivision(participant.id, event.id, e.target.value)}/></td>
+			];
+		}
 		return <td><input type="checkbox" className="checkbox" onChange={c =>
-			this.inject(Components.Registration).setParticipantDivision(participant.id, event.id, c.target.checked)
+			this.inject(Components.Registration).setParticipantEvent(participant.id, event.id, c.target.checked)
 		} checked={participant.participate(event.id)} /></td>;
 	}
 
@@ -38,6 +52,6 @@ export class RegistrationRow extends InjectedComponent {
 		return <tr key={myId} className={p.errors.length > 0 ? "error" : undefined} >
 			<ParticipantFields participant={p} />
 			<RegistrationControls participant={p} />
-			<td><button className="deleteButton button" onClick={e => registration.deleteParticipant(myId)}>x</button></td></tr>;
+			<td><button className="button small-round deleteButton" onClick={e => registration.deleteParticipant(myId)}>x</button></td></tr>;
 	}
 }
