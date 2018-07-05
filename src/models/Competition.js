@@ -67,4 +67,13 @@ export class Competition extends InjectedClass {
 		this.eventGroups.forEach(eg => (eventGroup === undefined || eg.id === eventGroup) && eg.events.forEach(e => events.push(this.event(e))));
 		return events;
 	}
+
+	participantHeader() {
+		return {
+			name: 'Skytt', subFields: [
+				{ name: 'Namn', field: 'name', width: 200, type: 'text' },
+				{ name: 'Pistolskyttekort', field: 'competitionId', size: '5', placeholder: '00000', width: 40, type: 'number' },
+				{ name: 'Förening', field: 'organization', width: 200, type: 'text' }]
+		};
+	}
 }

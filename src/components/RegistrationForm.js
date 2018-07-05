@@ -1,14 +1,8 @@
 import './Registration.css';
 import React from 'react';
+import { RegistrationRow } from './RegistrationRow';
 import { Components } from '.';
 import { InjectedComponent } from '../logic';
-
-const personHeader = {
-	name: 'Skytt', subFields: [
-		{ name: 'Namn', field: 'name', width: 200, type: 'text' },
-		{ name: 'Pistolskyttekort', field: 'competitionId', size: '5', placeholder: '00000', width: 40, type: 'number' },
-		{ name: 'Förening', field: 'organization', width: 200, type: 'text' }]
-};
 
 export class RegistrationForm extends InjectedComponent {
 	addMinorHeadersFor(event, minorHeaders) {
@@ -29,14 +23,15 @@ export class RegistrationForm extends InjectedComponent {
 	}
 
 	RegistrationHeader({ inject }) {
-		const majorHeaders = [<th key="-1" className="major" colSpan={personHeader.subFields.length}>{personHeader.name}</th>];
+		let competition = inject(Components.Competition);
+		let participantHeader = competition.participantHeader();
+		const majorHeaders = [<th key="-1" className="major" colSpan={participantHeader.subFields.length}>{participantHeader.name}</th>];
 		const minorHeaders = [];
 
-		personHeader.subFields.forEach(s => {
+		participantHeader.subFields.forEach(s => {
 			minorHeaders.push(<th key={minorHeaders.length} style={{ width: s.width, paddingRight: 10, verticalAlign: "bottom" }} className="minor">{s.name}</th>);
 		});
 
-		let competition = inject(Components.Competition);
 		competition.eventGroups.forEach(group => {
 			let initial = minorHeaders.length;
 			competition.eventList(group.id).forEach(e => this.addMinorHeadersFor(e, minorHeaders));
@@ -50,35 +45,7 @@ export class RegistrationForm extends InjectedComponent {
 		);
 	}
 
-	RegistrationControls({ participant, inject }) {
-		let result = [];
-		inject(Components.Competition).eventList().forEach(e => result.push(<td key={e.id}><input type="checkbox" className="checkbox" onChange={c =>
-			inject(Components.Registration).setParticipantDivision(participant.id, e.id, c.target.checked)
-		} checked={participant.participate(e.id)} /></td>));
-		return result;
-	}
-
-	RegistrationField({ id, participant, header, inject }) {
-		return <td className="left" key={header.name}><input type="text" value={participant[header.field]}
-			placeholder={header.placeholder || header.name} style={{ width: header.width }}
-			onChange={e => inject(Components.Registration).setParticipantField(id, header.field, e.target.value)}
-			size={header.size} /></td>;
-	}
-
-	RegistrationRow(props) {
-		const RegistrationField = this.RegistrationField.bind(this);
-		const RegistrationControls = this.RegistrationControls.bind(this);
-		const registration = this.inject(Components.Registration);
-		const p = props.participant;
-		const myId = p.id;
-		return <tr key={myId} style={{ background: p.errors.length > 0 ? "red" : "white" }}>
-			{personHeader.subFields.map(h => <RegistrationField key={h.field} id={myId} participant={p} header={h} {...props} />)}
-			<RegistrationControls {...props} />
-			<td><button className="deleteButton button" onClick={e => registration.deleteParticipant(myId)}>x</button></td></tr>;
-	}
-
 	RegistrationRows(props) {
-		const RegistrationRow = this.RegistrationRow.bind(this);
 		return <tbody>{props.inject(Components.Registration).participants.map(
 			p => <RegistrationRow key={p.id} participant={p} {...props} />
 		)}</tbody>;
