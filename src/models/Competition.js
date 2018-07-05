@@ -61,4 +61,10 @@ export class Competition extends InjectedClass {
 		this.events.forEach(e => { if (e.id === id) result = e; });
 		return result;
 	}
+
+	eventList(eventGroup) {
+		let events = [];
+		this.eventGroups.forEach(eg => (eventGroup === undefined || eg.id === eventGroup) && eg.events.forEach(e => events.push(this.event(e))));
+		return events;
+	}
 }

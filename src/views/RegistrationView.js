@@ -19,18 +19,17 @@ export class RegistrationView extends InjectedComponent {
 		const RegistrationContact = this.inject(Components.RegistrationContact);
 		const RegistrationForm = this.inject(Components.RegistrationForm);
 		const Summary = this.inject(Components.Summary);
-		let id = 0;
 
 		if (registrationInfo.token !== undefined && this.props.match.params.token === undefined) {
 			return <Redirect to={'/competition/' + this.props.match.params.id + '/register/' + registrationInfo.token} />
 		}
 
-		return [
-			<RegistrationContact key={id++} />,
-			<Toolbar key={id++} />,
-			<RegistrationForm key={id++} info={competition} participants={registrationInfo.participants} />,
-			<Summary key={id++} participants={registrationInfo.participants} />,
-			<ParticipantPicker key={id++} />
-		];
+		return <div>
+			<RegistrationContact />
+			<Toolbar />
+			<RegistrationForm competition={competition} participants={registrationInfo.participants} />
+			<Summary participants={registrationInfo.participants} />
+			<ParticipantPicker />
+		</div>;
 	}
 }

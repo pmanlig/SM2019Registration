@@ -18,6 +18,7 @@ export class ParticipantPicker extends InjectedComponent {
 	}
 
 	render() {
+		let registration = this.inject(Components.Registration);
 		return !this.state.visible ? null : <div>
 			<div className="fullscreen shadow" />
 			<div id="participantpicker" className="centered modal">
@@ -37,7 +38,7 @@ export class ParticipantPicker extends InjectedComponent {
 						{this.inject(Components.Registry).competitors.map(p =>
 							<Competitor key={p.competitionId} person={p} onClick={e => {
 								this.setState({ visible: false });
-								this.fire(Events.addParticipant, p);
+								registration.addParticipant(p);
 							}} />)}
 					</tbody>
 				</table>

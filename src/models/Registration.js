@@ -12,7 +12,6 @@ export class Registration extends InjectedClass {
 		super(injector);
 		this.competition = this.inject(Components.Competition);
 		this.subscribe(Events.setRegistrationInfo, this.setContactField.bind(this));
-		this.subscribe(Events.addParticipant, this.addParticipant.bind(this));
 		this.subscribe(Events.deleteParticipant, this.deleteParticipant.bind(this));
 		this.subscribe(Events.setParticipantField, this.setParticipantField.bind(this));
 		this.subscribe(Events.setParticipantDivision, this.setParticipantDivision.bind(this));
@@ -42,7 +41,7 @@ export class Registration extends InjectedClass {
 				let newParticipants = [];
 				json.registration.forEach(entry => {
 					let p = entry.participant;
-					newParticipants.push(new Participant({ name: p.name, competitionId: p.id, organization: p.organization }, this.createRegistrationInfo(entry.entries)));
+					newParticipants.push(new Participant({ name: p.name, competitionId: p.id, organization: p.organization }, entry.entries));
 				});
 				this.participants = newParticipants;
 
@@ -55,22 +54,13 @@ export class Registration extends InjectedClass {
 		}
 	}
 
-	createRegistrationInfo(reg) {
-		// ToDo: Need to extend to support different scenarios
-		let registrationInfo = [];
-		this.competition.eventGroups.forEach(eg => {
-			eg.events.forEach(e => registrationInfo.push((reg !== undefined) && reg.find(r => r.event === e) !== undefined));
-		});
-		return registrationInfo;
-	}
-
 	addParticipant(p, reg) {
 		console.log("Adding new participant");
 		if (p !== undefined && this.participants.find(f => f.competitionId === p.competitionId) !== undefined) {
 			this.fire(Events.addFooter, "Deltagaren finns redan!");
 			return;
 		}
-		this.participants.push(new Participant(p, this.createRegistrationInfo(reg)));
+		this.participants.push(new Participant(p));
 		this.fire(Events.registrationUpdated, this);
 	}
 
@@ -82,12 +72,12 @@ export class Registration extends InjectedClass {
 
 	setParticipantField(id, field, value) {
 		if (field === "competitionId" && (value.length > 5 || !(/^\d*$/.test(value)))) { return; } // Add more validation rules later?
-		this.participants.forEach(p => { if (p.id === id) p[field] = value });
+		this.participants.forEach(p => { if (p.id === id) p[field].participate = value });
 		this.fire(Events.registrationUpdated, this);
 	}
 
-	setParticipantDivision(participant, division, value) {
-		this.participants.forEach(p => { if (participant === p.id) p.registrationInfo[division] = value; });
+	setParticipantDivision(participant, event, value) {
+		this.participants.find(p => participant === p.id).setParticipate(event, value);
 		this.fire(Events.registrationUpdated, this);
 	}
 

@@ -1,6 +1,7 @@
 import './Registration.css';
 import React from 'react';
-import { Events } from '.';
+import { Components, Events } from '.';
+import { InjectedComponent } from '../logic';
 
 const personHeader = {
 	name: 'Skytt', subFields: [
@@ -9,83 +10,88 @@ const personHeader = {
 		{ name: 'Förening', field: 'organization', width: 200, type: 'text' }]
 };
 
-function addMinorHeadersFor(event, minorHeaders) {
-	if (!event.divisions) {
-		minorHeaders.push(<th key={minorHeaders.length} className="minor entry vert"><div>{event.name}</div></th>);
-		return;
+export class RegistrationForm extends InjectedComponent {
+	addMinorHeadersFor(event, minorHeaders) {
+		if (!event.divisions) {
+			minorHeaders.push(<th key={minorHeaders.length} className="minor entry vert"><div>{event.name}</div></th>);
+			return;
+		}
+		if (event.classes) {
+			minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Klass</th>);
+		}
+		if (event.divisions) {
+			minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Vapengrupp</th>);
+		}
+		if (event.maxRegistrations > 1) {
+			minorHeaders.push(<th key={minorHeaders.length} className="minor entry" style={{ width: "20px" }}>&nbsp;</th>);
+		}
+		// ToDo: Handle schedule
 	}
-	if (event.classes) {
-		minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Klass</th>);
+
+	RegistrationHeader({ competition }) {
+		const majorHeaders = [<th key="-1" className="major" colSpan={personHeader.subFields.length}>{personHeader.name}</th>];
+		const minorHeaders = [];
+
+		personHeader.subFields.forEach(s => {
+			minorHeaders.push(<th key={minorHeaders.length} style={{ width: s.width, paddingRight: 10, verticalAlign: "bottom" }} className="minor">{s.name}</th>);
+		});
+
+		competition.eventGroups.forEach(group => {
+			let initial = minorHeaders.length;
+			competition.eventList(group.id).forEach(e => this.addMinorHeadersFor(e, minorHeaders));
+			majorHeaders.push(<th key={group.id} className="major" colSpan={minorHeaders.length - initial}>{group.name}</th>);
+		});
+		return (
+			<thead>
+				<tr>{majorHeaders}</tr>
+				<tr>{minorHeaders}</tr>
+			</thead>
+		);
 	}
-	if (event.divisions) {
-		minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Vapengrupp</th>);
+
+	RegistrationControls({ participant, fire, competition }) {
+		let regInfo = participant.registrationInfo;
+		let result = [];
+		competition.eventList().forEach(e => result.push(<td key={e.id}><input type="checkbox" className="checkbox" onChange={c =>
+			fire(Events.setParticipantDivision, participant.id, e.id, c.target.checked)
+		} checked={participant.participate(e.id)} /></td>));
+		return result;
 	}
-	if (event.maxRegistrations > 1) {
-		minorHeaders.push(<th key={minorHeaders.length} className="minor entry" style={{width: "20px"}}>&nbsp;</th>);
+
+	RegistrationField({ id, participant, header, fire }) {
+		return <td className="left" key={header.name}><input type="text" value={participant[header.field]}
+			placeholder={header.placeholder || header.name} style={{ width: header.width }}
+			onChange={e => fire(Events.setParticipantField, id, header.field, e.target.value)}
+			size={header.size} /></td>;
 	}
-	// ToDo: Handle schedule
-}
 
-function RegistrationHeader(props) {
-	const compInfo = props.info;
-	const majorHeaders = [<th key="-1" className="major" colSpan={personHeader.subFields.length}>{personHeader.name}</th>];
-	const minorHeaders = [];
-
-	personHeader.subFields.forEach(s => {
-		minorHeaders.push(<th key={minorHeaders.length} style={{ width: s.width, paddingRight: 10, verticalAlign: "bottom" }} className="minor">{s.name}</th>);
-	});
-
-	compInfo.eventGroups.forEach(group => {
-		let initial = minorHeaders.length;
-		group.events.forEach(event => { addMinorHeadersFor(compInfo.event(event), minorHeaders); });
-		majorHeaders.push(<th key={group.id} className="major" colSpan={minorHeaders.length - initial}>{group.name}</th>);
-	});
-	return (
-		<thead>
-			<tr>{majorHeaders}</tr>
-			<tr>{minorHeaders}</tr>
-		</thead>
-	);
-}
-
-function RegistrationControls({ participant, fire }) {
-	let info = participant.registrationInfo;
-	let result = [];
-	for (let i = 0; i < info.length; i++) {
-		result.push(<td key={i}><input type="checkbox" className="checkbox" onChange={(e) =>
-			fire(Events.setParticipantDivision, participant.id, i, e.target.checked)
-		} checked={info[i]} /></td>);
+	RegistrationRow(props) {
+		const RegistrationField = this.RegistrationField.bind(this);
+		const RegistrationControls = this.RegistrationControls.bind(this);
+		const registration = this.inject(Components.Registration);
+		const p = props.participant;
+		const myId = p.id;
+		return <tr key={myId} style={{ background: p.errors.length > 0 ? "red" : "white" }}>
+			{personHeader.subFields.map(h => <RegistrationField key={h.field} id={myId} participant={p} header={h} {...props} />)}
+			<RegistrationControls {...props} />
+			<td><button className="deleteButton button" onClick={e => registration.deleteParticipant(myId)}>x</button></td></tr>;
 	}
-	return result;
-}
 
-function RegistrationField({ id, participant, header, fire }) {
-	return <td className="left" key={header.name}><input type="text" value={participant[header.field]}
-		placeholder={header.placeholder || header.name} style={{ width: header.width }}
-		onChange={e => fire(Events.setParticipantField, id, header.field, e.target.value)}
-		size={header.size} /></td>;
-}
+	RegistrationRows(props) {
+		const RegistrationRow = this.RegistrationRow.bind(this);
+		return <tbody>{props.participants.map(
+			p => <RegistrationRow key={p.id} participant={p} {...props} />
+		)}</tbody>;
+	}
 
-function RegistrationRow(props) {
-	const p = props.participant;
-	const myId = p.id;
-	return <tr key={myId} style={{ background: p.errors.length > 0 ? "red" : "white" }}>
-		{personHeader.subFields.map(h => <RegistrationField key={h.field} id={myId} participant={p} header={h} {...props} />)}
-		{RegistrationControls(props)}
-		<td><button className="deleteButton button" onClick={e => props.fire(Events.deleteParticipant, myId)}>x</button></td></tr>;
-}
-
-function RegistrationRows(props) {
-	return <tbody>{props.participants.map(
-		p => <RegistrationRow key={p.id} participant={p} {...props} />
-	)}</tbody>;
-}
-
-export function RegistrationForm(props) {
-	return <div id='registration' className='content'>
-		<table>
-			<RegistrationHeader {...props} />
-			<RegistrationRows {...props} />
-		</table>
-	</div>;
+	render() {
+		const RegistrationRows = this.RegistrationRows.bind(this);
+		const RegistrationHeader = this.RegistrationHeader.bind(this);
+		return <div id='registration' className='content'>
+			<table>
+				<RegistrationHeader {...this.props} />
+				<RegistrationRows {...this.props} />
+			</table>
+		</div>;
+	}
 }

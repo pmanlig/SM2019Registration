@@ -39,16 +39,6 @@ export class Server extends InjectedClass {
 		this.load(isNaN(numId) ? '/' + competitionId + '_result.json' : Server.baseUrl + 'result/' + competitionId, callback);
 	}
 
-	eventList(reg, participant) {
-		let events = [];
-		for (let i = 0; i < participant.registrationInfo.length; i++) {
-			if (participant.registrationInfo[i]) {
-				events.push({ event: reg.competition.events[i].id });
-			}
-		}
-		return events;
-	}
-
 	registrationJson(reg) {
 		return JSON.stringify({
 			competition: reg.competition.id,
@@ -61,7 +51,7 @@ export class Server extends InjectedClass {
 						id: p.competitionId,
 						organization: p.organization
 					},
-					entries: this.eventList(reg, p)
+					entries: p.registrationInfo
 				};
 			})
 		});
