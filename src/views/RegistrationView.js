@@ -1,3 +1,4 @@
+import './RegistrationView.css';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Components, Events } from '.';
@@ -25,9 +26,9 @@ export class RegistrationView extends InjectedComponent {
 
 		return <div>
 			<RegistrationContact />
-			<Toolbar />
 			<RegistrationForm />
 			<Summary />
+			<Toolbar />
 			<ParticipantPicker />
 		</div>;
 	}
