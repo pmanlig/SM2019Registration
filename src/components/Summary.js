@@ -1,5 +1,6 @@
 import './Summary.css';
 import React from 'react';
+import { Components } from '.';
 
 function countEntries(participants) {
 	var entries = 0;
@@ -8,8 +9,9 @@ function countEntries(participants) {
 }
 
 export function Summary(props) {
+	let participants = props.inject(Components.Registration).participants;
 	return (
 		<div id='summary' className='center content'>
-			<p>Antal deltagare: {props.participants.length}<br />Antal starter: {countEntries(props.participants)}</p>
+			<p>Antal deltagare: {participants.length}<br />Antal starter: {countEntries(participants)}</p>
 		</div>);
 }

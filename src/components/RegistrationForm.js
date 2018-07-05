@@ -1,6 +1,6 @@
 import './Registration.css';
 import React from 'react';
-import { Components, Events } from '.';
+import { Components } from '.';
 import { InjectedComponent } from '../logic';
 
 const personHeader = {
@@ -28,7 +28,7 @@ export class RegistrationForm extends InjectedComponent {
 		// ToDo: Handle schedule
 	}
 
-	RegistrationHeader({ competition }) {
+	RegistrationHeader({ inject }) {
 		const majorHeaders = [<th key="-1" className="major" colSpan={personHeader.subFields.length}>{personHeader.name}</th>];
 		const minorHeaders = [];
 
@@ -36,6 +36,7 @@ export class RegistrationForm extends InjectedComponent {
 			minorHeaders.push(<th key={minorHeaders.length} style={{ width: s.width, paddingRight: 10, verticalAlign: "bottom" }} className="minor">{s.name}</th>);
 		});
 
+		let competition = inject(Components.Competition);
 		competition.eventGroups.forEach(group => {
 			let initial = minorHeaders.length;
 			competition.eventList(group.id).forEach(e => this.addMinorHeadersFor(e, minorHeaders));
@@ -49,18 +50,18 @@ export class RegistrationForm extends InjectedComponent {
 		);
 	}
 
-	RegistrationControls({ participant, competition, inject }) {
+	RegistrationControls({ participant, inject }) {
 		let result = [];
-		competition.eventList().forEach(e => result.push(<td key={e.id}><input type="checkbox" className="checkbox" onChange={c =>
+		inject(Components.Competition).eventList().forEach(e => result.push(<td key={e.id}><input type="checkbox" className="checkbox" onChange={c =>
 			inject(Components.Registration).setParticipantDivision(participant.id, e.id, c.target.checked)
 		} checked={participant.participate(e.id)} /></td>));
 		return result;
 	}
 
-	RegistrationField({ id, participant, header, fire }) {
+	RegistrationField({ id, participant, header, inject }) {
 		return <td className="left" key={header.name}><input type="text" value={participant[header.field]}
 			placeholder={header.placeholder || header.name} style={{ width: header.width }}
-			onChange={e => fire(Events.setParticipantField, id, header.field, e.target.value)}
+			onChange={e => inject(Components.Registration).setParticipantField(id, header.field, e.target.value)}
 			size={header.size} /></td>;
 	}
 
@@ -78,7 +79,7 @@ export class RegistrationForm extends InjectedComponent {
 
 	RegistrationRows(props) {
 		const RegistrationRow = this.RegistrationRow.bind(this);
-		return <tbody>{props.participants.map(
+		return <tbody>{props.inject(Components.Registration).participants.map(
 			p => <RegistrationRow key={p.id} participant={p} {...props} />
 		)}</tbody>;
 	}

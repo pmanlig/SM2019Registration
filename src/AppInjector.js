@@ -27,7 +27,6 @@ export class Events {
 	static changeTitle = Events.eventId++;
 	static busyChanged = Events.eventId++;
 	static deleteParticipant = Events.eventId++;
-	static setParticipantField = Events.eventId++;
 	static showParticipantPicker = Events.eventId++;
 	static registryUpdated = Events.eventId++;
 	static setRegistrationInfo = Events.eventId++;

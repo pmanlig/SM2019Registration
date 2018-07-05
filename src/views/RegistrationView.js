@@ -12,14 +12,13 @@ export class RegistrationView extends InjectedComponent {
 	}
 
 	render() {
-		const competition = this.inject(Components.Competition);
-		const registrationInfo = this.inject(Components.Registration);
 		const ParticipantPicker = this.inject(Components.ParticipantPicker);
 		const Toolbar = this.inject(Components.Toolbar);
 		const RegistrationContact = this.inject(Components.RegistrationContact);
 		const RegistrationForm = this.inject(Components.RegistrationForm);
 		const Summary = this.inject(Components.Summary);
 
+		const registrationInfo = this.inject(Components.Registration);
 		if (registrationInfo.token !== undefined && this.props.match.params.token === undefined) {
 			return <Redirect to={'/competition/' + this.props.match.params.id + '/register/' + registrationInfo.token} />
 		}
@@ -27,8 +26,8 @@ export class RegistrationView extends InjectedComponent {
 		return <div>
 			<RegistrationContact />
 			<Toolbar />
-			<RegistrationForm competition={competition} participants={registrationInfo.participants} />
-			<Summary participants={registrationInfo.participants} />
+			<RegistrationForm />
+			<Summary />
 			<ParticipantPicker />
 		</div>;
 	}
