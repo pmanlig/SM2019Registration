@@ -12,45 +12,30 @@ export class Participant extends Person {
 		this.registrationInfo = registrationInfo || [];
 	}
 
+	event(id) {
+		return this.registrationInfo.find(e => e.event === id);
+	}
+
+	addEvent(id) {
+		if (this.event(id) === undefined) {
+			this.registrationInfo.push({ event: id, rounds: [{}] });
+		}
+		return this.event(id);
+	}
+
+	removeEvent(id) {
+		this.registrationInfo = this.registrationInfo.filter(e => e.event !== id);
+	}
+
 	participate(id) {
-		return this.registrationInfo.some(e => e.event === id);
+		return this.event(id) !== undefined;
 	}
 
 	setParticipate(id, value) {
 		if (value) {
-			if (!this.participate(id)) {
-				this.registrationInfo.push({ event: id });
-			}
+			this.addEvent(id);
 		} else {
-			this.registrationInfo = this.registrationInfo.filter(e => e.event !== id);
-		}
-	}
-
-	competitionClass(id) {
-		let eventInfo = this.registrationInfo.find(e => e.event === id);
-		return eventInfo && eventInfo.competitionClass;
-	}
-
-	setCompetitionClass(id, competitionClass) {
-		let eventInfo = this.registrationInfo.find(e => e.event === id);
-		if (eventInfo) {
-			eventInfo.competitionClass = competitionClass;
-		} else {
-			this.registrationInfo.push({ event: id, competitionClass: competitionClass });
-		}
-	}
-
-	division(id) {
-		let eventInfo = this.registrationInfo.find(e => e.event === id);
-		return eventInfo && eventInfo.division;
-	}
-
-	setDivision(id, division) {
-		let eventInfo = this.registrationInfo.find(e => e.event === id);
-		if (eventInfo) {
-			eventInfo.division = division;
-		} else {
-			this.registrationInfo.push({ event: id, division: division });
+			this.removeEvent(id);
 		}
 	}
 }

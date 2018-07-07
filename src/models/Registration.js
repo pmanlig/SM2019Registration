@@ -52,7 +52,7 @@ export class Registration extends InjectedClass {
 		}
 	}
 
-	addParticipant(p, reg) {
+	addParticipant(p) {
 		console.log("Adding new participant");
 		if (p !== undefined && this.participants.find(f => f.competitionId === p.competitionId) !== undefined) {
 			this.fire(Events.addFooter, "Deltagaren finns redan!");
@@ -60,6 +60,10 @@ export class Registration extends InjectedClass {
 		}
 		this.participants.push(new Participant(p));
 		this.fire(Events.registrationUpdated, this);
+	}
+
+	getParticipant(pId) {
+		return this.participants.find(p => pId === p.id);
 	}
 
 	deleteParticipant(id) {
@@ -75,23 +79,37 @@ export class Registration extends InjectedClass {
 	}
 
 	setParticipantEvent(participant, event, value) {
-		this.participants.find(p => participant === p.id).setParticipate(event, value);
+		this.getParticipant(participant).setParticipate(event, value);
 		this.fire(Events.registrationUpdated, this);
 	}
 
 	setParticipantClass(participant, event, value) {
-		this.participants.find(p => participant === p.id).setCompetitionClass(event, value);
+		this.getParticipant(participant).addEvent(event).class = value;
 		this.fire(Events.registrationUpdated, this);
 	}
 
-	setParticipantDivision(participant, event, value) {
-		this.participants.find(p => participant === p.id).setDivision(event, value);
+	addParticipantRound(participant, event) {
+		this.getParticipant(participant).addEvent(event).rounds.push({});
+		this.fire(Events.registrationUpdated, this);
+	}
+	
+	deleteParticipantRound(participant, event, round) {
+		this.getParticipant(participant).event(event).rounds.splice(round, 1);
+		this.fire(Events.registrationUpdated, this);
+	}
+	
+	setParticipantDivision(participant, event, round, value) {
+		this.getParticipant(participant).addEvent(event).rounds[round].division = value;
+		this.fire(Events.registrationUpdated, this);
+	}
+
+	setParticipantSlot(participant, event, round, value) {
+		this.getParticipant(participant).addEvent(event).rounds[round].slot = value;
 		this.fire(Events.registrationUpdated, this);
 	}
 
 	setContactField(field, value) {
 		if (field === "account" && (value.length > 8 || !(/^\d*[-]?\d*$/.test(value)))) { return; } // Add more validation rules later?
-		console.log("Updating field");
 		this.contact[field] = value;
 		this.fire(Events.registrationUpdated, this);
 	}

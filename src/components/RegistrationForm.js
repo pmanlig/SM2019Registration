@@ -5,21 +5,28 @@ import { Components } from '.';
 import { InjectedComponent } from '../logic';
 
 export class RegistrationForm extends InjectedComponent {
+	addButtonHeader(minorHeaders) {
+		minorHeaders.push(<th key={minorHeaders.length} className="minor entry" style={{ width: "20px" }}>&nbsp;</th>);
+	}
+	
 	addMinorHeadersFor(event, minorHeaders) {
-		if (!event.divisions) {
-			minorHeaders.push(<th key={minorHeaders.length} className="minor entry vert"><div>{event.name}</div></th>);
-			return;
-		}
 		if (event.classes) {
 			minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Klass</th>);
 		}
-		if (event.divisions) {
-			minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Vapengrupp</th>);
+		if (!event.divisions && !event.schedule) {
+			minorHeaders.push(<th key={minorHeaders.length} className="minor entry vert"><div>{event.name}</div></th>);
+			return;
+		} else {
+			if (event.divisions) {
+				minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Vapengrupp</th>);
+			}
+			if (event.schedule) {
+				minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Starttid</th>);
+			}
 		}
 		if (event.maxRegistrations > 1) {
-			minorHeaders.push(<th key={minorHeaders.length} className="minor entry" style={{ width: "20px" }}>&nbsp;</th>);
+			this.addButtonHeader(minorHeaders);
 		}
-		// ToDo: Handle schedule
 	}
 
 	RegistrationHeader({ inject }) {
@@ -37,6 +44,12 @@ export class RegistrationForm extends InjectedComponent {
 			competition.eventList(group.id).forEach(e => this.addMinorHeadersFor(e, minorHeaders));
 			majorHeaders.push(<th key={group.id} className="major" colSpan={minorHeaders.length - initial}>{group.name}</th>);
 		});
+
+		/*
+		majorHeaders.push(<th key="-1" className="major">&nbsp;</th>);
+		this.addButtonHeader(minorHeaders);
+		*/
+		
 		return (
 			<thead>
 				<tr>{majorHeaders}</tr>

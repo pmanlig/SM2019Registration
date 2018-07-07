@@ -14,6 +14,16 @@ tr.error {
 	background-color: crimson;
 }
 
+tr.registration {
+	vertical-align: top;
+}
+
+tr.registration ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
 th {
   margin: 0px;
   text-align: left;
