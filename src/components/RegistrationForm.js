@@ -8,24 +8,24 @@ export class RegistrationForm extends InjectedComponent {
 	addButtonHeader(minorHeaders) {
 		minorHeaders.push(<th key={minorHeaders.length} className="minor entry" style={{ width: "20px" }}>&nbsp;</th>);
 	}
-	
-	addMinorHeadersFor(event, minorHeaders) {
-		if (event.classes) {
+
+	addMinorHeadersFor(event, minorHeaders, competition) {
+		let initial = minorHeaders.length;
+		if (event.classes && competition.classes(event.classes)) { // Hack to handle nonexisting classGroups
 			minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Klass</th>);
 		}
-		if (!event.divisions && !event.schedule) {
-			minorHeaders.push(<th key={minorHeaders.length} className="minor entry vert"><div>{event.name}</div></th>);
-			return;
-		} else {
-			if (event.divisions) {
-				minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Vapengrupp</th>);
-			}
-			if (event.schedule) {
-				minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Starttid</th>);
-			}
+		if (event.divisions && competition.divisions(event.divisions)) { // Hack to handle nonexisting classGroups
+			minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Vapengrupp</th>);
+		}
+		if (event.schedule) {
+			minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Starttid</th>);
 		}
 		if (event.maxRegistrations > 1) {
 			this.addButtonHeader(minorHeaders);
+		}
+
+		if (initial === minorHeaders.length) {
+			minorHeaders.push(<th key={minorHeaders.length} className="minor entry vert"><div>{event.name}</div></th>);
 		}
 	}
 
@@ -41,7 +41,7 @@ export class RegistrationForm extends InjectedComponent {
 
 		competition.eventGroups.forEach(group => {
 			let initial = minorHeaders.length;
-			competition.eventList(group.id).forEach(e => this.addMinorHeadersFor(e, minorHeaders));
+			competition.eventList(group.id).forEach(e => this.addMinorHeadersFor(e, minorHeaders, competition));
 			majorHeaders.push(<th key={group.id} className="major" colSpan={minorHeaders.length - initial}>{group.name}</th>);
 		});
 
@@ -49,7 +49,7 @@ export class RegistrationForm extends InjectedComponent {
 		majorHeaders.push(<th key="-1" className="major">&nbsp;</th>);
 		this.addButtonHeader(minorHeaders);
 		*/
-		
+
 		return (
 			<thead>
 				<tr>{majorHeaders}</tr>

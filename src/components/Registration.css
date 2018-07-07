@@ -50,3 +50,14 @@ th.vert > div {
       rotate(315deg);
   width: 20px;
 }
+
+.schedule {
+	background-color: lightseagreen;
+	position: fixed;
+	margin: auto 0;
+	padding: 0 20px;
+	right: 0;
+	top: 100px;
+	max-height: calc(100vh - 100px);
+	overflow-y: auto;
+}

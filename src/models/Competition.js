@@ -82,10 +82,14 @@ export class Competition extends InjectedClass {
 	}
 
 	classes(classGroupId) {
-		return this.classGroups.find(c => c.id === classGroupId).classes;
+		// Hack to handle nonexisting classGroup
+		let classGroup = this.classGroups.find(c => c.id === classGroupId);
+		return classGroup && classGroup.classes;
 	}
 
 	divisions(divisionGroupId) {
-		return this.divisionGroups.find(d => d.id === divisionGroupId).divisions;
+		// Hack to handle nonexisting divisionGroup
+		let divisionGroup = this.divisionGroups.find(d => d.id === divisionGroupId);
+		return divisionGroup && divisionGroup.divisions;
 	}
 }

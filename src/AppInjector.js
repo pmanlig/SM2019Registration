@@ -2,7 +2,7 @@ import { Injector, Server, Storage } from './logic';
 import { Registry, Session, Competition, Registration, Results } from './models';
 import {
 	Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary,
-	StoreQuestion, EventInfo, LoginLogout, Dropdown
+	StoreQuestion, EventInfo, LoginLogout, Dropdown, Schedule
 } from './components';
 import { RegistrationView, ReportView, ResultView, CreateCompetition, CompetitionView, CompetitionList, About, Login, withLogin } from './views';
 import { App } from './App';
@@ -28,6 +28,7 @@ export class Events {
 	static busyChanged = Events.eventId++;
 	static deleteParticipant = Events.eventId++;
 	static showParticipantPicker = Events.eventId++;
+	static showSchedule = Events.eventId++;
 	static registryUpdated = Events.eventId++;
 	static setRegistrationInfo = Events.eventId++;
 	static competitionUpdated = Events.eventId++;
@@ -50,15 +51,11 @@ export class Components {
 	static Registration = Components.componentId++;
 	static Results = Components.componentId++;
 	static Competitions = Components.componentId++;
-	static CompetitionView = Components.componentId++;
 	static CreateCompetition = Components.componentId++;
 	static LoginLogout = Components.componentId++;
 	static AppHeader = Components.componentId++;
 	static BusyIndicator = Components.componentId++;
 	static Busy = Components.componentId++;
-	static RegistrationView = Components.componentId++;
-	static ReportView = Components.componentId++;
-	static ResultView = Components.componentId++;
 	static RegistrationContact = Components.componentId++;
 	static RegistrationForm = Components.componentId++;
 	static Summary = Components.componentId++;
@@ -69,6 +66,12 @@ export class Components {
 	static StoreQuestion = Components.componentId++;
 	static EventInfo = Components.componentId++;
 	static Dropdown = Components.componentId++;
+	static Schedule = Components.componentId++;
+
+	static CompetitionView = Components.componentId++;
+	static RegistrationView = Components.componentId++;
+	static ReportView = Components.componentId++;
+	static ResultView = Components.componentId++;
 }
 
 export class AppInjector extends Injector {
@@ -101,12 +104,14 @@ export class AppInjector extends Injector {
 		this.registerComponent(Components.Login, Login);
 		this.registerComponent(Components.StoreQuestion, StoreQuestion);
 		this.registerComponent(Components.EventInfo, EventInfo);
+		this.registerComponent(Components.About, About);
+		this.registerComponent(Components.Competitions, CompetitionList);
+		this.registerComponent(Components.CreateCompetition, withLogin(CreateCompetition));
+		this.registerComponent(Components.Schedule, Schedule);
+
+		this.registerComponent(Components.CompetitionView, CompetitionView);
 		this.registerComponent(Components.RegistrationView, RegistrationView);
 		this.registerComponent(Components.ReportView, ReportView);
 		this.registerComponent(Components.ResultView, ResultView);
-		this.registerComponent(Components.About, About);
-		this.registerComponent(Components.Competitions, CompetitionList);
-		this.registerComponent(Components.CompetitionView, CompetitionView);
-		this.registerComponent(Components.CreateCompetition, withLogin(CreateCompetition));
 	}
 }

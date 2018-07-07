@@ -2,7 +2,7 @@ import "./Buttons.css";
 import React from 'react';
 import { InjectedComponent } from '../logic';
 import { Dropdown } from './Dropdown';
-import { Components } from '.';
+import { Components, Events } from '.';
 
 export class RegistrationRow extends InjectedComponent {
 	classDropdown(participant, event, value, values, registration) {
@@ -17,10 +17,24 @@ export class RegistrationRow extends InjectedComponent {
 		return dropdowns;
 	}
 
-	scheduleButtons(participant, event, rounds, registration) {
+	scheduleButtons(participant, event, rounds) {
 		let buttons = [];
 		for (let i = 0; i < rounds.length; i++) {
-			buttons.push(<li key={i}><button>Välj starttid ></button></li>);
+			buttons.push(<li key={i}><button className="scheduleButton" onClick={e => this.fire(Events.showSchedule, participant, event)}>Välj starttid ></button></li>);
+		}
+		return buttons;
+	}
+
+	roundButtons(participant, event, rounds, registration) {
+		let buttons = [];
+		for (let i = 0; i < rounds.length; i++) {
+			if (i === 0 && rounds.length < event.maxRegistrations) {
+				buttons.push(<li key={i}><button className="button small-round" onClick={e => registration.addParticipantRound(participant, event.id)}>+</button></li>);
+			} else if (event.maxRegistrations > 1) {
+				buttons.push(<li key={i}><button className="button small-round deleteButton" onClick={e => registration.deleteParticipantRound(participant, event.id, i)}>x</button></li>);
+			} else {
+				buttons.push(<li key={i}>&nbsp;</li>);
+			}
 		}
 		return buttons;
 	}
@@ -30,10 +44,10 @@ export class RegistrationRow extends InjectedComponent {
 		const registration = this.inject(Components.Registration);
 		const eventInfo = participant.event(event.id) || { event: event.id, rounds: [{}] };
 		let controls = [];
-		if (event.classes) {
+		if (event.classes && competition.classes(event.classes)) {
 			controls.push(this.classDropdown(participant.id, event.id, eventInfo.class, competition.classes(event.classes), registration));
 		}
-		if (event.divisions) {
+		if (event.divisions && competition.divisions(event.divisions)) {
 			controls.push(<td key="division"><ul>
 				{this.divisionDropdown(participant.id, event.id, eventInfo.rounds, competition.divisions(event.divisions), registration)}
 			</ul></td>);
@@ -43,12 +57,14 @@ export class RegistrationRow extends InjectedComponent {
 				{this.scheduleButtons(participant.id, event.id, eventInfo.rounds, registration)}
 			</ul></td>);
 		}
-		if (eventInfo.rounds.length < event.maxRegistrations) {
-			controls.push(<td key="addRound"><button onClick={e => registration.addParticipantRound(participant.id, event.id)}>+</button></td>);
+		if (event.maxRegistrations > 1) {
+			controls.push(<td key="round"><ul>
+				{this.roundButtons(participant.id, event, eventInfo.rounds, registration)}
+			</ul></td>);
 		}
 
 		if (controls.length === 0) {
-			controls.push(<td><input type="checkbox" className="checkbox" onChange={c =>
+			controls.push(<td key="participate"><input type="checkbox" className="checkbox" onChange={c =>
 				this.inject(Components.Registration).setParticipantEvent(participant.id, event.id, c.target.checked)
 			} checked={participant.participate(event.id)} /></td>);
 		}

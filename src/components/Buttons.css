@@ -34,6 +34,11 @@
 	text-align: center;
 }
 
+.scheduleButton {
+	background-color: white;
+	border: 1px solid lightgray;
+}
+
 .toolButton {
 	padding: 5px 15px;
 	border-radius: 15px;
