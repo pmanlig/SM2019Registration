@@ -18,11 +18,11 @@ export class Schedule extends InjectedComponent {
 		let rows = [];
 		rows.push(<tr key={squad.time} className={this.squadStatus(squad)}>
 			<td>{squad.time}</td>
-			<td>{squad.slots}</td>
+			<td>{squad.participants.length + "/" + squad.slots}</td>
 			<td><button>V</button></td>
 		</tr>);
 		if (squad.participants.length > 0) {
-			rows = rows.concat(squad.participants.map(p => 
+			rows = rows.concat(squad.participants.map(p =>
 				<tr className="participant">
 					<td>{p.name}</td>
 					<td>&nbsp;</td>
