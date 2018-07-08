@@ -1,16 +1,47 @@
 import React from 'react';
-import { InjectedComponent } from '../logic';
+import { InjectedComponent, Components } from '../logic';
 
 export class Schedule extends InjectedComponent {
-	render() {
-		let junk = [];
-		for (let i = 0; i < 200; i++) {
-			junk.push(<p key={i}>{i}</p>);
-		}
+	constructor(props) {
+		super(props);
+		this.state = { schedule: {} };
+		this.inject(Components.Server).loadSchedule(this.inject(Components.Competition).id, this.props.id, json => this.setState({ schedule: json }));
+	}
 
+	squadStatus(squad) {
+		if (squad.slots === squad.participants.length) { return "full"; }
+		if (squad.participants.length === 0) { return "empty"; }
+		return "partial";
+	}
+
+	renderSquad(squad) {
+		let rows = [];
+		rows.push(<tr key={squad.time} className={this.squadStatus(squad)}>
+			<td>{squad.time}</td>
+			<td>{squad.slots}</td>
+			<td><button>V</button></td>
+		</tr>);
+		if (squad.participants.length > 0) {
+			rows = rows.concat(squad.participants.map(p => 
+				<tr className="participant">
+					<td>{p.name}</td>
+					<td>&nbsp;</td>
+					<td>{p.division}</td>
+				</tr>
+			));
+		}
+		return rows;
+	}
+
+	render() {
 		return <div className="schedule">
-			<h1>Schedule</h1>
-			{junk}
+			<h1>Starttider</h1>
+			<table>
+				<thead></thead>
+				<tbody>
+					{this.state.schedule.squads && this.state.schedule.squads.map(s => this.renderSquad(s))}
+				</tbody>
+			</table>
 		</div>;
 	}
 }

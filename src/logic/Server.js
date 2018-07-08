@@ -39,6 +39,12 @@ export class Server extends InjectedClass {
 		this.load(isNaN(numId) ? '/' + competitionId + '_result.json' : Server.baseUrl + 'result/' + competitionId, callback);
 	}
 
+	loadSchedule(competitionId, scheduleId, callback) {
+		console.log("Loading schedule for competition " + competitionId);
+		let numId = parseInt(competitionId, 10);
+		this.load(isNaN(numId) ? '/' + competitionId + '_schedule.json' : Server.baseUrl + 'schedule/' + scheduleId, callback);
+	}
+
 	registrationJson(reg) {
 		return JSON.stringify({
 			competition: reg.competition.id,
