@@ -1,3 +1,4 @@
+import './Arrows.css';
 import React from 'react';
 import { InjectedComponent, Components } from '../logic';
 
@@ -19,11 +20,14 @@ export class Schedule extends InjectedComponent {
 		rows.push(<tr key={squad.time} className={this.squadStatus(squad)}>
 			<td>{squad.time}</td>
 			<td>{squad.participants.length + "/" + squad.slots}</td>
-			<td><button>V</button></td>
+			<td>
+				{squad.participants.length > 0 &&
+					<button className={"button medium-round " + (squad.expand ? "arrow-up" : "arrow-down")} onClick={e => { squad.expand = !squad.expand; this.setState({}); }} />}
+			</td>
 		</tr>);
-		if (squad.participants.length > 0) {
+		if (squad.expand && squad.participants.length > 0) {
 			rows = rows.concat(squad.participants.map(p =>
-				<tr className="participant">
+				<tr key={p.id} className="participant">
 					<td>{p.name}</td>
 					<td>&nbsp;</td>
 					<td>{p.division}</td>

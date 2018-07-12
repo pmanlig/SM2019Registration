@@ -1,0 +1,26 @@
+.medium-round {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	border: none;
+	background-color: #afafaf;
+}
+
+.arrow-down::before {
+	content:'';
+	border-top: 8px solid black;
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	position: absolute;
+	transform: translate(-7px, -4px);
+}
+
+.arrow-up::before {
+	content: '';
+	border-bottom: 8px solid black;
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	position: absolute;
+	transform: translate(-7px, -5px);
+}
