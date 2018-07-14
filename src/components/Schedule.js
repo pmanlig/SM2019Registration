@@ -1,4 +1,4 @@
-import './Arrows.css';
+import './Buttons.css';
 import React from 'react';
 import { InjectedComponent, Components } from '../logic';
 

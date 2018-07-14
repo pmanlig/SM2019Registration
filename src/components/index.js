@@ -15,4 +15,5 @@ export { EventList } from './EventList';
 export { ResultsTable } from './ResultsTable';
 export { Dropdown } from './Dropdown';
 export { Schedule } from './Schedule';
+export { ComponentTest } from './ComponentTest';
 export { Events, Components, StorageKeys } from '../AppInjector';

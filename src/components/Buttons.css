@@ -1,30 +1,197 @@
 .button {
-  margin-left: 1px;
-	margin-right: 1px;
+  margin: 1px;
 	background-color: #3f3f3f;
 	color: #f5f5f5;
-	padding: 5px 10px;
-	/*border: none;
-	text-decoration: none;*/
 	display: inline-block;
+	vertical-align: middle;
+	border: none;
+	width: 20px;
+	height: 20px;
+}
+
+.button-text {
+	padding: 5px 10px;
 	border-radius: 15px;
+}
+
+[class*="button-"] {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	position: relative;
+}
+
+.button-close::before, .button-close::after {
+	position: absolute;
+	left: 9.2px;
+	top: 1.95px;
+  content: ' ';
+  height: 15px;
+	width: 0px;
+	border-width: 1px;
+	border-style: solid;
+}
+
+.button-close::before {
+  transform: rotate(45deg);
+}
+
+.button-close::after {
+  transform: rotate(-45deg);
+}
+
+.button-add::before, .button-add::after {
+	position: absolute;
+	left: 9.25px;
+	top: 4px;
+  content: ' ';
+  height: 11px;
+	width: 0px;
+	border-width: 1px;
+	border-style: solid;
+}
+
+.button-add::before {
+  transform: rotate(90deg);
+}
+
+.button-previous::before, .button-previous::after {
+  content: ' ';
+	position: absolute;
+	left: 5.5px;
+	top: 9px;
+  height: 7px;
+	width: 0px;
+	border-width: 1px;
+	border-style: solid;
+	transform-origin: 50% 1px;
+}
+
+.button-previous::before {
+  transform: rotate(-135deg);
+}
+
+.button-previous::after {
+  transform: rotate(-45deg);
+}
+
+.button-next::before, .button-next::after {
+	position: absolute;
+	left: 13px;
+	top: 9px;
+  content: ' ';
+  height: 7px;
+	width: 0px;
+	border-width: 1px;
+	border-style: solid;
+	transform-origin: 50% 1px;
+}
+
+.button-next::before {
+  transform: rotate(135deg);
+}
+
+.button-next::after {
+  transform: rotate(45deg);
+}
+
+.button-expand::before, .button-expand::after {
+  content: ' ';
+	position: absolute;
+	left: 9.5px;
+	top: 13px;
+  height: 7px;
+	width: 0px;
+	border-width: 1px;
+	border-style: solid;
+	transform-origin: 50% 1px;
+}
+
+.button-expand::before {
+  transform: rotate(225deg);
+}
+
+.button-expand::after {
+  transform: rotate(135deg);
+}
+
+.button-collapse::before, .button-collapse::after {
+  content: ' ';
+	position: absolute;
+	left: 9.5px;
+	top: 6.5px;
+  height: 7px;
+	width: 0px;
+	border-width: 1px;
+	border-style: solid;
+	transform-origin: 50% 1px;
+}
+
+.button-collapse::before {
+  transform: rotate(-45deg);
+}
+
+.button-collapse::after {
+  transform: rotate(45deg);
+}
+
+.button-up::before {
+	content: '';
+	border-bottom: 8px solid white;
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	position: absolute;
+	top: 5px;
+	left: 3.5px;
+}
+
+.button-down::before {
+	content:'';
+	border-top: 8px solid white;
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	position: absolute;
+	top: 7px;
+	left: 3.5px;
+}
+
+.button-left::before {
+	content:'';
+	border-left: 8px solid white;
+	border-top: 7px solid transparent;
+	border-bottom: 7px solid transparent;
+	position: absolute;
+	top: 3.5px;
+	left: 7px;
+}
+
+.button-right::before {
+	content:'';
+	border-right: 8px solid white;
+	border-top: 7px solid transparent;
+	border-bottom: 7px solid transparent;
+	position: absolute;
+	top: 3.5px;
+	left: 5px;
 }
 
 .disabled {
 	opacity: 0.7;
 }
 
-.small-round {
-	display: inline-block;
-	vertical-align: middle;
-	width: 15px;
-	height: 15px;
-	margin: auto 1px;
-	border-radius: 50%;
-	font-size: 8px;
-	font-weight: bold;
-	padding: 0;
-	border: none;
+.small {
+	transform: scale(0.75);
+	margin: -2px;
+}
+
+.large {
+	transform: scale(1.5);
+	margin: 6px;
+}
+
+.x-large {
+	transform: scale(2);
+	margin: 11px;
 }
 
 .deleteButton {
@@ -51,81 +218,4 @@
 	border-radius: 15px;
 	float: right;
 	vertical-align: middle;
-}
-
-.x-button {
-	position: relative;
-	flex-grow: 0;
-	width: 15px;
-	height: 15px;
-	border-radius: 50%;
-	border-width: 2px;
-	border-style: solid;
-	margin: 4px 5px 4px 5px;
-	font-weight: bolder;
-	font-size: 0.4em;
-	opacity: 0.3;
-}
-
-.x-button:hover {
-	opacity: 1;
-}
-
-.x-close::before, .close::after {
-	position: absolute;
-	left: 9px;
-	bottom: 2px;
-  content: ' ';
-  height: 15px;
-	width: 0px;
-	border-width: 1px;
-	border-style: solid;
-}
-
-.x-close::before {
-  transform: rotate(45deg);
-}
-
-.x-close::after {
-  transform: rotate(-45deg);
-}
-
-.x-next::before, .next::after {
-	position: absolute;
-	right: 6px;
-	bottom: 2px;
-  content: ' ';
-  height: 7px;
-	width: 0px;
-	border-width: 1px;
-	border-style: solid;
-	transform-origin: 50% 1px;
-}
-
-.x-next::before {
-  transform: rotate(135deg);
-}
-
-.x-next::after {
-  transform: rotate(45deg);
-}
-
-.x-previous::before, .previous::after {
-  content: ' ';
-	position: absolute;
-	left: 6px;
-	bottom: 2px;
-  height: 7px;
-	width: 0px;
-	border-width: 1px;
-	border-style: solid;
-	transform-origin: 50% 1px;
-}
-
-.x-previous::before {
-  transform: rotate(-135deg);
-}
-
-.x-previous::after {
-  transform: rotate(-45deg);
 }
