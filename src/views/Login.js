@@ -1,4 +1,5 @@
 import './Login.css';
+import '../components/Buttons.css';
 import React from 'react';
 import { InjectedComponent } from '../logic';
 import { withTitle } from '../components';
