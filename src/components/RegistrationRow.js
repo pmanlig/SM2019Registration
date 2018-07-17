@@ -29,9 +29,9 @@ export class RegistrationRow extends InjectedComponent {
 		let buttons = [];
 		for (let i = 0; i < rounds.length; i++) {
 			if (i === 0 && rounds.length < event.maxRegistrations) {
-				buttons.push(<li key={i}><button className="button small-round" onClick={e => registration.addParticipantRound(participant, event.id)}>+</button></li>);
+				buttons.push(<li key={i}><button className="button-add small" onClick={e => registration.addParticipantRound(participant, event.id)} /></li>);
 			} else if (event.maxRegistrations > 1) {
-				buttons.push(<li key={i}><button className="button small-round deleteButton" onClick={e => registration.deleteParticipantRound(participant, event.id, i)}>x</button></li>);
+				buttons.push(<li key={i}><button className="button-close small deleteButton" onClick={e => registration.deleteParticipantRound(participant, event.id, i)} /></li>);
 			} else {
 				buttons.push(<li key={i}>&nbsp;</li>);
 			}
@@ -101,6 +101,6 @@ export class RegistrationRow extends InjectedComponent {
 		return <tr key={myId} className={p.errors.length > 0 ? "error registration" : "registration"} >
 			<ParticipantFields participant={p} />
 			<RegistrationControls participant={p} />
-			<td><button className="button small-round deleteButton" onClick={e => registration.deleteParticipant(myId)}>x</button></td></tr>;
+			<td><button className="button-close small deleteButton" onClick={e => registration.deleteParticipant(myId)} /></td></tr>;
 	}
 }

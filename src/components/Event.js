@@ -12,7 +12,7 @@ export class Event extends Component {
 		return <div className="event">
 			<div className="eventTitle">
 				<span>{this.props.event.name}</span>
-				{this.props.onDelete && <button className="deleteButton" onClick={() => this.props.onDelete(this.props.event)}>x</button>}
+				{this.props.onDelete && <button className="button-close small deleteButton" onClick={() => this.props.onDelete(this.props.event)}>x</button>}
 			</div>
 			<select className="eventInfo">
 				<option value="none">Inget schema</option>

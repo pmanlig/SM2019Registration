@@ -22,7 +22,7 @@ export class Schedule extends InjectedComponent {
 			<td>{squad.participants.length + "/" + squad.slots}</td>
 			<td>
 				{squad.participants.length > 0 &&
-					<button className={"button medium-round x-large " + (squad.expand ? "arrow-up" : "arrow-down")} onClick={e => { squad.expand = !squad.expand; this.setState({}); }} />}
+					<button className={(squad.expand ? "button-collapse" : "button-expand")} onClick={e => { squad.expand = !squad.expand; this.setState({}); }} />}
 			</td>
 		</tr>);
 		if (squad.expand && squad.participants.length > 0) {

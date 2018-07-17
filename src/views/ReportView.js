@@ -46,7 +46,7 @@ export class ReportView extends InjectedComponent {
 					{this.inject(Components.Registration).competition.events.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
 				</select></div>}
 			<ResultsTable results={results} event={selectedEvent} />
-			<button className={results.isDirty() ? "button" : "button disabled"} style={{ marginTop: "10px" }} onClick={() => results.store()}>Spara</button>
+			<button className={results.isDirty() ? "button" : "button disabled"} onClick={() => results.store()}>Spara</button>
 			<button className="button" onClick={() => results.sort()}>Sortera</button>
 		</div>;
 	}

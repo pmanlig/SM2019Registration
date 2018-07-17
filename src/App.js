@@ -22,14 +22,14 @@ export class App extends InjectedComponent {
 					<AppHeader title="Anmälningssystem Gävle PK" />
 					<Switch>
 						<Route exact path='/' component={this.inject(Components.Competitions)} />
-						<Route path='/login' component={this.inject(Components.Login)} />
-						<Route path='/competition/:id/:operation/:token' component={this.inject(Components.CompetitionView)} />
-						<Route path='/competition/:id/:operation' component={this.inject(Components.CompetitionView)} />
-						<Route path='/competition/:id' component={this.inject(Components.CompetitionView)} />
-						<Route path='/report/:id' component={this.inject(Components.ReportView)} />
-						<Route path='/create' component={this.inject(Components.CreateCompetition)} />
-						<Route path='/about' component={this.inject(Components.About)} />
-						<Route path='/test' component={ComponentTest} />
+						<Route exact path='/login' component={this.inject(Components.Login)} />
+						<Route exact path='/competition/:id/:operation/:token' component={this.inject(Components.CompetitionView)} />
+						<Route exact path='/competition/:id/:operation' component={this.inject(Components.CompetitionView)} />
+						<Route exact path='/competition/:id' component={this.inject(Components.CompetitionView)} />
+						<Route exact path='/report/:id' component={this.inject(Components.ReportView)} />
+						<Route exact path='/create' component={this.inject(Components.CreateCompetition)} />
+						<Route exact path='/about' component={this.inject(Components.About)} />
+						<Route exact path='/test' component={ComponentTest} />
 					</Switch>
 					<Footer />
 				</div>
