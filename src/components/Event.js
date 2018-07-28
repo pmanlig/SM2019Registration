@@ -1,3 +1,4 @@
+import './Event.css';
 import React, { Component } from 'react';
 import DatePicker from 'react-date-picker';
 
@@ -12,8 +13,9 @@ export class Event extends Component {
 		return <div className="event">
 			<div className="eventTitle">
 				<span>{this.props.event.name}</span>
-				{this.props.onDelete && <button className="button-close small deleteButton" onClick={() => this.props.onDelete(this.props.event)}>x</button>}
+				{this.props.onDelete && <button className="button-close small deleteButton" onClick={() => this.props.onDelete(this.props.event)} />}
 			</div>
+			<DatePicker value={this.props.event.date} onChange={this.setTime} />
 			<select className="eventInfo">
 				<option value="none">Inget schema</option>
 				<option value="none">Nytt schema...</option>
@@ -26,7 +28,6 @@ export class Event extends Component {
 				<option value="none">Ingen klassindelning</option>
 				<option value="none">Ny indelning...</option>
 			</select>
-			<DatePicker value={this.props.event.date} onChange={this.setTime}/>
 		</div>;
 	}
 }

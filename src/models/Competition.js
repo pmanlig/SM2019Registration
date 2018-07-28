@@ -21,41 +21,96 @@ export const Operations = [
 ];
 
 export class Competition extends InjectedClass {
-	id = 0;
-	name = "";
-	description = "";
-	permissions = Permissions.Any;
-	status = Status.Hidden;
-	divisionGroups = [];
-	classGroups = [];
-	eventGroups = [];
-	events = [];
-	rules = [];
+	constructor(injector) {
+		super(injector);
+		this.initialize();
+	}
+
+	initialize() {
+		this.id = 0;
+		this.name = "";
+		this.description = "";
+		this.permissions = Permissions.Own;
+		this.status = Status.Hidden;
+		this.divisionGroups = [];
+		this.classGroups = [];
+		this.eventGroups = [];
+		this.events = [{ name: "", date: new Date() }];
+		this.rules = [];
+	}
 
 	load(id) {
 		if (this.id !== id) {
 			this.inject(Components.Server).loadCompetition(id, obj => {
 				// Prevent multiple requests from screwing up the state
 				if (obj.id !== this.id) {
-					// ToDo: remove when service is fixed!
-					this.id = obj.id || obj.competition_id;
-					this.name = obj.name;
-					this.description = obj.description;
-					this.permissions = obj.permissions || Permissions.Any;
-					this.status = /*obj.status ||*/ Status.Open;
-					this.divisionGroups = obj.divisionGroups;
-					this.classGroups = obj.classGroups;
-					this.eventGroups = obj.eventGroups;
-					this.events = obj.events;
-					this.rules = obj.rules;
-					this.schedule = obj.schedule;
-					this.fire(Events.competitionUpdated);
+					this.initialize();
+					this.loadFrom(obj);
 				}
 			});
 		} else {
 			this.fire(Events.competitionUpdated);
 		}
 	}
+
+	loadFrom(obj) {
+		if (obj) {
+			// ToDo: remove when service is fixed!
+			this.id = obj.id || obj.competition_id || this.id;
+			this.name = obj.name || this.name;
+			this.description = obj.description || this.description;
+			this.eventGroups = obj.eventGroups || this.eventGroups;
+			this.events = obj.events || this.events;
+			this.divisionGroups = obj.divisionGroups || this.divisionGroups;
+			this.classGroups = obj.classGroups || this.classGroups;
+			this.rules = obj.rules || this.rules;
+			this.permissions = obj.permissions || Permissions.Any;
+			this.status = /*obj.status ||*/ Status.Open;
+			this.fire(Events.competitionUpdated);
+		}
+	}
+
+	// Necessary to avoid trying to serialize methods & more
+	toJson() {
+		return JSON.stringify({
+			name: this.name,
+			description: this.description,
+			events: this.events,
+		});
+	}
+
+	/*** Properties *****************************************************************************************************/
+
+	setProperty(prop, value) {
+		this[prop] = value;
+		this.fire(Events.competitionUpdated);
+	}
+
+	setName(name) {
+		this.setProperty("name", name);
+	}
+
+	setDescription(desc) {
+		this.setProperty("description", desc);
+	}
+
+	addEvent() {
+		if (this.events.length === 1) {
+			this.events[0].name = "Deltävling 1";
+		}
+		this.events.push({ name: "Deltävling " + (this.events.length + 1), date: new Date() });
+		this.fire(Events.competitionUpdated);
+	}
+
+	removeEvent(event) {
+		this.events = this.events.filter(e => e.name !== event.name);
+		if (this.events.length === 1) {
+			this.events[0].name = "";
+		}
+		this.fire(Events.competitionUpdated);
+	}
+
+	/*** Methods*********************************************************************************************************/
 
 	/**
 	 * Gets the event with the given ID
