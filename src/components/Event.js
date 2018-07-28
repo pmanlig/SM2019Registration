@@ -3,19 +3,19 @@ import React, { Component } from 'react';
 import DatePicker from 'react-date-picker';
 
 export class Event extends Component {
-	setTime = (date) => {
-		// ToDo: needs to be set in parent to store state info
-		this.props.event.date = date;
+	// ToDo: needs to be set in competition object so changes are saved
+	updateProperty(prop, value) {
+		this.props.event[prop] = value;
 		this.setState({});
 	}
 
 	render() {
 		return <div className="event">
 			<div className="eventTitle">
-				<span>{this.props.event.name}</span>
+				{this.props.onDelete && <input value={this.props.event.name} size="20" onChange={e => this.updateProperty("name", e.target.value)} />}
 				{this.props.onDelete && <button className="button-close small deleteButton" onClick={() => this.props.onDelete(this.props.event)} />}
 			</div>
-			<DatePicker value={this.props.event.date} onChange={this.setTime} />
+			<DatePicker value={this.props.event.date} onChange={d => this.updateProperty("date", d)} />
 			<select className="eventInfo">
 				<option value="none">Inget schema</option>
 				<option value="none">Nytt schema...</option>

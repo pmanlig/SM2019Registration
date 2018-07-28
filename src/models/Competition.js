@@ -86,12 +86,10 @@ export class Competition extends InjectedClass {
 		this.fire(Events.competitionUpdated);
 	}
 
-	setName(name) {
-		this.setProperty("name", name);
-	}
-
-	setDescription(desc) {
-		this.setProperty("description", desc);
+	setEventIds() {
+		let id = 1;
+		this.events.forEach(e => e.id = id++);
+		this.fire(Events.competitionUpdated);
 	}
 
 	addEvent() {
@@ -99,14 +97,23 @@ export class Competition extends InjectedClass {
 			this.events[0].name = "Deltävling 1";
 		}
 		this.events.push({ name: "Deltävling " + (this.events.length + 1), date: new Date() });
-		this.fire(Events.competitionUpdated);
+		this.setEventIds();
 	}
 
 	removeEvent(event) {
-		this.events = this.events.filter(e => e.name !== event.name);
+		this.events = this.events.filter(e => e.id !== event.id);
 		if (this.events.length === 1) {
 			this.events[0].name = "";
 		}
+		this.setEventIds();
+	}
+
+	updateEvent(event, prop, value) {
+		this.events.forEach(e => {
+			if (e.id === event.id) {
+				e[prop] = value;
+			}
+		});
 		this.fire(Events.competitionUpdated);
 	}
 

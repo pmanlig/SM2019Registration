@@ -11,8 +11,13 @@
 	display: flex;
 }
 
-.eventTitle > span {
+.eventTitle > input {
+	color: inherit;
+	background-color: inherit;
+	border: none;
 	flex-grow: 1;
+	margin-bottom: 3px;
+	font-size: 1.2em;
 }
 
 .eventTitle > button {
