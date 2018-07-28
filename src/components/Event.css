@@ -1,6 +1,6 @@
 .event {
 	display: inline-block;
-	margin: 2px auto 2px 2px;
+	margin: 2px 2px 2px 0;
 	padding: 7px;
 	border-radius: 4px;
 	color: white;
@@ -16,8 +16,12 @@
 	background-color: inherit;
 	border: none;
 	flex-grow: 1;
-	margin-bottom: 3px;
+	margin: 0 15px 3px 0;
 	font-size: 1.2em;
+}
+
+.eventTitle > input:hover {
+	background-color: #90bfef;
 }
 
 .eventTitle > button {

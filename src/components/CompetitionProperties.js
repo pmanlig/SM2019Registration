@@ -30,7 +30,7 @@ export class CompetitionProperties extends InjectedComponent {
 					</tr>
 				</tbody>
 			</table>
-			{competition.events.map(e => <Event key={e.id} event={e} onDelete={competition.events.length > 1 ? e => competition.removeEvent(e) : undefined} />)}
+			{competition.events.map(e => <Event key={e.id} competition={competition} event={e} onDelete={competition.events.length > 1 ? e => competition.removeEvent(e) : undefined} />)}
 		</div>;
 	}
 }
