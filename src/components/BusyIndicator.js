@@ -18,6 +18,8 @@ export class Busy {
 }
 
 export class BusyIndicator extends InjectedComponent {
+	static className = "BusyIndicator";
+	
 	constructor(props) {
 		super(props);
 		this.props.subscribe(Events.busyChanged, () => this.setState({}));

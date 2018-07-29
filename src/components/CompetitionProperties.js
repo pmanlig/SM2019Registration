@@ -2,16 +2,18 @@ import './CompetitionProperties.css';
 import React from 'react';
 import { InjectedComponent, Components, Events } from '../logic';
 import { Status } from '../models';
-import { Event } from '.';
 
 export class CompetitionProperties extends InjectedComponent {
 	constructor(props) {
 		super(props);
+		this.state = {};
 		this.subscribe(Events.competitionUpdated, () => this.setState({}));
 	}
 
 	render() {
-		let competition = this.props.inject(Components.Competition);
+		const EventInfo = this.inject(Components.EventInfo);
+		const DivisionPicker = this.inject(Components.DivisionPicker);
+		let competition = this.inject(Components.Competition);
 		return <div>
 			<table className="competitionInfo">
 				<tbody>
@@ -41,7 +43,8 @@ export class CompetitionProperties extends InjectedComponent {
 					</tr>
 				</tbody>
 			</table>
-			{competition.events.map(e => <Event key={e.id} competition={competition} event={e} onDelete={competition.events.length > 1 ? e => competition.removeEvent(e) : undefined} />)}
+			{competition.events.map(e => <EventInfo key={e.id} event={e} />)}
+			{this.state.property === "divisions" && <DivisionPicker action={this.setGroup} />}
 		</div>;
 	}
 }

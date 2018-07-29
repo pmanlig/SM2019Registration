@@ -1,0 +1,27 @@
+[
+	{
+		"id": 1,
+		"description": "SPSF Precision",
+		"divisions": ["C", "B", "A"]
+	},
+	{
+		"id": 2,
+		"description": "SPSF Fält",
+		"divisions": ["C", "B", "A", "R"]
+	},
+	{
+		"id": 3,
+		"description": "SPSF Magnumfält",
+		"divisions": ["M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8"]
+	},
+	{
+		"id": 4,
+		"description": "SPSF PPC",
+		"divisions": ["SR2,75\"", "SR4\"", "SSA", "Dist. Revolver", "Dist. Pistol", "Open", "R1500", "P1500"]
+	},
+	{
+		"id": 5,
+		"description": "IPSC",
+		"divisions": ["Production", "Standard", "Open"]
+	}
+]

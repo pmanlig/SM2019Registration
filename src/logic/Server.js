@@ -45,6 +45,14 @@ export class Server extends InjectedClass {
 		this.load(isNaN(numId) ? '/' + competitionId + '_schedule.json' : Server.baseUrl + 'schedule/' + scheduleId, callback);
 	}
 
+	loadClassGroups(callback) {
+		this.load('/classes.json', callback);
+	}
+
+	loadDivisionGroups(callback) {
+		this.load('/divisions.json', callback);
+	}
+
 	registrationJson(reg) {
 		return JSON.stringify({
 			competition: reg.competition.id,

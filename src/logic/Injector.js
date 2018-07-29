@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { AsyncSubject } from 'rxjs';
 import { EventBus } from '.';
 
 export function withEvents(BaseComponent) {
-	return class extends Component {
+	return class extends React.Component {
 		handlers = [];
 
 		subscribe = (e, h) => {
@@ -37,7 +37,7 @@ export function withEvents(BaseComponent) {
 	}
 }
 
-export class InjectedComponent extends Component {
+export class InjectedComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.inject = props.inject;

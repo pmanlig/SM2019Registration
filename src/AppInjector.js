@@ -2,7 +2,7 @@ import { Injector, Server, Storage } from './logic';
 import { Registry, Session, Competition, Registration, Results } from './models';
 import {
 	Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary,
-	StoreQuestion, EventInfo, LoginLogout, Dropdown, Schedule, CompetitionProperties
+	StoreQuestion, EventInfo, LoginLogout, Dropdown, Schedule, CompetitionProperties, ClassPicker, DivisionPicker
 } from './components';
 import { RegistrationView, ReportView, ResultView, CreateCompetition, CompetitionView, CompetitionList, About, Login, withLogin } from './views';
 import { App } from './App';
@@ -52,7 +52,6 @@ export class Components {
 	static Registration = Components.componentId++;
 	static Results = Components.componentId++;
 	static Competitions = Components.componentId++;
-	static CreateCompetition = Components.componentId++;
 	static LoginLogout = Components.componentId++;
 	static AppHeader = Components.componentId++;
 	static BusyIndicator = Components.componentId++;
@@ -67,12 +66,16 @@ export class Components {
 	static StoreQuestion = Components.componentId++;
 	static EventInfo = Components.componentId++;
 	static Dropdown = Components.componentId++;
+
 	static Schedule = Components.componentId++;
+	static ClassPicker = Components.componentId++;
+	static DivisionPicker = Components.componentId++;
 
 	static CompetitionView = Components.componentId++;
 	static RegistrationView = Components.componentId++;
 	static ReportView = Components.componentId++;
 	static ResultView = Components.componentId++;
+	static CreateCompetition = Components.componentId++;
 }
 
 export class AppInjector extends Injector {
@@ -82,6 +85,9 @@ export class AppInjector extends Injector {
 		storage.registerKey(StorageKeys.allowStorage);
 		storage.registerKey(StorageKeys.lastContact);
 		storage.registerKey(StorageKeys.registry);
+		storage.registerKey(StorageKeys.newCompetition);
+		storage.registerKey(StorageKeys.tokens);
+		storage.registerKey(StorageKeys.results);
 		this.register(Components.Storage, storage);
 		this.register(Components.Server, new Server(this));
 		this.register(Components.Session, new Session(this));
@@ -110,6 +116,8 @@ export class AppInjector extends Injector {
 		this.registerComponent(Components.CompetitionProperties, CompetitionProperties);
 		this.registerComponent(Components.CreateCompetition, withLogin(CreateCompetition));
 		this.registerComponent(Components.Schedule, Schedule);
+		this.registerComponent(Components.ClassPicker, ClassPicker);
+		this.registerComponent(Components.DivisionPicker, DivisionPicker);
 
 		this.registerComponent(Components.CompetitionView, CompetitionView);
 		this.registerComponent(Components.RegistrationView, RegistrationView);
