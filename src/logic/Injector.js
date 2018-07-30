@@ -84,14 +84,19 @@ export class Injector {
 
 	registerComponent(id, Component) {
 		let ComponentWithEvents = withEvents(Component);
-		this.register(id, props =>
+		let entity = props =>
 			<ComponentWithEvents
 				{...props}
 				injector={this}
 				inject={this.inject}
 				subscribe={this.subscribe}
 				fire={this.fire}
-			/>);
+			/>;
+		this.register(id, entity);
+		// ToDo: rewrite to use this syntax
+		if (Component.name.search(/^[A-Z]/) !== -1) {
+			this[Component.name] = entity;
+		}
 	}
 
 	unregister = (key) => {

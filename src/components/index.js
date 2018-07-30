@@ -13,7 +13,6 @@ export { EventProperties } from './EventProperties';
 export { ResultsTable } from './ResultsTable';
 export { Dropdown } from './Dropdown';
 export { Schedule } from './Schedule';
-export { ComponentTest } from './ComponentTest';
 export { CompetitionProperties } from './CompetitionProperties';
 export { ScheduleProperties } from './ScheduleProperties';
 export { Spinner } from './Spinner';

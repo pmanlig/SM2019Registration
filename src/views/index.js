@@ -5,5 +5,6 @@ export { ResultView } from './ResultView';
 export { CompetitionList } from './CompetitionList';
 export { CompetitionView, CompetitionTabs } from './CompetitionView';
 export { CreateCompetition } from './CreateCompetition';
+export { ComponentTest } from './ComponentTest';
 export { About } from './About';
 export { Login, withLogin } from './Login';
