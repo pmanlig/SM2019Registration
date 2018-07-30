@@ -13,10 +13,13 @@ export class DivisionPicker extends InjectedComponent {
 	}
 
 	render() {
-		return <div className="sidebar">
-			<h1>Välj&nbsp;vapengrupper</h1>
-			<div className="pick" onClick={e => this.props.action(undefined)}>Inget val av vapengrupp</div>
-			{this.state.divisionGroups && this.state.divisionGroups.map(dg => <div key={dg.id} className="pick" onClick={e => this.props.action(dg)}>{dg.description}</div>)}
+		return <div>
+			<div className="drop-clickcatcher" onClick={this.props.onClose} />
+			<div className="sidebar">
+				<h1>Välj&nbsp;vapengrupper</h1>
+				<div className="pick" onClick={e => this.props.action(undefined)}>Inget val av vapengrupp</div>
+				{this.state.divisionGroups && this.state.divisionGroups.map(dg => <div key={dg.id} className="pick" onClick={e => this.props.action(dg)}>{dg.description}</div>)}
+			</div>
 		</div>;
 	}
 }

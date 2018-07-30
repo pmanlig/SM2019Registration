@@ -13,10 +13,13 @@ export class ClassPicker extends InjectedComponent {
 	}
 
 	render() {
-		return <div className="sidebar">
-			<h1>Välj&nbsp;klassindelning</h1>
-			<div className="pick" onClick={e => this.props.action(undefined)}>Ingen klassindelning</div>
-			{this.state.classGroups && this.state.classGroups.map(cg => <div key={cg.id} className="pick" onClick={e => this.props.action(cg)}>{cg.description}</div>)}
+		return <div>
+			<div className="drop-clickcatcher" onClick={this.props.onClose} />
+			<div className="sidebar">
+				<h1>Välj&nbsp;klassindelning</h1>
+				<div className="pick" onClick={e => this.props.action(undefined)}>Ingen klassindelning</div>
+				{this.state.classGroups && this.state.classGroups.map(cg => <div key={cg.id} className="pick" onClick={e => this.props.action(cg)}>{cg.description}</div>)}
+			</div>
 		</div>;
 	}
 }

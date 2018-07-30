@@ -33,11 +33,11 @@ export class EventInfo extends InjectedComponent {
 			<DatePicker value={event.date} onChange={d => competition.updateEvent(event, "date", d)} />
 			<div className="eventProperty">
 				<button className="eventInfo" onClick={e => this.setEventProperty(event, "classes")}>{event.classes || "Ingen klassindelning"}</button>
-				{this.state.property === "classes" && <ClassPicker action={this.setGroup} />}
+				{this.state.property === "classes" && <ClassPicker action={this.setGroup} onClose={e => this.setState({ property: undefined })} />}
 			</div>
 			<div className="eventProperty">
 				<button className="eventInfo" onClick={e => this.setEventProperty(event, "divisions")}>{event.divisions || "Inget val av vapengrupp"}</button>
-				{this.state.property === "divisions" && <DivisionPicker action={this.setGroup} />}
+				{this.state.property === "divisions" && <DivisionPicker action={this.setGroup} onClose={e => this.setState({ property: undefined })} />}
 			</div>
 			<button className="eventInfo" onClick={e => this.setEventProperty(event, "schedule")}>
 				{event.schedule || "Inget val av starttid"}

@@ -46,7 +46,7 @@
 
 .sidebar {
 	color: black;
-	z-index: 99;
+	z-index: 5;
 	display: block;
 	position: absolute;
 	background-color: white;
@@ -71,4 +71,14 @@
 .pick:hover {
 	background-color: #afafaf;
 	cursor: pointer;
+}
+
+.drop-clickcatcher {
+	display: block;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
 }
