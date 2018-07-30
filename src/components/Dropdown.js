@@ -1,11 +1,9 @@
 import React from 'react';
-import { InjectedComponent } from '../logic';
 
-export class Dropdown extends InjectedComponent {
+export class Dropdown extends React.Component {
 	render() {
-		return <select value={this.props.value} onChange={this.props.onChange}>
-			<option value="placeholder" hidden>{this.props.placeholder}</option>
-			{this.props.items.map(i => <option key={i} value={i}>{i}</option>)}
+		return <select className={this.props.className} value={this.props.value} onChange={this.props.onChange}>
+			{this.props.list.map(i => <option key={i.id} value={i.id}>{i.description}</option>)}
 		</select>;
 	}
 }

@@ -2,7 +2,7 @@ import { Injector, Server, Storage } from './logic';
 import { Registry, Session, Competition, Registration, Results } from './models';
 import {
 	Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary,
-	StoreQuestion, EventInfo, LoginLogout, Dropdown, Schedule, CompetitionProperties, ClassPicker, DivisionPicker
+	StoreQuestion, EventInfo, LoginLogout, Schedule, CompetitionProperties
 } from './components';
 import { RegistrationView, ReportView, ResultView, CreateCompetition, CompetitionView, CompetitionList, About, Login, withLogin } from './views';
 import { App } from './App';
@@ -65,11 +65,8 @@ export class Components {
 	static Login = Components.componentId++;
 	static StoreQuestion = Components.componentId++;
 	static EventInfo = Components.componentId++;
-	static Dropdown = Components.componentId++;
 
 	static Schedule = Components.componentId++;
-	static ClassPicker = Components.componentId++;
-	static DivisionPicker = Components.componentId++;
 
 	static CompetitionView = Components.componentId++;
 	static RegistrationView = Components.componentId++;
@@ -104,7 +101,6 @@ export class AppInjector extends Injector {
 		this.registerComponent(Components.LoginLogout, LoginLogout);
 		this.registerComponent(Components.AppHeader, AppHeader);
 		this.registerComponent(Components.BusyIndicator, BusyIndicator);
-		this.registerComponent(Components.Dropdown, Dropdown);
 		this.registerComponent(Components.RegistrationContact, RegistrationContact);
 		this.registerComponent(Components.RegistrationForm, RegistrationForm);
 		this.registerComponent(Components.Summary, Summary);
@@ -116,8 +112,6 @@ export class AppInjector extends Injector {
 		this.registerComponent(Components.CompetitionProperties, CompetitionProperties);
 		this.registerComponent(Components.CreateCompetition, withLogin(CreateCompetition));
 		this.registerComponent(Components.Schedule, Schedule);
-		this.registerComponent(Components.ClassPicker, ClassPicker);
-		this.registerComponent(Components.DivisionPicker, DivisionPicker);
 
 		this.registerComponent(Components.CompetitionView, CompetitionView);
 		this.registerComponent(Components.RegistrationView, RegistrationView);

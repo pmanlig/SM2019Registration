@@ -15,6 +15,4 @@ export { Dropdown } from './Dropdown';
 export { Schedule } from './Schedule';
 export { ComponentTest } from './ComponentTest';
 export { CompetitionProperties } from './CompetitionProperties';
-export { ClassPicker } from './ClassPicker';
-export { DivisionPicker } from './DivisionPicker';
 export { Events, Components, StorageKeys } from '../AppInjector';

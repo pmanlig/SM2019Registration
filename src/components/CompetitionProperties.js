@@ -28,7 +28,7 @@ export class CompetitionProperties extends InjectedComponent {
 					<tr>
 						<th>Status</th>
 						<td>
-							<select className="eventInfo" value={competition.status} onChange={e => competition.setProperty("status", e.target.value)}>
+							<select className="eventProperty" value={competition.status} onChange={e => competition.setProperty("status", e.target.value)}>
 								<option value={Status.Hidden}>Gömd</option>
 								<option value={Status.Open}>Öppen</option>
 								<option value={Status.Closed}>Stängd</option>

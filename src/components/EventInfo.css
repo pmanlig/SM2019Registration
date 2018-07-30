@@ -29,16 +29,6 @@
 	background-color: #ff5050;
 }
 
-.eventProperty {
-	display: inline-block;
-	position: relative;
-}
-
-.eventInfo {
-	margin-right: 5px;
-	height: 30px;
-}
-
 .react-date-picker {
 	background-color: white;
 	margin-right: 5px;
