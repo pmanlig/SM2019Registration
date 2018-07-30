@@ -2,6 +2,7 @@ import './CompetitionProperties.css';
 import React from 'react';
 import { InjectedComponent, Components, Events } from '../logic';
 import { Status } from '../models';
+import { Dropdown } from '.';
 
 export class CompetitionProperties extends InjectedComponent {
 	constructor(props) {
@@ -11,8 +12,7 @@ export class CompetitionProperties extends InjectedComponent {
 	}
 
 	render() {
-		const EventInfo = this.inject(Components.EventInfo);
-		const DivisionPicker = this.inject(Components.DivisionPicker);
+		const EventInfo = this.inject(Components.EventProperties);
 		let competition = this.inject(Components.Competition);
 		return <div>
 			<table className="competitionInfo">
@@ -28,11 +28,9 @@ export class CompetitionProperties extends InjectedComponent {
 					<tr>
 						<th>Status</th>
 						<td>
-							<select className="eventProperty" value={competition.status} onChange={e => competition.setProperty("status", e.target.value)}>
-								<option value={Status.Hidden}>Gömd</option>
-								<option value={Status.Open}>Öppen</option>
-								<option value={Status.Closed}>Stängd</option>
-							</select>
+							<Dropdown className="eventProperty" value={competition.status} list={[
+								{ id: Status.Hidden, description: "Gömd" }, { id: Status.Open, description: "Öppen" }, { id: Status.Closed, description: "Stängd" }
+							]} onChange={e => competition.setProperty("status", e.target.value)} />
 						</td>
 					</tr>
 					<tr>
@@ -44,7 +42,6 @@ export class CompetitionProperties extends InjectedComponent {
 				</tbody>
 			</table>
 			{competition.events.map(e => <EventInfo key={e.id} event={e} />)}
-			{this.state.property === "divisions" && <DivisionPicker action={this.setGroup} />}
 		</div>;
 	}
 }

@@ -1,0 +1,20 @@
+input.spinner {
+	box-sizing: border-box;
+	min-width: 1em;
+	width: 2em;
+	height: 100%;
+	text-align: center;
+	margin: 0;
+}
+
+button.spinner {
+	color: black;
+	background-color: inherit;
+	margin: 0;
+}
+
+div.spinner {
+	box-sizing: content-box;
+	height: 30px;
+	margin: 0px;
+}

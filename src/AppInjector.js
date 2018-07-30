@@ -2,7 +2,7 @@ import { Injector, Server, Storage } from './logic';
 import { Registry, Session, Competition, Registration, Results } from './models';
 import {
 	Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary,
-	StoreQuestion, EventInfo, LoginLogout, Schedule, CompetitionProperties
+	StoreQuestion, EventProperties, LoginLogout, Schedule, CompetitionProperties, ScheduleProperties
 } from './components';
 import { RegistrationView, ReportView, ResultView, CreateCompetition, CompetitionView, CompetitionList, About, Login, withLogin } from './views';
 import { App } from './App';
@@ -64,9 +64,10 @@ export class Components {
 	static About = Components.componentId++;
 	static Login = Components.componentId++;
 	static StoreQuestion = Components.componentId++;
-	static EventInfo = Components.componentId++;
+	static EventProperties = Components.componentId++;
 
 	static Schedule = Components.componentId++;
+	static ScheduleProperties = Components.componentId++;
 
 	static CompetitionView = Components.componentId++;
 	static RegistrationView = Components.componentId++;
@@ -106,12 +107,13 @@ export class AppInjector extends Injector {
 		this.registerComponent(Components.Summary, Summary);
 		this.registerComponent(Components.Login, Login);
 		this.registerComponent(Components.StoreQuestion, StoreQuestion);
-		this.registerComponent(Components.EventInfo, EventInfo);
+		this.registerComponent(Components.EventProperties, EventProperties);
 		this.registerComponent(Components.About, About);
 		this.registerComponent(Components.Competitions, CompetitionList);
 		this.registerComponent(Components.CompetitionProperties, CompetitionProperties);
 		this.registerComponent(Components.CreateCompetition, withLogin(CreateCompetition));
 		this.registerComponent(Components.Schedule, Schedule);
+		this.registerComponent(Components.ScheduleProperties, ScheduleProperties);
 
 		this.registerComponent(Components.CompetitionView, CompetitionView);
 		this.registerComponent(Components.RegistrationView, RegistrationView);
