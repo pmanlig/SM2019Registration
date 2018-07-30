@@ -3,11 +3,10 @@ import React from 'react';
 import DatePicker from 'react-date-picker';
 import { InjectedComponent, Components } from '../logic';
 import { Spinner, Dropdown } from '.';
-import { withTitle } from './AppHeader';
 
-function withLabel(label, Prop) {
+function withLabel(label, Prop, boxClass) {
 	return (props) => {
-		return <div className="labelBox">
+		return <div className={"labelBox " + boxClass}>
 			<p>{label}</p>
 			<Prop {...props} />
 		</div>;
@@ -37,7 +36,8 @@ export class EventProperties extends InjectedComponent {
 		const DatePick = withLabel("Datum", DatePicker);
 		const ClassPicker = withLabel("Klasser", Dropdown);
 		const DivisionPicker = withLabel("Vapengrupper", Dropdown);
-		const Spin = withLabel("Starter", Spinner);
+		const Spin = withLabel("Starter", Spinner, "center");
+		const ScheduleProperties = withLabel("Skjutlag/patruller", props => <button {...props} />);
 		console.log(Spinner);
 		return <div className="event">
 			<div className="eventTitle">
@@ -49,7 +49,7 @@ export class EventProperties extends InjectedComponent {
 				<ClassPicker className="eventProperty" value={event.classes || -1} list={this.state.classGroups} onChange={e => this.setGroup(event, "classes", e.target.value)} />
 				<DivisionPicker className="eventProperty" value={event.divisions || -1} list={this.state.divisionGroups} onChange={e => this.setGroup(event, "divisions", e.target.value)} />
 				<Spin className="eventProperty" value={event.maxRegistrations || 1} onChange={value => competition.updateEvent(event, "maxRegistrations", Math.max(1, value))} />
-				<button className="eventProperty" onClick={e => this.setEventProperty(event, "schedule")}>{event.schedule || "Skapa skjutlag/patruller"}</button>
+				<ScheduleProperties className="eventProperty" onClick={e => competition.updateEvent(event, "schedule", undefined)}>{event.schedule || "Skapa"}</ScheduleProperties>
 			</div>
 		</div>;
 	}

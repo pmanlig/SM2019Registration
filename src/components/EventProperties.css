@@ -75,3 +75,7 @@
 	color: black;
 	font-size: 0.5em;
 }
+
+.center {
+	align-items: center;
+}
