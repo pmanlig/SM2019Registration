@@ -133,7 +133,7 @@ export class TestInjector {
 				this[c.implements || c.name] = new c();
 				return;
 			}
-			console.log("Registering component " + c.implements || c.name);
+			console.log("Registering component/method " + (c.implements || c.name));
 			this[c.implements || c.name] = c;
 		}
 	}
@@ -147,6 +147,12 @@ export class TestInjector {
 						c.prototype[i] = this[i];
 					}
 				});
+			}
+			if (c.isResource) {
+				let i = this[c.implements || c.name];
+				if (i.initialize && (typeof i.initialize === "function")) {
+					i.initialize();
+				}
 			}
 		});
 	}

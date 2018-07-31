@@ -2,10 +2,6 @@ import '../components/Buttons.css';
 import React from 'react';
 
 export class ComponentTest extends React.Component {
-	TestComponent = props => {
-		return <div><h1>This is a test component!</h1><props.SomeComponent /></div>;
-	}
-
 	render() {
 		return <div className="content">
 			<button className="button button-close small" />
@@ -48,7 +44,6 @@ export class ComponentTest extends React.Component {
 			<button className="button button-up x-large" />
 			<button className="button button-left x-large" />
 			<button className="button button-right x-large" />
-			<this.TestComponent SomeComponent={props => <p>Works!</p>} />
 		</div>;
 	}
 }

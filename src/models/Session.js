@@ -2,6 +2,7 @@ import { Events, setCookie, getCookie, deleteCookie } from '../logic';
 
 export class Session {
 	static isResource = true;
+	static inject = ["fire"];
 
 	constructor() {
 		this.user = getCookie("user", "");

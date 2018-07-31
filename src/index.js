@@ -9,8 +9,13 @@ import * as models from './models';
 import { App } from './App';
 
 var injector = new AppInjector();
-
 var testInjector = new TestInjector();
+
+injector.fire.implements = "fire";
+injector.subscribe.implements = "subscribe";
+testInjector.register(injector.fire);
+testInjector.register(injector.subscribe);
+
 testInjector.registerModule(components);
 testInjector.registerModule(models);
 testInjector.register(App);

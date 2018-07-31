@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export class LoginLogout extends React.Component {
-	static implements = "LoginLogout";
+	static isComponent = true;
 	static inject = ["Session"];
 
 	render() {

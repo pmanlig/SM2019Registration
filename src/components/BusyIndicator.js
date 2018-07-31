@@ -1,11 +1,11 @@
 import React from 'react';
-import { InjectedComponent, Components, Events } from '.';
+import { Events } from '.';
 
 export class Busy {
-	constructor(injector) {
-		this.fire = injector.fire;
-		this.busy = [];
-	}
+	static isResource = true;
+	static inject = ["fire"];
+
+	busy = [];
 
 	setBusy(id, busy) {
 		if (busy) {
@@ -17,15 +17,17 @@ export class Busy {
 	}
 }
 
-export class BusyIndicator extends InjectedComponent {
-	static className = "BusyIndicator";
-	
+// ToDo: apply withEvents
+export class BusyIndicator extends React.Component {
+	static isComponent = true;
+	static inject = ["Busy", "subscribe"];
+
 	constructor(props) {
 		super(props);
-		this.props.subscribe(Events.busyChanged, () => this.setState({}));
+		this.subscribe(Events.busyChanged, () => this.setState({}));
 	}
 
 	render() {
-		return this.inject(Components.Busy).busy.length > 0 && <div className="fullscreen shadow"><p className="centered">Working...</p></div >;
+		return this.Busy.busy.length > 0 && <div className="fullscreen shadow"><p className="centered">Working...</p></div >;
 	}
 }

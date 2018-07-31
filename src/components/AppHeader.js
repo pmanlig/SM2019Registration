@@ -16,7 +16,7 @@ export function withTitle(title, View) {
 	}
 }
 
-export class AppHeader extends InjectedComponent {
+export class AppHeader extends React.Component {
 	static implements = "AppHeader";
 	static inject = ["LoginLogout", "subscribe"];
 

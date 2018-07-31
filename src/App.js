@@ -6,11 +6,10 @@ import { Components, StorageKeys } from './AppInjector';
 import { ComponentTest } from './views';
 
 export class App extends InjectedComponent {
-	static implements = "App";
+	static isComponent = true;
 	static inject = ["AppHeader", "BusyIndicator", "Footer", "StoreQuestion", "Storage"];
 
 	render() {
-		const BusyIndicator = this.inject(Components.BusyIndicator);
 		const Footer = this.inject(Components.Footer);
 		const StoreQuestion = this.inject(Components.StoreQuestion);
 		const storage = this.inject(Components.Storage);
@@ -20,8 +19,8 @@ export class App extends InjectedComponent {
 		return (
 			<BrowserRouter>
 				<div className="App">
-					<BusyIndicator />
-					<this.AppHeader title="Anmälningssystem Gävle PK" {...this.props}/>
+					<this.BusyIndicator />
+					<this.AppHeader title="Anmälningssystem Gävle PK" />
 					<Switch>
 						<Route exact path='/' component={this.inject(Components.Competitions)} />
 						<Route exact path='/login' component={this.inject(Components.Login)} />

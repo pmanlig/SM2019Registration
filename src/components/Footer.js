@@ -1,12 +1,15 @@
 import React from 'react';
-import { InjectedClass, InjectedComponent, Components, Events } from '.';
+import { Events } from '.';
 
-export class Footers extends InjectedClass {
+// ToDo: apply withEvents
+export class Footers {
+	static isResource = true;
+	static inject = ["fire", "subscribe"];
+
 	messageId = 1;
 	footers = [];
 
-	constructor(injector) {
-		super(injector);
+	initialize() {
 		this.subscribe(Events.addFooter, (msg, type, timeout) => this.addFooter(msg, type, timeout));
 	}
 
@@ -16,7 +19,7 @@ export class Footers extends InjectedClass {
 			id: myId,
 			content: content
 		}]);
-		this.injector.fire(Events.footersChanged, myId);
+		this.fire(Events.footersChanged, myId);
 	}
 
 	addFooter(msg, type = "error", timeout = 3000) {
@@ -28,22 +31,25 @@ export class Footers extends InjectedClass {
 			this.deleteFooter(myId);
 			clearTimeout(timer);
 		}, timeout);
-		this.injector.fire(Events.footersChanged, myId);
+		this.fire(Events.footersChanged, myId);
 	}
 
 	deleteFooter(id) {
 		this.footers = this.footers.filter(f => f.id !== id);
-		this.injector.fire(Events.footersChanged, id);
+		this.fire(Events.footersChanged, id);
 	}
 }
 
-export class Footer extends InjectedComponent {
+export class Footer extends React.Component {
+	static isComponent = true;
+	static inject = ["Footers", "subscribe"];
+
 	constructor(props) {
 		super(props);
 		this.subscribe(Events.footersChanged, () => this.setState({}));
 	}
 
 	render() {
-		return <div id="footer" className="footer">{this.inject(Components.Footers).footers.map(f => f.content)}</div>;
+		return <div id="footer" className="footer">{this.Footers.footers.map(f => f.content)}</div>;
 	}
 }
