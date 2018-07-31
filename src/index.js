@@ -1,10 +1,20 @@
+import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import { AppInjector, Components } from './AppInjector';
+import { AppInjector } from './AppInjector';
 import registerServiceWorker from './registerServiceWorker';
+import { TestInjector } from './logic/Injector.js';
+import * as components from './components';
+import * as models from './models';
+import { App } from './App';
 
 var injector = new AppInjector();
-const App = injector.inject(Components.App);
-ReactDOM.render(<App />, document.getElementById('root'));
+
+var testInjector = new TestInjector();
+testInjector.registerModule(components);
+testInjector.registerModule(models);
+testInjector.register(App);
+testInjector.inject();
+
+ReactDOM.render(<testInjector.App injector={injector} inject={injector.inject} fire={injector.fire} subscribe={injector.subscribe} />, document.getElementById('root'));
 registerServiceWorker();

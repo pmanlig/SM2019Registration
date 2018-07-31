@@ -1,8 +1,9 @@
-import { Events, InjectedClass, setCookie, getCookie, deleteCookie } from '../logic';
+import { Events, setCookie, getCookie, deleteCookie } from '../logic';
 
-export class Session extends InjectedClass {
-	constructor(injector) {
-		super(injector);
+export class Session {
+	static isResource = true;
+
+	constructor() {
 		this.user = getCookie("user", "");
 	}
 

@@ -7,13 +7,20 @@ import { Dropdown } from '.';
 export class CompetitionProperties extends InjectedComponent {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			classGroups: [{ id: -1, description: "Ingen klassindelning" }],
+			divisionGroups: [{ id: -1, description: "Inget val av vapengrupp" }]
+		};
+		let server = this.inject(Components.Server);
+		server.loadClassGroups(list => this.setState({ classGroups: this.state.classGroups.concat(list) }));
+		server.loadDivisionGroups(list => this.setState({ divisionGroups: this.state.divisionGroups.concat(list) }));
 		this.subscribe(Events.competitionUpdated, () => this.setState({}));
 	}
 
 	render() {
 		const EventInfo = this.inject(Components.EventProperties);
 		let competition = this.inject(Components.Competition);
+		let { classGroups, divisionGroups } = this.state;
 		return <div>
 			<table className="competitionInfo">
 				<tbody>
@@ -41,7 +48,7 @@ export class CompetitionProperties extends InjectedComponent {
 					</tr>
 				</tbody>
 			</table>
-			{competition.events.map(e => <EventInfo key={e.id} event={e} />)}
+			{competition.events.map(e => <EventInfo key={e.id} event={e} classGroups={classGroups} divisionGroups={divisionGroups} />)}
 		</div>;
 	}
 }

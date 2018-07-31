@@ -14,17 +14,6 @@ function withLabel(label, Prop, boxClass) {
 }
 
 export class EventProperties extends InjectedComponent {
-	constructor(props) {
-		super(props);
-		this.state = {
-			classGroups: [{ id: -1, description: "Ingen klassindelning" }],
-			divisionGroups: [{ id: -1, description: "Inget val av vapengrupp" }]
-		};
-		let server = this.inject(Components.Server);
-		server.loadClassGroups(list => this.setState({ classGroups: this.state.classGroups.concat(list) }));
-		server.loadDivisionGroups(list => this.setState({ divisionGroups: this.state.divisionGroups.concat(list) }));
-	}
-
 	setGroup = (event, property, group) => {
 		this.inject(Components.Competition).updateEvent(event, property, group === -1 ? undefined : group);
 	}
@@ -38,7 +27,6 @@ export class EventProperties extends InjectedComponent {
 		const DivisionPicker = withLabel("Vapengrupper", Dropdown);
 		const Spin = withLabel("Starter", Spinner, "center");
 		const ScheduleProperties = withLabel("Skjutlag/patruller", props => <button {...props} />);
-		console.log(Spinner);
 		return <div className="event">
 			<div className="eventTitle">
 				{onDelete && <input value={event.name} size="20" onChange={e => competition.updateEvent(event, "name", e.target.value)} />}
@@ -46,8 +34,8 @@ export class EventProperties extends InjectedComponent {
 			</div>
 			<div className="eventProperties">
 				<DatePick value={event.date} onChange={d => competition.updateEvent(event, "date", d)} />
-				<ClassPicker className="eventProperty" value={event.classes || -1} list={this.state.classGroups} onChange={e => this.setGroup(event, "classes", e.target.value)} />
-				<DivisionPicker className="eventProperty" value={event.divisions || -1} list={this.state.divisionGroups} onChange={e => this.setGroup(event, "divisions", e.target.value)} />
+				<ClassPicker className="eventProperty" value={event.classes || -1} list={this.props.classGroups} onChange={e => this.setGroup(event, "classes", e.target.value)} />
+				<DivisionPicker className="eventProperty" value={event.divisions || -1} list={this.props.divisionGroups} onChange={e => this.setGroup(event, "divisions", e.target.value)} />
 				<Spin className="eventProperty" value={event.maxRegistrations || 1} onChange={value => competition.updateEvent(event, "maxRegistrations", Math.max(1, value))} />
 				<ScheduleProperties className="eventProperty" onClick={e => competition.updateEvent(event, "schedule", undefined)}>{event.schedule || "Skapa"}</ScheduleProperties>
 			</div>

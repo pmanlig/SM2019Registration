@@ -6,6 +6,9 @@ import { Components, StorageKeys } from './AppInjector';
 import { ComponentTest } from './views';
 
 export class App extends InjectedComponent {
+	static implements = "App";
+	static inject = ["AppHeader", "BusyIndicator", "Footer", "StoreQuestion", "Storage"];
+
 	render() {
 		const BusyIndicator = this.inject(Components.BusyIndicator);
 		const Footer = this.inject(Components.Footer);
@@ -14,12 +17,11 @@ export class App extends InjectedComponent {
 		if (storage.get(StorageKeys.allowStorage) === undefined) {
 			this.inject(Components.Footers).addCustomFooter(<StoreQuestion key="cookieAlert" storage={storage} />);
 		}
-
 		return (
 			<BrowserRouter>
 				<div className="App">
 					<BusyIndicator />
-					<this.props.injector.AppHeader title="Anmälningssystem Gävle PK" />
+					<this.AppHeader title="Anmälningssystem Gävle PK" {...this.props}/>
 					<Switch>
 						<Route exact path='/' component={this.inject(Components.Competitions)} />
 						<Route exact path='/login' component={this.inject(Components.Login)} />

@@ -111,3 +111,43 @@ export class Injector {
 		this.resource(key).subscribe(handler);
 	}
 }
+
+export class TestInjector {
+	injectList = [];
+
+	registerModule(module) {
+		for (let c in module) {
+			if (module[c]) {
+				this.register(module[c]);
+			}
+		}
+	}
+
+	register(c) {
+		if (c.inject) {
+			this.injectList.push(c);
+		}
+		if (c.implements || c.isResource || c.isComponent) {
+			if (c.isResource) {
+				console.log("Registering resource " + (c.implements || c.name));
+				this[c.implements || c.name] = new c();
+				return;
+			}
+			console.log("Registering component " + c.implements || c.name);
+			this[c.implements || c.name] = c;
+		}
+	}
+
+	inject() {
+		this.injectList.forEach(c => {
+			if (c.inject) {
+				c.inject.forEach(i => {
+					if (this[i]) {
+						console.log("Injecting " + i + " into " + c.name);
+						c.prototype[i] = this[i];
+					}
+				});
+			}
+		});
+	}
+}

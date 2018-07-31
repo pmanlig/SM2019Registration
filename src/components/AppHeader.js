@@ -2,7 +2,7 @@ import "./AppHeader.css";
 import logo from './../gpk_logo_wht.png';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { InjectedComponent, Components, Events } from '.';
+import { InjectedComponent, Events } from '.';
 
 export function withTitle(title, View) {
 	return class extends InjectedComponent {
@@ -17,6 +17,9 @@ export function withTitle(title, View) {
 }
 
 export class AppHeader extends InjectedComponent {
+	static implements = "AppHeader";
+	static inject = ["LoginLogout", "subscribe"];
+
 	constructor(props) {
 		super(props);
 		this.state = { title: props.title };
@@ -32,13 +35,12 @@ export class AppHeader extends InjectedComponent {
 	}
 
 	render() {
-		const LoginLogout = this.inject(Components.LoginLogout);
 		return <header className="App-header">
 			<h1 className="App-title">
 				<Link to="/"><img src={logo} className="Gpk-logo" alt="logo" /></Link>
 				{this.state.title}
 			</h1>
-			<LoginLogout />
+			<this.LoginLogout />
 			<Link to='/about' className='globaltool'>Om...</Link>
 		</header>
 	}
