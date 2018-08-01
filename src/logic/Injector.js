@@ -151,7 +151,7 @@ export class TestInjector {
 					return;
 				}
 				if (this[i]) {
-					console.log("Injecting " + i + " into " + c.name);
+					// console.log("Injecting " + i + " into " + c.name);
 					c.prototype[i] = this[i];
 				} else {
 					console.log("ERROR: Cannot inject entity " + i + " into " + c.name);

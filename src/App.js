@@ -13,8 +13,6 @@ export class App extends InjectedComponent {
 		if (this.Storage.get(StorageKeys.allowStorage) === undefined) {
 			this.Footers.addCustomFooter(<this.StoreQuestion key="cookieAlert" storage={this.Storage} />);
 		}
-		console.log("App.Login");
-		console.log(this.Login);
 		return (
 			<BrowserRouter>
 				<div className="App">
