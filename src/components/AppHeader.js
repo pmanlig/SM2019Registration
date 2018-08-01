@@ -2,13 +2,17 @@ import "./AppHeader.css";
 import logo from './../gpk_logo_wht.png';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { InjectedComponent, Events } from '.';
+import { Events } from '.';
 
 export function withTitle(title, View) {
-	return class extends InjectedComponent {
-		static register = View.register ? { name: View.name, ...View.register } : undefined;
+	return class extends React.Component {
+		static register = View.register ? { ...View.register, name: View.register.name || View.name } : View.register;
+		static inject = ["fire", View];
 
 		componentDidMount() {
+			if (typeof this.fire !== "function") {
+				console.log(this);
+			}
 			this.fire(Events.changeTitle, title);
 		}
 

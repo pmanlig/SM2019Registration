@@ -1,10 +1,9 @@
 import "./CompetitionList.css";
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { InjectedComponent } from '../logic';
 import { withTitle } from '../components';
 import { Permissions, Status, Operations } from '../models';
-import { Components, Events } from '.';
+import { Events } from '.';
 
 const initialCompetitions = [
 	{
@@ -25,12 +24,14 @@ const initialCompetitions = [
 	}
 ];
 
-export const CompetitionList = withTitle("Anmälningssytem Gävle PK", class extends InjectedComponent {
-	static register = true;
+export const CompetitionList = withTitle("Anmälningssytem Gävle PK", class extends React.Component {
+	static register = { name: "CompetitionList" };
+	static inject = ["subscribe", "Session", "Storage"];
 
 	constructor(props) {
 		super(props);
 		this.state = { competitions: initialCompetitions };
+		// ToDo: needs to handle subscribe in componentDidMount / componentWillUnmount
 		this.subscribe(Events.userChanged, () => this.loadCompetitions());
 		this.loadCompetitions();
 	}
@@ -42,7 +43,7 @@ export const CompetitionList = withTitle("Anmälningssytem Gävle PK", class ext
 	}
 
 	getToken(c) {
-		let tokens = this.inject(Components.Storage).get("Tokens");
+		let tokens = this.Storage.get("Tokens");
 		if (!tokens) { return undefined; }
 		return tokens[c.id];
 	}
@@ -60,8 +61,7 @@ export const CompetitionList = withTitle("Anmälningssytem Gävle PK", class ext
 	}
 
 	render() {
-		let session = this.inject(Components.Session);
-		let loggedIn = session.user !== "";
+		let loggedIn = this.Session.user !== "";
 		return <div id='competitions' className='content'>
 			<h1>Tävlingar</h1>
 			<ul>

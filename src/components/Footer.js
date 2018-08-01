@@ -3,7 +3,7 @@ import { Events } from '.';
 
 // ToDo: apply withEvents
 export class Footers {
-	static register = { as: "resource" };
+	static register = { createInstance: true };
 	static inject = ["fire", "subscribe"];
 
 	messageId = 1;

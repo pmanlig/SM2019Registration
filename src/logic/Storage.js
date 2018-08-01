@@ -1,7 +1,5 @@
 export class Storage {
-	static register = {
-		as: "resource"
-	}
+	static register = { createInstance: true }
 
 	keys = [];
 

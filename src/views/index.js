@@ -7,4 +7,4 @@ export { CompetitionView, CompetitionTabs } from './CompetitionView';
 export { CreateCompetition } from './CreateCompetition';
 export { ComponentTest } from './ComponentTest';
 export { About } from './About';
-export { Login, withLogin } from './Login';
+export { Login, withLogin, LoginView } from './Login';

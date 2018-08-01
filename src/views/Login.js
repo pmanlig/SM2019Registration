@@ -1,12 +1,14 @@
 import './Login.css';
 import '../components/Buttons.css';
 import React from 'react';
-import { InjectedComponent } from '../logic';
 import { withTitle } from '../components';
-import { Components, Events } from '.';
+import { Events } from '.';
 
 export function withLogin(View) {
-	return class extends InjectedComponent {
+	return class extends React.Component {
+		static register = View.register ? { ...View.register, name: View.register.name || View.name } : View.register;
+		static inject = ["subscribe", "Session", View];
+
 		constructor(props) {
 			super(props);
 			this.subscribe(Events.userChanged, () => {
@@ -15,7 +17,7 @@ export function withLogin(View) {
 		}
 
 		render() {
-			if (this.inject(Components.Session).user === "") {
+			if (this.Session.user === "") {
 				return <LoginView {...this.props} />;
 			}
 			return <View {...this.props} />;
@@ -23,12 +25,22 @@ export function withLogin(View) {
 	}
 }
 
-export const Login = withLogin(props => { props.history.goBack(); return null; });
+export function login(props) {
+	props.history.goBack();
+	return null;
+}
 
-export const LoginView = withTitle("Logga in", class extends InjectedComponent {
+login.register = { name: "Login" };
+
+export const Login = withLogin(login);
+
+export const LoginView = withTitle("Logga in", class extends React.Component {
+	static register = { name: "LoginView" };
+	static inject = ["Session"];
+
 	login = (e) => {
 		e.preventDefault();
-		this.inject(Components.Session).login(this.user.value, this.password.value);
+		this.Session.login(this.user.value, this.password.value);
 	}
 
 	render() {

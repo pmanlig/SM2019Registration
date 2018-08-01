@@ -2,7 +2,7 @@ import React from 'react';
 import { Events } from '.';
 
 export class Busy {
-	static register = { as: "resource" }
+	static register = { createInstance: true }
 	static inject = ["fire"];
 
 	busy = [];

@@ -7,20 +7,22 @@ import { ComponentTest } from './views';
 
 export class App extends InjectedComponent {
 	static register = true;
-	static inject = ["AppHeader", "BusyIndicator", "Footers", "Footer", "StoreQuestion", "Storage"]
+	static inject = ["AppHeader", "BusyIndicator", "Footers", "Footer", "StoreQuestion", "Storage", "CompetitionList", "Login"]
 
 	render() {
 		if (this.Storage.get(StorageKeys.allowStorage) === undefined) {
 			this.Footers.addCustomFooter(<this.StoreQuestion key="cookieAlert" storage={this.Storage} />);
 		}
+		console.log("App.Login");
+		console.log(this.Login);
 		return (
 			<BrowserRouter>
 				<div className="App">
 					<this.BusyIndicator />
 					<this.AppHeader title="Anmälningssystem Gävle PK" />
 					<Switch>
-						<Route exact path='/' component={this.inject(Components.Competitions)} />
-						<Route exact path='/login' component={this.inject(Components.Login)} />
+						<Route exact path='/' component={this.CompetitionList} />
+						<Route exact path='/login' component={this.Login} />
 						<Route exact path='/competition/:id/:operation/:token' component={this.inject(Components.CompetitionView)} />
 						<Route exact path='/competition/:id/:operation' component={this.inject(Components.CompetitionView)} />
 						<Route exact path='/competition/:id' component={this.inject(Components.CompetitionView)} />
