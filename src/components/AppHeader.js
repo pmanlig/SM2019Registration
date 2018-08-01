@@ -19,10 +19,8 @@ export function withTitle(title, View) {
 }
 
 export class AppHeader extends React.Component {
-	static register = {
-		as: "component",
-		inject: ["LoginLogout", "subscribe"]
-	}
+	static register = true;
+	static inject = ["LoginLogout", "subscribe"];
 
 	constructor(props) {
 		super(props);

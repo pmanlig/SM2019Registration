@@ -6,10 +6,8 @@ import { Components, StorageKeys } from './AppInjector';
 import { ComponentTest } from './views';
 
 export class App extends InjectedComponent {
-	static register = {
-		as: "component",
-		inject: ["AppHeader", "BusyIndicator", "Footers", "Footer", "StoreQuestion", "Storage"]
-	}
+	static register = true;
+	static inject = ["AppHeader", "BusyIndicator", "Footers", "Footer", "StoreQuestion", "Storage"]
 
 	render() {
 		if (this.Storage.get(StorageKeys.allowStorage) === undefined) {

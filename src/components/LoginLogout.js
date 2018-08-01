@@ -2,10 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export class LoginLogout extends React.Component {
-	static register = {
-		as: "component",
-		inject: ["Session"]
-	}
+	static register = true;
+	static inject = ["Session"];
 
 	render() {
 		return this.Session.user !== "" ?

@@ -1,9 +1,7 @@
 import { Subject } from 'rxjs';
 
 export class EventBus {
-	static register = {
-		as: "resource"
-	}
+	static register = { as: "resource" }
 
 	constructor() {
 		this.bus = new Subject();

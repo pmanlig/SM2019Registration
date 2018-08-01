@@ -3,10 +3,8 @@ import { Events } from '.';
 
 // ToDo: apply withEvents
 export class Footers {
-	static register = {
-		as: "resource",
-		inject: ["fire", "subscribe"]
-	}
+	static register = { as: "resource" };
+	static inject = ["fire", "subscribe"];
 
 	messageId = 1;
 	footers = [];
@@ -43,10 +41,8 @@ export class Footers {
 }
 
 export class Footer extends React.Component {
-	static register = {
-		as: "component",
-		inject: ["Footers", "subscribe"]
-	}
+	static register = true;
+	static inject = ["Footers", "subscribe"];
 
 	constructor(props) {
 		super(props);

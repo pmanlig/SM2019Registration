@@ -26,9 +26,7 @@ const initialCompetitions = [
 ];
 
 export const CompetitionList = withTitle("Anmälningssytem Gävle PK", class extends InjectedComponent {
-	static register = {
-		as: "component"
-	}
+	static register = true;
 
 	constructor(props) {
 		super(props);

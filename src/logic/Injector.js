@@ -124,11 +124,11 @@ export class TestInjector {
 	}
 
 	register(c) {
+		if (c.inject) {
+			this.injectList.push(c);
+		}
 		if (c.register) {
 			let name = c.register.name || c.name;
-			if (c.register.inject) {
-				this.injectList.push(c);
-			}
 			if (c.register.as === "resource") {
 				console.log("Registering resource " + name);
 				this[name] = new c();
@@ -141,13 +141,15 @@ export class TestInjector {
 
 	inject() {
 		this.injectList.forEach(c => {
-			c.register.inject.forEach(i => {
+			c.inject.forEach(i => {
 				if (this[i]) {
 					console.log("Injecting " + i + " into " + c.name);
 					c.prototype[i] = this[i];
+				} else {
+					console.log("ERROR: Cannot inject entity " + i + " into " + c.name);
 				}
 			});
-			if (c.register.as === "resource") {
+			if (c.register.isResource) {
 				let i = this[c.register.name || c.name];
 				if (i.initialize && (typeof i.initialize === "function")) {
 					i.initialize();
