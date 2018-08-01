@@ -13,7 +13,7 @@ export class Registration extends InjectedClass {
 		this.competition = this.inject(Components.Competition);
 		this.subscribe(Events.setRegistrationInfo, this.setContactField.bind(this));
 		this.subscribe(Events.deleteParticipant, this.deleteParticipant.bind(this));
-		this.subscribe(Events.register, () => this.register());
+		this.subscribe(Events.registerForCompetition, () => this.register());
 		this.contact = this.inject(Components.Storage).get("Contact") || new Person();
 		this.contact.account = this.contact.account || ""; // Patch to handle stored information without account
 	}

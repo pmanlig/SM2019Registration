@@ -15,7 +15,7 @@ export class Toolbar extends InjectedComponent {
 			{this.inject(Components.Registry).competitors.length > 0 &&
 				<input type='button' className="button toolButton" id="getButton" onClick={e => this.fire(Events.showParticipantPicker)} value='Hämta deltagare' />}
 			<input type='button' className="button toolButton" id="addButton" onClick={e => registration.addParticipant()} value='Ny deltagare' />
-			<input type='button' className="button toolButton" id="registerButton" onClick={e => this.fire(Events.register)} value='Registrera' />
+			<input type='button' className="button toolButton" id="registerButton" onClick={e => this.fire(Events.registerForCompetition)} value='Registrera' />
 
 			{/* For debugging */}
 			<input type='button' className="button toolButton" id="deleteStorageButton" onClick={e => this.inject(Components.Storage).delete()} value='Radera sparad information' />

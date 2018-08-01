@@ -124,32 +124,31 @@ export class TestInjector {
 	}
 
 	register(c) {
-		if (c.inject) {
-			this.injectList.push(c);
-		}
-		if (c.implements || c.isResource || c.isComponent) {
-			if (c.isResource) {
-				console.log("Registering resource " + (c.implements || c.name));
-				this[c.implements || c.name] = new c();
+		if (c.register) {
+			let name = c.register.name || c.name;
+			if (c.register.inject) {
+				this.injectList.push(c);
+			}
+			if (c.register.as === "resource") {
+				console.log("Registering resource " + name);
+				this[name] = new c();
 				return;
 			}
-			console.log("Registering component/method " + (c.implements || c.name));
-			this[c.implements || c.name] = c;
+			console.log("Registering component/method " + name);
+			this[name] = c;
 		}
 	}
 
 	inject() {
 		this.injectList.forEach(c => {
-			if (c.inject) {
-				c.inject.forEach(i => {
-					if (this[i]) {
-						console.log("Injecting " + i + " into " + c.name);
-						c.prototype[i] = this[i];
-					}
-				});
-			}
-			if (c.isResource) {
-				let i = this[c.implements || c.name];
+			c.register.inject.forEach(i => {
+				if (this[i]) {
+					console.log("Injecting " + i + " into " + c.name);
+					c.prototype[i] = this[i];
+				}
+			});
+			if (c.register.as === "resource") {
+				let i = this[c.register.name || c.name];
 				if (i.initialize && (typeof i.initialize === "function")) {
 					i.initialize();
 				}

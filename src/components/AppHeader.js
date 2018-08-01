@@ -6,6 +6,8 @@ import { InjectedComponent, Events } from '.';
 
 export function withTitle(title, View) {
 	return class extends InjectedComponent {
+		static register = View.register ? { name: View.name, ...View.register } : undefined;
+
 		componentDidMount() {
 			this.fire(Events.changeTitle, title);
 		}
@@ -17,8 +19,10 @@ export function withTitle(title, View) {
 }
 
 export class AppHeader extends React.Component {
-	static implements = "AppHeader";
-	static inject = ["LoginLogout", "subscribe"];
+	static register = {
+		as: "component",
+		inject: ["LoginLogout", "subscribe"]
+	}
 
 	constructor(props) {
 		super(props);

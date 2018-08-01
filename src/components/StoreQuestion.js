@@ -1,7 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StorageKeys } from '.';
 
-export class StoreQuestion extends Component {
+export class StoreQuestion extends React.Component {
+	static register = {
+		as: "component"
+	}
+
 	constructor(props) {
 		super(props);
 		this.state = { visible: true };

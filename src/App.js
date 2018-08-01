@@ -6,15 +6,14 @@ import { Components, StorageKeys } from './AppInjector';
 import { ComponentTest } from './views';
 
 export class App extends InjectedComponent {
-	static isComponent = true;
-	static inject = ["AppHeader", "BusyIndicator", "Footer", "StoreQuestion", "Storage"];
+	static register = {
+		as: "component",
+		inject: ["AppHeader", "BusyIndicator", "Footers", "Footer", "StoreQuestion", "Storage"]
+	}
 
 	render() {
-		const Footer = this.inject(Components.Footer);
-		const StoreQuestion = this.inject(Components.StoreQuestion);
-		const storage = this.inject(Components.Storage);
-		if (storage.get(StorageKeys.allowStorage) === undefined) {
-			this.inject(Components.Footers).addCustomFooter(<StoreQuestion key="cookieAlert" storage={storage} />);
+		if (this.Storage.get(StorageKeys.allowStorage) === undefined) {
+			this.Footers.addCustomFooter(<this.StoreQuestion key="cookieAlert" storage={this.Storage} />);
 		}
 		return (
 			<BrowserRouter>
@@ -32,7 +31,7 @@ export class App extends InjectedComponent {
 						<Route exact path='/about' component={this.inject(Components.About)} />
 						<Route exact path='/test' component={ComponentTest} />
 					</Switch>
-					<Footer />
+					<this.Footer />
 				</div>
 			</BrowserRouter>
 		);

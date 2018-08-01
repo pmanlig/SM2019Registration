@@ -34,7 +34,7 @@ export class Events {
 	static competitionUpdated = Events.eventId++;
 	static registrationUpdated = Events.eventId++;
 	static resultsUpdated = Events.eventId++;
-	static register = Events.eventId++;
+	static registerForCompetition = Events.eventId++;
 	static userChanged = Events.eventId++;
 }
 
@@ -107,12 +107,12 @@ export class AppInjector extends Injector {
 		this.registerComponent(Components.StoreQuestion, StoreQuestion);
 		this.registerComponent(Components.EventProperties, EventProperties);
 		this.registerComponent(Components.About, About);
-		this.registerComponent(Components.Competitions, CompetitionList);
 		this.registerComponent(Components.CompetitionProperties, CompetitionProperties);
 		this.registerComponent(Components.CreateCompetition, withLogin(CreateCompetition));
 		this.registerComponent(Components.Schedule, Schedule);
 		this.registerComponent(Components.ScheduleProperties, ScheduleProperties);
 
+		this.registerComponent(Components.Competitions, CompetitionList);
 		this.registerComponent(Components.CompetitionView, CompetitionView);
 		this.registerComponent(Components.RegistrationView, RegistrationView);
 		this.registerComponent(Components.ReportView, ReportView);

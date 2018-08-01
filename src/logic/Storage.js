@@ -1,12 +1,14 @@
-import { InjectedClass } from '.';
+export class Storage {
+	static register = {
+		as: "resource"
+	}
 
-export class Storage extends InjectedClass {
 	keys = [];
 
 	registerKey(key) {
 		this.keys.push(key);
 	}
-	
+
 	set(key, value) {
 		window.localStorage[key] = JSON.stringify(value);
 	}

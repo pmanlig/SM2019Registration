@@ -2,8 +2,10 @@ import React from 'react';
 import { Events } from '.';
 
 export class Busy {
-	static isResource = true;
-	static inject = ["fire"];
+	static register = {
+		as: "resource",
+		inject: ["fire"]
+	}
 
 	busy = [];
 
@@ -19,8 +21,10 @@ export class Busy {
 
 // ToDo: apply withEvents
 export class BusyIndicator extends React.Component {
-	static isComponent = true;
-	static inject = ["Busy", "subscribe"];
+	static register = {
+		as: "component",
+		inject: ["Busy", "subscribe"]
+	}
 
 	constructor(props) {
 		super(props);

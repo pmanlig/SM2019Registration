@@ -6,18 +6,23 @@ import registerServiceWorker from './registerServiceWorker';
 import { TestInjector } from './logic/Injector.js';
 import * as components from './components';
 import * as models from './models';
+import * as logic from './logic';
+import * as views from './views';
 import { App } from './App';
 
 var injector = new AppInjector();
 var testInjector = new TestInjector();
 
-injector.fire.implements = "fire";
-injector.subscribe.implements = "subscribe";
+// ToDo: remove last
+injector.fire.register = { name: "fire" };
+injector.subscribe.register = { name: "subscribe" };
 testInjector.register(injector.fire);
 testInjector.register(injector.subscribe);
 
 testInjector.registerModule(components);
 testInjector.registerModule(models);
+testInjector.registerModule(logic);
+testInjector.registerModule(views);
 testInjector.register(App);
 testInjector.inject();
 
