@@ -1,3 +1,4 @@
+export { Login, withLogin, LoginView } from './Login';
 export { Events, Components, StorageKeys } from '../AppInjector';
 export { RegistrationView } from './RegistrationView';
 export { ReportView } from './ReportView';
@@ -7,4 +8,3 @@ export { CompetitionView, CompetitionTabs } from './CompetitionView';
 export { CreateCompetition } from './CreateCompetition';
 export { ComponentTest } from './ComponentTest';
 export { About } from './About';
-export { Login, withLogin, LoginView } from './Login';

@@ -4,7 +4,7 @@ import {
 	Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary,
 	StoreQuestion, EventProperties, Schedule, CompetitionProperties, ScheduleProperties
 } from './components';
-import { RegistrationView, ReportView, ResultView, CreateCompetition, CompetitionView, CompetitionList, About, Login, withLogin } from './views';
+import { RegistrationView, ReportView, ResultView, CreateCompetition, CompetitionView, CompetitionList, About, Login } from './views';
 import { App } from './App';
 
 export class StorageKeys {
@@ -108,7 +108,7 @@ export class AppInjector extends Injector {
 		this.registerComponent(Components.EventProperties, EventProperties);
 		this.registerComponent(Components.About, About);
 		this.registerComponent(Components.CompetitionProperties, CompetitionProperties);
-		this.registerComponent(Components.CreateCompetition, withLogin(CreateCompetition));
+		this.registerComponent(Components.CreateCompetition, CreateCompetition);
 		this.registerComponent(Components.Schedule, Schedule);
 		this.registerComponent(Components.ScheduleProperties, ScheduleProperties);
 

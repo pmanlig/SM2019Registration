@@ -6,6 +6,9 @@ import { Permissions, Operations } from '../models';
 import { Components, Events } from '.';
 
 export class CompetitionView extends InjectedComponent {
+	static register = true;
+	// static inject = ["subscribe"];
+
 	tabs = {
 		register: this.inject(Components.RegistrationView),
 		report: this.inject(Components.ReportView),

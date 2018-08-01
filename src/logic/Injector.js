@@ -123,15 +123,19 @@ export class TestInjector {
 		}
 	}
 
-	register(c) {
+	addToInjectList(c) {
 		if (c.inject) {
 			this.injectList.push(c);
 			c.inject.forEach(i => {
 				if (i.inject) {
-					this.injectList.push(i);
+					this.addToInjectList(i);
 				}
 			});
 		}
+	}
+
+	register(c) {
+		this.addToInjectList(c);
 		if (c.register) {
 			let name = c.register.name || c.name;
 			if (c.register.createInstance) {

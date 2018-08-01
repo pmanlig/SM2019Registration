@@ -1,24 +1,23 @@
-import { InjectedClass, Components } from '.';
-
-export class Server extends InjectedClass {
+export class Server {
+	static inject = ["Busy"];
 	static baseUrl = 'https://dev.bitnux.com/sm2019/';
 
 	load(url, callback) {
-		this.inject(Components.Busy).setBusy(Components.Server, true);
+		this.Busy.setBusy(this, true);
 		console.log("Fetching URL " + url);
 		fetch(url)
 			.then(result => result.json())
 			.then(json => {
 				console.log(json);
 				callback(json);
-				this.inject(Components.Busy).setBusy(Components.Server, false);
+				this.Busy.setBusy(this, false);
 			})
 			.catch(e => {
 				console.log(e);
-				this.inject(Components.Busy).setBusy(Components.Server, false);
+				this.Busy.setBusy(this, false);
 			});
 		// finally() not supported in several browsers :(
-		// .finally(() => this.inject(Components.Busy).setBusy(Server.id, false));
+		// .finally(() => this.Busy.setBusy(Server.id, false));
 	}
 
 	loadCompetition(competitionId, callback) {
@@ -74,7 +73,7 @@ export class Server extends InjectedClass {
 	sendRegistration(reg) {
 		console.log("Sending registration");
 		console.log(JSON.parse(this.registrationJson(reg)));
-		this.inject(Components.Busy).setBusy(Components.Server, true);
+		this.Busy.setBusy(this, true);
 		return fetch(Server.baseUrl + "register", {
 			crossDomain: true,
 			method: 'POST',
@@ -82,7 +81,7 @@ export class Server extends InjectedClass {
 			headers: new Headers({ 'Content-Type': 'application/json' })
 		})
 			.then(res => {
-				this.inject(Components.Busy).setBusy(Components.Server, false);
+				this.Busy.setBusy(this, false);
 				console.log(res);
 				if (res.ok) {
 					return res.json();

@@ -2,11 +2,17 @@ import "./CreateCompetition.css";
 import React from 'react';
 import { Events, InjectedComponent, Components, StorageKeys } from '../logic';
 import { withTitle } from '../components';
+import { withLogin } from './Login';
 
-export const CreateCompetition = withTitle("Skapa ny tävling", class extends InjectedComponent {
+console.log(withLogin);
+
+export const CreateCompetition = withLogin(withTitle("Skapa ny tävling", class extends InjectedComponent {
+	static register = { name: "CreateCompetition" };
+	static inject = ["Storage"];
+
 	constructor(props) {
 		super(props);
-		let data = this.inject(Components.Storage).get(StorageKeys.newCompetition);
+		let data = this.Storage.get(StorageKeys.newCompetition);
 		if (data) {
 			data = JSON.parse(data);
 
@@ -42,4 +48,4 @@ export const CreateCompetition = withTitle("Skapa ny tävling", class extends In
 			<CompetitionProperties />
 		</div >;
 	}
-});
+}));

@@ -7,7 +7,7 @@ import { ComponentTest } from './views';
 
 export class App extends InjectedComponent {
 	static register = true;
-	static inject = ["AppHeader", "BusyIndicator", "Footers", "Footer", "StoreQuestion", "Storage", "CompetitionList", "Login"]
+	static inject = ["AppHeader", "BusyIndicator", "Footers", "Footer", "StoreQuestion", "Storage", "CompetitionList", "Login", "CompetitionView"]
 
 	render() {
 		if (this.Storage.get(StorageKeys.allowStorage) === undefined) {

@@ -2,6 +2,9 @@ import { Events, StorageKeys, Components, Validation, InjectedClass } from '../l
 import { Person, Participant } from '.';
 
 export class Registration extends InjectedClass {
+	static register = true;
+	// static inject = ["subscribe"];
+
 	competition = undefined;
 	token = undefined;
 	contact = new Person();
