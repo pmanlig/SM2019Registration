@@ -2,15 +2,16 @@ import './App.css';
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { InjectedComponent } from './components';
-import { Components, StorageKeys } from './AppInjector';
+import { Components } from './AppInjector';
 import { ComponentTest } from './views';
 
 export class App extends InjectedComponent {
 	static register = true;
-	static inject = ["AppHeader", "BusyIndicator", "Footers", "Footer", "StoreQuestion", "Storage", "CompetitionList", "Login", "CompetitionView"]
+	static wire = ["AppHeader", "BusyIndicator", "Footers", "Footer", "StoreQuestion", "Storage", "CompetitionList", "Login", "CompetitionView"]
+	static storageKey = "allowStorage";
 
 	render() {
-		if (this.Storage.get(StorageKeys.allowStorage) === undefined) {
+		if (this.Storage.get("allowStorage") === undefined) {
 			this.Footers.addCustomFooter(<this.StoreQuestion key="cookieAlert" storage={this.Storage} />);
 		}
 		return (

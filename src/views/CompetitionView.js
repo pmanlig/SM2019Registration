@@ -7,7 +7,7 @@ import { Components, Events } from '.';
 
 export class CompetitionView extends InjectedComponent {
 	static register = true;
-	// static inject = ["subscribe"];
+	static wire = ["Competition"];
 
 	tabs = {
 		register: this.inject(Components.RegistrationView),
@@ -19,7 +19,7 @@ export class CompetitionView extends InjectedComponent {
 	constructor(props) {
 		super(props);
 		this.subscribe(Events.competitionUpdated, () => this.setState({}));
-		this.inject(Components.Competition).load(props.match.params.id);
+		this.Competition.load(props.match.params.id);
 	}
 
 	findContent(tabs) {
@@ -29,22 +29,20 @@ export class CompetitionView extends InjectedComponent {
 	}
 
 	render() {
-		let competition = this.inject(Components.Competition);
-
 		// Wait; competition is loading
-		if (competition.id !== this.props.match.params.id) { return null; }
+		if (this.Competition.id !== this.props.match.params.id) { return null; }
 
 		let tabs = Operations.filter(t =>
-			competition.permissions === Permissions.Own ||
+			this.Competition.permissions === Permissions.Own ||
 			(
-				t.permission <= competition.permissions &&
+				t.permission <= this.Competition.permissions &&
 				(
 					t.status === undefined ||
-					t.status === competition.status
+					t.status === this.Competition.status
 				)));
 
 		// Handle links to the competition in general
-		if (this.props.match.params.operation === undefined) { return <Redirect to={"/competition/" + competition.id + "/" + tabs[0].path} /> }
+		if (this.props.match.params.operation === undefined) { return <Redirect to={"/competition/" + this.Competition.id + "/" + tabs[0].path} /> }
 
 		let Content = this.findContent(tabs);
 		if (Content === null) { return <Redirect to='/' />; }
@@ -53,7 +51,7 @@ export class CompetitionView extends InjectedComponent {
 			<div className="tabs">
 				{tabs.length > 1 && tabs.map(t => {
 					if (this.props.match.params.operation === t.path) { return <p key={t.path} className="tab">{t.name}</p> }
-					return <Link key={t.path} className="tab" to={"/competition/" + competition.id + "/" + t.path}>{t.name}</Link>;
+					return <Link key={t.path} className="tab" to={"/competition/" + this.Competition.id + "/" + t.path}>{t.name}</Link>;
 				})}
 			</div>
 			<Content {...this.props} />

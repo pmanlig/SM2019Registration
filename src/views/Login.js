@@ -7,7 +7,7 @@ import { Events } from '.';
 export function withLogin(View) {
 	return class extends React.Component {
 		static register = View.register ? { ...View.register, name: View.register.name || View.name } : View.register;
-		static inject = ["subscribe", "Session", View];
+		static wire = ["subscribe", "Session", View];
 
 		constructor(props) {
 			super(props);
@@ -36,7 +36,7 @@ export const Login = withLogin(login);
 
 export const LoginView = withTitle("Logga in", class extends React.Component {
 	static register = { name: "LoginView" };
-	static inject = ["Session"];
+	static wire = ["Session"];
 
 	login = (e) => {
 		e.preventDefault();

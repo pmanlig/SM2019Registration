@@ -1,9 +1,10 @@
-import { Events, StorageKeys, Components, Validation, InjectedClass } from '../logic';
+import { Events, StorageKeys, Components, Validation } from '../logic';
 import { Person, Participant } from '.';
 
-export class Registration extends InjectedClass {
+export class Registration {
 	static register = true;
-	// static inject = ["subscribe"];
+	static wire = ["subscribe", "fire", "Competition", "Storage", "Server"];
+	// static wire = ["subscribe"];
 
 	competition = undefined;
 	token = undefined;
@@ -11,25 +12,22 @@ export class Registration extends InjectedClass {
 	participants = [];
 
 	// ToDo: Rewrite to not use event handlers
-	constructor(injector) {
-		super(injector);
-		this.competition = this.inject(Components.Competition);
+	initialize() {
 		this.subscribe(Events.setRegistrationInfo, this.setContactField.bind(this));
 		this.subscribe(Events.deleteParticipant, this.deleteParticipant.bind(this));
 		this.subscribe(Events.registerForCompetition, () => this.register());
-		this.contact = this.inject(Components.Storage).get("Contact") || new Person();
+		this.contact = this.Storage.get("Contact") || new Person();
 		this.contact.account = this.contact.account || ""; // Patch to handle stored information without account
 	}
 
 	load(id, token) {
 		if (token === undefined) {
-			let storage = this.inject(Components.Storage);
-			let tokens = storage.get(StorageKeys.tokens) || storage.get("Tokens") || {};
-			token = tokens[this.competition.id];
+			let tokens = this.Storage.get(StorageKeys.tokens) || this.Storage.get("Tokens") || {};
+			token = tokens[this.Competition.id];
 		}
 
 		if (token !== undefined) {
-			this.inject(Components.Server).loadRegistration(id, token, json => {
+			this.Server.loadRegistration(id, token, json => {
 				this.token = token;
 
 				// Hack to compensate for server not storing organization

@@ -1,5 +1,4 @@
-import { InjectedClass } from '../logic';
-import { Components, Events } from '.';
+import { Events } from '.';
 
 export class Permissions {
 	static Any = 0;
@@ -20,13 +19,11 @@ export const Operations = [
 	{ name: "Administrera", path: "admin", permission: Permissions.Own }
 ];
 
-export class Competition extends InjectedClass {
-	constructor(injector) {
-		super(injector);
-		this.initialize();
-	}
+export class Competition {
+	static register = { createInstance: true };
+	static wire = ["fire", "Server"];
 
-	initialize() {
+	initialize = () => {
 		this.id = 0;
 		this.name = "";
 		this.description = "";
@@ -41,7 +38,7 @@ export class Competition extends InjectedClass {
 
 	load(id) {
 		if (this.id !== id) {
-			this.inject(Components.Server).loadCompetition(id, obj => {
+			this.Server.loadCompetition(id, obj => {
 				// Prevent multiple requests from screwing up the state
 				if (obj.id !== this.id) {
 					this.initialize();

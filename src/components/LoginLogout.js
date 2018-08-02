@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export class LoginLogout extends React.Component {
 	static register = true;
-	static inject = ["Session"];
+	static wire = ["Session"];
 
 	render() {
 		return this.Session.user !== "" ?

@@ -26,7 +26,7 @@ const initialCompetitions = [
 
 export const CompetitionList = withTitle("Anmälningssytem Gävle PK", class extends React.Component {
 	static register = { name: "CompetitionList" };
-	static inject = ["subscribe", "Session", "Storage"];
+	static wire = ["subscribe", "Session", "Storage"];
 
 	constructor(props) {
 		super(props);

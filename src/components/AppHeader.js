@@ -7,10 +7,11 @@ import { Events } from '.';
 export function withTitle(title, View) {
 	return class extends React.Component {
 		static register = View.register ? { ...View.register, name: View.register.name || View.name } : View.register;
-		static inject = ["fire", View];
+		static wire = ["fire", View];
 
 		componentDidMount() {
 			if (typeof this.fire !== "function") {
+				console.log("Unexpected object in withTitle()");
 				console.log(this);
 			}
 			this.fire(Events.changeTitle, title);
@@ -24,7 +25,7 @@ export function withTitle(title, View) {
 
 export class AppHeader extends React.Component {
 	static register = true;
-	static inject = ["LoginLogout", "subscribe"];
+	static wire = ["LoginLogout", "subscribe"];
 
 	constructor(props) {
 		super(props);

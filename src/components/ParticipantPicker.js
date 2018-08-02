@@ -1,24 +1,26 @@
 import './ParticipantPicker.css';
 import React from 'react';
-import { Components, Events, InjectedComponent } from '.';
-
-function Competitor(props) {
-	return <tr className="picker" onClick={props.onClick}>
-		<td>{props.person.name}</td>
-		<td>{props.person.competitionId}</td>
-		<td>{props.person.organization}</td>
-	</tr>
-}
+import { Events, InjectedComponent } from '.';
 
 export class ParticipantPicker extends InjectedComponent {
+	static register = true;
+	static wire = ["Registration", "Registry"];
+
 	constructor(props) {
 		super(props);
 		this.state = { visible: false };
 		this.subscribe(Events.showParticipantPicker, () => this.setState({ visible: true }));
 	}
 
-	render() {
-		let registration = this.inject(Components.Registration);
+	Competitor(props) {
+		return <tr className="picker" onClick={props.onClick}>
+			<td>{props.person.name}</td>
+			<td>{props.person.competitionId}</td>
+			<td>{props.person.organization}</td>
+		</tr>
+	}
+	
+		render() {
 		return !this.state.visible ? null : <div>
 			<div className="fullscreen shadow" />
 			<div id="participantpicker" className="centered modal">
@@ -35,10 +37,10 @@ export class ParticipantPicker extends InjectedComponent {
 						</tr>
 					</thead>
 					<tbody>
-						{this.inject(Components.Registry).competitors.map(p =>
-							<Competitor key={p.competitionId} person={p} onClick={e => {
+						{this.Registry.competitors.map(p =>
+							<this.Competitor key={p.competitionId} person={p} onClick={e => {
 								this.setState({ visible: false });
-								registration.addParticipant(p);
+								this.Registration.addParticipant(p);
 							}} />)}
 					</tbody>
 				</table>

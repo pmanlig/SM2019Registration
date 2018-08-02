@@ -4,11 +4,9 @@ import { Events, InjectedComponent, Components, StorageKeys } from '../logic';
 import { withTitle } from '../components';
 import { withLogin } from './Login';
 
-console.log(withLogin);
-
 export const CreateCompetition = withLogin(withTitle("Skapa ny tävling", class extends InjectedComponent {
 	static register = { name: "CreateCompetition" };
-	static inject = ["Storage"];
+	static wire = ["Storage"];
 
 	constructor(props) {
 		super(props);

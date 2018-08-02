@@ -5,6 +5,8 @@ import { Dropdown } from './Dropdown';
 import { Components, Events } from '.';
 
 export class RegistrationRow extends InjectedComponent {
+	static wire = ["Competition"];
+
 	classDropdown(participant, event, value, values, registration) {
 		return <td key="class"><Dropdown placeholder="Välj klass..." value={value} items={values} onChange={e => registration.setParticipantClass(participant, event, e.target.value)} /></td>;
 	}
@@ -39,17 +41,16 @@ export class RegistrationRow extends InjectedComponent {
 		return buttons;
 	}
 
-	eventControls = ({ participant, event }) => {
-		const competition = this.inject(Components.Competition);
+	EventControls = ({ participant, event }) => {
 		const registration = this.inject(Components.Registration);
 		const eventInfo = participant.event(event.id) || { event: event.id, rounds: [{}] };
 		let controls = [];
-		if (event.classes && competition.classes(event.classes)) {
-			controls.push(this.classDropdown(participant.id, event.id, eventInfo.class, competition.classes(event.classes), registration));
+		if (event.classes && this.Competition.classes(event.classes)) {
+			controls.push(this.classDropdown(participant.id, event.id, eventInfo.class, this.Competition.classes(event.classes), registration));
 		}
-		if (event.divisions && competition.divisions(event.divisions)) {
+		if (event.divisions && this.Competition.divisions(event.divisions)) {
 			controls.push(<td key="division"><ul>
-				{this.divisionDropdown(participant.id, event.id, eventInfo.rounds, competition.divisions(event.divisions), registration)}
+				{this.divisionDropdown(participant.id, event.id, eventInfo.rounds, this.Competition.divisions(event.divisions), registration)}
 			</ul></td>);
 		}
 		if (event.schedule) {
@@ -72,35 +73,30 @@ export class RegistrationRow extends InjectedComponent {
 		return controls;
 	}
 
-	registrationControls = ({ participant }) => {
-		const EventControls = this.eventControls;
+	RegistrationControls = ({ participant }) => {
 		let result = [];
-		this.inject(Components.Competition).eventList().forEach(e => result.push(<EventControls key={e.id} participant={participant} event={e} />));
+		this.Competition.eventList().forEach(e => result.push(<this.EventControls key={e.id} participant={participant} event={e} />));
 		return result;
 	}
 
-	registrationField = ({ participant, header }) => {
+	RegistrationField = ({ participant, header }) => {
 		return <td className="left" key={header.name}><input type="text" value={participant[header.field]}
 			placeholder={header.placeholder || header.name} style={{ width: header.width }}
 			onChange={e => this.inject(Components.Registration).setParticipantField(participant.id, header.field, e.target.value)}
 			size={header.size} /></td>;
 	}
 
-	participantFields = ({ participant }) => {
-		const RegistrationField = this.registrationField;
-		const participantHeader = this.inject(Components.Competition).participantHeader();
-		return participantHeader.subFields.map(h => <RegistrationField key={h.field} participant={participant} header={h} />)
+	ParticipantFields = ({ participant }) => {
+		return this.Competition.participantHeader().subFields.map(h => <this.RegistrationField key={h.field} participant={participant} header={h} />)
 	}
 
 	render() {
-		const RegistrationControls = this.registrationControls;
-		const ParticipantFields = this.participantFields;
 		const registration = this.inject(Components.Registration);
 		const p = this.props.participant;
 		const myId = p.id;
 		return <tr key={myId} className={p.errors.length > 0 ? "error registration" : "registration"} >
-			<ParticipantFields participant={p} />
-			<RegistrationControls participant={p} />
+			<this.ParticipantFields participant={p} />
+			<this.RegistrationControls participant={p} />
 			<td><button className="button-close small deleteButton" onClick={e => registration.deleteParticipant(myId)} /></td></tr>;
 	}
 }

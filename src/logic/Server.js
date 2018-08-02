@@ -1,5 +1,6 @@
 export class Server {
-	static inject = ["Busy"];
+	static register = { createInstance: true };
+	static wire = ["Busy"];
 	static baseUrl = 'https://dev.bitnux.com/sm2019/';
 
 	load(url, callback) {

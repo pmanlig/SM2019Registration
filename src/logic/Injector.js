@@ -112,7 +112,10 @@ export class Injector {
 	}
 }
 
-export class TestInjector {
+var _INJECTOR_LOGLEVEL = "errors";
+_INJECTOR_LOGLEVEL = "details";
+
+export class AutoInjector {
 	injectList = [];
 
 	registerModule(module) {
@@ -124,10 +127,10 @@ export class TestInjector {
 	}
 
 	addToInjectList(c) {
-		if (c.inject) {
+		if (c.wire) {
 			this.injectList.push(c);
-			c.inject.forEach(i => {
-				if (i.inject) {
+			c.wire.forEach(i => {
+				if (i.wire) {
 					this.addToInjectList(i);
 				}
 			});
@@ -139,29 +142,38 @@ export class TestInjector {
 		if (c.register) {
 			let name = c.register.name || c.name;
 			if (c.register.createInstance) {
-				// console.log("Registering resource " + name);
+				if (_INJECTOR_LOGLEVEL === "details") {
+					console.log("Registering resource " + name);
+				}
 				this[name] = new c();
 				return;
 			}
-			// console.log("Registering component/method " + name);
+			if (_INJECTOR_LOGLEVEL === "details") {
+				console.log("Registering component/method " + name);
+			}
 			this[name] = c;
 		}
 	}
 
 	inject() {
 		this.injectList.forEach(c => {
-			c.inject.forEach(i => {
+			c.wire.forEach(i => {
 				if (typeof i !== "string") {
 					return;
 				}
 				if (this[i]) {
-					// console.log("Injecting " + i + " into " + c.name);
+					if (_INJECTOR_LOGLEVEL === "details") {
+						console.log("Injecting " + i + " into " + c.name);
+					}
 					c.prototype[i] = this[i];
 				} else {
 					console.log("ERROR: Cannot inject entity " + i + " into " + c.name);
 				}
 			});
 			if (c.register && c.register.createInstance) {
+				if (_INJECTOR_LOGLEVEL === "details") {
+					console.log("Creating instance for class " + c.name);
+				}
 				let i = this[c.register.name || c.name];
 				if (i.initialize && (typeof i.initialize === "function")) {
 					i.initialize();

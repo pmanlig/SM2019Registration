@@ -1,4 +1,5 @@
 export class Validation {
+	static register = true;
 	competitionInfo;
 
 	constructor(competitionInfo, errors) {

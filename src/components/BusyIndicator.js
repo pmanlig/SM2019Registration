@@ -3,7 +3,7 @@ import { Events } from '.';
 
 export class Busy {
 	static register = { createInstance: true }
-	static inject = ["fire"];
+	static wire = ["fire"];
 
 	busy = [];
 
@@ -20,7 +20,7 @@ export class Busy {
 // ToDo: apply withEvents
 export class BusyIndicator extends React.Component {
 	static register = true;
-	static inject = ["Busy", "subscribe"];
+	static wire = ["Busy", "subscribe"];
 
 	constructor(props) {
 		super(props);

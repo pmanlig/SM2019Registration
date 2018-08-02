@@ -1,20 +1,11 @@
-import { Injector, Server, Storage } from './logic';
-import { Registry, Session, Competition, Registration, Results } from './models';
+import { Injector, Storage } from './logic';
+import { Session, Competition, Registration, Results } from './models';
 import {
 	Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary,
 	StoreQuestion, EventProperties, Schedule, CompetitionProperties, ScheduleProperties
 } from './components';
 import { RegistrationView, ReportView, ResultView, CreateCompetition, CompetitionView, CompetitionList, About, Login } from './views';
 import { App } from './App';
-
-export class StorageKeys {
-	static allowStorage = "allowStorage";
-	static lastContact = "lastContact";
-	static registry = "registry";
-	static newCompetition = "newCompetition";
-	static tokens = "tokens";
-	static results = "results";
-}
 
 export class Resources {
 	static resourceId = 1;
@@ -41,7 +32,6 @@ export class Events {
 export class Components {
 	static componentId = 1;
 	static App = Components.componentId++;
-	static Server = Components.componentId++;
 	static Storage = Components.componentId++;
 	static Footers = Components.componentId++;
 	static Footer = Components.componentId++;
@@ -58,7 +48,6 @@ export class Components {
 	static RegistrationContact = Components.componentId++;
 	static RegistrationForm = Components.componentId++;
 	static Summary = Components.componentId++;
-	static Registry = Components.componentId++;
 	static Session = Components.componentId++;
 	static About = Components.componentId++;
 	static Login = Components.componentId++;
@@ -79,18 +68,10 @@ export class AppInjector extends Injector {
 	constructor() {
 		super();
 		let storage = new Storage(this);
-		storage.registerKey(StorageKeys.allowStorage);
-		storage.registerKey(StorageKeys.lastContact);
-		storage.registerKey(StorageKeys.registry);
-		storage.registerKey(StorageKeys.newCompetition);
-		storage.registerKey(StorageKeys.tokens);
-		storage.registerKey(StorageKeys.results);
 		this.register(Components.Storage, storage);
-		this.register(Components.Server, new Server(this));
 		this.register(Components.Session, new Session(this));
 		this.register(Components.Footers, new Footers(this));
 		this.register(Components.Busy, new Busy(this));
-		this.register(Components.Registry, new Registry(this));
 		this.register(Components.Competition, new Competition(this));
 		this.register(Components.Registration, new Registration(this));
 		this.register(Components.Results, new Results(this));

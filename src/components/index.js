@@ -7,6 +7,7 @@ export { ParticipantPicker } from './ParticipantPicker';
 export { AppHeader, withTitle } from './AppHeader';
 export { RegistrationContact } from './RegistrationContact';
 export { RegistrationForm } from './RegistrationForm';
+export { RegistrationRow } from './RegistrationRow';
 export { StoreQuestion } from './StoreQuestion';
 export { Footer, Footers } from './Footer';
 export { EventProperties } from './EventProperties';

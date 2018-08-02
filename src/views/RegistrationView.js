@@ -5,10 +5,13 @@ import { Components, Events } from '.';
 import { InjectedComponent } from '../logic';
 
 export class RegistrationView extends InjectedComponent {
+	static register = true;
+	static wire = ["Competition"];
+
 	constructor(props) {
 		super(props);
 		this.state = { showSchedule: false };
-		this.fire(Events.changeTitle, "Anmälan till " + this.inject(Components.Competition).name);
+		this.fire(Events.changeTitle, "Anmälan till " + this.Competition.name);
 		this.subscribe(Events.registrationUpdated, () => this.setState({}));
 		this.subscribe(Events.showSchedule, () => this.setState({ showSchedule: true }));
 		this.inject(Components.Registration).load(props.match.params.id, props.match.params.token);

@@ -1,10 +1,12 @@
-import { InjectedClass } from '../logic';
-import { Components, Events, Person } from '.';
+import { Events, Person } from '.';
 
-export class Registry extends InjectedClass {
-	constructor(injector) {
-		super(injector);
-		this.competitors = injector.inject(Components.Storage).get("Registry") || [];
+export class Registry {
+	static register = { createInstance: true };
+	static wire = ["fire", "Storage"];
+
+	initialize() {
+		this.Storage.registerKey(Registry.name);
+		this.competitors = this.Storage.get(Registry.name) || [];
 	}
 
 	storeCompetitors(participants) {
@@ -14,7 +16,7 @@ export class Registry extends InjectedClass {
 				competitors.push(p);
 		});
 		this.competitors = competitors;
-		this.inject(Components.Storage).set("Registry", this.competitors);
+		this.Storage.set(Registry.name, this.competitors);
 		this.fire(Events.registryUpdated);
 	}
 }

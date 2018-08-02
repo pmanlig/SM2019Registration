@@ -5,16 +5,18 @@ import { Components } from '.';
 import { InjectedComponent } from '../logic';
 
 export class RegistrationForm extends InjectedComponent {
+	static wire = ["Competition"];
+
 	addButtonHeader(minorHeaders) {
 		minorHeaders.push(<th key={minorHeaders.length} className="minor entry" style={{ width: "20px" }}>&nbsp;</th>);
 	}
 
-	addMinorHeadersFor(event, minorHeaders, competition) {
+	addMinorHeadersFor(event, minorHeaders) {
 		let initial = minorHeaders.length;
-		if (event.classes && competition.classes(event.classes)) { // Hack to handle nonexisting classGroups
+		if (event.classes && this.Competition.classes(event.classes)) { // Hack to handle nonexisting classGroups
 			minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Klass</th>);
 		}
-		if (event.divisions && competition.divisions(event.divisions)) { // Hack to handle nonexisting classGroups
+		if (event.divisions && this.Competition.divisions(event.divisions)) { // Hack to handle nonexisting classGroups
 			minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Vapengrupp</th>);
 		}
 		if (event.schedule) {
@@ -30,8 +32,7 @@ export class RegistrationForm extends InjectedComponent {
 	}
 
 	RegistrationHeader({ inject }) {
-		let competition = inject(Components.Competition);
-		let participantHeader = competition.participantHeader();
+		let participantHeader = this.Competition.participantHeader();
 		const majorHeaders = [<th key="-1" className="major" colSpan={participantHeader.subFields.length}>{participantHeader.name}</th>];
 		const minorHeaders = [];
 
@@ -39,9 +40,9 @@ export class RegistrationForm extends InjectedComponent {
 			minorHeaders.push(<th key={minorHeaders.length} style={{ width: s.width, paddingRight: 10, verticalAlign: "bottom" }} className="minor">{s.name}</th>);
 		});
 
-		competition.eventGroups.forEach(group => {
+		this.Competition.eventGroups.forEach(group => {
 			let initial = minorHeaders.length;
-			competition.eventList(group.id).forEach(e => this.addMinorHeadersFor(e, minorHeaders, competition));
+			this.Competition.eventList(group.id).forEach(e => this.addMinorHeadersFor(e, minorHeaders));
 			majorHeaders.push(<th key={group.id} className="major" colSpan={minorHeaders.length - initial}>{group.name}</th>);
 		});
 
