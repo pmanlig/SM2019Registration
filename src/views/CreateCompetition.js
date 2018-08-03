@@ -1,12 +1,10 @@
 import "./CreateCompetition.css";
 import React from 'react';
 import { Events, StorageKeys } from '../logic';
-import { withTitle } from '../components';
 import { withEvents } from '../logic';
-import { withLogin } from './Login';
 
 export class CreateCompetition extends React.Component {
-	static wire = ["Storage", "Competition", "CompetitionProperties"];
+	static wire = ["Storage", "Competition", "CompetitionProperties", "WithLogin"];
 
 	constructor(props) {
 		super(props);
@@ -40,13 +38,14 @@ export class CreateCompetition extends React.Component {
 	}
 
 	render() {
-		return <div className="content">
-			<button id="saveButton" className="button" onClick={this.createCompetition}>Skapa</button>
-			<this.CompetitionProperties />
-		</div >;
+		return <this.WithLogin>
+			<this.WithTitle title="Skapa ny tävling" />
+			<div className="content">
+				<button id="saveButton" className="button" onClick={this.createCompetition}>Skapa</button>
+				<this.CompetitionProperties />
+			</div >
+		</this.WithLogin>;
 	}
 }
 
 export const CreateCompetitionWithEvents = withEvents(CreateCompetition);
-export const CreateCompetitionWithEventsAndTitle = withTitle("Skapa ny tävling", CreateCompetitionWithEvents);
-export const CreateCompetitionWithEventsAndTitleAndLogin = withLogin(CreateCompetitionWithEventsAndTitle);

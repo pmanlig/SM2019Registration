@@ -1,43 +1,10 @@
 import './Login.css';
 import '../components/Buttons.css';
 import React from 'react';
-import { AutoInjector } from '../logic';
-import { withTitle } from '../components';
 import { Events } from '.';
 
-export function withLogin(View) {
-	return class extends React.Component {
-		static register = AutoInjector.wrapComponentRegistration(View);
-		static wire = ["subscribe", "Session", View];
-
-		constructor(props) {
-			super(props);
-			this.subscribe(Events.userChanged, () => {
-				this.setState({});
-			});
-		}
-
-		render() {
-			if (this.Session.user === "") {
-				return <LoginView {...this.props} />;
-			}
-			return <View {...this.props} />;
-		}
-	}
-}
-
-export function login(props) {
-	props.history.goBack();
-	return null;
-}
-
-login.register = { name: "Login" };
-
-export const Login = withLogin(login);
-
-export const LoginView = withTitle("Logga in", class extends React.Component {
-	static register = { name: "LoginView" };
-	static wire = ["Session"];
+export class LoginControl extends React.Component {
+	static wire = ["Session", "WithTitle"];
 
 	login = (e) => {
 		e.preventDefault();
@@ -46,6 +13,7 @@ export const LoginView = withTitle("Logga in", class extends React.Component {
 
 	render() {
 		return <div className='login content'>
+			<this.WithTitle title="Logga in" />
 			<form className='login' onSubmit={this.login}>
 				<h3>Inloggning</h3>
 				<table>
@@ -58,4 +26,33 @@ export const LoginView = withTitle("Logga in", class extends React.Component {
 			</form>
 		</div>;
 	}
-});
+}
+
+export class WithLogin extends React.Component {
+	static register = true;
+	static wire = ["subscribe", "Session"];
+
+	constructor(props) {
+		super(props);
+		this.subscribe(Events.userChanged, () => {
+			this.setState({});
+		});
+	}
+
+	render() {
+		return this.Session.user === "" ? <LoginControl {...this.props} /> : <div>{this.props.children}</div>;
+	}
+}
+
+export class LoginView extends React.Component {
+	static register = true;
+	static wire = ["WithLogin"]
+
+	GoBack() {
+		return <div>{this.props.history.goBack()}</div>
+	}
+
+	render() {
+		return <this.WithLogin>{this.props.history.goBack()}</this.WithLogin>;
+	}
+}

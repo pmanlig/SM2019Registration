@@ -1,6 +1,5 @@
 import React from 'react';
 import { Subject } from 'rxjs';
-import { AutoInjector } from './Injector';
 
 export class Events {
 	static eventId = 1;
@@ -47,7 +46,7 @@ export class EventBus {
 
 export function withEvents(BaseComponent) {
 	return class withEvents extends React.Component {
-		static register = AutoInjector.wrapComponentRegistration(BaseComponent);
+		static register = BaseComponent.register ? { ...BaseComponent.register, name: BaseComponent.register.name || BaseComponent.name } : BaseComponent.register;
 		static wire = ["EventBus", BaseComponent];
 
 		handlers = [];
