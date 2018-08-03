@@ -1,12 +1,13 @@
 import './Login.css';
 import '../components/Buttons.css';
 import React from 'react';
+import { AutoInjector } from '../logic';
 import { withTitle } from '../components';
 import { Events } from '.';
 
 export function withLogin(View) {
 	return class extends React.Component {
-		static register = View.register ? { ...View.register, name: View.register.name || View.name } : View.register;
+		static register = AutoInjector.wrapComponentRegistration(View);
 		static wire = ["subscribe", "Session", View];
 
 		constructor(props) {

@@ -1,12 +1,12 @@
 import "./CreateCompetition.css";
 import React from 'react';
-import { Events, InjectedComponent, Components, StorageKeys } from '../logic';
+import { Events, StorageKeys } from '../logic';
 import { withTitle } from '../components';
+import { withEvents } from '../logic';
 import { withLogin } from './Login';
 
-export const CreateCompetition = withLogin(withTitle("Skapa ny tävling", class extends InjectedComponent {
-	static register = { name: "CreateCompetition" };
-	static wire = ["Storage"];
+export class CreateCompetition extends React.Component {
+	static wire = ["Storage", "Competition", "CompetitionProperties"];
 
 	constructor(props) {
 		super(props);
@@ -28,22 +28,25 @@ export const CreateCompetition = withLogin(withTitle("Skapa ny tävling", class 
 			}
 		}
 		this.subscribe(Events.competitionUpdated, () =>
-			this.inject(Components.Storage).set(StorageKeys.newCompetition, this.inject(Components.Competition).toJson()));
-		this.inject(Components.Competition).initialize();
-		this.inject(Components.Competition).loadFrom(data);
+			this.Storage.set(StorageKeys.newCompetition, this.Competition.toJson()));
+		this.Competition.initialize();
+		this.Competition.loadFrom(data);
 	}
 
 	createCompetition = () => {
 		// ToDo: create & blank
 		// this.inject(Components.Storage).set(StorageKeys.newCompetition, JSON.stringify(this.inject(Components.Competition)));
-		console.log(this.inject(Components.Competition));
+		console.log(this.Competition);
 	}
 
 	render() {
-		const CompetitionProperties = this.inject(Components.CompetitionProperties);
 		return <div className="content">
 			<button id="saveButton" className="button" onClick={this.createCompetition}>Skapa</button>
-			<CompetitionProperties />
+			<this.CompetitionProperties />
 		</div >;
 	}
-}));
+}
+
+export const CreateCompetitionWithEvents = withEvents(CreateCompetition);
+export const CreateCompetitionWithEventsAndTitle = withTitle("Skapa ny tävling", CreateCompetitionWithEvents);
+export const CreateCompetitionWithEventsAndTitleAndLogin = withLogin(CreateCompetitionWithEventsAndTitle);

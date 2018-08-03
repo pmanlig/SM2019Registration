@@ -1,4 +1,5 @@
-export { Events, Components, Resources } from '../AppInjector';
+export { Events } from '../logic';
+export { Components, Resources } from '../AppInjector';
 export { Participant } from './Participant';
 export { Person, PersonDefinition } from './Person';
 export { Registry } from './Registry';

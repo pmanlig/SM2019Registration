@@ -1,41 +1,6 @@
 import React from 'react';
 import { AsyncSubject } from 'rxjs';
-import { EventBus } from '.';
-
-export function withEvents(BaseComponent) {
-	return class extends React.Component {
-		handlers = [];
-
-		subscribe = (e, h) => {
-			this.handlers.push({
-				event: e,
-				handler: h,
-				subscription: null
-			});
-		}
-
-		componentDidMount() {
-			this.handlers.forEach(h => {
-				h.subscription = this.props.subscribe(h.event, h.handler);
-			});
-		}
-
-		componentWillUnmount() {
-			this.handlers.forEach(h => {
-				if (h.subscription !== null) {
-					h.subscription.unsubscribe();
-					h.subscription = null;
-				}
-			});
-		}
-
-		render() {
-			return <BaseComponent
-				{...this.props}
-				subscribe={this.subscribe} />;
-		}
-	}
-}
+import { EventBus, withEvents } from '.';
 
 export class InjectedComponent extends React.Component {
 	constructor(props) {
@@ -113,10 +78,14 @@ export class Injector {
 }
 
 var _INJECTOR_LOGLEVEL = "errors";
-_INJECTOR_LOGLEVEL = "details";
+// _INJECTOR_LOGLEVEL = "details";
 
 export class AutoInjector {
 	injectList = [];
+
+	static wrapComponentRegistration(component) {
+		return component.register ? { ...component.register, name: component.register.name || component.name } : component.register;
+	}
 
 	registerModule(module) {
 		for (let c in module) {
@@ -163,7 +132,7 @@ export class AutoInjector {
 				}
 				if (this[i]) {
 					if (_INJECTOR_LOGLEVEL === "details") {
-						console.log("Injecting " + i + " into " + c.name);
+						console.log("Injecting " + i + " into " + c.name + ((c.register && c.register.name) ? " (" + c.register.name + ")" : ""));
 					}
 					c.prototype[i] = this[i];
 				} else {

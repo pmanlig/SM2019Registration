@@ -13,17 +13,21 @@ import { App } from './App';
 var injector = new AppInjector();
 var testInjector = new AutoInjector();
 
-// ToDo: remove last
-injector.fire.register = { name: "fire" };
-injector.subscribe.register = { name: "subscribe" };
-testInjector.register(injector.fire);
-testInjector.register(injector.subscribe);
-
 testInjector.registerModule(components);
 testInjector.registerModule(models);
 testInjector.registerModule(logic);
 testInjector.registerModule(views);
 testInjector.register(App);
+
+// ToDo: Implement method registration
+let eb = testInjector.EventBus;
+let fire = eb.fire.bind(eb);
+let subscribe = eb.subscribe.bind(eb);
+fire.register = {name: "fire"};
+subscribe.register = {name: "subscribe"};
+testInjector.register(fire);
+testInjector.register(subscribe);
+
 testInjector.inject();
 
 ReactDOM.render(<testInjector.App injector={injector} inject={injector.inject} fire={injector.fire} subscribe={injector.subscribe} />, document.getElementById('root'));

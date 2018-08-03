@@ -1,8 +1,7 @@
-import { Injector, Storage } from './logic';
-import { Session, Competition, Registration, Results } from './models';
+import { Injector } from './logic';
 import {
-	Toolbar, ParticipantPicker, AppHeader, BusyIndicator, Busy, RegistrationContact, RegistrationForm, Footers, Footer, Summary,
-	StoreQuestion, EventProperties, Schedule, CompetitionProperties, ScheduleProperties
+	Toolbar, ParticipantPicker, AppHeader, BusyIndicator, RegistrationContact, RegistrationForm, Footer, Summary,
+	StoreQuestion, Schedule, ScheduleProperties
 } from './components';
 import { RegistrationView, ReportView, ResultView, CreateCompetition, CompetitionView, CompetitionList, About, Login } from './views';
 import { App } from './App';
@@ -11,48 +10,21 @@ export class Resources {
 	static resourceId = 1;
 }
 
-export class Events {
-	static eventId = 1;
-	static addFooter = Events.eventId++;
-	static footersChanged = Events.eventId++;
-	static changeTitle = Events.eventId++;
-	static busyChanged = Events.eventId++;
-	static deleteParticipant = Events.eventId++;
-	static showParticipantPicker = Events.eventId++;
-	static showSchedule = Events.eventId++;
-	static registryUpdated = Events.eventId++;
-	static setRegistrationInfo = Events.eventId++;
-	static competitionUpdated = Events.eventId++;
-	static registrationUpdated = Events.eventId++;
-	static resultsUpdated = Events.eventId++;
-	static registerForCompetition = Events.eventId++;
-	static userChanged = Events.eventId++;
-}
-
 export class Components {
 	static componentId = 1;
 	static App = Components.componentId++;
-	static Storage = Components.componentId++;
-	static Footers = Components.componentId++;
 	static Footer = Components.componentId++;
 	static ParticipantPicker = Components.componentId++;
 	static Toolbar = Components.componentId++;
-	static Competition = Components.componentId++;
-	static CompetitionProperties = Components.componentId++;
-	static Registration = Components.componentId++;
-	static Results = Components.componentId++;
 	static Competitions = Components.componentId++;
 	static AppHeader = Components.componentId++;
 	static BusyIndicator = Components.componentId++;
-	static Busy = Components.componentId++;
 	static RegistrationContact = Components.componentId++;
 	static RegistrationForm = Components.componentId++;
 	static Summary = Components.componentId++;
-	static Session = Components.componentId++;
 	static About = Components.componentId++;
 	static Login = Components.componentId++;
 	static StoreQuestion = Components.componentId++;
-	static EventProperties = Components.componentId++;
 
 	static Schedule = Components.componentId++;
 	static ScheduleProperties = Components.componentId++;
@@ -67,14 +39,6 @@ export class Components {
 export class AppInjector extends Injector {
 	constructor() {
 		super();
-		let storage = new Storage(this);
-		this.register(Components.Storage, storage);
-		this.register(Components.Session, new Session(this));
-		this.register(Components.Footers, new Footers(this));
-		this.register(Components.Busy, new Busy(this));
-		this.register(Components.Competition, new Competition(this));
-		this.register(Components.Registration, new Registration(this));
-		this.register(Components.Results, new Results(this));
 		this.registerComponent(Components.App, App);
 		this.registerComponent(Components.Footer, Footer);
 		this.registerComponent(Components.ParticipantPicker, ParticipantPicker);
@@ -86,9 +50,7 @@ export class AppInjector extends Injector {
 		this.registerComponent(Components.Summary, Summary);
 		this.registerComponent(Components.Login, Login);
 		this.registerComponent(Components.StoreQuestion, StoreQuestion);
-		this.registerComponent(Components.EventProperties, EventProperties);
 		this.registerComponent(Components.About, About);
-		this.registerComponent(Components.CompetitionProperties, CompetitionProperties);
 		this.registerComponent(Components.CreateCompetition, CreateCompetition);
 		this.registerComponent(Components.Schedule, Schedule);
 		this.registerComponent(Components.ScheduleProperties, ScheduleProperties);

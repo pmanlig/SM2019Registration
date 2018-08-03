@@ -1,4 +1,4 @@
-export { InjectedClass, InjectedComponent } from '../logic';
+export { InjectedClass, InjectedComponent, Events } from '../logic';
 export { BusyIndicator, Busy } from './BusyIndicator';
 export { LoginLogout } from './LoginLogout';
 export { Toolbar } from './Toolbar';
@@ -17,4 +17,4 @@ export { Schedule } from './Schedule';
 export { CompetitionProperties } from './CompetitionProperties';
 export { ScheduleProperties } from './ScheduleProperties';
 export { Spinner } from './Spinner';
-export { Events, Components, StorageKeys } from '../AppInjector';
+export { Components, StorageKeys } from '../AppInjector';
