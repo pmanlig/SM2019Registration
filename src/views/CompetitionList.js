@@ -1,7 +1,6 @@
 import "./CompetitionList.css";
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { withTitle } from '../components';
 import { Permissions, Status, Operations } from '../models';
 import { Events } from '.';
 
@@ -24,9 +23,9 @@ const initialCompetitions = [
 	}
 ];
 
-export const CompetitionList = withTitle("Anmälningssytem Gävle PK", class extends React.Component {
-	static register = { name: "CompetitionList" };
-	static wire = ["subscribe", "Session", "Storage"];
+export class CompetitionList extends React.Component {
+	static register = true;
+	static wire = ["subscribe", "Session", "Storage", "WithTitle"];
 
 	constructor(props) {
 		super(props);
@@ -63,6 +62,7 @@ export const CompetitionList = withTitle("Anmälningssytem Gävle PK", class ext
 	render() {
 		let loggedIn = this.Session.user !== "";
 		return <div id='competitions' className='content'>
+			<this.WithTitle title="Anmälningssytem Gävle PK" />
 			<h1>Tävlingar</h1>
 			<ul>
 				{this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own)).map(c => this.competition(c))}
@@ -70,4 +70,4 @@ export const CompetitionList = withTitle("Anmälningssytem Gävle PK", class ext
 			</ul>
 		</div>;
 	}
-});
+}

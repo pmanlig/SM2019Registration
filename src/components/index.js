@@ -4,7 +4,7 @@ export { LoginLogout } from './LoginLogout';
 export { Toolbar } from './Toolbar';
 export { Summary } from './Summary';
 export { ParticipantPicker } from './ParticipantPicker';
-export { AppHeader, withTitle } from './AppHeader';
+export { AppHeader, WithTitle } from './AppHeader';
 export { RegistrationContact } from './RegistrationContact';
 export { RegistrationForm } from './RegistrationForm';
 export { RegistrationRow } from './RegistrationRow';

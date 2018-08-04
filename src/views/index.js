@@ -1,5 +1,5 @@
 export { Events } from '../logic';
-export { Login, withLogin, LoginView } from './Login';
+export { LoginComponent, WithLogin, LoginView } from './Login';
 export { Components, StorageKeys } from '../AppInjector';
 export { RegistrationView } from './RegistrationView';
 export { ReportView } from './ReportView';

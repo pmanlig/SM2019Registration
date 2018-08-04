@@ -1,10 +1,12 @@
 import React from 'react';
 import { InjectedComponent } from '../logic';
-import { withTitle } from '../components';
 
-export const About = withTitle("Om systemet", class extends InjectedComponent {
+export class About extends InjectedComponent {
+	static wire = ["WithTitle"];
+
 	render(props) {
 		return <div id='about' className='content'>
+			<this.WithTitle title="Om systemet" />
 			<h2>Om tävlingsanmälan Gävle PK</h2>
 			<p>Det här anmälningssystemet är framtaget för att hantera föranmälningar till skyttetävlingar.
 				Vi vet att det finns flera andra system, men när vi började fanns det inget system som vi
@@ -30,4 +32,4 @@ export const About = withTitle("Om systemet", class extends InjectedComponent {
 				och Johan Söderberg (tjänster och databas).</p>
 		</div>
 	}
-});
+}

@@ -7,7 +7,7 @@ import { ComponentTest } from './views';
 
 export class App extends InjectedComponent {
 	static register = true;
-	static wire = ["AppHeader", "BusyIndicator", "Footers", "Footer", "StoreQuestion", "Storage", "CompetitionList", "Login", "CompetitionView"]
+	static wire = ["AppHeader", "BusyIndicator", "Footers", "Footer", "StoreQuestion", "Storage", "CompetitionList", "LoginView", "CompetitionView"]
 	static storageKey = "allowStorage";
 
 	render() {
@@ -21,7 +21,7 @@ export class App extends InjectedComponent {
 					<this.AppHeader title="Anmälningssystem Gävle PK" />
 					<Switch>
 						<Route exact path='/' component={this.CompetitionList} />
-						<Route exact path='/login' component={this.Login} />
+						<Route exact path='/login' component={this.LoginView} />
 						<Route exact path='/competition/:id/:operation/:token' component={this.inject(Components.CompetitionView)} />
 						<Route exact path='/competition/:id/:operation' component={this.inject(Components.CompetitionView)} />
 						<Route exact path='/competition/:id' component={this.inject(Components.CompetitionView)} />
