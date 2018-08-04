@@ -2,7 +2,6 @@ import "./CompetitionList.css";
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Permissions, Status, Operations } from '../models';
-import { Events } from '.';
 
 const initialCompetitions = [
 	{
@@ -25,14 +24,19 @@ const initialCompetitions = [
 
 export class CompetitionList extends React.Component {
 	static register = true;
-	static wire = ["subscribe", "Session", "Storage", "WithTitle"];
+	static wire = ["Session", "Storage", "EventBus", "Events"];
 
 	constructor(props) {
 		super(props);
 		this.state = { competitions: initialCompetitions };
+		this.EventBus.manageEvents(this);
 		// ToDo: needs to handle subscribe in componentDidMount / componentWillUnmount
-		this.subscribe(Events.userChanged, () => this.loadCompetitions());
+		this.subscribe(this.Events.userChanged, () => this.loadCompetitions());
 		this.loadCompetitions();
+	}
+
+	componentWillMount() {
+		this.EventBus.fire(this.Events.changeTitle, "Anmälningssytem Gävle PK");
 	}
 
 	loadCompetitions() {
@@ -62,7 +66,6 @@ export class CompetitionList extends React.Component {
 	render() {
 		let loggedIn = this.Session.user !== "";
 		return <div id='competitions' className='content'>
-			<this.WithTitle title="Anmälningssytem Gävle PK" />
 			<h1>Tävlingar</h1>
 			<ul>
 				{this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own)).map(c => this.competition(c))}

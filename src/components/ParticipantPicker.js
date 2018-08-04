@@ -1,15 +1,15 @@
 import './ParticipantPicker.css';
 import React from 'react';
-import { Events, InjectedComponent } from '.';
 
-export class ParticipantPicker extends InjectedComponent {
+export class ParticipantPicker extends React.Component {
 	static register = true;
-	static wire = ["Registration", "Registry"];
+	static wire = ["subscribe", "Registration", "Registry", "EventBus", "Events"];
 
 	constructor(props) {
 		super(props);
 		this.state = { visible: false };
-		this.subscribe(Events.showParticipantPicker, () => this.setState({ visible: true }));
+		this.EventBus.manageEvents(this);
+		this.subscribe(this.Events.showParticipantPicker, () => this.setState({ visible: true }));
 	}
 
 	Competitor(props) {
@@ -19,8 +19,8 @@ export class ParticipantPicker extends InjectedComponent {
 			<td>{props.person.organization}</td>
 		</tr>
 	}
-	
-		render() {
+
+	render() {
 		return !this.state.visible ? null : <div>
 			<div className="fullscreen shadow" />
 			<div id="participantpicker" className="centered modal">

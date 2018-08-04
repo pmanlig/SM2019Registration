@@ -3,22 +3,22 @@ import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { InjectedComponent } from '../logic';
 import { Permissions, Operations } from '../models';
-import { Components, Events } from '.';
 
 export class CompetitionView extends InjectedComponent {
 	static register = true;
-	static wire = ["Competition"];
+	static wire = ["Competition", "Events", "EventBus", "RegistrationView", "ReportView", "ResultView"];
 
 	tabs = {
-		register: this.inject(Components.RegistrationView),
-		report: this.inject(Components.ReportView),
-		results: this.inject(Components.ResultView),
+		register: this.RegistrationView,
+		report: this.ReportView,
+		results: this.ResultView,
 		admin: () => <h5>Administrera</h5>
 	}
 
 	constructor(props) {
 		super(props);
-		this.subscribe(Events.competitionUpdated, () => this.setState({}));
+		this.EventBus.manageEvents(this);
+		this.subscribe(this.Events.competitionUpdated, () => this.setState({}));
 		this.Competition.load(props.match.params.id);
 	}
 

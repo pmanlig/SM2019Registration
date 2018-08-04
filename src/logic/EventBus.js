@@ -2,6 +2,7 @@ import React from 'react';
 import { Subject } from 'rxjs';
 
 export class Events {
+	static register = true;
 	static eventId = 1;
 	static addFooter = Events.eventId++;
 	static footersChanged = Events.eventId++;
@@ -31,7 +32,9 @@ export class EventBus {
 		target._handlers = [];
 
 		// Subscribe
-		let targetSubscribe = function (e, h) { this._handlers.push({ event: e, handler: h, subscription: null }); }
+		let targetSubscribe = function (e, h) {
+			this._handlers.push({ event: e, handler: h, subscription: null });
+		}
 		target.subscribe = targetSubscribe.bind(target);
 
 		// Fire

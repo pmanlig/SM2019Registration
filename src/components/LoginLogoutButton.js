@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export class LoginLogout extends React.Component {
+export class LoginLogoutButton extends React.Component {
 	static register = true;
 	static wire = ["Session"];
 

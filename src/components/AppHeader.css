@@ -5,6 +5,10 @@
 }
 
 .App-header {
+	/*position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;*/
   background-color: #222;
   padding: 5px;
 	color: white;

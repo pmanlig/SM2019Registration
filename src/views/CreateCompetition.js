@@ -1,10 +1,11 @@
 import "./CreateCompetition.css";
 import React from 'react';
-import { Events, StorageKeys } from '../logic';
+import { StorageKeys } from '../logic';
 import { withEvents } from '../logic';
 
 export class CreateCompetition extends React.Component {
-	static wire = ["Storage", "Competition", "CompetitionProperties", "WithLogin"];
+	static register = true;
+	static wire = ["Storage", "Competition", "CompetitionProperties", "WithLogin", "EventBus", "Events"];
 
 	constructor(props) {
 		super(props);
@@ -25,7 +26,8 @@ export class CreateCompetition extends React.Component {
 				data.events.push({ name: "", date: new Date() });
 			}
 		}
-		this.subscribe(Events.competitionUpdated, () =>
+		this.EventBus.manageEvents(this);
+		this.subscribe(this.Events.competitionUpdated, () =>
 			this.Storage.set(StorageKeys.newCompetition, this.Competition.toJson()));
 		this.Competition.initialize();
 		this.Competition.loadFrom(data);
@@ -37,9 +39,12 @@ export class CreateCompetition extends React.Component {
 		console.log(this.Competition);
 	}
 
+	componentWillMount() {
+		this.EventBus.fire(this.Events.changeTitle, "Skapa ny tävling");
+	}
+
 	render() {
 		return <this.WithLogin>
-			<this.WithTitle title="Skapa ny tävling" />
 			<div className="content">
 				<button id="saveButton" className="button" onClick={this.createCompetition}>Skapa</button>
 				<this.CompetitionProperties />

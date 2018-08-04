@@ -1,17 +1,20 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { InjectedComponent, Components, Events } from '../logic';
 
-class EventResult extends InjectedComponent {
+export class EventResult extends React.Component {
+	static register = true;
+	static wire = ["fire", "subscribe", "EventBus", "Events", "Competition", "Results"];
+
 	constructor(props) {
 		super(props);
-		this.inject(Components.Results).load(props.match.params.id, this.props.match.params.token);
-		this.fire(Events.changeTitle, "Resultat för " + this.inject(Components.Competition).name);
-		this.subscribe(Events.competitionUpdated, () => {
-			this.fire(Events.changeTitle, "Resultat för " + this.inject(Components.Competition).name);
+		this.EventBus.manageEvents(this);
+		this.Results.load(props.match.params.id, this.props.match.params.token);
+		this.fire(this.Events.changeTitle, "Resultat för " + this.Competition.name);
+		this.subscribe(this.Events.competitionUpdated, () => {
+			this.fire(this.Events.changeTitle, "Resultat för " + this.Competition.name);
 			this.setState({})
 		});
-		this.subscribe(Events.resultsUpdated, () => this.setState({}));
+		this.subscribe(this.Events.resultsUpdated, () => this.setState({}));
 	}
 
 	getEvent(competition) {
@@ -46,9 +49,7 @@ class EventResult extends InjectedComponent {
 	}
 
 	render() {
-		let competition = this.inject(Components.Competition);
-		let results = this.inject(Components.Results);
-		let event = this.getEvent(competition);
+		let event = this.getEvent(this.Competition);
 		return <div id="results" className="content">
 			<table>
 				<thead>
@@ -60,36 +61,42 @@ class EventResult extends InjectedComponent {
 					</tr>
 				</thead>
 				<tbody>
-					{results.scores.map(s => this.participant(s))}
+					{this.Results.scores.map(s => this.participant(s))}
 				</tbody>
 			</table>
 		</div>;
 	}
 }
 
-export class ResultView extends InjectedComponent {
+export class ResultView extends React.Component {
+	static register = true;
+	static wire = ["fire", "subscribe", "EventBus", "Events", "EventResult", "Competition"];
+
 	constructor(props) {
 		super(props);
-		this.fire(Events.changeTitle, "Resultat för " + this.inject(Components.Competition).name);
-		this.subscribe(Events.competitionUpdated, () => {
-			this.fire(Events.changeTitle, "Resultat för " + this.inject(Components.Competition).name);
+		this.EventBus.manageEvents(this);
+		this.subscribe(this.Events.competitionUpdated, () => {
+			this.fire(this.Events.changeTitle, "Resultat för " + this.Competition.name);
 			this.setState({})
 		});
 	}
 
+	componentWillMount() {
+		this.fire(this.Events.changeTitle, "Resultat för " + this.Competition.name);
+	}
+
 	render() {
 		if (this.props.match.params.token !== undefined) {
-			return <EventResult {...this.props} />
+			return <this.EventResult />
 		}
 
-		let competition = this.inject(Components.Competition);
-		if (competition.events.length === 1) {
-			return <Redirect to={"/competition/" + competition.id + "/results/" + competition.events[0].id} />;
+		if (this.Competition.events.length === 1) {
+			return <Redirect to={"/competition/" + this.Competition.id + "/results/" + this.Competition.events[0].id} />;
 		}
 
 		return <div className="content">
 			<ul>
-				{competition.events.map(e => <li key={e.id}><Link to={"/competition/" + competition.id + "/results/" + e.id}>{e.name}</Link></li>)}
+				{this.Competition.events.map(e => <li key={e.id}><Link to={"/competition/" + this.Competition.id + "/results/" + e.id}>{e.name}</Link></li>)}
 			</ul>
 		</div>;
 	}

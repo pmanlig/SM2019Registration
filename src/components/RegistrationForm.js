@@ -1,11 +1,10 @@
 import './Registration.css';
 import React from 'react';
 import { RegistrationRow } from './RegistrationRow';
-import { Components } from '.';
-import { InjectedComponent } from '../logic';
 
-export class RegistrationForm extends InjectedComponent {
-	static wire = ["Competition"];
+export class RegistrationForm extends React.Component {
+	static register = true;
+	static wire = ["Competition", "Registration"];
 
 	addButtonHeader(minorHeaders) {
 		minorHeaders.push(<th key={minorHeaders.length} className="minor entry" style={{ width: "20px" }}>&nbsp;</th>);
@@ -31,7 +30,7 @@ export class RegistrationForm extends InjectedComponent {
 		}
 	}
 
-	RegistrationHeader({ inject }) {
+	RegistrationHeader(props) {
 		let participantHeader = this.Competition.participantHeader();
 		const majorHeaders = [<th key="-1" className="major" colSpan={participantHeader.subFields.length}>{participantHeader.name}</th>];
 		const minorHeaders = [];
@@ -60,18 +59,19 @@ export class RegistrationForm extends InjectedComponent {
 	}
 
 	RegistrationRows(props) {
-		return <tbody>{props.inject(Components.Registration).participants.map(
+		return <tbody>{this.Registration.participants.map(
 			p => <RegistrationRow key={p.id} participant={p} {...props} />
 		)}</tbody>;
 	}
 
 	render() {
-		const RegistrationRows = this.RegistrationRows.bind(this);
-		const RegistrationHeader = this.RegistrationHeader.bind(this);
+		let RegistrationHeader = this.RegistrationHeader.bind(this);
+		let RegistrationRows = this.RegistrationRows.bind(this);
+
 		return <div id='registration' className='content'>
 			<table>
-				<RegistrationHeader {...this.props} />
-				<RegistrationRows {...this.props} />
+				<RegistrationHeader />
+				<RegistrationRows />
 			</table>
 		</div>;
 	}

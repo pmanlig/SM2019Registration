@@ -1,12 +1,14 @@
 import './Buttons.css';
 import React from 'react';
-import { InjectedComponent, Components } from '../logic';
 
-export class Schedule extends InjectedComponent {
+export class Schedule extends React.Component {
+	static register = true;
+	static wire = ["Server", "Competition"];
+
 	constructor(props) {
 		super(props);
 		this.state = { schedule: {} };
-		this.inject(Components.Server).loadSchedule(this.inject(Components.Competition).id, this.props.id, json => this.setState({ schedule: json }));
+		this.Server.loadSchedule(this.Competition.id, this.props.id, json => this.setState({ schedule: json }));
 	}
 
 	squadStatus(squad) {

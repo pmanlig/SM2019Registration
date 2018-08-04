@@ -1,9 +1,8 @@
 import React from 'react';
-import { Events } from '.';
 
 export class Busy {
 	static register = { createInstance: true }
-	static wire = ["fire"];
+	static wire = ["fire", "Events"];
 
 	busy = [];
 
@@ -13,18 +12,18 @@ export class Busy {
 		} else {
 			this.busy = this.busy.filter(e => e !== id);
 		}
-		this.fire(Events.busyChanged);
+		this.fire(this.Events.busyChanged);
 	}
 }
 
 // ToDo: apply withEvents
 export class BusyIndicator extends React.Component {
 	static register = true;
-	static wire = ["Busy", "subscribe"];
+	static wire = ["Busy", "subscribe", "Events"];
 
 	constructor(props) {
 		super(props);
-		this.subscribe(Events.busyChanged, () => this.setState({}));
+		this.subscribe(this.Events.busyChanged, () => this.setState({}));
 	}
 
 	render() {

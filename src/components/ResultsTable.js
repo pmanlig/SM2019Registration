@@ -36,23 +36,28 @@ function series(event) {
 	return s;
 }
 
-export function ResultsTable({ results, event }) {
-	return <table>
-		<thead>
-			<tr>
-				<th>Namn</th>
-				<th style={{ paddingRight: "40px" }}>Förening</th>
-				{series(event)}
-				<th>Summa</th>
-			</tr>
-		</thead>
-		<tbody>
-			{results.scores.map(p => <tr key={p.id} className={p.dirty && "dirty"}>
-				<td>{p.name}</td>
-				<td>{p.organization}</td>
-				<Scores participant={p} change={(i, j, value) => results.update(p, i, j, value)} />
-				<Sum participant={p} />
-			</tr>)}
-		</tbody>
-	</table>;
+export class ResultsTable extends React.Component {
+	static register = true;
+
+	render() {
+		let { results, event } = this.props;
+		return <table>
+			<thead>
+				<tr>
+					<th>Namn</th>
+					<th style={{ paddingRight: "40px" }}>Förening</th>
+					{series(event)}
+					<th>Summa</th>
+				</tr>
+			</thead>
+			<tbody>
+				{results.scores.map(p => <tr key={p.id} className={p.dirty && "dirty"}>
+					<td>{p.name}</td>
+					<td>{p.organization}</td>
+					<Scores participant={p} change={(i, j, value) => results.update(p, i, j, value)} />
+					<Sum participant={p} />
+				</tr>)}
+			</tbody>
+		</table>;
+	}
 }

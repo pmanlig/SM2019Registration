@@ -1,11 +1,10 @@
 export { Events } from '../logic';
-export { LoginComponent, WithLogin, LoginView } from './Login';
-export { Components, StorageKeys } from '../AppInjector';
+export { LoginComponent, WithLogin, LoginView } from './LoginView';
 export { RegistrationView } from './RegistrationView';
 export { ReportView } from './ReportView';
-export { ResultView } from './ResultView';
+export { ResultView, EventResult } from './ResultView';
 export { CompetitionList } from './CompetitionList';
 export { CompetitionView, CompetitionTabs } from './CompetitionView';
 export { CreateCompetition } from './CreateCompetition';
 export { ComponentTest } from './ComponentTest';
-export { About } from './About';
+export { AboutView } from './AboutView';

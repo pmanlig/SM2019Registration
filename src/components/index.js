@@ -1,10 +1,9 @@
-export { InjectedClass, InjectedComponent, Events } from '../logic';
 export { BusyIndicator, Busy } from './BusyIndicator';
-export { LoginLogout } from './LoginLogout';
+export { LoginLogoutButton } from './LoginLogoutButton';
 export { Toolbar } from './Toolbar';
 export { Summary } from './Summary';
 export { ParticipantPicker } from './ParticipantPicker';
-export { AppHeader, WithTitle } from './AppHeader';
+export { AppHeader } from './AppHeader';
 export { RegistrationContact } from './RegistrationContact';
 export { RegistrationForm } from './RegistrationForm';
 export { RegistrationRow } from './RegistrationRow';
@@ -17,4 +16,4 @@ export { Schedule } from './Schedule';
 export { CompetitionProperties } from './CompetitionProperties';
 export { ScheduleProperties } from './ScheduleProperties';
 export { Spinner } from './Spinner';
-export { Components, StorageKeys } from '../AppInjector';
+export { LoginControl } from './LoginControl';

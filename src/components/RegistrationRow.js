@@ -1,11 +1,10 @@
 import "./Buttons.css";
 import React from 'react';
-import { InjectedComponent } from '../logic';
 import { Dropdown } from './Dropdown';
-import { Components, Events } from '.';
 
-export class RegistrationRow extends InjectedComponent {
-	static wire = ["Competition"];
+export class RegistrationRow extends React.Component {
+	static register = true;
+	static wire = ["fire", "Competition", "Registration", "Events"];
 
 	classDropdown(participant, event, value, values, registration) {
 		return <td key="class"><Dropdown placeholder="Välj klass..." value={value} items={values} onChange={e => registration.setParticipantClass(participant, event, e.target.value)} /></td>;
@@ -22,7 +21,7 @@ export class RegistrationRow extends InjectedComponent {
 	scheduleButtons(participant, event, rounds) {
 		let buttons = [];
 		for (let i = 0; i < rounds.length; i++) {
-			buttons.push(<li key={i}><button className="scheduleButton" onClick={e => this.fire(Events.showSchedule, participant, event)}>Välj starttid ></button></li>);
+			buttons.push(<li key={i}><button className="scheduleButton" onClick={e => this.fire(this.Events.showSchedule, participant, event)}>Välj starttid ></button></li>);
 		}
 		return buttons;
 	}
@@ -42,31 +41,30 @@ export class RegistrationRow extends InjectedComponent {
 	}
 
 	EventControls = ({ participant, event }) => {
-		const registration = this.inject(Components.Registration);
 		const eventInfo = participant.event(event.id) || { event: event.id, rounds: [{}] };
 		let controls = [];
 		if (event.classes && this.Competition.classes(event.classes)) {
-			controls.push(this.classDropdown(participant.id, event.id, eventInfo.class, this.Competition.classes(event.classes), registration));
+			controls.push(this.classDropdown(participant.id, event.id, eventInfo.class, this.Competition.classes(event.classes), this.Registration));
 		}
 		if (event.divisions && this.Competition.divisions(event.divisions)) {
 			controls.push(<td key="division"><ul>
-				{this.divisionDropdown(participant.id, event.id, eventInfo.rounds, this.Competition.divisions(event.divisions), registration)}
+				{this.divisionDropdown(participant.id, event.id, eventInfo.rounds, this.Competition.divisions(event.divisions), this.Registration)}
 			</ul></td>);
 		}
 		if (event.schedule) {
 			controls.push(<td key="schedule"><ul>
-				{this.scheduleButtons(participant.id, event.id, eventInfo.rounds, registration)}
+				{this.scheduleButtons(participant.id, event.id, eventInfo.rounds, this.Registration)}
 			</ul></td>);
 		}
 		if (event.maxRegistrations > 1) {
 			controls.push(<td key="round"><ul>
-				{this.roundButtons(participant.id, event, eventInfo.rounds, registration)}
+				{this.roundButtons(participant.id, event, eventInfo.rounds, this.Registration)}
 			</ul></td>);
 		}
 
 		if (controls.length === 0) {
 			controls.push(<td key="participate"><input type="checkbox" className="checkbox" onChange={c =>
-				this.inject(Components.Registration).setParticipantEvent(participant.id, event.id, c.target.checked)
+				this.Registration.setParticipantEvent(participant.id, event.id, c.target.checked)
 			} checked={participant.participate(event.id)} /></td>);
 		}
 
@@ -82,7 +80,7 @@ export class RegistrationRow extends InjectedComponent {
 	RegistrationField = ({ participant, header }) => {
 		return <td className="left" key={header.name}><input type="text" value={participant[header.field]}
 			placeholder={header.placeholder || header.name} style={{ width: header.width }}
-			onChange={e => this.inject(Components.Registration).setParticipantField(participant.id, header.field, e.target.value)}
+			onChange={e => this.Registration.setParticipantField(participant.id, header.field, e.target.value)}
 			size={header.size} /></td>;
 	}
 
@@ -91,12 +89,11 @@ export class RegistrationRow extends InjectedComponent {
 	}
 
 	render() {
-		const registration = this.inject(Components.Registration);
 		const p = this.props.participant;
 		const myId = p.id;
 		return <tr key={myId} className={p.errors.length > 0 ? "error registration" : "registration"} >
 			<this.ParticipantFields participant={p} />
 			<this.RegistrationControls participant={p} />
-			<td><button className="button-close small deleteButton" onClick={e => registration.deleteParticipant(myId)} /></td></tr>;
+			<td><button className="button-close small deleteButton" onClick={e => this.Registration.deleteParticipant(myId)} /></td></tr>;
 	}
 }

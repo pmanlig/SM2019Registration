@@ -1,12 +1,16 @@
 import React from 'react';
 import { InjectedComponent } from '../logic';
 
-export class About extends InjectedComponent {
-	static wire = ["WithTitle"];
+export class AboutView extends InjectedComponent {
+	static register = true;
+	static wire = ["EventBus", "Events"];
 
-	render(props) {
+	componentWillMount() {
+		this.EventBus.fire(this.Events.changeTitle, "Om systemet");
+	}
+
+	render() {
 		return <div id='about' className='content'>
-			<this.WithTitle title="Om systemet" />
 			<h2>Om tävlingsanmälan Gävle PK</h2>
 			<p>Det här anmälningssystemet är framtaget för att hantera föranmälningar till skyttetävlingar.
 				Vi vet att det finns flera andra system, men när vi började fanns det inget system som vi

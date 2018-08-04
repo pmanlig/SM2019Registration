@@ -1,19 +1,16 @@
-import { InjectedClass, Components, Events, StorageKeys } from "../logic";
+import { StorageKeys } from "../logic";
 
-export class Results extends InjectedClass {
-	competition = undefined;
+export class Results {
+	static register = { createInstance: true };
+	static wire = ["fire", "Competition", "Storage", "Server", "Events"];
+
 	scores = [];
-
-	constructor(injector) {
-		super(injector);
-		this.competition = this.inject(Components.Competition);
-	}
 
 	load(competitionId, eventId) {
 		console.log("Loading results for " + competitionId + "/" + eventId);
-		this.inject(Components.Server).loadResults(competitionId, undefined, json => {
+		this.Server.loadResults(competitionId, undefined, json => {
 			this.scores = json;
-			let localScores = this.inject(Components.Storage).get(StorageKeys.results);
+			let localScores = this.Storage.get(StorageKeys.results);
 			if (localScores) {
 				localScores.forEach(ls => {
 					this.scores.forEach(s => {
@@ -26,7 +23,7 @@ export class Results extends InjectedClass {
 			}
 			this.scores.forEach(p => this.calculate(p));
 			this.sort();
-			this.fire(Events.resultsUpdated);
+			this.fire(this.Events.resultsUpdated);
 		});
 	}
 
@@ -49,17 +46,17 @@ export class Results extends InjectedClass {
 				p.dirty = true;
 				p.score[score][set] = value;
 				this.calculate(p);
-				this.fire(Events.resultsUpdated);
+				this.fire(this.Events.resultsUpdated);
 			}
 		});
 	}
 
 	store() {
-		this.inject(Components.Storage).set(StorageKeys.results, this.scores.filter(p => p.dirty));
+		this.Storage.set(StorageKeys.results, this.scores.filter(p => p.dirty));
 		// ToDo: implement sending results to server
 		// this.scores.forEach(p => { p.dirty = undefined; });
 		this.dirty = false;
-		this.fire(Events.resultsUpdated);
+		this.fire(this.Events.resultsUpdated);
 	}
 
 	isDirty() {
@@ -79,6 +76,6 @@ export class Results extends InjectedClass {
 			return b.name - a.name;
 		});
 		this.dirty = true;
-		this.fire(Events.resultsUpdated);
+		this.fire(this.Events.resultsUpdated);
 	}
 }

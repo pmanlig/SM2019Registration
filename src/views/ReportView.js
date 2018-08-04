@@ -1,28 +1,32 @@
 import './ReportView.css';
 import React from 'react';
-import { ResultsTable } from '../components';
-import { InjectedComponent } from '../logic';
-import { Components, Events } from '.';
 
-export class ReportView extends InjectedComponent {
+export class ReportView extends React.Component {
+	static register = true;
+	static wire = ["fire", "Competition", "Registration", "Results", "Server", "ResultsTable", "EventBus", "Events"];
+
 	constructor(props) {
 		super(props);
 		this.state = {
 			eventId: "none"
 		};
-		this.inject(Components.Results).load(props.match.params.id);
-		this.fire(Events.changeTitle, "Registrera resultat för " + this.inject(Components.Competition).name);
-		this.subscribe(Events.competitionUpdated, this.updateCompetition);
-		this.subscribe(Events.resultsUpdated, () => this.setState({}));
+		this.Results.load(props.match.params.id);
+		this.EventBus.manageEvents(this);
+		this.subscribe(this.Events.competitionUpdated, this.updateCompetition);
+		this.subscribe(this.Events.resultsUpdated, () => this.setState({}));
+	}
+
+	componentWillMount() {
+		this.fire(this.Events.changeTitle, "Registrera resultat för " + this.Competition.name);
 	}
 
 	updateCompetition = () => {
-		this.fire(Events.changeTitle, "Registrera resultat för " + this.inject(Components.Competition).name);
+		this.fire(this.Events.changeTitle, "Registrera resultat för " + this.Competition.name);
 		this.setState({ eventId: "none" });
 	}
 
 	changeEvent(newEvent) {
-		this.inject(Components.Server).loadResults(this.state.competition.id, newEvent, r => this.setState({ eventId: newEvent, results: r }));
+		this.Server.loadResults(this.state.competition.id, newEvent, r => this.setState({ eventId: newEvent, results: r }));
 	}
 
 	getSelectedEvent(competition) {
@@ -36,18 +40,16 @@ export class ReportView extends InjectedComponent {
 	}
 
 	render() {
-		let competition = this.inject(Components.Competition);
-		let selectedEvent = this.getSelectedEvent(competition);
-		let results = this.inject(Components.Results);
+		let selectedEvent = this.getSelectedEvent(this.Competition);
 		return <div id="results" className="content">
-			{competition.events.length > 1 &&
+			{this.Competition.events.length > 1 &&
 				<div>Resultat för deltävling <select value={this.state.eventId} onChange={e => this.changeEvent(e.target.value)}>
 					<option value="none">Välj deltävling</option>
-					{this.inject(Components.Registration).competition.events.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
+					{this.Competition.events.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
 				</select></div>}
-			<ResultsTable results={results} event={selectedEvent} />
-			<button className={results.isDirty() ? "button" : "button disabled"} onClick={() => results.store()}>Spara</button>
-			<button className="button" onClick={() => results.sort()}>Sortera</button>
+			<this.ResultsTable results={this.Results} event={selectedEvent} />
+			<button className={this.Results.isDirty() ? "button" : "button disabled"} onClick={() => this.Results.store()}>Spara</button>
+			<button className="button" onClick={() => this.Results.sort()}>Sortera</button>
 		</div>;
 	}
 }

@@ -1,10 +1,8 @@
 import React from 'react';
-import { StorageKeys } from '.';
+import { StorageKeys } from '../logic';
 
 export class StoreQuestion extends React.Component {
-	static register = {
-		as: "component"
-	}
+	static register = true;
 
 	constructor(props) {
 		super(props);
@@ -26,5 +24,3 @@ export class StoreQuestion extends React.Component {
 		</div >;
 	}
 }
-
-// 			this.injector.inject(Components.Footers).addCustomFooter(<CookieAlert key="cookieAlert" cookies={this} />);
