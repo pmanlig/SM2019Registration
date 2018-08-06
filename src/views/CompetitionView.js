@@ -1,10 +1,9 @@
 import "./CompetitionView.css";
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { InjectedComponent } from '../logic';
 import { Permissions, Operations } from '../models';
 
-export class CompetitionView extends InjectedComponent {
+export class CompetitionView extends React.Component {
 	static register = true;
 	static wire = ["Competition", "Events", "EventBus", "RegistrationView", "ReportView", "ResultView"];
 

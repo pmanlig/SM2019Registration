@@ -40,29 +40,6 @@
 	margin-right: 5px;
 }
 
-/* Can be removed?
-
-.sidebar {
-	color: black;
-	z-index: 5;
-	display: block;
-	position: absolute;
-	background-color: white;
-	padding: 5px;
-	border: 1px dotted red;
-	top: 30px;
-	left: 0;
-	max-height: 80vh;
-	overflow-y: auto;
-}
-
-.sidebar h1 {
-	font-size: 1.2em;
-	margin: 5px 0 10px 0;
-}
-
-*/
-
 .labelBox {
 	display: inline-flex;
 	flex-direction: column;

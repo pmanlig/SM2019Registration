@@ -1,0 +1,30 @@
+.modal-shadow {
+	z-index: 5;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0,0,0,0.3);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.modal-shadov * {
+	z-index: 10;
+	margin: auto;
+	flex-grow: 0;
+}
+
+.titlebar {
+	display: flex;
+}
+
+.titlebar .title-content {
+	flex-grow: 1;
+}
+
+.titlebar button {
+	flex-grow: 0;
+}

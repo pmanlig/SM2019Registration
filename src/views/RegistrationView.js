@@ -1,9 +1,8 @@
 import './RegistrationView.css';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { InjectedComponent } from '../logic';
 
-export class RegistrationView extends InjectedComponent {
+export class RegistrationView extends React.Component {
 	static register = true;
 	static wire = ["Competition", "EventBus", "Events", "Registration", "ParticipantPicker", "Toolbar",
 		"RegistrationContact", "RegistrationForm", "Summary", "Schedule"];

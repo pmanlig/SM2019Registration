@@ -1,7 +1,6 @@
 import React from 'react';
-import { InjectedComponent } from '../logic';
 
-export class AboutView extends InjectedComponent {
+export class AboutView extends React.Component {
 	static register = true;
 	static wire = ["EventBus", "Events"];
 

@@ -46,7 +46,7 @@ export class CreateCompetition extends React.Component {
 	render() {
 		return <this.WithLogin>
 			<div className="content">
-				<button id="saveButton" className="button" onClick={this.createCompetition}>Skapa</button>
+				<button id="saveButton" className="button" onClick={this.createCompetition}>Skapa tävling</button>
 				<this.CompetitionProperties />
 			</div >
 		</this.WithLogin>;
