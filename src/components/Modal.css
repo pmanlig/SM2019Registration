@@ -11,20 +11,44 @@
 	justify-content: center;
 }
 
-.modal-shadov * {
+.modal-shadow * {
 	z-index: 10;
-	margin: auto;
 	flex-grow: 0;
 }
 
-.titlebar {
+.modal-box {
+	color: black;
+	background-color: white;
+	display: inline-block;
+	border-radius: 10px;
+}
+
+.modal-box-title {
+	padding: 10px;
+	color: white;
+	background: black;
+	border-radius: 10px 10px 0 0;
 	display: flex;
 }
 
-.titlebar .title-content {
+.modal-box-title button {
+	flex-grow: 0;
+	box-sizing: content-box;
+	border: 1.5px solid #9f9f9f;
+	background-color: black;
+}
+
+.modal-box-title button:hover {
+	background-color: #3f3f3f;
+}
+
+.modal-box-title h1 {
+	margin: 0 20px 0 0;
+	font-size: 1.2em;
 	flex-grow: 1;
 }
 
-.titlebar button {
-	flex-grow: 0;
+.modal-box-content {
+	padding: 10px;
+	border-radius: 0 0 10px 10px;
 }

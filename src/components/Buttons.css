@@ -1,12 +1,15 @@
 .button {
 	margin: 2px;
 	padding: 5px 10px;
-	background-color: #3f3f3f;
-	color: #f5f5f5;
+	height: 30px;
 	display: inline-block;
 	vertical-align: middle;
 	border: none;
-	border-radius: 10px;
+	border-radius: 15px;
+	/* Redundant? */
+	background-color: #3f3f3f;
+	color: #f5f5f5;
+	border-color: #f5f5f5;
 }
 
 .disabled {
@@ -16,6 +19,7 @@
 [class*="button-"] {
 	background-color: #3f3f3f;
 	color: #f5f5f5;
+	border-color: #f5f5f5;
 	margin: 1px;
 	padding: 0px;
 	width: 20px;
@@ -36,6 +40,7 @@
 	width: 0px;
 	border-width: 1px;
 	border-style: solid;
+	background-color: #f5f5f5;
 }
 
 .button-close::before {
@@ -55,6 +60,7 @@
 	width: 0px;
 	border-width: 1px;
 	border-style: solid;
+	background-color: #f5f5f5;
 }
 
 .button-add::before {
@@ -70,6 +76,7 @@
 	width: 0px;
 	border-width: 1px;
 	border-style: solid;
+	background-color: #f5f5f5;
 	transform-origin: 50% 1px;
 }
 
@@ -90,6 +97,7 @@
 	width: 0px;
 	border-width: 1px;
 	border-style: solid;
+	background-color: #f5f5f5;
 	transform-origin: 50% 1px;
 }
 
@@ -110,6 +118,7 @@
 	width: 0px;
 	border-width: 1px;
 	border-style: solid;
+	background-color: #f5f5f5;
 	transform-origin: 50% 1px;
 }
 
@@ -130,6 +139,7 @@
 	width: 0px;
 	border-width: 1px;
 	border-style: solid;
+	background-color: #f5f5f5;
 	transform-origin: 50% 1px;
 }
 
@@ -143,7 +153,7 @@
 
 .button-up::before {
 	content: '';
-	border-bottom: 8px solid white;
+	border-bottom: 8px solid #f5f5f5;
 	border-left: 7px solid transparent;
 	border-right: 7px solid transparent;
 	position: absolute;
@@ -153,7 +163,7 @@
 
 .button-down::before {
 	content:'';
-	border-top: 8px solid white;
+	border-top: 8px solid #f5f5f5;
 	border-left: 7px solid transparent;
 	border-right: 7px solid transparent;
 	position: absolute;
@@ -163,7 +173,7 @@
 
 .button-left::before {
 	content:'';
-	border-left: 8px solid white;
+	border-left: 8px solid #f5f5f5;
 	border-top: 7px solid transparent;
 	border-bottom: 7px solid transparent;
 	position: absolute;
@@ -173,7 +183,7 @@
 
 .button-right::before {
 	content:'';
-	border-right: 8px solid white;
+	border-right: 8px solid #f5f5f5;
 	border-top: 7px solid transparent;
 	border-bottom: 7px solid transparent;
 	position: absolute;
@@ -197,20 +207,17 @@
 }
 
 .deleteButton {
-	color: white;
+	color: #f5f5f5;
+	border-color: #f5f5f5;
 	background-color: #af3f3f;
 	vertical-align: middle;
 	text-align: center;
 }
 
+/* ToDo: Should not be generic; specific to registration rows */
 .scheduleButton {
-	background-color: white;
+	background-color: #f5f5f5;
 	border: 1px solid lightgray;
-}
-
-.toolButton {
-	padding: 5px 15px;
-	border-radius: 15px;
 }
 
 .cookieButton {

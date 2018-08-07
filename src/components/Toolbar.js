@@ -15,12 +15,12 @@ export class Toolbar extends React.Component {
 	render() {
 		return <div className="buttons center content">
 			{this.Registry.competitors.length > 0 &&
-				<input type='button' className="button toolButton" id="getButton" onClick={e => this.fire(this.Events.showParticipantPicker)} value='Hämta deltagare' />}
-			<input type='button' className="button toolButton" id="addButton" onClick={e => this.Registration.addParticipant()} value='Ny deltagare' />
-			<input type='button' className="button toolButton" id="registerButton" onClick={e => this.fire(this.Events.registerForCompetition)} value='Registrera' />
+				<input type='button' className="button" id="getButton" onClick={e => this.fire(this.Events.showParticipantPicker)} value='Hämta deltagare' />}
+			<input type='button' className="button" id="addButton" onClick={e => this.Registration.addParticipant()} value='Ny deltagare' />
+			<input type='button' className="button" id="registerButton" onClick={e => this.fire(this.Events.registerForCompetition)} value='Registrera' />
 
 			{/* For debugging */}
-			<input type='button' className="button toolButton" id="deleteStorageButton" onClick={e => this.Storage.delete()} value='Radera sparad information' />
+			<input type='button' className="button" id="deleteStorageButton" onClick={e => this.Storage.delete()} value='Radera sparad information' />
 		</div>
 	}
 }

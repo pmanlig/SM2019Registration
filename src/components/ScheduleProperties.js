@@ -1,9 +1,10 @@
 import './Buttons.css';
 import './ScheduleProperties.css';
 import React from 'react';
-import { Modal } from './Modal';
+import { ModalDialog } from './Modal';
 
 export function ScheduleProperties({ onClose }) {
+	/*
 	return <Modal>
 		<div className="schedule-properties">
 			<div className="titlebar">
@@ -15,4 +16,8 @@ export function ScheduleProperties({ onClose }) {
 			</div>
 		</div>
 	</Modal>;
+	*/
+	return <ModalDialog title="Skjutlag/patruller" onClose={onClose}>
+		<p>Lorem Ipsum</p>
+	</ModalDialog>;
 }

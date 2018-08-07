@@ -13,6 +13,10 @@ button.spinner {
 	margin: 0;
 }
 
+button.spinner:before, button.spinner:after {
+	background: black;
+}
+
 div.spinner {
 	box-sizing: content-box;
 	height: 30px;
