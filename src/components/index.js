@@ -1,6 +1,6 @@
 export { BusyIndicator, Busy } from './BusyIndicator';
 export { LoginLogoutButton } from './LoginLogoutButton';
-export { Toolbar } from './Toolbar';
+export { Toolbar, ButtonToolbar, Label } from './Toolbar';
 export { Summary } from './Summary';
 export { ParticipantPicker } from './ParticipantPicker';
 export { AppHeader } from './AppHeader';

@@ -1,4 +1,3 @@
-import './Buttons.css';
 import React from 'react';
 
 export class Schedule extends React.Component {

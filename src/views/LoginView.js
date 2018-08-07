@@ -1,5 +1,4 @@
 import './LoginView.css';
-import '../components/Buttons.css';
 import React from 'react';
 import { Events } from '.';
 

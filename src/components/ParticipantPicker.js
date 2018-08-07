@@ -21,18 +21,6 @@ export class ParticipantPicker extends React.Component {
 		</tr>
 	}
 
-	/*
-			<div className="fullscreen shadow" />
-			<div id="participantpicker" className="centered modal">
-				<input id='closePicker' type='button' className='round' value='X' onClick={e => this.setState({ visible: false })} />
-				<h1>
-					Hämta deltagare
-				</h1>
-				<div>
-			</div>
-		</div >;
-	*/
-
 	render() {
 		return !this.state.visible ? null :
 			<ModalDialog title="Hämta deltagare" onClose={e => this.setState({ visible: false })}>

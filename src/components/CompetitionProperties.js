@@ -43,7 +43,7 @@ export const CompetitionProperties = withEvents(class CompetitionProperties exte
 					<tr>
 						<th>Lägg till deltävling</th>
 						<td>
-							<button id="addEventButton" className="button-add" onClick={e => this.Competition.addEvent()} />
+							<button id="addEventButton" className="button-add green" onClick={e => this.Competition.addEvent()} />
 						</td>
 					</tr>
 				</tbody>

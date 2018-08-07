@@ -26,7 +26,6 @@
 
 .eventTitle > button {
 	flex-grow: 0;
-	background-color: #ff5050;
 }
 
 .eventProperties {
@@ -38,21 +37,4 @@
 .react-date-picker {
 	background-color: white;
 	margin-right: 5px;
-}
-
-.labelBox {
-	display: inline-flex;
-	flex-direction: column;
-	align-items: flex-start;
-	margin-right: 5px;
-}
-
-.labelBox > p {
-	margin: 0 0 2px 0;
-	color: black;
-	font-size: 0.5em;
-}
-
-.center {
-	align-items: center;
 }

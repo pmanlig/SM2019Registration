@@ -206,14 +206,6 @@
 	margin: 11px;
 }
 
-.deleteButton {
-	color: #f5f5f5;
-	border-color: #f5f5f5;
-	background-color: #af3f3f;
-	vertical-align: middle;
-	text-align: center;
-}
-
 /* ToDo: Should not be generic; specific to registration rows */
 .scheduleButton {
 	background-color: #f5f5f5;

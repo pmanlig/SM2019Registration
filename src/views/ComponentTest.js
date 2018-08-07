@@ -1,7 +1,13 @@
-import '../components/Buttons.css';
 import React from 'react';
 
 export class ComponentTest extends React.Component {
+	static wire = ["ScheduleProperties"];
+
+	constructor(props) {
+		super(props);
+		this.state = { showDialog: true };
+	}
+
 	render() {
 		return <div className="content">
 			<button className="button button-close small" />
@@ -44,6 +50,7 @@ export class ComponentTest extends React.Component {
 			<button className="button button-up x-large" />
 			<button className="button button-left x-large" />
 			<button className="button button-right x-large" />
+			{this.state.showDialog && <this.ScheduleProperties onClose={e => this.setState({ showDialog: false })} />}
 		</div>;
 	}
 }

@@ -1,6 +1,16 @@
-import "./Buttons.css";
 import "./Toolbar.css";
 import React from 'react';
+
+export function Label({ text, align, children }) {
+	return <div className="label-box " style={{ alignItems: align }}>
+		<p>{text}</p>
+		{children}
+	</div>;
+}
+
+export function ButtonToolbar({ className, children }) {
+	return <div className={"toolbar " + className}>{children}</div>;
+}
 
 export class Toolbar extends React.Component {
 	static register = true;

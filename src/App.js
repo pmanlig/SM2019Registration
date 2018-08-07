@@ -1,3 +1,5 @@
+import './css/Buttons.css';
+import './css/Colors.css';
 import './App.css';
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
