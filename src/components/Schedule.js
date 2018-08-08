@@ -1,7 +1,7 @@
 import React from 'react';
 
 export class Schedule extends React.Component {
-	static register = true;
+	static register = { name: "Schedule" };
 	static wire = ["Server", "Competition"];
 
 	constructor(props) {
@@ -20,7 +20,7 @@ export class Schedule extends React.Component {
 		let rows = [];
 		rows.push(<tr key={squad.time} className={this.squadStatus(squad)}>
 			<td>{squad.time}</td>
-			<td>{squad.participants.length + "/" + squad.slots}</td>
+			<td>{`${squad.participants.length} / ${squad.slots}`}</td>
 			<td>
 				{squad.participants.length > 0 &&
 					<button className={(squad.expand ? "button-collapse" : "button-expand")} onClick={e => { squad.expand = !squad.expand; this.setState({}); }} />}

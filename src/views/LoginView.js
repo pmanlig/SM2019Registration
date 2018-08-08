@@ -3,7 +3,7 @@ import React from 'react';
 import { Events } from '.';
 
 export class WithLogin extends React.Component {
-	static register = true;
+	static register = { name: "WithLogin" };
 	static wire = ["EventBus", "Session", "LoginControl"];
 
 	constructor(props) {
@@ -18,7 +18,7 @@ export class WithLogin extends React.Component {
 }
 
 export class LoginView extends React.Component {
-	static register = true;
+	static register = { name: "LoginView" };
 	static wire = ["WithLogin"]
 
 	GoBack(props) {

@@ -1,7 +1,7 @@
 import React from 'react';
 
 export class LoginControl extends React.Component {
-	static register = true;
+	static register = { name: "LoginControl" };
 	static wire = ["Session", "Events", "EventBus"];
 
 	login = (e) => {
@@ -14,7 +14,7 @@ export class LoginControl extends React.Component {
 	}
 
 	componentDidMount() {
-		this.userpama.focus();
+		this.user.focus();
 	}
 
 	render() {

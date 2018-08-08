@@ -20,7 +20,7 @@ export const Operations = [
 ];
 
 export class Competition {
-	static register = { createInstance: true };
+	static register = { name: "Competition", createInstance: true };
 	static wire = ["fire", "Server"];
 
 	initialize = () => {

@@ -4,7 +4,7 @@ import { StorageKeys } from '../logic';
 import { withEvents } from '../logic';
 
 export class CreateCompetition extends React.Component {
-	static register = true;
+	static register = { name: "CreateCompetition" };
 	static wire = ["Storage", "Competition", "CompetitionProperties", "WithLogin", "EventBus", "Events"];
 
 	constructor(props) {

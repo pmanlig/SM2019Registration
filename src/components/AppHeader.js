@@ -4,7 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export class AppHeader extends React.Component {
-	static register = true;
+	static register = { name: "AppHeader" };
 	static wire = ["LoginLogoutButton", "subscribe", "Events"];
 
 	constructor(props) {
@@ -28,7 +28,7 @@ export class AppHeader extends React.Component {
 				{this.state.title}
 			</h1>
 			<this.LoginLogoutButton />
-			<Link to='/about' className='globaltool'>Om...</Link>
+			<Link to="/about" className='globaltool'>Om...</Link>
 		</header>
 	}
 }

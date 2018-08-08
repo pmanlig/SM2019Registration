@@ -1,7 +1,7 @@
 import React from 'react';
 
 export class Footers {
-	static register = { createInstance: true };
+	static register = { name: "Footers", createInstance: true };
 	static wire = ["fire", "subscribe", "Events"];
 
 	messageId = 1;
@@ -39,7 +39,7 @@ export class Footers {
 }
 
 export class Footer extends React.Component {
-	static register = true;
+	static register = { name: "Footer" };
 	static wire = ["Footers", "subscribe", "EventBus", "Events"];
 
 	constructor(props) {

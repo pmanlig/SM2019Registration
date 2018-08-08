@@ -1,10 +1,10 @@
-.modal-box-content th, td {
+.schedule-table th, .schedule-table td {
 	text-align: center;
 	padding: 3px;
 	border-bottom: 1px solid #7f7f7f;
 }
 
-.modal-box-content tr:nth-child(even) {
+.schedule-table tr:nth-child(even) {
 	background: #cfcff5;
 }
 

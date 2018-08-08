@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
 export class EventResult extends React.Component {
-	static register = true;
+	static register = { name: "EventResult" };
 	static wire = ["fire", "subscribe", "EventBus", "Events", "Competition", "Results"];
 
 	constructor(props) {
@@ -69,7 +69,7 @@ export class EventResult extends React.Component {
 }
 
 export class ResultView extends React.Component {
-	static register = true;
+	static register = { name: "ResultView" };
 	static wire = ["fire", "subscribe", "EventBus", "Events", "EventResult", "Competition"];
 
 	constructor(props) {
@@ -91,12 +91,12 @@ export class ResultView extends React.Component {
 		}
 
 		if (this.Competition.events.length === 1) {
-			return <Redirect to={"/competition/" + this.Competition.id + "/results/" + this.Competition.events[0].id} />;
+			return <Redirect to={`/competition/${this.Competition.id}/results/${this.Competition.events[0].id}`} />;
 		}
 
 		return <div className="content">
 			<ul>
-				{this.Competition.events.map(e => <li key={e.id}><Link to={"/competition/" + this.Competition.id + "/results/" + e.id}>{e.name}</Link></li>)}
+				{this.Competition.events.map(e => <li key={e.id}><Link to={`/competition/${this.Competition.id}/results/${e.id}`}>{e.name}</Link></li>)}
 			</ul>
 		</div>;
 	}

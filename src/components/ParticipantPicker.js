@@ -3,7 +3,7 @@ import React from 'react';
 import { ModalDialog } from './Modal';
 
 export class ParticipantPicker extends React.Component {
-	static register = true;
+	static register = { name: "ParticipantPicker" };
 	static wire = ["subscribe", "Registration", "Registry", "EventBus", "Events"];
 
 	constructor(props) {

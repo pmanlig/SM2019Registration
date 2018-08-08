@@ -5,7 +5,7 @@ import { Status } from '../models';
 import { Dropdown } from '.';
 
 export const CompetitionProperties = withEvents(class CompetitionProperties extends React.Component {
-	static register = true;
+	static register = { name: "CompetitionProperties" };
 	static wire = ["Server", "Competition", "EventProperties"]
 
 	constructor(props) {

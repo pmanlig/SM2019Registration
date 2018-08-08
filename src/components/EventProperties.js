@@ -4,7 +4,7 @@ import DatePicker from 'react-date-picker';
 import { Spinner, Dropdown, Label } from '.';
 
 export class EventProperties extends React.Component {
-	static register = true;
+	static register = { name: "EventProperties" };
 	static wire = ["Competition", "ScheduleProperties"];
 
 	constructor(props) {

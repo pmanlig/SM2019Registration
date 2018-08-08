@@ -2,7 +2,7 @@ import React from 'react';
 import { StorageKeys } from '../logic';
 
 export class StoreQuestion extends React.Component {
-	static register = true;
+	static register = { name: "StoreQuestion" };
 
 	constructor(props) {
 		super(props);

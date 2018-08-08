@@ -8,7 +8,7 @@ import { Schedule, Squad } from '../models';
 import { SquadProperties } from './SquadProperties';
 
 export class ScheduleProperties extends React.Component {
-	static register = true;
+	static register = { name: "ScheduleProperties" };
 
 	constructor(props) {
 		super(props);
@@ -79,7 +79,7 @@ export class ScheduleProperties extends React.Component {
 				<Label text="Tid till nästa" align="center"><input className="schedule-property" value={this.state.interval} onChange={this.updateInterval} /></Label>
 				<Label text="Lägg till skjutlag" align="center"><button className="button-add green" onClick={e => this.addSquad()} /></Label>
 			</Toolbar>
-			<table>
+			<table className="schedule-table">
 				<thead>
 				</thead>
 				<tbody>

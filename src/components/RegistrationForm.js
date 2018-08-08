@@ -3,7 +3,7 @@ import React from 'react';
 import { RegistrationRow } from './RegistrationRow';
 
 export class RegistrationForm extends React.Component {
-	static register = true;
+	static register = { name: "RegistrationForm" };
 	static wire = ["Competition", "Registration"];
 
 	addButtonHeader(minorHeaders) {

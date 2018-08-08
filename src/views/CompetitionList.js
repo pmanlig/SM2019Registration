@@ -23,7 +23,7 @@ const initialCompetitions = [
 ];
 
 export class CompetitionList extends React.Component {
-	static register = true;
+	static register = { name: "CompetitionList" };
 	static wire = ["Session", "Storage", "EventBus", "Events"];
 
 	constructor(props) {
@@ -57,9 +57,9 @@ export class CompetitionList extends React.Component {
 			(competition.permissions >= o.permission && (o.status === undefined || o.status === competition.status))
 		));
 		return <li key={competition.id}>
-			<Link className="competitionLink" to={"/competition/" + competition.id}>{competition.name}</Link>
+			<Link className="competitionLink" to={`/competition/${competition.id}`}>{competition.name}</Link>
 			{links.map(l =>
-				<span key={l.name}>&nbsp;<Link to={"/competition/" + competition.id + "/" + l.path}>{l.name}</Link>&nbsp;</span>)}
+				<span key={l.name}>&nbsp;<Link to={`/competition/${competition.id}/${l.path}`}>{l.name}</Link>&nbsp;</span>)}
 		</li>
 	}
 
@@ -69,7 +69,7 @@ export class CompetitionList extends React.Component {
 			<h1>Tävlingar</h1>
 			<ul>
 				{this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own)).map(c => this.competition(c))}
-				{loggedIn && <li><Link className="competitionLink" to="/create">Skapa ny tävling</Link></li>}
+				{loggedIn && <li><Link className="competitionLink" to={`/create`}>Skapa ny tävling</Link></li>}
 			</ul>
 		</div>;
 	}

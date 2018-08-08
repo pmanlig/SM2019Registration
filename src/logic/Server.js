@@ -1,7 +1,11 @@
 export class Server {
-	static register = { createInstance: true };
+	static register = { name: "Server", createInstance: true };
 	static wire = ["Busy"];
-	static baseUrl = 'https://dev.bitnux.com/sm2019/';
+	static baseUrl = 'https://dev.bitnux.com/sm2019';
+
+	jsonFile(name) {
+		return `${process.env.PUBLIC_URL}/${name}.json`;
+	}
 
 	load(url, callback) {
 		this.Busy.setBusy(this, true);
@@ -24,33 +28,41 @@ export class Server {
 	loadCompetition(competitionId, callback) {
 		console.log("Loading competition data");
 		let numId = parseInt(competitionId, 10);
-		this.load(isNaN(numId) ? '/' + competitionId + '.json' : Server.baseUrl + 'competition/' + competitionId, callback);
+		this.load(isNaN(numId) ?
+			this.jsonFile(competitionId) :
+			`${Server.baseUrl}/competition/${competitionId}`, callback);
 	}
 
 	loadRegistration(competitionId, token, callback) {
 		console.log("Loading competition registration data for competition " + competitionId);
 		let numId = parseInt(competitionId, 10);
-		this.load(isNaN(numId) ? '/' + competitionId + '_token.json' : Server.baseUrl + 'competition/' + competitionId + '/' + token, callback);
+		this.load(isNaN(numId) ?
+			this.jsonFile(`${competitionId}_token`) :
+			`${Server.baseUrl}/competition/${competitionId}/${token}`, callback);
 	}
 
 	loadResults(competitionId, eventId, callback) {
 		console.log("Loading competition results for competition " + competitionId);
 		let numId = parseInt(competitionId, 10);
-		this.load(isNaN(numId) ? '/' + competitionId + '_result.json' : Server.baseUrl + 'result/' + competitionId, callback);
+		this.load(isNaN(numId) ?
+			this.jsonFile(`${competitionId}_result`) :
+			`${Server.baseUrl}/result/${competitionId}`, callback);
 	}
 
 	loadSchedule(competitionId, scheduleId, callback) {
 		console.log("Loading schedule for competition " + competitionId);
 		let numId = parseInt(competitionId, 10);
-		this.load(isNaN(numId) ? '/' + competitionId + '_schedule.json' : Server.baseUrl + 'schedule/' + scheduleId, callback);
+		this.load(isNaN(numId) ?
+			this.jsonFile(`${competitionId}_schedule`) :
+			`${Server.baseUrl}/schedule/${scheduleId}`, callback);
 	}
 
 	loadClassGroups(callback) {
-		this.load('/classes.json', callback);
+		this.load(this.jsonFile("classes"), callback);
 	}
 
 	loadDivisionGroups(callback) {
-		this.load('/divisions.json', callback);
+		this.load(this.jsonFile("divisions"), callback);
 	}
 
 	registrationJson(reg) {

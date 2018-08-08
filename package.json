@@ -2,7 +2,7 @@
   "name": "sm2019",
   "version": "0.1.0",
 	"private": true,
-	"homepage": "http://manlig.org/sm2019",
+	"homepage": "http://manlig.org/sm2019/",
   "dependencies": {
     "react": "^16.4.1",
     "react-date-picker": "^6.10.1",

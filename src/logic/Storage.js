@@ -9,7 +9,7 @@ export class StorageKeys {
 }
 
 export class Storage {
-	static register = { createInstance: true }
+	static register = { name: "Storage", createInstance: true }
 
 	keys = {};
 

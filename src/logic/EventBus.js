@@ -2,7 +2,7 @@ import React from 'react';
 import { Subject } from 'rxjs';
 
 export class Events {
-	static register = true;
+	static register = { name: "Events" };
 	static eventId = 1;
 	static addFooter = Events.eventId++;
 	static footersChanged = Events.eventId++;
@@ -21,7 +21,7 @@ export class Events {
 }
 
 export class EventBus {
-	static register = { createInstance: true }
+	static register = { name: "EventBus", createInstance: true }
 
 	constructor() {
 		this.bus = new Subject();

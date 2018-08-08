@@ -37,7 +37,7 @@ function series(event) {
 }
 
 export class ResultsTable extends React.Component {
-	static register = true;
+	static register = { name: "ResultsTable" };
 
 	render() {
 		let { results, event } = this.props;

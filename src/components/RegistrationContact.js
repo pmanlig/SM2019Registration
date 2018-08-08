@@ -1,7 +1,7 @@
 import React from 'react';
 
 export class RegistrationContact extends React.Component {
-	static register = true;
+	static register = { name: "RegistrationContact" };
 	static wire = ["fire", "Events", "Registration"];
 
 	render() {

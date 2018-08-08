@@ -2,7 +2,7 @@ import { Validation, StorageKeys } from '../logic';
 import { Person, Participant } from '.';
 
 export class Registration {
-	static register = { createInstance: true };
+	static register = { name: "Registration", createInstance: true };
 	static wire = ["subscribe", "fire", "Competition", "Storage", "Server", "EventBus", "Events", "Registry", "Footers"];
 	// static wire = ["subscribe"];
 
@@ -135,7 +135,7 @@ export class Registration {
 			})
 			.catch(error => {
 				console.log(error);
-				this.Footers.addFooter("Registreringen misslyckades! (" + error + ")");
+				this.Footers.addFooter(`Registreringen misslyckades! (${error})`);
 			});
 	}
 

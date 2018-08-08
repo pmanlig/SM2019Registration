@@ -30,16 +30,17 @@ export class AutoInjector {
 	register(c) {
 		this.addToInjectList(c);
 		if (c.register) {
+			if (c.register.name === undefined) { console.log(`WARNING: name not set on class ${c.name}`) }
 			let name = c.register.name || c.name;
 			if (c.register.createInstance) {
 				if (_INJECTOR_LOGLEVEL === "details") {
-					console.log("Registering resource " + name);
+					console.log(`Registering resource ${name}`);
 				}
 				this[name] = new c();
 				return;
 			}
 			if (_INJECTOR_LOGLEVEL === "details") {
-				console.log("Registering component/method " + name);
+				console.log(`Registering component/method ${name}`);
 			}
 			this[name] = c;
 		}
@@ -53,16 +54,16 @@ export class AutoInjector {
 				}
 				if (this[i]) {
 					if (_INJECTOR_LOGLEVEL === "details") {
-						console.log("Injecting " + i + " into " + c.name + ((c.register && c.register.name) ? " (" + c.register.name + ")" : ""));
+						console.log(`Injecting ${i} into ${c.name}` + ((c.register && c.register.name) ? ` (${c.register.name})` : ""));
 					}
 					c.prototype[i] = this[i];
 				} else {
-					console.log("ERROR: Cannot inject entity " + i + " into " + c.name);
+					console.log(`ERROR: Cannot inject entity ${i} into ${c.name}`);
 				}
 			});
 			if (c.register && c.register.createInstance) {
 				if (_INJECTOR_LOGLEVEL === "details") {
-					console.log("Creating instance for class " + c.name);
+					console.log(`Creating instance for class ${c.name}`);
 				}
 				let i = this[c.register.name || c.name];
 				if (i.initialize && (typeof i.initialize === "function")) {

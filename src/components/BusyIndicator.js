@@ -1,7 +1,7 @@
 import React from 'react';
 
 export class Busy {
-	static register = { createInstance: true }
+	static register = { name: "Busy", createInstance: true }
 	static wire = ["fire", "Events"];
 
 	busy = [];
@@ -18,7 +18,7 @@ export class Busy {
 
 // ToDo: apply withEvents
 export class BusyIndicator extends React.Component {
-	static register = true;
+	static register = { name: "BusyIndicator" };
 	static wire = ["Busy", "subscribe", "Events"];
 
 	constructor(props) {

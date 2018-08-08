@@ -2,7 +2,7 @@ import React from 'react';
 import { Dropdown } from './Dropdown';
 
 export class RegistrationRow extends React.Component {
-	static register = true;
+	static register = { name: "RegistrationRow" };
 	static wire = ["fire", "Competition", "Registration", "Events"];
 
 	classDropdown(participant, event, value, values, registration) {

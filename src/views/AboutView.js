@@ -1,7 +1,7 @@
 import React from 'react';
 
 export class AboutView extends React.Component {
-	static register = true;
+	static register = { name: "AboutView" };
 	static wire = ["EventBus", "Events"];
 
 	componentWillMount() {

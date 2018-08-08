@@ -13,7 +13,7 @@ export function ButtonToolbar({ className, children }) {
 }
 
 export class Toolbar extends React.Component {
-	static register = true;
+	static register = { name: "Toolbar" };
 	static wire = ["subscribe", "fire", "Registration", "Registry", "Storage", "EventBus", "Events"];
 
 	constructor(props) {

@@ -1,7 +1,7 @@
 import { Events, Person } from '.';
 
 export class Registry {
-	static register = { createInstance: true };
+	static register = { name: "Registry", createInstance: true };
 	static wire = ["fire", "Storage"];
 
 	initialize() {

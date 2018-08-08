@@ -1,7 +1,7 @@
 import { Events, setCookie, getCookie, deleteCookie } from '../logic';
 
 export class Session {
-	static register = { createInstance: true };
+	static register = { name: "Session", createInstance: true };
 	static wire = ["fire"];
 
 	constructor() {

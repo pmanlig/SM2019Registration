@@ -2,7 +2,7 @@ import './ReportView.css';
 import React from 'react';
 
 export class ReportView extends React.Component {
-	static register = true;
+	static register = { name: "ReportView" };
 	static wire = ["fire", "Competition", "Registration", "Results", "Server", "ResultsTable", "EventBus", "Events"];
 
 	constructor(props) {

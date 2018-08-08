@@ -2,7 +2,7 @@ import './Summary.css';
 import React from 'react';
 
 export class Summary extends React.Component {
-	static register = true;
+	static register = { name: "Summary" };
 	static wire = ["Registration"];
 
 	countEntries(participants) {
