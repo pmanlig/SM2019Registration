@@ -1,10 +1,71 @@
+.schedule-table {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.schedule-table table {
+	border: 1px solid grey;
+	width: 22.5em;
+	margin-bottom: 20px;
+}
+
+.schedule-table thead {
+	display: block;
+	width: 100%;
+}
+
+.schedule-table tbody {
+	width: 100%;
+	display: block;
+	height: 300px;
+	max-height: 300px;
+	overflow-y: auto;
+}
+
+.schedule-table tr {
+	min-width: 22.5em;
+	max-width: 22.5em;
+	width: 22.5em;
+}
+
+.schedule-table th:nth-child(1), .schedule-table td:nth-child(1) {
+	min-width: 2.5em;
+	width: 2.5em;
+}
+
+.schedule-table th:nth-child(2), .schedule-table td:nth-child(2) {
+	min-width: 3.5em;
+	width: 3.5em;
+}
+
+.schedule-table th:nth-child(3), .schedule-table td:nth-child(3) {
+	min-width: 7em;
+	width: 7em;
+}
+
+.schedule-table th:nth-child(4), .schedule-table td:nth-child(4) {
+	min-width: 3.5em;
+	width: 3.5em;
+}
+
+.schedule-table th:nth-child(5), .schedule-table td:nth-child(5) {
+	min-width: 2em;
+	width: 2em;
+}
+
+.schedule-table th:nth-child(6), .schedule-table td:nth-child(6) {
+	min-width: 0;
+	width: 2em;
+}
+
 .schedule-table th, .schedule-table td {
 	text-align: center;
 	padding: 3px;
 	border-bottom: 1px solid #7f7f7f;
 }
 
-.schedule-table tr:nth-child(even) {
+.schedule-table tbody tr:nth-child(odd) {
 	background: #cfcff5;
 }
 

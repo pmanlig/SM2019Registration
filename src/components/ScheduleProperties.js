@@ -79,19 +79,23 @@ export class ScheduleProperties extends React.Component {
 				<Label text="Tid till nästa" align="center"><input className="schedule-property" value={this.state.interval} onChange={this.updateInterval} /></Label>
 				<Label text="Lägg till skjutlag" align="center"><button className="button-add green" onClick={e => this.addSquad()} /></Label>
 			</Toolbar>
-			<table className="schedule-table">
-				<thead>
-				</thead>
-				<tbody>
-					<tr>
-						<th>Tid</th>
-						<th>Antal platser</th>
-						<th>Vapengrupper</th>
-						<th>Blanda</th>
-					</tr>
-					{this.state.schedule.squads.map(s => <SquadProperties key={s.startTime} squad={s} />)}
-				</tbody>
-			</table>
+			<div className="schedule-table">
+				<table>
+					<thead>
+						<tr>
+							<th>Tid</th>
+							<th>Platser</th>
+							<th>Vapengrupper</th>
+							<th>Blanda</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						{this.state.schedule.squads.map(s => <SquadProperties key={s.startTime} squad={s} />)}
+					</tbody>
+				</table>
+			</div>
 		</ModalDialog>;
 	}
 }

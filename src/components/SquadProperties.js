@@ -8,6 +8,8 @@ export class SquadProperties extends React.Component {
 			<td>{slots}</td>
 			<td>{divisions}</td>
 			<td><input type="checkbox" value={mixDivisions} /></td>
+			<td><button className="button-close small red" /></td>
+			<td></td>
 		</tr>;
 	}
 }
