@@ -30,7 +30,7 @@ export class EventProperties extends React.Component {
 				<Label text="Vapengrupper"><Dropdown className="eventProperty" value={event.divisions || -1} list={this.props.divisionGroups} onChange={e => this.setGroup(event, "divisions", e.target.value)} /></Label>
 				<Label text="Max starter" align="center"><Spinner className="eventProperty" value={event.maxRegistrations || 1} onChange={value => this.Competition.updateEvent(event, "maxRegistrations", Math.max(1, value))} /></Label>
 				<Label text="Skjutlag/patruller" align="center"><button className="eventProperty button" onClick={e => this.setState({ showSchedule: true })}>{event.schedule || "Skapa"}</button></Label>
-				{this.state.showSchedule && <this.ScheduleProperties onClose={e => this.setState({ showSchedule: false })} />}
+				{this.state.showSchedule && <this.ScheduleProperties divisionGroups={this.props.divisionGroups} onClose={e => this.setState({ showSchedule: false })} />}
 			</div>
 		</div>;
 	}

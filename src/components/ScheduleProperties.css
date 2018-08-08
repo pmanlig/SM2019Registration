@@ -1,27 +1,23 @@
-.schedule-properties {
-	color: black;
-	background-color: white;
-	display: inline-block;
-	border-radius: 10px;
+.modal-box-content th, td {
+	text-align: center;
+	padding: 3px;
+	border-bottom: 1px solid #7f7f7f;
 }
 
-.schedule-properties h1 {
-	margin: 0 20px 0 0;
-	font-size: 1.2em;
-}
-
-.schedule-properties .titlebar {
-	padding: 10px;
-	color: white;
-	background: black;
-	border-radius: 10px 10px 0 0;
-}
-
-.schedule-properties-content {
-	padding: 10px;
-	border-radius: 0 0 10px 10px;
+.modal-box-content tr:nth-child(even) {
+	background: #cfcff5;
 }
 
 .schedule-tools {
 	margin-bottom: 10px;
+}
+
+.schedule-property {
+	box-sizing: border-box;
+	height: 22px;
+	text-align: center;
+}
+
+input.schedule-property {
+	width: 4em;
 }
