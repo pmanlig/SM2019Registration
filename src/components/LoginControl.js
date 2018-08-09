@@ -23,8 +23,8 @@ export class LoginControl extends React.Component {
 				<h3>Inloggning</h3>
 				<table>
 					<tbody>
-						<tr><td>Användarnamn:&nbsp;</td><td><input id='userName' ref={user => this.user = user} type='text' size='20' /></td></tr>
-						<tr><td>Lösenord:</td><td><input id='password' type='password' size='20' ref={input => this.password = input} /></td></tr>
+						<tr><td>Användarnamn:&nbsp;</td><td><input id='userName' ref={user => this.user = user} type='text' size='15' /></td></tr>
+						<tr><td>Lösenord:</td><td><input id='password' type='password' size='15' ref={input => this.password = input} /></td></tr>
 					</tbody>
 				</table>
 				<button className="button" type="submit">Logga in</button>

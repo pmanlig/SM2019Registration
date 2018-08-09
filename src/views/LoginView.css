@@ -1,8 +1,7 @@
-.login {
+div.login {
 	color: white;
 	background-color: #222;
 	padding: 20px;
-	width: 300px;
 	border-radius: 10px;
 	position: absolute;
 	top: 50%;

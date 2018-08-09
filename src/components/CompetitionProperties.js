@@ -48,7 +48,7 @@ export const CompetitionProperties = withEvents(class CompetitionProperties exte
 					</tr>
 				</tbody>
 			</table>
-			{this.Competition.events.map(e => <this.EventProperties key={e.id} event={e} classGroups={classGroups} divisionGroups={divisionGroups} />)}
+			{this.Competition.events.map(e => <this.EventProperties key={e.id || "junk"} event={e} classGroups={classGroups} divisionGroups={divisionGroups} />)}
 		</div>;
 	}
 });
