@@ -22,8 +22,8 @@
 	border-color: #f5f5f5;
 	margin: 1px;
 	padding: 0px;
-	width: 20px;
-	height: 20px;
+	width: 21px;
+	height: 21px;
 	vertical-align: middle;
 	border: none;
 	border-radius: 50%;
@@ -33,49 +33,53 @@
 
 .button-close::before, .button-close::after {
 	position: absolute;
-	left: 9.2px;
-	top: 1.95px;
+	box-sizing: border-box;
+	left: 10px;
+	top: 10px;
   content: ' ';
   height: 15px;
-	width: 0px;
-	border-width: 1px;
-	border-style: solid;
+	width: 2px;
+	border: 1px solid #f5f5f5;
 	background-color: #f5f5f5;
 }
 
 .button-close::before {
-  transform: rotate(45deg);
+  transform: translate(-50%, -50%) rotate(45deg);
 }
 
 .button-close::after {
-  transform: rotate(-45deg);
+  transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 .button-add::before, .button-add::after {
 	position: absolute;
-	left: 9.25px;
-	top: 4px;
+	box-sizing: border-box;
+	left: 10px;
+	top: 10px;
   content: ' ';
-  height: 11px;
-	width: 0px;
-	border-width: 1px;
-	border-style: solid;
+  height: 15px;
+	width: 2px;
+	border: 1px solid #f5f5f5;
 	background-color: #f5f5f5;
 }
 
 .button-add::before {
-  transform: rotate(90deg);
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.button-add::after {
+  transform: translate(-50%, -50%);
 }
 
 .button-previous::before, .button-previous::after {
-  content: ' ';
+	box-sizing: border-box;
+	content: ' ';
 	position: absolute;
 	left: 5.5px;
 	top: 9px;
-  height: 7px;
-	width: 0px;
-	border-width: 1px;
-	border-style: solid;
+  height: 9px;
+	width: 2px;
+	border-width: 1px solid #f5f5f5;
 	background-color: #f5f5f5;
 	transform-origin: 50% 1px;
 }
@@ -89,14 +93,14 @@
 }
 
 .button-next::before, .button-next::after {
+	box-sizing: border-box;
 	position: absolute;
 	left: 13px;
 	top: 9px;
   content: ' ';
-  height: 7px;
-	width: 0px;
-	border-width: 1px;
-	border-style: solid;
+  height: 9px;
+	width: 2px;
+	border-width: 1px solid #f5f5f5;
 	background-color: #f5f5f5;
 	transform-origin: 50% 1px;
 }
@@ -110,14 +114,14 @@
 }
 
 .button-expand::before, .button-expand::after {
+	box-sizing: border-box;
   content: ' ';
 	position: absolute;
 	left: 9.5px;
 	top: 13px;
-  height: 7px;
-	width: 0px;
-	border-width: 1px;
-	border-style: solid;
+  height: 9px;
+	width: 2px;
+	border-width: 1px solid #f5f5f5;
 	background-color: #f5f5f5;
 	transform-origin: 50% 1px;
 }
@@ -131,14 +135,14 @@
 }
 
 .button-collapse::before, .button-collapse::after {
+	box-sizing: border-box;
   content: ' ';
 	position: absolute;
 	left: 9.5px;
 	top: 6.5px;
-  height: 7px;
-	width: 0px;
-	border-width: 1px;
-	border-style: solid;
+  height: 9px;
+	width: 2px;
+	border-width: 1px solid #f5f5f5;
 	background-color: #f5f5f5;
 	transform-origin: 50% 1px;
 }

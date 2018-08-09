@@ -77,7 +77,7 @@ export class ScheduleProperties extends React.Component {
 				<Label text="Vapengrupper"><Dropdown className="schedule-property" value={this.state.divisions} list={this.props.divisionGroups || this.state.divisionGroups} /></Label>
 				<Label text="Blanda" align="center"><input type="checkbox" value={this.state.mixDivisions} onChange={e => this.setState({ mixDivisions: e.target.value })} /></Label>
 				<Label text="Tid till nästa" align="center"><input className="schedule-property" value={this.state.interval} onChange={this.updateInterval} /></Label>
-				<Label text="Lägg till skjutlag" align="center"><button className="button-add green" onClick={e => this.addSquad()} /></Label>
+				<Label text="Lägg till" align="center"><button className="button-add green" onClick={e => this.addSquad()} /></Label>
 			</Toolbar>
 			<div className="schedule-table">
 				<table>
