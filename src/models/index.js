@@ -7,3 +7,4 @@ export { Registration } from './Registration';
 export { Results } from './Results';
 export { Session } from './Session';
 export { Squad, Schedule } from './Schedule';
+export { Event } from './Event';

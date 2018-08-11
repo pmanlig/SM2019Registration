@@ -14,6 +14,14 @@ export class Schedule {
 	squadId = 1;
 	squads = [];
 
+	static fromJson(s) {
+		let schedule = new Schedule();
+		schedule.id = s.id;
+		schedule.squadId = s.squadId;
+		schedule.squads = s.squads;
+		return schedule;
+	}
+	
 	addSquad(startTime, slots, divisions, mixed) {
 		this.squads.push(new Squad(startTime, slots, divisions, mixed, this.squadId++));
 	}

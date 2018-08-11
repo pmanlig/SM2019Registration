@@ -1,4 +1,4 @@
-import { Events } from '.';
+import { Events, Event } from '.';
 
 export class Permissions {
 	static Any = 0;
@@ -32,7 +32,7 @@ export class Competition {
 		this.divisionGroups = [];
 		this.classGroups = [];
 		this.eventGroups = [];
-		this.events = [{ name: "", date: new Date() }];
+		this.events = [new Event("", new Date())];
 		this.rules = [];
 	}
 
@@ -57,7 +57,7 @@ export class Competition {
 			this.name = obj.name || this.name;
 			this.description = obj.description || this.description;
 			this.eventGroups = obj.eventGroups || this.eventGroups;
-			this.events = obj.events || this.events;
+			this.events = obj.events ? obj.events.map(e => Event.fromJson(e)) : this.events;
 			this.divisionGroups = obj.divisionGroups || this.divisionGroups;
 			this.classGroups = obj.classGroups || this.classGroups;
 			this.rules = obj.rules || this.rules;
@@ -93,7 +93,7 @@ export class Competition {
 		if (this.events.length === 1) {
 			this.events[0].name = "Deltävling 1";
 		}
-		this.events.push({ name: "Deltävling " + (this.events.length + 1), date: new Date() });
+		this.events.push(new Event("Deltävling " + (this.events.length + 1), new Date()));
 		this.setEventIds();
 	}
 

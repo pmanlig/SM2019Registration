@@ -4,16 +4,16 @@ import { ModalDialog } from './Modal';
 import { ButtonToolbar as Toolbar, Label } from './Toolbar';
 import { Dropdown } from './Dropdown';
 import { Spinner } from './Spinner';
-import { Schedule } from '../models';
 import { SquadProperties } from './SquadProperties';
 
 export class ScheduleProperties extends React.Component {
 	static register = { name: "ScheduleProperties" };
+	static wire = ["Server"];
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			slots: 8, startTime: "8:00", interval: 10, divisions: 0, mixDivisions: false, schedule: new Schedule(),
+			slots: 8, startTime: "8:00", interval: 10, divisions: 0, mixDivisions: false,
 			divisionGroups: [{ id: 0, description: "Inga vapengrupper" }]
 		};
 	}
@@ -59,13 +59,15 @@ export class ScheduleProperties extends React.Component {
 	}
 
 	addSquad() {
-		let { startTime, slots, divisions, mixDivisions, schedule, interval } = this.state;
-		schedule.addSquad(startTime, slots, divisions, mixDivisions);
+		let { startTime, slots, divisions, mixDivisions, interval } = this.state;
+		this.props.schedule.addSquad(startTime, slots, divisions, mixDivisions);
+		this.Server.updateSchedule(this.props.schedule);
 		this.setState({ startTime: this.formatTime(this.addTime(startTime, interval)) });
 	}
 
 	deleteSquad(s) {
-		this.state.schedule.deleteSquad(s);
+		this.props.schedule.deleteSquad(s);
+		this.Server.updateSchedule(this.props.schedule);
 		this.setState({});
 	}
 
@@ -96,7 +98,7 @@ export class ScheduleProperties extends React.Component {
 						</tr>
 					</thead>
 					<tbody>
-						{this.state.schedule.squads.map(s => <SquadProperties key={s.startTime} squad={s} onDelete={e => this.deleteSquad(e)} />)}
+						{this.props.schedule.squads.map(s => <SquadProperties key={s.startTime} squad={s} onDelete={e => this.deleteSquad(e)} />)}
 					</tbody>
 				</table>
 			</div>

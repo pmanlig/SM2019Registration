@@ -5,7 +5,7 @@ import { Spinner, Dropdown, Label } from '.';
 
 export class EventProperties extends React.Component {
 	static register = { name: "EventProperties" };
-	static wire = ["Competition", "ScheduleProperties"];
+	static wire = ["fire", "Events", "Competition", "ScheduleProperties", "Server"];
 
 	constructor(props) {
 		super(props);
@@ -14,6 +14,28 @@ export class EventProperties extends React.Component {
 
 	setGroup = (event, property, group) => {
 		this.Competition.updateEvent(event, property, group === -1 ? undefined : group);
+	}
+
+	showSchedule() {
+		console.log("Displaying schedule");
+		console.log(this.props.event);
+
+		let callback = s => {
+			this.props.event.schedule = s;
+			this.fire(this.Events.competitionUpdated);
+			this.setState({ showSchedule: true });
+		}
+
+		if (this.props.event.schedule === undefined) {
+			this.Server.createSchedule(callback);
+		} else {
+			let scheduleId = parseInt(this.props.event.schedule, 10);
+			if (!isNaN(scheduleId)) {
+				this.Server.loadSchedule(scheduleId, callback);
+			} else {
+				this.setState({ showSchedule: true });
+			}
+		}
 	}
 
 	render() {
@@ -29,8 +51,8 @@ export class EventProperties extends React.Component {
 				<Label text="Klasser"><Dropdown className="eventProperty" value={event.classes || -1} list={this.props.classGroups} onChange={e => this.setGroup(event, "classes", e.target.value)} /></Label>
 				<Label text="Vapengrupper"><Dropdown className="eventProperty" value={event.divisions || -1} list={this.props.divisionGroups} onChange={e => this.setGroup(event, "divisions", e.target.value)} /></Label>
 				<Label text="Max starter" align="center"><Spinner className="eventProperty" value={event.maxRegistrations || 1} onChange={value => this.Competition.updateEvent(event, "maxRegistrations", Math.max(1, value))} /></Label>
-				<Label text="Skjutlag/patruller" align="center"><button className="eventProperty button" onClick={e => this.setState({ showSchedule: true })}>{event.schedule || "Skapa"}</button></Label>
-				{this.state.showSchedule && <this.ScheduleProperties divisionGroups={this.props.divisionGroups} onClose={e => this.setState({ showSchedule: false })} />}
+				<Label text="Skjutlag/patruller" align="center"><button className="eventProperty button" onClick={e => this.showSchedule()}>{event.schedule ? "Redigera" : "Skapa"}</button></Label>
+				{this.state.showSchedule && <this.ScheduleProperties divisionGroups={this.props.divisionGroups} schedule={event.schedule} onClose={e => this.setState({ showSchedule: false })} />}
 			</div>
 		</div>;
 	}

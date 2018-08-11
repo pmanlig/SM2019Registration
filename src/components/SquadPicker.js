@@ -1,13 +1,13 @@
 import React from 'react';
 
-export class Schedule extends React.Component {
-	static register = { name: "Schedule" };
+export class SquadPicker extends React.Component {
+	static register = { name: "SquadPicker" };
 	static wire = ["Server", "Competition"];
 
 	constructor(props) {
 		super(props);
 		this.state = { schedule: {} };
-		this.Server.loadSchedule(this.Competition.id, this.props.id, json => this.setState({ schedule: json }));
+		this.Server.loadSchedule(this.props.id, json => this.setState({ schedule: json }));
 	}
 
 	squadStatus(squad) {

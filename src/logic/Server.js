@@ -1,6 +1,6 @@
 export class Server {
 	static register = { name: "Server", createInstance: true };
-	static wire = ["Busy"];
+	static wire = ["Busy", "Storage", "ScheduleService"];
 	static baseUrl = 'https://dev.bitnux.com/sm2019';
 
 	jsonFile(name) {
@@ -49,12 +49,27 @@ export class Server {
 			`${Server.baseUrl}/result/${competitionId}`, callback);
 	}
 
-	loadSchedule(competitionId, scheduleId, callback) {
-		console.log("Loading schedule for competition " + competitionId);
+	createSchedule(callback) {
+		console.log("Creating schedule");
+		// ToDo: connect to real service instead
+		this.ScheduleService.createNewSchedule(callback);
+	}
+
+	loadSchedule(scheduleId, callback) {
+		console.log("Loading schedule  " + scheduleId);
+		// ToDo: connect to real service instead
+		this.ScheduleService.getSchedule(scheduleId, callback);
+		/*
 		let numId = parseInt(competitionId, 10);
 		this.load(isNaN(numId) ?
 			this.jsonFile(`${competitionId}_schedule`) :
 			`${Server.baseUrl}/schedule/${scheduleId}`, callback);
+			*/
+	}
+
+	updateSchedule(schedule) {
+		console.log("Updating schedule");
+		this.ScheduleService.updateSchedule(schedule);
 	}
 
 	loadClassGroups(callback) {

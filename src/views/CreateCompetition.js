@@ -2,6 +2,7 @@ import "./CreateCompetition.css";
 import React from 'react';
 import { StorageKeys } from '../logic';
 import { withEvents } from '../logic';
+import { Schedule } from "../models";
 
 export class CreateCompetition extends React.Component {
 	static register = { name: "CreateCompetition" };
@@ -15,7 +16,12 @@ export class CreateCompetition extends React.Component {
 
 			// deserialize date strings
 			if (data.events) {
-				data.events.forEach(e => e.date = new Date(e.date));
+				data.events.forEach(e => {
+					e.date = new Date(e.date);
+					if (e.schedule) {
+						e.schedule = Schedule.fromJson(e.schedule);
+					}
+				});
 			}
 
 			// handle old format

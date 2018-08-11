@@ -6,6 +6,7 @@ export class StorageKeys {
 	static newCompetition = "newCompetition";
 	static tokens = "tokens";
 	static results = "results";
+	static schedules = "schedules";
 }
 
 export class Storage {
