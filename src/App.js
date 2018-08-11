@@ -15,7 +15,7 @@ export class App extends React.Component {
 		if (this.Storage.get("allowStorage") === undefined) {
 			this.Footers.addCustomFooter(<this.StoreQuestion key="cookieAlert" storage={this.Storage} />);
 		}
-		console.log(`Public URL: ${process.env.PUBLIC_URL}`);
+		// console.log(`Public URL: ${process.env.PUBLIC_URL}`);
 		return (
 			<BrowserRouter basename={`${process.env.PUBLIC_URL}`}>
 				<div className="App">

@@ -4,7 +4,7 @@ import { ModalDialog } from './Modal';
 import { ButtonToolbar as Toolbar, Label } from './Toolbar';
 import { Dropdown } from './Dropdown';
 import { Spinner } from './Spinner';
-import { Schedule, Squad } from '../models';
+import { Schedule } from '../models';
 import { SquadProperties } from './SquadProperties';
 
 export class ScheduleProperties extends React.Component {
@@ -60,9 +60,13 @@ export class ScheduleProperties extends React.Component {
 
 	addSquad() {
 		let { startTime, slots, divisions, mixDivisions, schedule, interval } = this.state;
-		schedule.addSquad(new Squad(startTime, slots, divisions, mixDivisions));
+		schedule.addSquad(startTime, slots, divisions, mixDivisions);
 		this.setState({ startTime: this.formatTime(this.addTime(startTime, interval)) });
-		console.log(schedule);
+	}
+
+	deleteSquad(s) {
+		this.state.schedule.deleteSquad(s);
+		this.setState({});
 	}
 
 	render() {
@@ -92,7 +96,7 @@ export class ScheduleProperties extends React.Component {
 						</tr>
 					</thead>
 					<tbody>
-						{this.state.schedule.squads.map(s => <SquadProperties key={s.startTime} squad={s} />)}
+						{this.state.schedule.squads.map(s => <SquadProperties key={s.startTime} squad={s} onDelete={e => this.deleteSquad(e)} />)}
 					</tbody>
 				</table>
 			</div>

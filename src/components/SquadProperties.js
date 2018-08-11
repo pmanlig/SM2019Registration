@@ -7,8 +7,8 @@ export class SquadProperties extends React.Component {
 			<td>{startTime}</td>
 			<td>{slots}</td>
 			<td>{divisions}</td>
-			<td><input type="checkbox" value={mixDivisions} /></td>
-			<td><button className="button-close small red" /></td>
+			<td><input type="checkbox" value={mixDivisions} onChange={e => { mixDivisions = e.target.value; this.setState({}) }} /></td>
+			<td><button className="button-close small red" onClick={e => this.props.onDelete(this.props.squad)} /></td>
 			<td></td>
 		</tr>;
 	}
