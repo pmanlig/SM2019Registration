@@ -19,4 +19,17 @@ export class Event {
 		nE.maxRegistrations = e.maxRegistrations;
 		return nE;
 	}
+
+	// Necessary to avoid storing objects
+	toJson() {
+		return {
+			name: this.name,
+			date: this.date,
+			id: this.id,
+			classes: this.classes,
+			divisions: this.divisions,
+			schedule: this.schedule && this.schedule.id ? this.schedule.id : this.schedule,
+			maxRegistrations: this.maxRegistrations
+		};
+	}
 }

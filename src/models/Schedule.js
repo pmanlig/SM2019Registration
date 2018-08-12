@@ -21,12 +21,16 @@ export class Schedule {
 		schedule.squads = s.squads;
 		return schedule;
 	}
-	
+
 	addSquad(startTime, slots, divisions, mixed) {
 		this.squads.push(new Squad(startTime, slots, divisions, mixed, this.squadId++));
 	}
 
 	deleteSquad(squad) {
 		this.squads = this.squads.filter(s => s.id !== squad.id);
+	}
+
+	updateSquadProperty(squadId, property, value) {
+		this.squads.forEach(s => { if (s.id === squadId) { s[property] = value; } });
 	}
 }

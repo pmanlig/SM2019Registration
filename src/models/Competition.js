@@ -72,7 +72,7 @@ export class Competition {
 		return JSON.stringify({
 			name: this.name,
 			description: this.description,
-			events: this.events,
+			events: this.events.map(e => e.toJson()),
 		});
 	}
 

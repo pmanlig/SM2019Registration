@@ -58,17 +58,22 @@ export class ScheduleProperties extends React.Component {
 		return parseInt(hrs, 10) * 60 + parseInt(mins, 10) + parseInt(interval, 10);
 	}
 
-	addSquad() {
+	addSquad = () => {
 		let { startTime, slots, divisions, mixDivisions, interval } = this.state;
 		this.props.schedule.addSquad(startTime, slots, divisions, mixDivisions);
 		this.Server.updateSchedule(this.props.schedule);
 		this.setState({ startTime: this.formatTime(this.addTime(startTime, interval)) });
 	}
 
-	deleteSquad(s) {
+	deleteSquad = (s) => {
 		this.props.schedule.deleteSquad(s);
 		this.Server.updateSchedule(this.props.schedule);
 		this.setState({});
+	}
+
+	updateSquadProperty = (id, property, value) => {
+		this.props.schedule.updateSquadProperty(id, property, value);
+		this.Server.updateSchedule(this.props.schedule);
 	}
 
 	render() {
@@ -83,7 +88,7 @@ export class ScheduleProperties extends React.Component {
 				<Label text="Vapengrupper"><Dropdown className="schedule-property" value={this.state.divisions} list={this.props.divisionGroups || this.state.divisionGroups} /></Label>
 				<Label text="Blanda" align="center"><input type="checkbox" value={this.state.mixDivisions} onChange={e => this.setState({ mixDivisions: e.target.value })} /></Label>
 				<Label text="Tid till nästa" align="center"><input className="schedule-property" value={this.state.interval} onChange={this.updateInterval} /></Label>
-				<Label text="Lägg till" align="center"><button className="button-add green" onClick={e => this.addSquad()} /></Label>
+				<Label text="Lägg till" align="center"><button className="button-add green" onClick={this.addSquad} /></Label>
 			</Toolbar>
 			<div className="schedule-table">
 				<table>
@@ -98,7 +103,7 @@ export class ScheduleProperties extends React.Component {
 						</tr>
 					</thead>
 					<tbody>
-						{this.props.schedule.squads.map(s => <SquadProperties key={s.startTime} squad={s} onDelete={e => this.deleteSquad(e)} />)}
+						{this.props.schedule.squads.map(s => <SquadProperties key={s.id} squad={s} onUpdate={this.updateSquadProperty} onDelete={this.deleteSquad} />)}
 					</tbody>
 				</table>
 			</div>

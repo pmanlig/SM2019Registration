@@ -1,12 +1,11 @@
 import './CompetitionProperties.css';
 import React from 'react';
-import { Events, withEvents } from '../logic';
 import { Status } from '../models';
 import { Dropdown } from '.';
 
-export const CompetitionProperties = withEvents(class CompetitionProperties extends React.Component {
+export class CompetitionProperties extends React.Component {
 	static register = { name: "CompetitionProperties" };
-	static wire = ["Server", "Competition", "EventProperties"]
+	static wire = ["Server", "Competition", "EventProperties", "EventBus", "Events"]
 
 	constructor(props) {
 		super(props);
@@ -14,9 +13,10 @@ export const CompetitionProperties = withEvents(class CompetitionProperties exte
 			classGroups: [{ id: -1, description: "Ingen klassindelning" }],
 			divisionGroups: [{ id: -1, description: "Inget val av vapengrupp" }]
 		};
+		this.EventBus.manageEvents(this);
 		this.Server.loadClassGroups(list => this.setState({ classGroups: this.state.classGroups.concat(list) }));
 		this.Server.loadDivisionGroups(list => this.setState({ divisionGroups: this.state.divisionGroups.concat(list) }));
-		this.subscribe(Events.competitionUpdated, () => this.setState({}));
+		this.subscribe(this.Events.competitionUpdated, () => this.setState({}));
 	}
 
 	render() {
@@ -51,4 +51,4 @@ export const CompetitionProperties = withEvents(class CompetitionProperties exte
 			{this.Competition.events.map(e => <this.EventProperties key={e.id || "junk"} event={e} classGroups={classGroups} divisionGroups={divisionGroups} />)}
 		</div>;
 	}
-});
+}

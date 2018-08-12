@@ -1,8 +1,7 @@
 import "./CreateCompetition.css";
 import React from 'react';
 import { StorageKeys } from '../logic';
-import { withEvents } from '../logic';
-import { Schedule } from "../models";
+import { Event } from "../models";
 
 export class CreateCompetition extends React.Component {
 	static register = { name: "CreateCompetition" };
@@ -14,22 +13,24 @@ export class CreateCompetition extends React.Component {
 		if (data) {
 			data = JSON.parse(data);
 
-			// deserialize date strings
 			if (data.events) {
+				// patch to compendate for debug service
 				data.events.forEach(e => {
-					e.date = new Date(e.date);
-					if (e.schedule) {
-						e.schedule = Schedule.fromJson(e.schedule);
+					if (e.schedule && e.schedule.id) {
+						e.schedule = e.schedule.id;
 					}
 				});
+
+				// deserialize date strings
+				data.events.map(e => Event.fromJson(e));
 			}
 
 			// handle old format
 			if (data.event && data.events.length === 0) {
-				data.events.push({ name: data.event.name, date: new Date(data.event.date) });
+				data.events.push(new Event(data.event.name, new Date(data.event.date)));
 			}
 			if (data.events.length === 0) {
-				data.events.push({ name: "", date: new Date() });
+				data.events.push(new Event("", new Date()));
 			}
 		}
 		this.EventBus.manageEvents(this);
@@ -58,5 +59,3 @@ export class CreateCompetition extends React.Component {
 		</this.WithLogin>;
 	}
 }
-
-export const CreateCompetitionWithEvents = withEvents(CreateCompetition);

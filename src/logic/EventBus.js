@@ -1,4 +1,3 @@
-import React from 'react';
 import { Subject } from 'rxjs';
 
 export class Events {
@@ -82,42 +81,5 @@ export class EventBus {
 
 	fire(event, ...params) {
 		this.bus.next({ ev: event, params });
-	}
-}
-
-export function withEvents(BaseComponent) {
-	return class withEvents extends React.Component {
-		static register = BaseComponent.register ? { ...BaseComponent.register, name: BaseComponent.register.name || BaseComponent.name } : BaseComponent.register;
-		static wire = ["EventBus", BaseComponent];
-
-		handlers = [];
-
-		subscribe(e, h) {
-			this.handlers.push({
-				event: e,
-				handler: h,
-				subscription: null
-			});
-		}
-
-		componentDidMount() {
-			this.handlers.forEach(h => {
-				h.subscription = this.EventBus.subscribe(h.event, h.handler);
-			});
-		}
-
-		componentWillUnmount() {
-			this.handlers.forEach(h => {
-				if (h.subscription !== null) {
-					h.subscription.unsubscribe();
-					h.subscription = null;
-				}
-			});
-		}
-
-		render() {
-			BaseComponent.prototype.subscribe = this.subscribe.bind(this);
-			return <BaseComponent	{...this.props} />;
-		}
 	}
 }
