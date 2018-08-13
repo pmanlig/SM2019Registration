@@ -74,12 +74,17 @@
 }
 
 .schedule-property {
-	box-sizing: border-box;
-	min-height: 22px;
-	text-align: center;
-	margin: auto 0;
+	margin: auto;
 }
 
 input.schedule-property {
+	box-sizing: border-box;
+	min-height: 22px;
+	text-align: center;
 	width: 4em;
+}
+
+/* Necessary for specitivity... */
+button.schedule-property {
+	margin: auto;
 }
