@@ -6,12 +6,14 @@ export class DebugScheduleService {
 	static wire = ["Storage"];
 
 	initialize() {
-		console.log("Initialized Schedule Service");
 		this.schedules = this.Storage.get(StorageKeys.schedules) || [];
 		this.schedules = this.schedules.filter(l => l.id !== undefined).map(s => Schedule.fromJson(s));
 		this.id = 1;
 		this.schedules.forEach(s => { if (s.id >= this.id) { this.id = s.id + 1; } });
-		console.log(this);
+		if (window._debug) {
+			console.log("Initialized Schedule Service");
+			console.log(this);
+		}
 	}
 
 	createNewSchedule(callback) {
@@ -19,7 +21,6 @@ export class DebugScheduleService {
 		newSchedule.id = this.id++;
 		this.schedules.push(newSchedule);
 		this.Storage.set(StorageKeys.schedules, this.schedules);
-		console.log(newSchedule);
 		callback(newSchedule);
 	}
 
@@ -28,8 +29,6 @@ export class DebugScheduleService {
 	}
 
 	updateSchedule(schedule) {
-		console.log(schedule);
-		console.log(this.schedules);
 		this.schedules = this.schedules.map(s => s.id === schedule.id ? schedule : s);
 		this.Storage.set(StorageKeys.schedules, this.schedules);
 	}

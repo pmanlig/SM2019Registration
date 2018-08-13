@@ -84,7 +84,7 @@ export class ScheduleProperties extends React.Component {
 						onChange={e => this.updateStartTime(e.target.value)}
 						onBlur={e => this.blurStartTime(e.target.value)} />
 				</Label>
-				<Label text="Platser" align="center"><Spinner value={this.state.slots} onChange={this.updateSlots} /></Label>
+				<Label text="Platser" align="center"><Spinner className="schedule-property" value={this.state.slots} onChange={this.updateSlots} /></Label>
 				<Label text="Vapengrupper"><Dropdown className="schedule-property" value={this.state.divisions} list={this.props.divisionGroups || this.state.divisionGroups} /></Label>
 				<Label text="Blanda" align="center"><input type="checkbox" value={this.state.mixDivisions} onChange={e => this.setState({ mixDivisions: e.target.value })} /></Label>
 				<Label text="Tid till nästa" align="center"><input className="schedule-property" value={this.state.interval} onChange={this.updateInterval} /></Label>

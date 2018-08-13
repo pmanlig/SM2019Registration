@@ -9,6 +9,8 @@ import * as logic from './logic';
 import * as views from './views';
 import { App } from './App';
 
+window._debug = true;
+
 var injector = new AutoInjector();
 
 injector.registerModule(components);

@@ -9,11 +9,11 @@ export class Server {
 
 	load(url, callback) {
 		this.Busy.setBusy(this, true);
-		console.log("Fetching URL " + url);
+		if (window._debug) { console.log("Fetching URL " + url); }
 		fetch(url)
 			.then(result => result.json())
 			.then(json => {
-				console.log(json);
+				if (window._debug) { console.log(json); }
 				callback(json);
 				this.Busy.setBusy(this, false);
 			})
@@ -56,7 +56,6 @@ export class Server {
 	}
 
 	loadSchedule(scheduleId, callback) {
-		console.log("Loading schedule  " + scheduleId);
 		// ToDo: connect to real service instead
 		this.ScheduleService.getSchedule(scheduleId, callback);
 		/*
@@ -68,7 +67,6 @@ export class Server {
 	}
 
 	updateSchedule(schedule) {
-		console.log("Updating schedule");
 		this.ScheduleService.updateSchedule(schedule);
 	}
 

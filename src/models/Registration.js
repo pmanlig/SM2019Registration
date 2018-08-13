@@ -53,7 +53,6 @@ export class Registration {
 	}
 
 	addParticipant(p) {
-		console.log("Adding new participant");
 		if (p !== undefined && this.participants.find(f => f.competitionId === p.competitionId) !== undefined) {
 			this.fire(this.Events.addFooter, "Deltagaren finns redan!");
 			return;
@@ -67,7 +66,6 @@ export class Registration {
 	}
 
 	deleteParticipant(id) {
-		console.log("Deleting participant #" + id);
 		this.participants = this.participants.filter(p => { return p.id !== id; });
 		this.fire(this.Events.registrationUpdated, this);
 	}
@@ -121,11 +119,12 @@ export class Registration {
 	}
 
 	sendRegistration() {
+		if (window._debug) { console.log("Sending registration"); }
 		this.Registry.storeCompetitors(this.participants);
 		this.Storage.set("Contact", this.contact);
 		this.Server.sendRegistration(this)
 			.then(res => {
-				console.log(res.token);
+				if (window._debug) { console.log(res.token); }
 				this.token = res.token;
 				let tokens = this.Storage.get(StorageKeys.tokens) || this.Storage.get("Tokens") || [];
 				tokens[this.Competition.id] = res.token;
@@ -134,7 +133,7 @@ export class Registration {
 				this.fire(this.Events.registrationUpdated, this);
 			})
 			.catch(error => {
-				console.log(error);
+				if (window._debug) { console.log(error); }
 				this.Footers.addFooter(`Registreringen misslyckades! (${error})`);
 			});
 	}

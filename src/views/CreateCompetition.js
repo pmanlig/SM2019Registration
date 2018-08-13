@@ -43,6 +43,7 @@ export class CreateCompetition extends React.Component {
 	createCompetition = () => {
 		// ToDo: create & blank
 		// this.inject(Components.Storage).set(StorageKeys.newCompetition, JSON.stringify(this.inject(Components.Competition)));
+		console.log("Service should be called here to create competition");
 		console.log(this.Competition);
 	}
 
