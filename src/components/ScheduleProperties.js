@@ -76,8 +76,11 @@ export class ScheduleProperties extends React.Component {
 	}
 
 	render() {
-		let rowWidth = (3+15.5 + (this.props.divisions ? 3.5 * this.props.divisions.divisions.length : 0)) + "em";
-		// rowWidth = "572px";
+		let rowWidth = 15.0;
+		if (this.props.divisions) {
+			this.props.divisions.divisions.forEach(d => rowWidth += d.length + 0.5);
+		}
+		rowWidth = rowWidth + "em";
 		console.log(rowWidth);
 		return <ModalDialog className="schedule-properties" title="Skjutlag/patruller" onClose={this.props.onClose}>
 			<Toolbar className="schedule-tools">
@@ -98,7 +101,10 @@ export class ScheduleProperties extends React.Component {
 						<tr>
 							<th className="schedule-start-time">Tid</th>
 							<th className="schedule-slots">Platser</th>
-							{this.props.divisions && this.props.divisions.divisions.map(d => <th key={d} className="schedule-division">{d}</th>)}
+							{this.props.divisions && this.props.divisions.divisions.map(d => {
+								let w = (d.length + 0.5) + "em";
+								return <th key={d} className="schedule-division" style={{ minWidth: w, maxWidth: w, width: w }}>{d}</th>
+							})}
 							<th className="schedule-mix">Blanda</th>
 							<th className="schedule-delete"></th>
 							<th className="schedule-pad"></th>
