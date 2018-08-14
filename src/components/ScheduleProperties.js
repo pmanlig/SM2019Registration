@@ -2,7 +2,6 @@ import './ScheduleProperties.css';
 import React from 'react';
 import { ModalDialog } from './Modal';
 import { ButtonToolbar as Toolbar, Label } from './Toolbar';
-import { Dropdown } from './Dropdown';
 import { Spinner } from './Spinner';
 import { SquadProperties } from './SquadProperties';
 
@@ -77,7 +76,8 @@ export class ScheduleProperties extends React.Component {
 	}
 
 	render() {
-		return <ModalDialog title="Skjutlag/patruller" onClose={this.props.onClose}>
+		console.log(this.props.divisions);
+		return <ModalDialog className="schedule-properties" title="Skjutlag/patruller" onClose={this.props.onClose}>
 			<Toolbar className="schedule-tools">
 				<Label text="Starttid">
 					<input className="schedule-property" value={this.state.startTime} size="5"
@@ -85,7 +85,7 @@ export class ScheduleProperties extends React.Component {
 						onBlur={e => this.blurStartTime(e.target.value)} />
 				</Label>
 				<Label text="Platser" align="center"><Spinner className="schedule-property" value={this.state.slots} onChange={this.updateSlots} /></Label>
-				<Label text="Vapengrupper"><Dropdown className="schedule-property" value={this.state.divisions} list={this.props.divisionGroups || this.state.divisionGroups} /></Label>
+				{this.props.divisions && this.props.divisions.divisions.map(d => <Label text={d} align="center"> <input type="checkbox" /></Label>)}
 				<Label text="Blanda" align="center"><input type="checkbox" value={this.state.mixDivisions} onChange={e => this.setState({ mixDivisions: e.target.value })} /></Label>
 				<Label text="Tid till nästa" align="center"><input className="schedule-property" value={this.state.interval} onChange={this.updateInterval} /></Label>
 				<Label text="Lägg till" align="center"><button className="button-add green schedule-property" onClick={this.addSquad} /></Label>
@@ -94,12 +94,12 @@ export class ScheduleProperties extends React.Component {
 				<table>
 					<thead>
 						<tr>
-							<th>Tid</th>
-							<th>Platser</th>
-							<th>Vapengrupper</th>
-							<th>Blanda</th>
-							<th></th>
-							<th></th>
+							<th className="schedule-start-time">Tid</th>
+							<th className="schedule-slots">Platser</th>
+							{this.props.divisions && this.props.divisions.divisions.map(d => <th className="schedule-division">{d}</th>)}
+							<th className="schedule-mix">Blanda</th>
+							<th className="schedule-delete"></th>
+							<th className="schedule-pad"></th>
 						</tr>
 					</thead>
 					<tbody>

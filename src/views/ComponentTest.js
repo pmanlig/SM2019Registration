@@ -1,4 +1,19 @@
 import React from 'react';
+import { Schedule } from '../models';
+
+let divisionGroups = [
+	{
+		id: 1,
+		description: "SPSF Precision",
+		divisions: ["A", "B", "C"]
+	},
+	{
+		id: 2,
+		description: "SPSF Fält",
+		divisions: ["A", "B", "C", "R", "A+R"]
+	}
+];
+let schedule = new Schedule();
 
 export class ComponentTest extends React.Component {
 	static wire = ["ScheduleProperties"];
@@ -50,7 +65,7 @@ export class ComponentTest extends React.Component {
 			<button className="button button-up x-large" />
 			<button className="button button-left x-large" />
 			<button className="button button-right x-large" />
-			{this.state.showDialog && <this.ScheduleProperties onClose={e => this.setState({ showDialog: false })} />}
+			{this.state.showDialog && <this.ScheduleProperties schedule={schedule} divisions={divisionGroups[0]} onClose={e => this.setState({ showDialog: false })} />}
 		</div>;
 	}
 }
