@@ -76,7 +76,9 @@ export class ScheduleProperties extends React.Component {
 	}
 
 	render() {
-		console.log(this.props.divisions);
+		let rowWidth = (3+15.5 + (this.props.divisions ? 3.5 * this.props.divisions.divisions.length : 0)) + "em";
+		// rowWidth = "572px";
+		console.log(rowWidth);
 		return <ModalDialog className="schedule-properties" title="Skjutlag/patruller" onClose={this.props.onClose}>
 			<Toolbar className="schedule-tools">
 				<Label text="Starttid">
@@ -91,7 +93,7 @@ export class ScheduleProperties extends React.Component {
 				<Label text="Lägg till" align="center"><button className="button-add green schedule-property" onClick={this.addSquad} /></Label>
 			</Toolbar>
 			<div className="schedule-table">
-				<table>
+				<table style={{ minWidth: rowWidth, maxWidth: rowWidth, width: rowWidth }}>
 					<thead>
 						<tr>
 							<th className="schedule-start-time">Tid</th>

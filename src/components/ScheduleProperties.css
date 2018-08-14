@@ -11,8 +11,8 @@
 }
 
 .schedule-table table {
+	box-sizing: border-box;
 	border: 1px solid grey;
-	width: 22.5em;
 	margin-bottom: 20px;
 }
 
@@ -27,42 +27,43 @@
 	height: 300px;
 	max-height: 300px;
 	overflow-y: auto;
-}
-
-.schedule-table tr {
-	min-width: 22.5em;
-	max-width: 22.5em;
-	width: 22.5em;
+	overflow-x: none;
 }
 
 .schedule-table .schedule-start-time {
 	min-width: 3em;
+	max-width: 3em;
 	width: 3em;
 }
 
 .schedule-table .schedule-slots {
 	min-width: 4.5em;
+	max-width: 4.5em;
 	width: 4.5em;
 }
 
 .schedule-table .schedule-division {
-	min-width: 1.5em;
-	width: 1.5em;
+	min-width: 3.5em;
+	max-width: 3.5em;
+	width: 3.5em;
 }
 
 .schedule-table .schedule-mix {
-	min-width: 3.5em;
-	width: 3.5em;
+	min-width: 4em;
+	max-width: 4em;
+	width: 4em;
 }
 
 .schedule-table .schedule-delete {
 	min-width: 2em;
+	max-width: 2em;
 	width: 2em;
 }
 
 .schedule-table .schedule-pad {
 	min-width: 0;
-	width: 2em;
+	max-width: 20px;
+	width: 20px;
 }
 
 .schedule-table th, .schedule-table td {
