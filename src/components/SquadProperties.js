@@ -7,14 +7,15 @@ export class SquadProperties extends React.Component {
 	}
 
 	render() {
-		let { startTime, slots, divisions, mixed } = this.props.squad;
+		let { startTime, slots, mixed } = this.props.squad;
+		let divisions = this.props.divisions;
 		return <tr>
-			<td>{startTime}</td>
-			<td>{slots}</td>
-			<td>{divisions}</td>
-			<td><input type="checkbox" checked={mixed} onChange={e => this.updateSquadProperty("mixed", e.target.checked)} /></td>
-			<td><button className="button-close small red" onClick={e => this.props.onDelete(this.props.squad)} /></td>
-			<td></td>
+			<td className="schedule-start-time">{startTime}</td>
+			<td className="schedule-slots">{slots}</td>
+			{divisions && divisions.divisions.map(d => <td key={d} className="schedule-division"><input type="checkbox" /></td>)}
+			<td className="schedule-mix"><input type="checkbox" checked={mixed} onChange={e => this.updateSquadProperty("mixed", e.target.checked)} /></td>
+			<td className="schedule-delete"><button className="button-close small red" onClick={e => this.props.onDelete(this.props.squad)} /></td>
+			<td className="schedule-pad"></td>
 		</tr>;
 	}
 }

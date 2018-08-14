@@ -35,32 +35,32 @@
 	width: 22.5em;
 }
 
-.schedule-table th:nth-child(1), .schedule-table td:nth-child(1) {
-	min-width: 2.5em;
-	width: 2.5em;
+.schedule-table .schedule-start-time {
+	min-width: 3em;
+	width: 3em;
 }
 
-.schedule-table th:nth-child(2), .schedule-table td:nth-child(2) {
+.schedule-table .schedule-slots {
+	min-width: 4.5em;
+	width: 4.5em;
+}
+
+.schedule-table .schedule-division {
+	min-width: 1.5em;
+	width: 1.5em;
+}
+
+.schedule-table .schedule-mix {
 	min-width: 3.5em;
 	width: 3.5em;
 }
 
-.schedule-table th:nth-child(3), .schedule-table td:nth-child(3) {
-	min-width: 7em;
-	width: 7em;
-}
-
-.schedule-table th:nth-child(4), .schedule-table td:nth-child(4) {
-	min-width: 3.5em;
-	width: 3.5em;
-}
-
-.schedule-table th:nth-child(5), .schedule-table td:nth-child(5) {
+.schedule-table .schedule-delete {
 	min-width: 2em;
 	width: 2em;
 }
 
-.schedule-table th:nth-child(6), .schedule-table td:nth-child(6) {
+.schedule-table .schedule-pad {
 	min-width: 0;
 	width: 2em;
 }

@@ -85,7 +85,7 @@ export class ScheduleProperties extends React.Component {
 						onBlur={e => this.blurStartTime(e.target.value)} />
 				</Label>
 				<Label text="Platser" align="center"><Spinner className="schedule-property" value={this.state.slots} onChange={this.updateSlots} /></Label>
-				{this.props.divisions && this.props.divisions.divisions.map(d => <Label text={d} align="center"> <input type="checkbox" /></Label>)}
+				{this.props.divisions && this.props.divisions.divisions.map(d => <Label key={d} text={d} align="center"> <input type="checkbox" /></Label>)}
 				<Label text="Blanda" align="center"><input type="checkbox" value={this.state.mixDivisions} onChange={e => this.setState({ mixDivisions: e.target.value })} /></Label>
 				<Label text="Tid till nästa" align="center"><input className="schedule-property" value={this.state.interval} onChange={this.updateInterval} /></Label>
 				<Label text="Lägg till" align="center"><button className="button-add green schedule-property" onClick={this.addSquad} /></Label>
@@ -96,14 +96,14 @@ export class ScheduleProperties extends React.Component {
 						<tr>
 							<th className="schedule-start-time">Tid</th>
 							<th className="schedule-slots">Platser</th>
-							{this.props.divisions && this.props.divisions.divisions.map(d => <th className="schedule-division">{d}</th>)}
+							{this.props.divisions && this.props.divisions.divisions.map(d => <th key={d} className="schedule-division">{d}</th>)}
 							<th className="schedule-mix">Blanda</th>
 							<th className="schedule-delete"></th>
 							<th className="schedule-pad"></th>
 						</tr>
 					</thead>
 					<tbody>
-						{this.props.schedule.squads.map(s => <SquadProperties key={s.id} squad={s} onUpdate={this.updateSquadProperty} onDelete={this.deleteSquad} />)}
+						{this.props.schedule.squads.map(s => <SquadProperties key={s.id} squad={s} divisions={this.props.divisions} onUpdate={this.updateSquadProperty} onDelete={this.deleteSquad} />)}
 					</tbody>
 				</table>
 			</div>
