@@ -6,5 +6,6 @@ export { Competition, Permissions, Status, Operations } from './Competition';
 export { Registration } from './Registration';
 export { Results } from './Results';
 export { Session } from './Session';
-export { Squad, Schedule } from './Schedule';
+export { Schedule } from './Schedule';
+export { Squad } from './Squad';
 export { Event } from './Event';

@@ -1,0 +1,13 @@
+.inplace-edit {
+	border: none;
+	margin: 0;
+	padding: 0;
+	background-color: inherit;
+	color: inherit;
+	text-align: center;
+	font-size: inherit;
+}
+
+.inplace-edit:hover {
+	background-color: rgba(0,0,0,0.1);
+}

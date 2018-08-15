@@ -1,6 +1,6 @@
 import './ParticipantPicker.css';
 import React from 'react';
-import { ModalDialog } from './Modal';
+import { ModalDialog } from '../general';
 
 export class ParticipantPicker extends React.Component {
 	static register = { name: "ParticipantPicker" };

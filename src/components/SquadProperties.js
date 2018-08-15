@@ -1,4 +1,5 @@
 import React from 'react';
+import { Time } from '../logic';
 
 export class SquadProperties extends React.Component {
 	updateSquadProperty(property, value) {
@@ -6,13 +7,39 @@ export class SquadProperties extends React.Component {
 		this.setState({});
 	}
 
+	selectDivision = d => {
+		let n = this.props.squad.divisions;
+		this.updateSquadProperty("divisions", n.includes(d) ? n.filter(x => x !== d) : n.concat([d]));
+		this.setState({});
+	}
+
+	changeSlots = n => {
+		if (n !== "" && !n.match(/^\d*$/)) { return; }
+		this.updateSquadProperty("slots", parseInt(n, 10));
+		this.setState({});
+	}
+
+	changeStartTime = t => {
+		if (!Time.canSetValue(t)) { return; }
+		this.updateSquadProperty("startTime", t);
+		this.setState({});
+	}
+
+	onTimeBlur = () => {
+		this.updateSquadProperty("startTime", new Time(this.props.squad.startTime).toString());
+		this.setState({});
+	}
+
 	render() {
 		let { startTime, slots, mixed } = this.props.squad;
+		let selectedDivisions = this.props.squad.divisions;
 		let divisions = this.props.divisions;
 		return <tr>
-			<td className="schedule-start-time">{startTime}</td>
-			<td className="schedule-slots">{slots}</td>
-			{divisions && divisions.divisions.map(d => <td key={d} className="schedule-division"><input type="checkbox" /></td>)}
+			<td className="schedule-start-time"><input className="inplace-edit schedule-start-time" value={startTime} onChange={e => this.changeStartTime(e.target.value)} onBlur={this.onTimeBlur} /></td>
+			<td className="schedule-slots"><input className="inplace-edit schedule-slots" value={slots} onChange={e => this.changeSlots(e.target.value)} /></td>
+			{divisions && divisions.divisions.map(d =>
+				<td key={d} className="schedule-division"><input type="checkbox"
+					checked={selectedDivisions.includes(d)} onChange={x => this.selectDivision(d)} /></td>)}
 			<td className="schedule-mix"><input type="checkbox" checked={mixed} onChange={e => this.updateSquadProperty("mixed", e.target.checked)} /></td>
 			<td className="schedule-delete"><button className="button-close small red" onClick={e => this.props.onDelete(this.props.squad)} /></td>
 			<td className="schedule-pad"></td>

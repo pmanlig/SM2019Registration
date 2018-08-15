@@ -1,14 +1,4 @@
-export class Squad {
-	members = [];
-
-	constructor(startTime, slots, divisions, mixed, id) {
-		this.startTime = startTime;
-		this.slots = slots;
-		this.divisions = divisions;
-		this.mixed = mixed;
-		this.id = id;
-	}
-}
+import { Squad } from '.';
 
 export class Schedule {
 	squadId = 1;
@@ -18,7 +8,7 @@ export class Schedule {
 		let schedule = new Schedule();
 		schedule.id = s.id;
 		schedule.squadId = s.squadId;
-		schedule.squads = s.squads;
+		schedule.squads = s.squads.map(s => Squad.fromJson(s));
 		return schedule;
 	}
 
