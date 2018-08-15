@@ -7,7 +7,8 @@ export class DebugScheduleService {
 
 	initialize() {
 		this.schedules = this.Storage.get(StorageKeys.schedules) || [];
-		this.schedules = this.schedules.filter(l => l.id !== undefined).map(s => Schedule.fromJson(s));
+		// ToDo: remove backwards compatibility hack?
+		this.schedules = this.schedules.filter(l => l !== undefined && l.id !== undefined).map(s => Schedule.fromJson(s));
 		this.id = 1;
 		this.schedules.forEach(s => { if (s.id >= this.id) { this.id = s.id + 1; } });
 		if (window._debug) {

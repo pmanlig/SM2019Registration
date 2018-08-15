@@ -18,5 +18,6 @@ export class Squad {
 			n.id = s.id;
 			n.members = s.members;
 		}
+		return n;
 	}
 }

@@ -38,6 +38,10 @@ export class EventProperties extends React.Component {
 	render() {
 		let { event } = this.props;
 		let onDelete = this.Competition.events.length > 1 ? e => this.Competition.removeEvent(e) : undefined;
+		if (this.state.showSchedule) {
+			console.log(event);
+		}
+
 		return <div className="event">
 			<div className="eventTitle">
 				{onDelete && <input value={event.name} size="20" onChange={e => this.Competition.updateEvent(event, "name", e.target.value)} />}
@@ -49,7 +53,7 @@ export class EventProperties extends React.Component {
 				<Label text="Vapengrupper"><Dropdown className="eventProperty" value={event.divisions || -1} list={this.props.divisionGroups} onChange={e => this.setGroup(event, "divisions", e.target.value)} /></Label>
 				<Label text="Max starter" align="center"><Spinner className="eventProperty" value={event.maxRegistrations || 1} onChange={value => this.Competition.updateEvent(event, "maxRegistrations", Math.max(1, value))} /></Label>
 				<Label text="Skjutlag/patruller" align="center"><button className="eventProperty button" onClick={this.showSchedule}>{event.schedule ? "Redigera" : "Skapa"}</button></Label>
-				{this.state.showSchedule && <this.ScheduleProperties divisions={this.props.divisionGroups.find(event.divisions)} schedule={event.schedule} onClose={e => this.setState({ showSchedule: false })} />}
+				{this.state.showSchedule && <this.ScheduleProperties divisions={this.props.divisionGroups.find(d => d.id === event.divisions)} schedule={event.schedule} onClose={e => this.setState({ showSchedule: false })} />}
 			</div>
 		</div>;
 	}
