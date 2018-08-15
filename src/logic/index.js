@@ -1,3 +1,4 @@
+export { Time } from './Time';
 export { AutoInjector } from './Injector';
 export { Events, EventBus } from './EventBus';
 export { Validation } from './Validation';

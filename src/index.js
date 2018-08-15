@@ -1,3 +1,6 @@
+import './general/Buttons.css';
+import './general/Colors.css';
+import './general/Controls.css';
 import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';

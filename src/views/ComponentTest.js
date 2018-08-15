@@ -14,6 +14,10 @@ let divisionGroups = [
 	}
 ];
 let schedule = new Schedule();
+schedule.addSquad("8:30", 20, ["A"], false);
+schedule.addSquad("9:00", 10, ["C"], false);
+schedule.addSquad("9:30", 15, ["C", "B", "A"], true);
+schedule.addSquad("10:00", 20, ["C", "B", "A"], false);
 
 export class ComponentTest extends React.Component {
 	static wire = ["ScheduleProperties"];
