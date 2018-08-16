@@ -65,8 +65,9 @@ export class ScheduleProperties extends React.Component {
 	}
 
 	render() {
-		let rowWidth = 15.0;
+		let rowWidth = 11.0;
 		if (this.props.divisions) {
+			rowWidth += 4;
 			this.props.divisions.divisions.forEach(d => rowWidth += d.length + 0.5);
 		}
 		rowWidth = rowWidth + "em";
@@ -80,7 +81,7 @@ export class ScheduleProperties extends React.Component {
 				<Label text="Platser" align="center"><Spinner className="schedule-property" value={this.state.slots} onChange={this.updateSlots} /></Label>
 				{this.props.divisions && this.props.divisions.divisions.map(d =>
 					<Label key={d} text={d} align="center"> <input type="checkbox" checked={this.state.selectedDivisions.includes(d)} onChange={e => this.selectDivision(d)} /></Label>)}
-				<Label text="Blanda" align="center"><input type="checkbox" checked={this.state.mixDivisions} onChange={e => this.setState({ mixDivisions: e.target.value })} /></Label>
+				{this.props.divisions && <Label text="Blanda" align="center"><input type="checkbox" checked={this.state.mixDivisions} onChange={e => this.setState({ mixDivisions: e.target.value })} /></Label>}
 				<Label text="Tid till nästa" align="center"><input className="schedule-property" value={this.state.interval} onChange={this.updateInterval} /></Label>
 				<Label text="Lägg till" align="center"><button className="button-add green schedule-property" onClick={this.addSquad} /></Label>
 			</Toolbar>
@@ -94,7 +95,7 @@ export class ScheduleProperties extends React.Component {
 								let w = (d.length + 0.5) + "em";
 								return <th key={d} className="schedule-division" style={{ minWidth: w, maxWidth: w, width: w }}>{d}</th>
 							})}
-							<th className="schedule-mix">Blanda</th>
+							{this.props.divisions && <th className="schedule-mix">Blanda</th>}
 							<th className="schedule-delete"></th>
 							<th className="schedule-pad"></th>
 						</tr>

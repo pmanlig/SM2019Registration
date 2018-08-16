@@ -43,7 +43,7 @@ export class SquadProperties extends React.Component {
 					<input type="checkbox" checked={selectedDivisions.includes(d)} onChange={x => this.selectDivision(d)} />
 				</td>
 			})}
-			<td className="schedule-mix"><input type="checkbox" checked={mixed} onChange={e => this.updateSquadProperty("mixed", e.target.checked)} /></td>
+			{divisions && <td className="schedule-mix"><input type="checkbox" checked={mixed} onChange={e => this.updateSquadProperty("mixed", e.target.checked)} /></td>}
 			<td className="schedule-delete"><button className="button-close small red" onClick={e => this.props.onDelete(this.props.squad)} /></td>
 			<td className="schedule-pad"></td>
 		</tr >;
