@@ -13,6 +13,7 @@ export class EventProperties extends React.Component {
 	}
 
 	setGroup = (event, property, group) => {
+		group = parseInt(group, 10);
 		this.Competition.updateEvent(event, property, group === -1 ? undefined : group);
 	}
 
@@ -38,10 +39,6 @@ export class EventProperties extends React.Component {
 	render() {
 		let { event } = this.props;
 		let onDelete = this.Competition.events.length > 1 ? e => this.Competition.removeEvent(e) : undefined;
-		if (this.state.showSchedule) {
-			console.log(event);
-		}
-
 		return <div className="event">
 			<div className="eventTitle">
 				{onDelete && <input value={event.name} size="20" onChange={e => this.Competition.updateEvent(event, "name", e.target.value)} />}
