@@ -72,7 +72,7 @@ export class Registration {
 
 	setParticipantField(id, field, value) {
 		if (field === "competitionId" && (value.length > 5 || !(/^\d*$/.test(value)))) { return; } // Add more validation rules later?
-		this.participants.forEach(p => { if (p.id === id) p[field].participate = value });
+		this.participants.forEach(p => { if (p.id === id) { p[field] = value; } });
 		this.fire(this.Events.registrationUpdated, this);
 	}
 

@@ -15,6 +15,7 @@ export class App extends React.Component {
 		}
 
 		// console.log(`Public URL: ${process.env.PUBLIC_URL}`);
+		// Necessary to use WithLogin here, otherwise title won't update correctly
 		return (
 			<BrowserRouter basename={`${process.env.PUBLIC_URL}`}>
 				<div className="App">

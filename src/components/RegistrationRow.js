@@ -77,22 +77,21 @@ export class RegistrationRow extends React.Component {
 	}
 
 	RegistrationField = ({ participant, header }) => {
-		return <td className="left" key={header.name}><input type="text" value={participant[header.field]}
+		return <td className="left"><input type="text" value={participant[header.field]}
 			placeholder={header.placeholder || header.name} style={{ width: header.width }}
 			onChange={e => this.Registration.setParticipantField(participant.id, header.field, e.target.value)}
 			size={header.size} /></td>;
 	}
 
 	ParticipantFields = ({ participant }) => {
-		return this.Competition.participantHeader().subFields.map(h => <this.RegistrationField key={h.field} participant={participant} header={h} />)
+		return this.Competition.participantHeader().subFields.map(h => <this.RegistrationField key={h.field} participant={participant} header={h} />);
 	}
 
 	render() {
-		const p = this.props.participant;
-		const myId = p.id;
-		return <tr key={myId} className={p.errors.length > 0 ? "error registration" : "registration"} >
+		let p = this.props.participant;
+		return <tr key={p.id} className={p.errors.length > 0 ? "error registration" : "registration"} >
 			<this.ParticipantFields participant={p} />
 			<this.RegistrationControls participant={p} />
-			<td><button className="button-close small deleteButton" onClick={e => this.Registration.deleteParticipant(myId)} /></td></tr>;
+			<td><button className="button-close small red" onClick={e => this.Registration.deleteParticipant(p.id)} /></td></tr>;
 	}
 }

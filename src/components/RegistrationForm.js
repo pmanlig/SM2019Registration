@@ -30,7 +30,7 @@ export class RegistrationForm extends React.Component {
 		}
 	}
 
-	RegistrationHeader(props) {
+	RegistrationHeader = props => {
 		let participantHeader = this.Competition.participantHeader();
 		const majorHeaders = [<th key="-1" className="major" colSpan={participantHeader.subFields.length}>{participantHeader.name}</th>];
 		const minorHeaders = [];
@@ -58,20 +58,17 @@ export class RegistrationForm extends React.Component {
 		);
 	}
 
-	RegistrationRows(props) {
+	RegistrationRows = props => {
 		return <tbody>{this.Registration.participants.map(
 			p => <RegistrationRow key={p.id} participant={p} {...props} />
 		)}</tbody>;
 	}
 
 	render() {
-		let RegistrationHeader = this.RegistrationHeader.bind(this);
-		let RegistrationRows = this.RegistrationRows.bind(this);
-
 		return <div id='registration' className='content'>
 			<table>
-				<RegistrationHeader />
-				<RegistrationRows />
+				<this.RegistrationHeader />
+				<this.RegistrationRows />
 			</table>
 		</div>;
 	}
