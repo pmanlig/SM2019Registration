@@ -6,13 +6,14 @@ import { ComponentTest } from './views';
 export class App extends React.Component {
 	static register = { name: "App" };
 	static wire = ["AppHeader", "BusyIndicator", "Footers", "Footer", "StoreQuestion", "Storage", "CompetitionList",
-		"LoginView", "CompetitionView", "ReportView", "CreateCompetition", "AboutView"]
+		"LoginView", "CompetitionView", "ReportView", "CreateCompetition", "AboutView", "WithLogin"]
 	static storageKey = "allowStorage";
 
 	render() {
 		if (this.Storage.get("allowStorage") === undefined) {
 			this.Footers.addCustomFooter(<this.StoreQuestion key="cookieAlert" storage={this.Storage} />);
 		}
+
 		// console.log(`Public URL: ${process.env.PUBLIC_URL}`);
 		return (
 			<BrowserRouter basename={`${process.env.PUBLIC_URL}`}>
@@ -25,7 +26,7 @@ export class App extends React.Component {
 						<Route path="/competition/:id/:operation" component={this.CompetitionView} />
 						<Route path="/competition/:id" component={this.CompetitionView} />
 						<Route path="/report/:id" component={this.ReportView} />
-						<Route path="/create" component={this.CreateCompetition} />
+						<Route path="/create" component={props => <this.WithLogin><this.CreateCompetition /></this.WithLogin>} />
 						<Route path="/about" component={this.AboutView} />
 						<Route path="/test" component={ComponentTest} />
 						<Route exact path="/" component={this.CompetitionList} />

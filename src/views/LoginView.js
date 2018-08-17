@@ -13,7 +13,7 @@ export class WithLogin extends React.Component {
 	}
 
 	render() {
-		return this.Session.user === "" ? <this.LoginControl {...this.props} /> : <div>{this.props.children}</div>;
+		return this.Session.user === "" ? <this.LoginControl {...this.props} /> : this.props.children;
 	}
 }
 

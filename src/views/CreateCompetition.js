@@ -47,16 +47,14 @@ export class CreateCompetition extends React.Component {
 		console.log(this.Competition);
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.EventBus.fire(this.Events.changeTitle, "Skapa ny tävling");
 	}
 
 	render() {
-		return <this.WithLogin>
-			<div className="content">
-				<button id="saveButton" className="button" onClick={this.createCompetition}>Skapa tävling</button>
-				<this.CompetitionProperties />
-			</div >
-		</this.WithLogin>;
+		return <div className="content">
+			<button id="saveButton" className="button" onClick={this.createCompetition}>Skapa tävling</button>
+			<this.CompetitionProperties />
+		</div >;
 	}
 }

@@ -9,11 +9,8 @@ export class LoginControl extends React.Component {
 		this.Session.login(this.user.value, this.password.value);
 	}
 
-	componentWillMount() {
-		this.EventBus.fire(this.Events.changeTitle, "Logga in");
-	}
-
 	componentDidMount() {
+		this.EventBus.fire(this.Events.changeTitle, "Logga in");
 		this.user.focus();
 	}
 
