@@ -7,7 +7,6 @@ export class App extends React.Component {
 	static register = { name: "App" };
 	static wire = ["AppHeader", "BusyIndicator", "Footers", "Footer", "StoreQuestion", "Storage", "CompetitionList",
 		"LoginView", "CompetitionView", "ReportView", "CreateCompetition", "AboutView", "WithLogin"]
-	static storageKey = "allowStorage";
 
 	render() {
 		if (this.Storage.get("allowStorage") === undefined) {

@@ -1,8 +1,8 @@
 import React from 'react';
-import { StorageKeys } from '../logic';
 
 export class StoreQuestion extends React.Component {
 	static register = { name: "StoreQuestion" };
+	static wire = ["Storage"];
 
 	constructor(props) {
 		super(props);
@@ -11,7 +11,7 @@ export class StoreQuestion extends React.Component {
 
 	hide(save) {
 		if (save) {
-			this.props.storage.set(StorageKeys.allowStorage, true);
+			this.Storage.set(this.Storage.keys.allowStorage, true);
 		}
 		this.setState({ visible: false });
 	}

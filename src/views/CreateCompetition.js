@@ -1,6 +1,5 @@
 import "./CreateCompetition.css";
 import React from 'react';
-import { StorageKeys } from '../logic';
 import { Event } from "../models";
 
 export class CreateCompetition extends React.Component {
@@ -9,7 +8,7 @@ export class CreateCompetition extends React.Component {
 
 	constructor(props) {
 		super(props);
-		let data = this.Storage.get(StorageKeys.newCompetition);
+		let data = this.Storage.get(this.Storage.keys.newCompetition);
 		if (data) {
 			data = JSON.parse(data);
 
@@ -35,14 +34,14 @@ export class CreateCompetition extends React.Component {
 		}
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.competitionUpdated, () =>
-			this.Storage.set(StorageKeys.newCompetition, this.Competition.toJson()));
+			this.Storage.set(this.Storage.keys.newCompetition, this.Competition.toJson()));
 		this.Competition.initialize();
 		this.Competition.loadFrom(data);
 	}
 
 	createCompetition = () => {
 		// ToDo: create & blank
-		// this.inject(Components.Storage).set(StorageKeys.newCompetition, JSON.stringify(this.inject(Components.Competition)));
+		// this.inject(Components.Storage).set(this.Storage.keys.newCompetition, JSON.stringify(this.inject(Components.Competition)));
 		console.log("Service should be called here to create competition");
 		console.log(this.Competition);
 	}

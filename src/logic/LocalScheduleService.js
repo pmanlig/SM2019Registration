@@ -1,12 +1,11 @@
-import { StorageKeys } from '.';
 import { Schedule } from '../models';
 
-export class DebugScheduleService {
+export class LocalScheduleService {
 	static register = { name: "ScheduleService", createInstance: true }
 	static wire = ["Storage"];
 
 	initialize() {
-		this.schedules = this.Storage.get(StorageKeys.schedules) || [];
+		this.schedules = this.Storage.get(this.Storage.keys.schedules) || [];
 		// ToDo: remove backwards compatibility hack?
 		this.schedules = this.schedules.filter(l => l !== undefined && l.id !== undefined).map(s => Schedule.fromJson(s));
 		this.id = 1;
@@ -21,7 +20,7 @@ export class DebugScheduleService {
 		let newSchedule = new Schedule();
 		newSchedule.id = this.id++;
 		this.schedules.push(newSchedule);
-		this.Storage.set(StorageKeys.schedules, this.schedules);
+		this.Storage.set(this.Storage.keys.schedules, this.schedules);
 		callback(newSchedule);
 	}
 
@@ -31,6 +30,6 @@ export class DebugScheduleService {
 
 	updateSchedule(schedule) {
 		this.schedules = this.schedules.map(s => s.id === schedule.id ? schedule : s);
-		this.Storage.set(StorageKeys.schedules, this.schedules);
+		this.Storage.set(this.Storage.keys.schedules, this.schedules);
 	}
 }

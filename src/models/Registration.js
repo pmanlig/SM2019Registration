@@ -1,4 +1,4 @@
-import { Validation, StorageKeys } from '../logic';
+import { Validation } from '../logic';
 import { Person, Participant } from '.';
 
 export class Registration {
@@ -21,7 +21,7 @@ export class Registration {
 
 	load(id, token) {
 		if (token === undefined) {
-			let tokens = this.Storage.get(StorageKeys.tokens) || this.Storage.get("Tokens") || {};
+			let tokens = this.Storage.get(this.Storage.keys.tokens) || this.Storage.get("Tokens") || {};
 			token = tokens[this.Competition.id];
 		}
 
@@ -126,9 +126,9 @@ export class Registration {
 			.then(res => {
 				if (window._debug) { console.log(res.token); }
 				this.token = res.token;
-				let tokens = this.Storage.get(StorageKeys.tokens) || this.Storage.get("Tokens") || [];
+				let tokens = this.Storage.get(this.Storage.keys.tokens) || this.Storage.get("Tokens") || [];
 				tokens[this.Competition.id] = res.token;
-				this.Storage.set(StorageKeys.tokens, tokens);
+				this.Storage.set(this.Storage.keys.tokens, tokens);
 				this.Footers.addFooter(this.countEvents() + " starter registrerade", "info");
 				this.fire(this.Events.registrationUpdated, this);
 			})

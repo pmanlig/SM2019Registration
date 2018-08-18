@@ -5,14 +5,14 @@ export class RegistrationRow extends React.Component {
 	static register = { name: "RegistrationRow" };
 	static wire = ["fire", "Competition", "Registration", "Events"];
 
-	classDropdown(participant, event, value, values, registration) {
-		return <td key="class"><Dropdown placeholder="Välj klass..." value={value} items={values} onChange={e => registration.setParticipantClass(participant, event, e.target.value)} /></td>;
+	classDropdown(participant, event, value, values) {
+		return <td key="class"><Dropdown placeholder="Välj klass..." value={value} list={values.map(v => { return { id: v, description: v } })} onChange={e => this.Registration.setParticipantClass(participant, event, e.target.value)} /></td>;
 	}
 
-	divisionDropdown(participant, event, rounds, values, registration) {
+	divisionDropdown(participant, event, rounds, values) {
 		let dropdowns = [];
 		for (let i = 0; i < rounds.length; i++) {
-			dropdowns.push(<li key={i}><Dropdown placeholder="Välj vapengrupp..." value={rounds[i].division} items={values} onChange={e => registration.setParticipantDivision(participant, event, i, e.target.value)} /></li>);
+			dropdowns.push(<li key={i}><Dropdown placeholder="Välj vapengrupp..." value={rounds[i].division} list={values.map(v => { return { id: v, description: v } })} onChange={e => this.Registration.setParticipantDivision(participant, event, i, e.target.value)} /></li>);
 		}
 		return dropdowns;
 	}
@@ -43,11 +43,11 @@ export class RegistrationRow extends React.Component {
 		const eventInfo = participant.event(event.id) || { event: event.id, rounds: [{}] };
 		let controls = [];
 		if (event.classes && this.Competition.classes(event.classes)) {
-			controls.push(this.classDropdown(participant.id, event.id, eventInfo.class, this.Competition.classes(event.classes), this.Registration));
+			controls.push(this.classDropdown(participant.id, event.id, eventInfo.class, this.Competition.classes(event.classes)));
 		}
 		if (event.divisions && this.Competition.divisions(event.divisions)) {
 			controls.push(<td key="division"><ul>
-				{this.divisionDropdown(participant.id, event.id, eventInfo.rounds, this.Competition.divisions(event.divisions), this.Registration)}
+				{this.divisionDropdown(participant.id, event.id, eventInfo.rounds, this.Competition.divisions(event.divisions))}
 			</ul></td>);
 		}
 		if (event.schedule) {

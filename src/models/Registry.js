@@ -1,12 +1,11 @@
-import { Events, Person } from '.';
+import { Person } from '.';
 
 export class Registry {
 	static register = { name: "Registry", createInstance: true };
-	static wire = ["fire", "Storage"];
+	static wire = ["fire", "Storage", "Events"];
 
 	initialize() {
-		this.Storage.registerKey(Registry.name);
-		this.competitors = this.Storage.get(Registry.name) || [];
+		this.competitors = this.Storage.get(this.Storage.registry) || [];
 	}
 
 	storeCompetitors(participants) {
@@ -16,7 +15,7 @@ export class Registry {
 				competitors.push(p);
 		});
 		this.competitors = competitors;
-		this.Storage.set(Registry.name, this.competitors);
-		this.fire(Events.registryUpdated);
+		this.Storage.set(this.Storage.registry, this.competitors);
+		this.fire(this.Events.registryUpdated);
 	}
 }

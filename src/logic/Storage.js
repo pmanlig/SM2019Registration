@@ -1,22 +1,16 @@
-export class StorageKeys {
-	static allowStorage = "allowStorage";
-	static lastContact = "lastContact";
-	static registry = "registry";
-	static Registry = "Registry";
-	static newCompetition = "newCompetition";
-	static tokens = "tokens";
-	static results = "results";
-	static schedules = "schedules";
-}
-
 export class Storage {
 	static register = { name: "Storage", createInstance: true }
 
-	keys = {};
-
-	registerKey(key) {
-		this.keys[key] = true;;
-	}
+	keys = {
+		allowStorage: "allowStorage",
+		lastContact: "lastContact",
+		registry: "registry",
+		newCompetition: "newCompetition",
+		tokens: "tokens",
+		results: "results",
+		schedules: "schedules",
+		competitions: "competitions"
+	};
 
 	set(key, value) {
 		// if (!this.keys[key]) { throw new Error("The key has not been registered! (" + key + ")"); }

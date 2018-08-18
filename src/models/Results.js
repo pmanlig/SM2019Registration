@@ -1,5 +1,3 @@
-import { StorageKeys } from "../logic";
-
 export class Results {
 	static register = { name: "Results", createInstance: true };
 	static wire = ["fire", "Competition", "Storage", "Server", "Events"];
@@ -10,7 +8,7 @@ export class Results {
 		if (window._debug) { console.log(`Loading results for ${competitionId}/${eventId}`); }
 		this.Server.loadResults(competitionId, undefined, json => {
 			this.scores = json;
-			let localScores = this.Storage.get(StorageKeys.results);
+			let localScores = this.Storage.get(this.Storage.keys.results);
 			if (localScores) {
 				localScores.forEach(ls => {
 					this.scores.forEach(s => {
@@ -52,7 +50,7 @@ export class Results {
 	}
 
 	store() {
-		this.Storage.set(StorageKeys.results, this.scores.filter(p => p.dirty));
+		this.Storage.set(this.Storage.keys.results, this.scores.filter(p => p.dirty));
 		// ToDo: implement sending results to server
 		// this.scores.forEach(p => { p.dirty = undefined; });
 		this.dirty = false;
