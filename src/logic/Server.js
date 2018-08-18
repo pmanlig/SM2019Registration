@@ -1,19 +1,28 @@
 export class Server {
 	static register = { name: "Server", createInstance: true };
-	static wire = ["Busy", "Storage", "ScheduleService"];
+	static wire = ["Busy", "Storage", "ScheduleService", "CompetitionService"];
 	static baseUrl = 'https://dev.bitnux.com/sm2019';
+
+	local = true;
 
 	jsonFile(name) {
 		return `${process.env.PUBLIC_URL}/${name}.json`;
 	}
 
+	logCallback(msg, c) {
+		if (!window._debug) { return c; }
+		return json => {
+			console.log(msg);
+			console.log(json);
+			c(json);
+		}
+	}
+
 	load(url, callback) {
 		this.Busy.setBusy(this, true);
-		if (window._debug) { console.log("Fetching URL " + url); }
 		fetch(url)
 			.then(result => result.json())
 			.then(json => {
-				if (window._debug) { console.log(json); }
 				callback(json);
 				this.Busy.setBusy(this, false);
 			})
@@ -25,39 +34,33 @@ export class Server {
 		// .finally(() => this.Busy.setBusy(Server.id, false));
 	}
 
+	loadCompetitionList(callback) {
+		this.load(Server.baseUrl + '/competition', this.logCallback("Loading competition list", callback));
+	}
+
 	loadCompetition(competitionId, callback) {
-		console.log("Loading competition data");
-		let numId = parseInt(competitionId, 10);
-		this.load(isNaN(numId) ?
-			this.jsonFile(competitionId) :
-			`${Server.baseUrl}/competition/${competitionId}`, callback);
+		this.load(isNaN(parseInt(competitionId, 10)) ? this.jsonFile(competitionId) : `${Server.baseUrl}/competition/${competitionId}`,
+			this.logCallback("Loading competition data", callback));
 	}
 
 	loadRegistration(competitionId, token, callback) {
-		console.log("Loading competition registration data for competition " + competitionId);
-		let numId = parseInt(competitionId, 10);
-		this.load(isNaN(numId) ?
-			this.jsonFile(`${competitionId}_token`) :
-			`${Server.baseUrl}/competition/${competitionId}/${token}`, callback);
+		this.load(isNaN(parseInt(competitionId, 10)) ? this.jsonFile(`${competitionId}_token`) : `${Server.baseUrl}/competition/${competitionId}/${token}`,
+			this.logCallback("Loading competition registration data for competition " + competitionId, callback));
 	}
 
 	loadResults(competitionId, eventId, callback) {
-		console.log("Loading competition results for competition " + competitionId);
-		let numId = parseInt(competitionId, 10);
-		this.load(isNaN(numId) ?
-			this.jsonFile(`${competitionId}_result`) :
-			`${Server.baseUrl}/result/${competitionId}`, callback);
+		this.load(isNaN(parseInt(competitionId, 10)) ? this.jsonFile(`${competitionId}_result`) : `${Server.baseUrl}/result/${competitionId}`,
+			this.logCallback("Loading competition results for competition " + competitionId, callback));
 	}
 
 	createSchedule(callback) {
-		console.log("Creating schedule");
 		// ToDo: connect to real service instead
-		this.ScheduleService.createNewSchedule(callback);
+		this.ScheduleService.createNewSchedule(this.logCallback("Creating schedule", callback));
 	}
 
 	loadSchedule(scheduleId, callback) {
 		// ToDo: connect to real service instead
-		this.ScheduleService.getSchedule(scheduleId, callback);
+		this.ScheduleService.getSchedule(scheduleId, this.logCallback("Loading schedule", callback));
 		/*
 		let numId = parseInt(competitionId, 10);
 		this.load(isNaN(numId) ?
@@ -67,6 +70,7 @@ export class Server {
 	}
 
 	updateSchedule(schedule) {
+		// ToDo: connect to real service instead
 		this.ScheduleService.updateSchedule(schedule);
 	}
 

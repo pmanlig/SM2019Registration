@@ -24,7 +24,7 @@ const initialCompetitions = [
 
 export class CompetitionList extends React.Component {
 	static register = { name: "CompetitionList" };
-	static wire = ["Session", "Storage", "EventBus", "Events"];
+	static wire = ["Server", "Session", "Storage", "EventBus", "Events"];
 
 	constructor(props) {
 		super(props);
@@ -32,17 +32,11 @@ export class CompetitionList extends React.Component {
 		this.EventBus.manageEvents(this);
 		// ToDo: needs to handle subscribe in componentDidMount / componentWillUnmount
 		this.subscribe(this.Events.userChanged, () => this.loadCompetitions());
-		this.loadCompetitions();
+		this.Server.loadCompetitionList(json => this.setState({ competitions: initialCompetitions.concat(json.map(c => { return { permissions: Permissions.Any, ...c, status: Status.Open }; })) }));
 	}
 
 	componentWillMount() {
 		this.EventBus.fire(this.Events.changeTitle, "Anmälningssytem Gävle PK");
-	}
-
-	loadCompetitions() {
-		fetch('https://dev.bitnux.com/sm2019/competition')
-			.then(result => result.json())
-			.then(json => this.setState({ competitions: initialCompetitions.concat(json.map(c => { return { permissions: Permissions.Any, ...c, status: Status.Open }; })) }));
 	}
 
 	getToken(c) {

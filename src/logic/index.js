@@ -6,3 +6,4 @@ export { Server } from './Server';
 export { Storage } from './Storage';
 export { setCookie, getCookie, deleteCookie } from './Cookies';
 export { LocalScheduleService } from './LocalScheduleService';
+export { LocalCompetitionService } from './LocalCompetitionService';
