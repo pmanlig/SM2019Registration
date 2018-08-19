@@ -35,7 +35,11 @@ export class Server {
 	}
 
 	loadCompetitionList(callback) {
-		this.load(Server.baseUrl + '/competition', this.logCallback("Loading competition list", callback));
+		if (this.local) {
+			this.CompetitionService.loadCompetitions(this.logCallback("Loading competition list", callback));
+		} else {
+			this.load(Server.baseUrl + '/competition', this.logCallback("Loading competition list", callback));
+		}
 	}
 
 	loadCompetition(competitionId, callback) {
