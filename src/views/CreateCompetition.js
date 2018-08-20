@@ -4,7 +4,7 @@ import { Event } from "../models";
 
 export class CreateCompetition extends React.Component {
 	static register = { name: "CreateCompetition" };
-	static wire = ["Storage", "Competition", "CompetitionProperties", "WithLogin", "EventBus", "Events"];
+	static wire = ["Storage", "Competition", "CompetitionProperties", "WithLogin", "EventBus", "Events", "Server"];
 
 	constructor(props) {
 		super(props);
@@ -40,10 +40,8 @@ export class CreateCompetition extends React.Component {
 	}
 
 	createCompetition = () => {
-		// ToDo: create & blank
-		// this.inject(Components.Storage).set(this.Storage.keys.newCompetition, JSON.stringify(this.inject(Components.Competition)));
-		console.log("Service should be called here to create competition");
-		console.log(this.Competition);
+		// ToDo: blank & redirect
+		this.Server.createCompetition(this.Competition.toJson(), id => { });
 	}
 
 	componentDidMount() {

@@ -1,25 +1,43 @@
+import { Permissions } from '../models';
+
 export class LocalCompetitionService {
 	static register = { name: "CompetitionService", createInstance: true }
-	static wire = ["Storage"];
+	static wire = ["Storage", "Session"];
 
 	competitionId = 1;
 	competitions = [];
 
 	initialize() {
 		let competitionData = this.Storage.get(this.Storage.keys.competitions) || {};
-		this.competitions = competitionData.list || [];
+		this.competitions = competitionData.competitions || [];
 		this.competitionId = competitionData.id || 1;
 	}
 
-	loadCompetitions(callback) {
+	store() {
+		this.Storage.set(this.Storage.keys.competitions, { competitions: this.competitions, id: this.competitionId });
+	}
+
+	loadCompetitionList(callback) {
 		callback(this.competitions);
 	}
 
+	loadCompetition(id, callback) {
+		let competition = this.competitions.find(c => c.id.toString() === id);
+		if (competition) {
+			competition = {
+				...competition,
+				permissions: competition.creator === this.Session.user ? Permissions.Own : Permissions.Any,
+				id: competition.id.toString()
+			}
+		}
+		callback(competition);
+	}
+
 	createCompetition(competition, callback) {
-		let data = competition.toJson();
-		data.id = this.competitionId++;
-		this.competitions.push(data);
-		this.Storage.set(this.Storage.keys.competitions, { competitions: this.competitions, id: this.competitionId });
-		callback(data.id);
+		competition.id = this.competitionId++;
+		competition.creator = this.Session.user;
+		this.competitions.push(competition);
+		this.store();
+		callback(competition.id);
 	}
 }

@@ -3,10 +3,23 @@ export class Server {
 	static wire = ["fire", "Events", "Busy", "Storage", "ScheduleService", "CompetitionService"];
 	static baseUrl = 'https://dev.bitnux.com/sm2019';
 
-	local = true;
+	initialize() {
+		// ToDo: Change to false in production code
+		this.setLocal(true);
+	}
 
 	setLocal(on) {
 		this.local = on;
+		if (this.local) {
+			this.competitionService = this.CompetitionService;
+			this.scheduleService = this.ScheduleService;
+		} else {
+			this.competitionService = {
+				loadCompetitionList: (callback) => { this.load(`${Server.baseUrl}/competition`, callback); },
+				loadCompetition: (id, callback) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(id) : `${Server.baseUrl}/competition/${id}`, callback); },
+				createCompetition: (competition, callback) => { console.log("Create competition - Not implemented"); }
+			};
+		}
 		this.fire(this.Events.serverChanged);
 	}
 
@@ -39,18 +52,11 @@ export class Server {
 		// .finally(() => this.Busy.setBusy(Server.id, false));
 	}
 
-	loadCompetitionList(callback) {
-		if (this.local) {
-			this.CompetitionService.loadCompetitions(this.logCallback("Loading competition list", callback));
-		} else {
-			this.load(Server.baseUrl + '/competition', this.logCallback("Loading competition list", callback));
-		}
-	}
+	loadCompetitionList(callback) { this.competitionService.loadCompetitionList(this.logCallback("Loading competition list", callback)); }
 
-	loadCompetition(competitionId, callback) {
-		this.load(isNaN(parseInt(competitionId, 10)) ? this.jsonFile(competitionId) : `${Server.baseUrl}/competition/${competitionId}`,
-			this.logCallback("Loading competition data", callback));
-	}
+	loadCompetition(competitionId, callback) { this.CompetitionService.loadCompetition(competitionId, this.logCallback("Loading competition data", callback)); }
+
+	createCompetition(competition, callback) { this.CompetitionService.createCompetition(competition, this.logCallback("Creating new competition", callback)); }
 
 	loadRegistration(competitionId, token, callback) {
 		this.load(isNaN(parseInt(competitionId, 10)) ? this.jsonFile(`${competitionId}_token`) : `${Server.baseUrl}/competition/${competitionId}/${token}`,

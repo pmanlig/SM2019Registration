@@ -33,7 +33,6 @@ export class CompetitionList extends React.Component {
 		// ToDo: needs to handle subscribe in componentDidMount / componentWillUnmount
 		this.subscribe(this.Events.userChanged, this.loadCompetitions);
 		this.subscribe(this.Events.serverChanged, this.loadCompetitions);
-		this.loadCompetitions();
 	}
 
 	loadCompetitions = () => {
@@ -51,6 +50,7 @@ export class CompetitionList extends React.Component {
 
 	componentDidMount() {
 		this.EventBus.fire(this.Events.changeTitle, "Anmälningssytem Gävle PK");
+		this.loadCompetitions();
 	}
 
 	getToken(c) {

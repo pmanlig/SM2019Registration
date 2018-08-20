@@ -1,4 +1,4 @@
-import { Events, Event } from '.';
+import { Event } from '.';
 
 export class Permissions {
 	static Any = 0;
@@ -21,7 +21,7 @@ export const Operations = [
 
 export class Competition {
 	static register = { name: "Competition", createInstance: true };
-	static wire = ["fire", "Server"];
+	static wire = ["fire", "Events", "Server"];
 
 	initialize = () => {
 		this.id = 0;
@@ -46,7 +46,7 @@ export class Competition {
 				}
 			});
 		} else {
-			this.fire(Events.competitionUpdated);
+			this.fire(this.Events.competitionUpdated);
 		}
 	}
 
@@ -63,30 +63,34 @@ export class Competition {
 			this.rules = obj.rules || this.rules;
 			this.permissions = obj.permissions || Permissions.Any;
 			this.status = /*obj.status ||*/ Status.Open;
-			this.fire(Events.competitionUpdated);
+			this.fire(this.Events.competitionUpdated);
 		}
 	}
 
 	// Necessary to avoid trying to serialize methods & more
 	toJson() {
-		return JSON.stringify({
+		return {
+			id: this.id,
 			name: this.name,
 			description: this.description,
+			status: this.status,
 			events: this.events.map(e => e.toJson()),
-		});
+			eventGroups: this.eventGroups,
+			rules: this.rules
+		};
 	}
 
 	/*** Properties *****************************************************************************************************/
 
 	setProperty(prop, value) {
 		this[prop] = value;
-		this.fire(Events.competitionUpdated);
+		this.fire(this.Events.competitionUpdated);
 	}
 
 	setEventIds() {
 		let id = 1;
 		this.events.forEach(e => e.id = id++);
-		this.fire(Events.competitionUpdated);
+		this.fire(this.Events.competitionUpdated);
 	}
 
 	addEvent() {
@@ -111,7 +115,7 @@ export class Competition {
 				e[prop] = value;
 			}
 		});
-		this.fire(Events.competitionUpdated);
+		this.fire(this.Events.competitionUpdated);
 	}
 
 	/*** Methods*********************************************************************************************************/
