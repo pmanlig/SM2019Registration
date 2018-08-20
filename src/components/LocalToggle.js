@@ -6,7 +6,7 @@ export class LocalToggle extends React.Component {
 	static wire = ["Server"];
 
 	toggle = e => {
-		this.Server.local = !this.Server.local;
+		this.Server.setLocal(!this.Server.local);
 		e.preventDefault();
 		this.setState({});
 	}

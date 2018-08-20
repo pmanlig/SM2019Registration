@@ -31,11 +31,25 @@ export class CompetitionList extends React.Component {
 		this.state = { competitions: initialCompetitions };
 		this.EventBus.manageEvents(this);
 		// ToDo: needs to handle subscribe in componentDidMount / componentWillUnmount
-		this.subscribe(this.Events.userChanged, () => this.loadCompetitions());
-		this.Server.loadCompetitionList(json => this.setState({ competitions: initialCompetitions.concat(json.map(c => { return { permissions: Permissions.Any, ...c, status: Status.Open }; })) }));
+		this.subscribe(this.Events.userChanged, this.loadCompetitions);
+		this.subscribe(this.Events.serverChanged, this.loadCompetitions);
+		this.loadCompetitions();
 	}
 
-	componentWillMount() {
+	loadCompetitions = () => {
+		this.Server.loadCompetitionList(json => {
+			let serverCompetitions = json.map(c => {
+				// ToDo: Remove debugging code
+				return { permissions: Permissions.Any, ...c, status: Status.Open };
+			});
+			if (this.Server.local) {
+				serverCompetitions = initialCompetitions.concat(serverCompetitions);
+			}
+			this.setState({ competitions: serverCompetitions });
+		});
+	}
+
+	componentDidMount() {
 		this.EventBus.fire(this.Events.changeTitle, "Anmälningssytem Gävle PK");
 	}
 
@@ -60,7 +74,7 @@ export class CompetitionList extends React.Component {
 	render() {
 		let loggedIn = this.Session.user !== "";
 		return <div id='competitions' className='content'>
-			<h1>Tävlingar</h1>
+			<h1>Tävlingar{this.Server.local && " (felsökning)"}</h1>
 			<ul>
 				{this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own)).map(c => this.competition(c))}
 				{loggedIn && <li><Link className="competitionLink" to={`/create`}>Skapa ny tävling</Link></li>}

@@ -1,9 +1,14 @@
 export class Server {
 	static register = { name: "Server", createInstance: true };
-	static wire = ["Busy", "Storage", "ScheduleService", "CompetitionService"];
+	static wire = ["fire", "Events", "Busy", "Storage", "ScheduleService", "CompetitionService"];
 	static baseUrl = 'https://dev.bitnux.com/sm2019';
 
 	local = true;
+
+	setLocal(on) {
+		this.local = on;
+		this.fire(this.Events.serverChanged);
+	}
 
 	jsonFile(name) {
 		return `${process.env.PUBLIC_URL}/${name}.json`;
