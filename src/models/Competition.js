@@ -21,7 +21,7 @@ export const Operations = [
 
 export class Competition {
 	static register = { name: "Competition", createInstance: true };
-	static wire = ["fire", "Events", "Server"];
+	static wire = ["fire", "subscribe", "Events", "Server"];
 
 	initialize = () => {
 		this.id = 0;
@@ -34,6 +34,13 @@ export class Competition {
 		this.eventGroups = [];
 		this.events = [new Event("", new Date())];
 		this.rules = [];
+		this.subscribe(this.Events.serverChanged, this.changeServer);
+	}
+
+	changeServer = () => {
+		let id = this.id;
+		this.id = 0;
+		this.load(id);
 	}
 
 	load(id) {

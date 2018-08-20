@@ -54,9 +54,9 @@ export class Server {
 
 	loadCompetitionList(callback) { this.competitionService.loadCompetitionList(this.logCallback("Loading competition list", callback)); }
 
-	loadCompetition(competitionId, callback) { this.CompetitionService.loadCompetition(competitionId, this.logCallback("Loading competition data", callback)); }
+	loadCompetition(competitionId, callback) { this.competitionService.loadCompetition(competitionId, this.logCallback("Loading competition data", callback)); }
 
-	createCompetition(competition, callback) { this.CompetitionService.createCompetition(competition, this.logCallback("Creating new competition", callback)); }
+	createCompetition(competition, callback) { this.competitionService.createCompetition(competition, this.logCallback("Creating new competition", callback)); }
 
 	loadRegistration(competitionId, token, callback) {
 		this.load(isNaN(parseInt(competitionId, 10)) ? this.jsonFile(`${competitionId}_token`) : `${Server.baseUrl}/competition/${competitionId}/${token}`,
