@@ -34,7 +34,7 @@ export class LocalCompetitionService {
 	}
 
 	createCompetition(competition, callback) {
-		competition.id = this.competitionId++;
+		competition.id = (this.competitionId++).toString();
 		competition.creator = this.Session.user;
 		this.competitions.push(competition);
 		this.store();

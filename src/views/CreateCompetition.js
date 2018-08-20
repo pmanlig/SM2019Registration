@@ -1,5 +1,6 @@
 import "./CreateCompetition.css";
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { Event } from "../models";
 
 export class CreateCompetition extends React.Component {
@@ -8,6 +9,7 @@ export class CreateCompetition extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {};
 		let data = this.Storage.get(this.Storage.keys.newCompetition);
 		if (data) {
 			data = JSON.parse(data);
@@ -41,7 +43,7 @@ export class CreateCompetition extends React.Component {
 
 	createCompetition = () => {
 		// ToDo: blank & redirect
-		this.Server.createCompetition(this.Competition.toJson(), id => { });
+		this.Server.createCompetition(this.Competition.toJson(), id => { this.setState({ redirect: id }); });
 	}
 
 	componentDidMount() {
@@ -49,6 +51,7 @@ export class CreateCompetition extends React.Component {
 	}
 
 	render() {
+		if (this.state.redirect) { return <Redirect to={`/competition/${this.state.redirect}`} />; }
 		return <div className="content">
 			<button id="saveButton" className="button" onClick={this.createCompetition}>Skapa tävling</button>
 			<this.CompetitionProperties />
