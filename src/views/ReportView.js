@@ -8,7 +8,8 @@ export class ReportView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			eventId: "none"
+			eventId: "none",
+			results: []
 		};
 		this.Results.load(props.match.params.id);
 		this.EventBus.manageEvents(this);
@@ -26,7 +27,8 @@ export class ReportView extends React.Component {
 	}
 
 	changeEvent(newEvent) {
-		this.Server.loadResults(this.state.competition.id, newEvent, r => this.setState({ eventId: newEvent, results: r }));
+		if (newEvent === 'none') { this.setState({ eventId: 'none', results: [] }); }
+		else { this.Server.loadResults(this.Competition.id, newEvent, r => this.setState({ eventId: newEvent, results: r })); }
 	}
 
 	getSelectedEvent(competition) {

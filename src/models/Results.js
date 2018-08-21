@@ -5,8 +5,7 @@ export class Results {
 	scores = [];
 
 	load(competitionId, eventId) {
-		if (window._debug) { console.log(`Loading results for ${competitionId}/${eventId}`); }
-		this.Server.loadResults(competitionId, undefined, json => {
+		this.Server.loadResults(competitionId, eventId, json => {
 			this.scores = json;
 			let localScores = this.Storage.get(this.Storage.keys.results);
 			if (localScores) {

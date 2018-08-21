@@ -5,13 +5,13 @@ import { Permissions, Operations } from '../models';
 
 export class CompetitionView extends React.Component {
 	static register = { name: "CompetitionView" };
-	static wire = ["Competition", "Events", "EventBus", "RegistrationView", "ReportView", "ResultView"];
+	static wire = ["Competition", "Events", "EventBus", "RegistrationView", "ReportView", "ResultView", "CompetitionAdmin"];
 
 	tabs = {
 		register: this.RegistrationView,
 		report: this.ReportView,
 		results: this.ResultView,
-		admin: () => <h5>Administrera</h5>
+		admin: this.CompetitionAdmin
 	}
 
 	constructor(props) {

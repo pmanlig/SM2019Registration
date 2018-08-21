@@ -12,8 +12,6 @@ export class CreateCompetition extends React.Component {
 		this.state = {};
 		let data = this.Storage.get(this.Storage.keys.newCompetition);
 		if (data) {
-			data = JSON.parse(data);
-
 			if (data.events) {
 				// patch to compendate for debug service
 				data.events.forEach(e => {
@@ -51,7 +49,7 @@ export class CreateCompetition extends React.Component {
 	}
 
 	render() {
-		if (this.state.redirect) { return <Redirect to={`/competition/${this.state.redirect}`} />; }
+		if (this.state.redirect) { return <Redirect to={`/competition/${this.state.redirect}/admin`} />; }
 		return <div className="content">
 			<button id="saveButton" className="button" onClick={this.createCompetition}>Skapa tävling</button>
 			<this.CompetitionProperties />

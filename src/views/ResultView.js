@@ -87,7 +87,7 @@ export class ResultView extends React.Component {
 
 	render() {
 		if (this.props.match.params.token !== undefined) {
-			return <this.EventResult />
+			return <this.EventResult {...this.props} />
 		}
 
 		if (this.Competition.events.length === 1) {

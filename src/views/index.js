@@ -8,3 +8,4 @@ export { CompetitionView, CompetitionTabs } from './CompetitionView';
 export { CreateCompetition } from './CreateCompetition';
 export { ComponentTest } from './ComponentTest';
 export { AboutView } from './AboutView';
+export { CompetitionAdmin } from './CompetitionAdmin';

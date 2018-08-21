@@ -8,8 +8,9 @@ export class Storage {
 		newCompetition: "newCompetition",
 		tokens: "tokens",
 		results: "results",
-		schedules: "schedules",
-		competitions: "competitions"
+		scheduleService: "scheduleService",
+		competitionService: "competitionService",
+		resultService: "resultService"
 	};
 
 	set(key, value) {

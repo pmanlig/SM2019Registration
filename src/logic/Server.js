@@ -1,6 +1,6 @@
 export class Server {
 	static register = { name: "Server", createInstance: true };
-	static wire = ["fire", "Events", "Busy", "Storage", "ScheduleService", "CompetitionService"];
+	static wire = ["fire", "Events", "Busy", "Storage", "ScheduleService", "CompetitionService", "ResultService"];
 	static baseUrl = 'https://dev.bitnux.com/sm2019';
 
 	initialize() {
@@ -13,11 +13,15 @@ export class Server {
 		if (this.local) {
 			this.competitionService = this.CompetitionService;
 			this.scheduleService = this.ScheduleService;
+			this.resultService = this.ResultService;
 		} else {
 			this.competitionService = {
 				loadCompetitionList: (callback) => { this.load(`${Server.baseUrl}/competition`, callback); },
 				loadCompetition: (id, callback) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(id) : `${Server.baseUrl}/competition/${id}`, callback); },
 				createCompetition: (competition, callback) => { console.log("Create competition - Not implemented"); }
+			};
+			this.resultService = {
+				loadResults: (c, e, callback) => { this.load(isNaN(parseInt(c, 10)) ? this.jsonFile(`${c}_result`) : `${Server.baseUrl}/result/${c}/${e}`, callback); }
 			};
 		}
 		this.fire(this.Events.serverChanged);
@@ -63,10 +67,7 @@ export class Server {
 			this.logCallback("Loading competition registration data for competition " + competitionId, callback));
 	}
 
-	loadResults(competitionId, eventId, callback) {
-		this.load(isNaN(parseInt(competitionId, 10)) ? this.jsonFile(`${competitionId}_result`) : `${Server.baseUrl}/result/${competitionId}`,
-			this.logCallback("Loading competition results for competition " + competitionId, callback));
-	}
+	loadResults(competitionId, eventId, callback) { this.resultService.loadResults(competitionId, eventId, this.logCallback(`Loading competition results for ${competitionId}/${eventId}`, callback)); }
 
 	createSchedule(callback) {
 		// ToDo: connect to real service instead
