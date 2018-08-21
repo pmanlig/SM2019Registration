@@ -7,6 +7,8 @@ export class CompetitionProperties extends React.Component {
 	static register = { name: "CompetitionProperties" };
 	static wire = ["Server", "Competition", "EventProperties", "EventBus", "Events"]
 
+	status = [{ id: Status.Hidden, description: "Gömd" }, { id: Status.Open, description: "Öppen" }, { id: Status.Closed, description: "Stängd" }];
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -35,9 +37,7 @@ export class CompetitionProperties extends React.Component {
 					<tr>
 						<th>Status</th>
 						<td>
-							<Dropdown className="eventProperty" value={this.Competition.status} list={[
-								{ id: Status.Hidden, description: "Gömd" }, { id: Status.Open, description: "Öppen" }, { id: Status.Closed, description: "Stängd" }
-							]} onChange={e => this.Competition.setProperty("status", e.target.value)} />
+							<Dropdown className="eventProperty" value={this.Competition.status} list={this.status} onChange={e => this.Competition.setProperty("status", parseInt(e.target.value, 10))} />
 						</td>
 					</tr>
 					<tr>

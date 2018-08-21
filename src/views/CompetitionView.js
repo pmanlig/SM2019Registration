@@ -41,6 +41,8 @@ export class CompetitionView extends React.Component {
 					t.status === this.Competition.status
 				)));
 
+		if (tabs.length === 0) { return <Redirect to="/" />; }
+
 		// Handle links to the competition in general
 		if (this.props.match.params.operation === undefined) { return <Redirect to={`/competition/${this.Competition.id}/${tabs[0].path}`} /> }
 

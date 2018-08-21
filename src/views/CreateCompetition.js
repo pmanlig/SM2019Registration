@@ -11,8 +11,6 @@ export class CreateCompetition extends React.Component {
 		super(props);
 		this.state = {};
 		let data = this.Storage.get(this.Storage.keys.newCompetition);
-		console.log("Loading new competition data");
-		console.log(data);
 		if (data) {
 			if (data.events) {
 				// patch to compendate for debug service
@@ -39,7 +37,6 @@ export class CreateCompetition extends React.Component {
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.competitionUpdated, () => {
 			if (this.state.redirect === undefined) {
-				console.log("Storing competition data");
 				this.Storage.set(this.Storage.keys.newCompetition, this.Competition.toJson());
 			} else {
 				console.log("Suppressing store due to redirect");
@@ -50,10 +47,8 @@ export class CreateCompetition extends React.Component {
 	}
 
 	createCompetition = () => {
-		// ToDo: blank & redirect
 		this.Server.createCompetition(this.Competition.toJson(), id => {
 			// ToDo: unsub?
-			console.log("Blanking competition");
 			this.Storage.set(this.Storage.keys.newCompetition, null);
 			this.setState({ redirect: id });
 		});

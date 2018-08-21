@@ -68,8 +68,8 @@ export class Competition {
 			this.divisionGroups = obj.divisionGroups || this.divisionGroups;
 			this.classGroups = obj.classGroups || this.classGroups;
 			this.rules = obj.rules || this.rules;
-			this.permissions = obj.permissions || Permissions.Any;
-			this.status = obj.status;
+			this.permissions = obj.permissions ? parseInt(obj.permissions.toString(), 10) : Permissions.Any;
+			this.status = obj.status ? parseInt(obj.status.toString(), 10) : Status.Open;
 			this.fire(this.Events.competitionUpdated);
 		}
 	}

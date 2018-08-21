@@ -19,6 +19,7 @@ export class Server {
 				loadCompetitionList: (callback) => { this.load(`${Server.baseUrl}/competition`, callback); },
 				loadCompetition: (id, callback) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(id) : `${Server.baseUrl}/competition/${id}`, callback); },
 				createCompetition: (competition, callback) => { console.log("Create competition - Not implemented"); },
+				updateCompetition: (competition, callback) => { console.log("Update competition - Not implemented"); },
 				deleteCompetition: (id, callback) => { console.log("Delete competition - Not implemented"); }
 			};
 			this.resultService = {
@@ -33,10 +34,20 @@ export class Server {
 		return `${process.env.PUBLIC_URL}/${name}.json`;
 	}
 
-	logCallback(msg, c) {
+	logFetchCallback(msg, c) {
 		if (!window._debug) { return c; }
 		return json => {
 			console.log(msg);
+			console.log(json);
+			c(json);
+		}
+	}
+
+	logSendCallback(msg, data, c) {
+		if (!window._debug) { return c; }
+		return json => {
+			console.log(msg);
+			console.log(data);
 			console.log(json);
 			c(json);
 		}
@@ -58,26 +69,27 @@ export class Server {
 		// .finally(() => this.Busy.setBusy(Server.id, false));
 	}
 
-	loadCompetitionList(callback) { this.competitionService.loadCompetitionList(this.logCallback("Loading competition list", callback)); }
-	loadCompetition(competitionId, callback) { this.competitionService.loadCompetition(competitionId, this.logCallback("Loading competition data", callback)); }
-	createCompetition(competition, callback) { this.competitionService.createCompetition(competition, this.logCallback("Creating new competition", callback)); }
-	deleteCompetition(competitionId, callback) { this.competitionService.deleteCompetition(competitionId, this.logCallback("Deleting competition", callback)); }
+	loadCompetitionList(callback) { this.competitionService.loadCompetitionList(this.logFetchCallback("Loading competition list", callback)); }
+	loadCompetition(competitionId, callback) { this.competitionService.loadCompetition(competitionId, this.logFetchCallback("Loading competition data", callback)); }
+	createCompetition(competition, callback) { this.competitionService.createCompetition(competition, this.logSendCallback("Creating new competition", competition, callback)); }
+	updateCompetition(competition, callback) { this.competitionService.updateCompetition(competition, this.logSendCallback("Updating competition", competition, callback)); }
+	deleteCompetition(competitionId, callback) { this.competitionService.deleteCompetition(competitionId, this.logSendCallback("Deleting competition", competitionId, callback)); }
 
 	loadRegistration(competitionId, token, callback) {
 		this.load(isNaN(parseInt(competitionId, 10)) ? this.jsonFile(`${competitionId}_token`) : `${Server.baseUrl}/competition/${competitionId}/${token}`,
-			this.logCallback(`Loading competition registration data for competition ${competitionId}`, callback));
+			this.logFetchCallback(`Loading competition registration data for competition ${competitionId}`, callback));
 	}
 
-	loadResults(competitionId, eventId, callback) { this.resultService.loadResults(competitionId, eventId, this.logCallback(`Loading competition results for ${competitionId}/${eventId}`, callback)); }
+	loadResults(competitionId, eventId, callback) { this.resultService.loadResults(competitionId, eventId, this.logFetchCallback(`Loading competition results for ${competitionId}/${eventId}`, callback)); }
 
 	createSchedule(callback) {
 		// ToDo: connect to real service instead
-		this.ScheduleService.createNewSchedule(this.logCallback("Creating schedule", callback));
+		this.ScheduleService.createNewSchedule(this.logFetchCallback("Creating schedule", callback));
 	}
 
 	loadSchedule(scheduleId, callback) {
 		// ToDo: connect to real service instead
-		this.ScheduleService.getSchedule(scheduleId, this.logCallback("Loading schedule", callback));
+		this.ScheduleService.getSchedule(scheduleId, this.logFetchCallback("Loading schedule", callback));
 		/*
 		let numId = parseInt(competitionId, 10);
 		this.load(isNaN(numId) ?

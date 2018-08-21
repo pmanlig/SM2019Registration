@@ -16,7 +16,15 @@ export class CompetitionList extends React.Component {
 	}
 
 	loadCompetitions = () => {
-		this.Server.loadCompetitionList(json => this.setState({ competitions: json }));
+		this.Server.loadCompetitionList(json => this.setState({
+			competitions: json.map(c => {
+				return {
+					...c,
+					status: c.status ? parseInt(c.status.toString(), 10) : Status.Open,
+					permissions: c.permissions ? parseInt(c.permissions.toString(), 10) : Permissions.Any
+				}
+			})
+		}));
 	}
 
 	componentDidMount() {
