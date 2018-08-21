@@ -11,6 +11,8 @@ export class CreateCompetition extends React.Component {
 		super(props);
 		this.state = {};
 		let data = this.Storage.get(this.Storage.keys.newCompetition);
+		console.log("Loading new competition data");
+		console.log(data);
 		if (data) {
 			if (data.events) {
 				// patch to compendate for debug service
@@ -22,6 +24,8 @@ export class CreateCompetition extends React.Component {
 
 				// deserialize date strings
 				data.events.map(e => Event.fromJson(e));
+			} else {
+				data.events = [];
 			}
 
 			// handle old format
@@ -33,15 +37,26 @@ export class CreateCompetition extends React.Component {
 			}
 		}
 		this.EventBus.manageEvents(this);
-		this.subscribe(this.Events.competitionUpdated, () =>
-			this.Storage.set(this.Storage.keys.newCompetition, this.Competition.toJson()));
+		this.subscribe(this.Events.competitionUpdated, () => {
+			if (this.state.redirect === undefined) {
+				console.log("Storing competition data");
+				this.Storage.set(this.Storage.keys.newCompetition, this.Competition.toJson());
+			} else {
+				console.log("Suppressing store due to redirect");
+			}
+		});
 		this.Competition.initialize();
 		this.Competition.loadFrom(data);
 	}
 
 	createCompetition = () => {
 		// ToDo: blank & redirect
-		this.Server.createCompetition(this.Competition.toJson(), id => { this.setState({ redirect: id }); });
+		this.Server.createCompetition(this.Competition.toJson(), id => {
+			// ToDo: unsub?
+			console.log("Blanking competition");
+			this.Storage.set(this.Storage.keys.newCompetition, null);
+			this.setState({ redirect: id });
+		});
 	}
 
 	componentDidMount() {

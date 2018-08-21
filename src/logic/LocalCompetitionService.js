@@ -52,4 +52,10 @@ export class LocalCompetitionService {
 		this.store();
 		callback(competition.id);
 	}
+
+	deleteCompetition(id, callback) {
+		this.competitions = this.competitions.filter(c => c.id !== id);
+		this.store();
+		callback(true);
+	}
 }

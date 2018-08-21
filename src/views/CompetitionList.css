@@ -26,8 +26,12 @@
 	text-decoration: none;
 }
 
-.competitionLink {
+.event-title {
+	display: flex;
+}
+
+.competition-link {
 	font-size: 20px;
-	display: block;
+	flex-grow: 1;
 	margin: 3px;
 }

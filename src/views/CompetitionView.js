@@ -18,6 +18,7 @@ export class CompetitionView extends React.Component {
 		super(props);
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.competitionUpdated, () => this.setState({}));
+		this.subscribe(this.Events.serverChanged, () => this.Competition.load(props.match.params.id));
 		this.Competition.load(props.match.params.id);
 	}
 
@@ -29,7 +30,7 @@ export class CompetitionView extends React.Component {
 
 	render() {
 		// Wait; competition is loading
-		if (this.Competition.id !== this.props.match.params.id) { return null; }
+		if (this.Competition.id !== this.props.match.params.id) { return <div className="content"><p>Hämtar tävling...</p></div>; }
 
 		let tabs = Operations.filter(t =>
 			this.Competition.permissions === Permissions.Own ||

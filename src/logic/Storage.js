@@ -8,6 +8,7 @@ export class Storage {
 		newCompetition: "newCompetition",
 		tokens: "tokens",
 		results: "results",
+		serverMode: "serverMode",
 		scheduleService: "scheduleService",
 		competitionService: "competitionService",
 		resultService: "resultService"

@@ -47,7 +47,7 @@ export class Competition {
 		if (this.id !== id) {
 			this.Server.loadCompetition(id, obj => {
 				// Prevent multiple requests from screwing up the state
-				if (obj.id !== this.id) {
+				if (obj !== undefined && obj.id !== this.id) {
 					this.initialize();
 					this.loadFrom(obj);
 				}
@@ -69,7 +69,7 @@ export class Competition {
 			this.classGroups = obj.classGroups || this.classGroups;
 			this.rules = obj.rules || this.rules;
 			this.permissions = obj.permissions || Permissions.Any;
-			this.status = /*obj.status ||*/ Status.Open;
+			this.status = obj.status;
 			this.fire(this.Events.competitionUpdated);
 		}
 	}

@@ -5,7 +5,7 @@ export class Server {
 
 	initialize() {
 		// ToDo: Change to false in production code
-		this.setLocal(true);
+		this.setLocal(this.Storage.get(this.Storage.keys.serverMode));
 	}
 
 	setLocal(on) {
@@ -18,12 +18,14 @@ export class Server {
 			this.competitionService = {
 				loadCompetitionList: (callback) => { this.load(`${Server.baseUrl}/competition`, callback); },
 				loadCompetition: (id, callback) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(id) : `${Server.baseUrl}/competition/${id}`, callback); },
-				createCompetition: (competition, callback) => { console.log("Create competition - Not implemented"); }
+				createCompetition: (competition, callback) => { console.log("Create competition - Not implemented"); },
+				deleteCompetition: (id, callback) => { console.log("Delete competition - Not implemented"); }
 			};
 			this.resultService = {
 				loadResults: (c, e, callback) => { this.load(isNaN(parseInt(c, 10)) ? this.jsonFile(`${c}_result`) : `${Server.baseUrl}/result/${c}/${e}`, callback); }
 			};
 		}
+		this.Storage.set(this.Storage.keys.serverMode, this.local);
 		this.fire(this.Events.serverChanged);
 	}
 
@@ -57,14 +59,13 @@ export class Server {
 	}
 
 	loadCompetitionList(callback) { this.competitionService.loadCompetitionList(this.logCallback("Loading competition list", callback)); }
-
 	loadCompetition(competitionId, callback) { this.competitionService.loadCompetition(competitionId, this.logCallback("Loading competition data", callback)); }
-
 	createCompetition(competition, callback) { this.competitionService.createCompetition(competition, this.logCallback("Creating new competition", callback)); }
+	deleteCompetition(competitionId, callback) { this.competitionService.deleteCompetition(competitionId, this.logCallback("Deleting competition", callback)); }
 
 	loadRegistration(competitionId, token, callback) {
 		this.load(isNaN(parseInt(competitionId, 10)) ? this.jsonFile(`${competitionId}_token`) : `${Server.baseUrl}/competition/${competitionId}/${token}`,
-			this.logCallback("Loading competition registration data for competition " + competitionId, callback));
+			this.logCallback(`Loading competition registration data for competition ${competitionId}`, callback));
 	}
 
 	loadResults(competitionId, eventId, callback) { this.resultService.loadResults(competitionId, eventId, this.logCallback(`Loading competition results for ${competitionId}/${eventId}`, callback)); }
