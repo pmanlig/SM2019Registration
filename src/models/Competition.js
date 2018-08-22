@@ -21,7 +21,7 @@ export const Operations = [
 
 export class Competition {
 	static register = { name: "Competition", createInstance: true };
-	static wire = ["fire", "subscribe", "Events", "Server"];
+	static wire = ["fire", "subscribe", "Events", "Server", "ClassGroups", "DivisionGroups"];
 
 	initialize = () => {
 		this.id = 0;
@@ -45,6 +45,8 @@ export class Competition {
 
 	load(id) {
 		if (this.id !== id) {
+			this.ClassGroups.load(loaded => { if (loaded) { this.fire(this.Events.competitionUpdated) } });
+			this.DivisionGroups.load(loaded => { if (loaded) { this.fire(this.Events.competitionUpdated) } });
 			this.Server.loadCompetition(id, obj => {
 				// Prevent multiple requests from screwing up the state
 				if (obj !== undefined && obj.id !== this.id) {
@@ -154,13 +156,13 @@ export class Competition {
 
 	classes(classGroupId) {
 		// Hack to handle nonexisting classGroup
-		let classGroup = this.classGroups.find(c => c.id === classGroupId);
+		let classGroup = this.ClassGroups.find(c => c.id === classGroupId);
 		return classGroup && classGroup.classes;
 	}
 
 	divisions(divisionGroupId) {
 		// Hack to handle nonexisting divisionGroup
-		let divisionGroup = this.divisionGroups.find(d => d.id === divisionGroupId);
+		let divisionGroup = this.DivisionGroups.find(d => d.id === divisionGroupId);
 		return divisionGroup && divisionGroup.divisions;
 	}
 }

@@ -76,33 +76,33 @@ export class Registration {
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
-	setParticipantEvent(participant, event, value) {
-		this.getParticipant(participant).setParticipate(event, value);
+	setParticipantEvent(pId, event, value) {
+		this.getParticipant(pId).setParticipate(event, value);
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
-	setParticipantClass(participant, event, value) {
-		this.getParticipant(participant).addEvent(event).class = value;
+	setParticipantClass(pId, event, value) {
+		this.getParticipant(pId).addEvent(event).class = value;
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
-	addParticipantRound(participant, event) {
-		this.getParticipant(participant).addEvent(event).rounds.push({});
+	addParticipantRound(pId, event) {
+		this.getParticipant(pId).addEvent(event).rounds.push({});
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
-	deleteParticipantRound(participant, event, round) {
-		this.getParticipant(participant).event(event).rounds.splice(round, 1);
+	deleteParticipantRound(pId, event, round) {
+		this.getParticipant(pId).event(event).rounds.splice(round, 1);
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
-	setParticipantDivision(participant, event, round, value) {
-		this.getParticipant(participant).addEvent(event).rounds[round].division = value;
+	setParticipantDivision(pId, event, round, value) {
+		this.getParticipant(pId).addEvent(event).rounds[round].division = value;
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
-	setParticipantSlot(participant, event, round, value) {
-		this.getParticipant(participant).addEvent(event).rounds[round].slot = value;
+	setParticipantSlot(pId, event, round, value) {
+		this.getParticipant(pId).addEvent(event).rounds[round].slot = value;
 		this.fire(this.Events.registrationUpdated, this);
 	}
 

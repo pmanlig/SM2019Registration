@@ -6,7 +6,7 @@ table {
   border-spacing: 0px;
 }
 
-tr {
+tr.registration {
   padding: 0px;
 }
 
@@ -36,10 +36,10 @@ th {
 }
 
 th.vert {
+  /*border: 1px solid #7f7fff;*/
   height: 55px;
   vertical-align: bottom;
   text-align: left;
-  /*border: 1px solid #7f7fff;*/
 }
 
 th.vert:last-child {
@@ -47,27 +47,28 @@ th.vert:last-child {
 }
 
 th.vert > div {
-	transform-origin: left bottom;
 	/*border: 1px dotted white;*/
+	transform-origin: left bottom;
   transform:
       translate(12px, 0px)
       rotate(315deg);
   width: 20px;
 }
 
-tr.registration td {
-	vertical-align: middle;
+tr.registration td.center {
 	text-align: center;
 }
 
-tr.registration td.left {
-	text-align: left;
+tr.registration td.delete {
+	vertical-align: middle;
 }
 
-tr.registration td button, tr.registration td input {
+/*
+tr.registration td button.scheduleButton, tr.registration td select, tr.registration td input {
 	box-sizing: border-box;
 	height: 30px;
 }
+*/
 
 .schedule {
 	background-color: lightseagreen;

@@ -12,7 +12,6 @@ export class RegistrationForm extends React.Component {
 
 	addMinorHeadersFor(event, useEventName, minorHeaders) {
 		let initial = minorHeaders.length;
-		console.log(event);
 		if (event.classes && this.Competition.classes(event.classes)) { // Hack to handle nonexisting classGroups
 			minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Klass</th>);
 		}
@@ -21,9 +20,7 @@ export class RegistrationForm extends React.Component {
 		}
 		if (event.schedule) {
 			minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Starttid</th>);
-		}
-		if (event.maxRegistrations > 1) {
-			this.addButtonHeader(minorHeaders);
+			if (event.maxRegistrations > 1) { this.addButtonHeader(minorHeaders); }
 		}
 
 		if (initial === minorHeaders.length) {
