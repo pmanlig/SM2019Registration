@@ -56,11 +56,14 @@ export class CompetitionList extends React.Component {
 
 	render() {
 		let loggedIn = this.Session.user !== "";
+		// ToDo: fix filtering of hidden competitions in server
+		let competitions = this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own));
 		return <div id='competitions' className='content'>
 			<h1>Tävlingar{this.Server.local && " (felsökning)"}</h1>
 			<ul>
-				{this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own)).map(c => this.competition(c))}
-				{loggedIn && <li><Link className="competitionLink" to={`/create`}>Skapa ny tävling</Link></li>}
+				{competitions.map(c => this.competition(c))}
+				{loggedIn && <li><Link className="competition-link" to={`/create`}>Skapa ny tävling</Link></li>}
+				{competitions.length === 0 && !loggedIn && <p>Inga tävlingar att visa - logga in för att skapa en tävling</p>}
 			</ul>
 		</div>;
 	}

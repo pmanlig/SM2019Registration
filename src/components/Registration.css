@@ -55,6 +55,20 @@ th.vert > div {
   width: 20px;
 }
 
+tr.registration td {
+	vertical-align: middle;
+	text-align: center;
+}
+
+tr.registration td.left {
+	text-align: left;
+}
+
+tr.registration td button, tr.registration td input {
+	box-sizing: border-box;
+	height: 30px;
+}
+
 .schedule {
 	background-color: lightseagreen;
 	position: fixed;

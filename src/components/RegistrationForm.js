@@ -10,8 +10,9 @@ export class RegistrationForm extends React.Component {
 		minorHeaders.push(<th key={minorHeaders.length} className="minor entry" style={{ width: "20px" }}>&nbsp;</th>);
 	}
 
-	addMinorHeadersFor(event, minorHeaders) {
+	addMinorHeadersFor(event, useEventName, minorHeaders) {
 		let initial = minorHeaders.length;
+		console.log(event);
 		if (event.classes && this.Competition.classes(event.classes)) { // Hack to handle nonexisting classGroups
 			minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Klass</th>);
 		}
@@ -26,14 +27,24 @@ export class RegistrationForm extends React.Component {
 		}
 
 		if (initial === minorHeaders.length) {
-			minorHeaders.push(<th key={minorHeaders.length} className="minor entry vert"><div>{event.name.replace(/ /g, "\u00a0")}</div></th>);
+			if (useEventName) { minorHeaders.push(<th key={minorHeaders.length} className="minor entry vert"><div>{event.name.replace(/ /g, "\u00a0")}</div></th>); }
+			else { minorHeaders.push(<th key={minorHeaders.length} className="minor entry"><div></div></th>); }
+
 		}
 	}
 
 	addHeadersFor(eventList, majorTitle, majorHeaders, minorHeaders) {
 		let initial = minorHeaders.length;
-		eventList.forEach(e => this.addMinorHeadersFor(e, minorHeaders));
+		eventList.forEach(e => this.addMinorHeadersFor(e, true, minorHeaders));
 		majorHeaders.push(<th key={majorTitle} className="major" colSpan={minorHeaders.length - initial}>{majorTitle}</th>);
+	}
+
+	addEventHeadersFor(eventList, majorHeaders, minorHeaders) {
+		eventList.forEach(e => {
+			let initial = minorHeaders.length;
+			this.addMinorHeadersFor(e, false, minorHeaders)
+			majorHeaders.push(<th key={e.id} className="major" colSpan={minorHeaders.length - initial}>{e.name.replace(/ /g, "\u00a0")}</th>);
+		});
 	}
 
 	RegistrationHeader = props => {
@@ -48,7 +59,7 @@ export class RegistrationForm extends React.Component {
 		if (this.Competition.eventGroups.length > 0) {
 			this.Competition.eventGroups.forEach(group => { this.addHeadersFor(this.Competition.eventList(group.id), group.name, majorHeaders, minorHeaders); });
 		} else {
-			this.addHeadersFor(this.Competition.events, "Anmälan", majorHeaders, minorHeaders);
+			this.addEventHeadersFor(this.Competition.events, majorHeaders, minorHeaders);
 		}
 
 		/*
