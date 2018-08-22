@@ -26,8 +26,14 @@ export class RegistrationForm extends React.Component {
 		}
 
 		if (initial === minorHeaders.length) {
-			minorHeaders.push(<th key={minorHeaders.length} className="minor entry vert"><div>{event.name}</div></th>);
+			minorHeaders.push(<th key={minorHeaders.length} className="minor entry vert"><div>{event.name.replace(/ /g, "\u00a0")}</div></th>);
 		}
+	}
+
+	addHeadersFor(eventList, majorTitle, majorHeaders, minorHeaders) {
+		let initial = minorHeaders.length;
+		eventList.forEach(e => this.addMinorHeadersFor(e, minorHeaders));
+		majorHeaders.push(<th key={majorTitle} className="major" colSpan={minorHeaders.length - initial}>{majorTitle}</th>);
 	}
 
 	RegistrationHeader = props => {
@@ -39,11 +45,11 @@ export class RegistrationForm extends React.Component {
 			minorHeaders.push(<th key={minorHeaders.length} style={{ width: s.width, paddingRight: 10, verticalAlign: "bottom" }} className="minor">{s.name}</th>);
 		});
 
-		this.Competition.eventGroups.forEach(group => {
-			let initial = minorHeaders.length;
-			this.Competition.eventList(group.id).forEach(e => this.addMinorHeadersFor(e, minorHeaders));
-			majorHeaders.push(<th key={group.id} className="major" colSpan={minorHeaders.length - initial}>{group.name}</th>);
-		});
+		if (this.Competition.eventGroups.length > 0) {
+			this.Competition.eventGroups.forEach(group => { this.addHeadersFor(this.Competition.eventList(group.id), group.name, majorHeaders, minorHeaders); });
+		} else {
+			this.addHeadersFor(this.Competition.events, "Anmälan", majorHeaders, minorHeaders);
+		}
 
 		/*
 		majorHeaders.push(<th key="-1" className="major">&nbsp;</th>);

@@ -42,6 +42,10 @@ th.vert {
   /*border: 1px solid #7f7fff;*/
 }
 
+th.vert:last-child {
+	width: 55px;
+}
+
 th.vert > div {
 	transform-origin: left bottom;
 	/*border: 1px dotted white;*/

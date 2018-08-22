@@ -137,6 +137,7 @@ export class Competition {
 	}
 
 	eventList(eventGroup) {
+		if (this.eventGroups.length === 0) return this.events;
 		let events = [];
 		this.eventGroups.forEach(eg => (eventGroup === undefined || eg.id === eventGroup) && eg.events.forEach(e => events.push(this.event(e))));
 		return events;

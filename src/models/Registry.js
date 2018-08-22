@@ -6,6 +6,7 @@ export class Registry {
 
 	initialize() {
 		this.competitors = this.Storage.get(this.Storage.registry) || [];
+		this.competitors = [];
 	}
 
 	storeCompetitors(participants) {
