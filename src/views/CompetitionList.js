@@ -28,7 +28,7 @@ export class CompetitionList extends React.Component {
 	}
 
 	componentDidMount() {
-		this.EventBus.fire(this.Events.changeTitle, "Anmälningssytem Gävle PK");
+		this.EventBus.fire(this.Events.changeTitle, "Anmälningssystem Gävle PK");
 		this.loadCompetitions();
 	}
 
