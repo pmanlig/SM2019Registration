@@ -17,10 +17,17 @@ export class Participant extends Person {
 	}
 
 	addEvent(id) {
-		if (this.event(id) === undefined) {
-			this.registrationInfo.push({ event: id, rounds: [{}] });
-		}
+		let info = this.event(id);
+		if (info !== undefined) { return info; }
+
+		this.registrationInfo.push({ event: id, rounds: [{}] });
 		return this.event(id);
+	}
+
+	addSquad(event, squad, round) {
+		let info = this.addEvent(event.id);
+		info.rounds[round].squad = squad.id;
+		info.rounds[round].time = squad.startTime;
 	}
 
 	removeEvent(id) {

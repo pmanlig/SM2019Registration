@@ -1,5 +1,5 @@
 import React from 'react';
-import { Schedule } from '../models';
+import { Schedule, Participant, Person } from '../models';
 
 let divisionGroups = [
 	{
@@ -18,9 +18,13 @@ schedule.addSquad("8:30", 20, ["A"], false);
 schedule.addSquad("9:00", 10, ["C"], false);
 schedule.addSquad("9:30", 15, ["C", "B", "A"], true);
 schedule.addSquad("10:00", 20, ["C", "B", "A"], false);
+schedule.squads[1].participants.push(new Participant(new Person("Patrik Manlig", 1, "Gävle PK")));
+schedule.squads[1].participants.push(new Participant(new Person("Johan Söderberg", 2, "Gävle PK")));
+schedule.squads[1].participants.push(new Participant(new Person("Tor Kangas", 3, "Gävle PK")));
+schedule.squads[1].participants.push(new Participant(new Person("Åsa Juhlén", 4, "Gävle PK")));
 
 export class ComponentTest extends React.Component {
-	static wire = ["ScheduleProperties"];
+	static wire = ["ScheduleProperties", "SquadPicker"];
 
 	constructor(props) {
 		super(props);
@@ -70,6 +74,7 @@ export class ComponentTest extends React.Component {
 			<button className="button button-left x-large" />
 			<button className="button button-right x-large" />
 			{this.state.showDialog && <this.ScheduleProperties schedule={schedule} divisions={divisionGroups[1]} onClose={e => this.setState({ showDialog: false })} />}
+			<this.SquadPicker schedule={schedule} />
 		</div>;
 	}
 }

@@ -1,14 +1,9 @@
+import './SquadPicker.css';
 import React from 'react';
 
 export class SquadPicker extends React.Component {
 	static register = { name: "SquadPicker" };
-	static wire = ["Server", "Competition"];
-
-	constructor(props) {
-		super(props);
-		this.state = { schedule: {} };
-		this.Server.loadSchedule(this.props.id, json => this.setState({ schedule: json }));
-	}
+	static wire = ["Competition"];
 
 	squadStatus(squad) {
 		if (squad.slots === squad.participants.length) { return "full"; }
@@ -18,18 +13,18 @@ export class SquadPicker extends React.Component {
 
 	renderSquad(squad) {
 		let rows = [];
-		rows.push(<tr key={squad.time} className={this.squadStatus(squad)}>
-			<td>{squad.time}</td>
+		rows.push(<tr key={squad.id} className={this.squadStatus(squad)} onClick={e => this.props.onSelect(squad)}>
+			<td className="time">{squad.startTime}</td>
 			<td>{`${squad.participants.length} / ${squad.slots}`}</td>
 			<td>
 				{squad.participants.length > 0 &&
-					<button className={(squad.expand ? "button-collapse" : "button-expand")} onClick={e => { squad.expand = !squad.expand; this.setState({}); }} />}
+					<button className={(squad.expand ? "button-collapse small" : "button-expand small")} onClick={e => { squad.expand = !squad.expand; this.setState({}); }} />}
 			</td>
 		</tr>);
 		if (squad.expand && squad.participants.length > 0) {
 			rows = rows.concat(squad.participants.map(p =>
 				<tr key={p.id} className="participant">
-					<td>{p.name}</td>
+					<td className="time">{p.name}</td>
 					<td>&nbsp;</td>
 					<td>{p.division}</td>
 				</tr>
@@ -39,12 +34,18 @@ export class SquadPicker extends React.Component {
 	}
 
 	render() {
-		return <div className="schedule">
+		let schedule = this.props.schedule;
+		return <div className="squad-picker">
 			<h1>Starttider</h1>
 			<table>
-				<thead></thead>
+				<thead>
+					<tr>
+						<th className="time">Tid</th>
+						<th>Platser</th>
+					</tr>
+				</thead>
 				<tbody>
-					{this.state.schedule.squads && this.state.schedule.squads.map(s => this.renderSquad(s))}
+					{schedule.squads && schedule.squads.map(s => this.renderSquad(s))}
 				</tbody>
 			</table>
 		</div>;

@@ -5,7 +5,7 @@ export class Squad {
 		this.divisions = divisions;
 		this.mixed = mixed;
 		this.id = id;
-		this.members = [];
+		this.participants = [];
 	}
 
 	static fromJson(s) {
@@ -16,7 +16,7 @@ export class Squad {
 			n.divisions = s.divisions;
 			n.mixed = s.mixed;
 			n.id = s.id;
-			n.members = s.members;
+			n.participants = s.participants || [];
 		}
 		return n;
 	}
