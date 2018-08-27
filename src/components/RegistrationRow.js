@@ -13,14 +13,14 @@ export class RegistrationRow extends React.Component {
 	}
 
 	divisionDropdown(row, participantId, event, rounds, values) {
-		return <td key={`d${event.id}${row}`} className="division">
+		return <td key={`d${event.id}${row}`} className="division vcenter">
 			{row < rounds.length && <Dropdown placeholder="Välj vapengrupp..." value={rounds[row].division} list={values.map(v => { return { id: v, description: v } })}
 				onChange={e => this.Registration.setParticipantDivision(participantId, event, row, e.target.value)} />}
 		</td>;
 	}
 
 	scheduleButton(row, participantId, event, rounds) {
-		return <td key={`s${event.id}${row}`}>
+		return <td key={`s${event.id}${row}`} className="vcenter">
 			{row < rounds.length && <button className="scheduleButton" onClick={e => this.fire(this.Events.showSchedule, participantId, event)}>Välj starttid</button>}
 		</td>;
 	}
@@ -33,7 +33,7 @@ export class RegistrationRow extends React.Component {
 		if (row < rounds.length && (row > 0 || rounds.length === event.maxRegistrations)) {
 			button = <button className="button-close small deleteButton" onClick={e => this.Registration.deleteParticipantRound(participantId, event.id, row)} />;
 		}
-		return <td key={`r${event.id}${row}`}>{button}</td>;
+		return <td key={`r${event.id}${row}`} className="vcenter">{button}</td>;
 	}
 
 	EventControls = ({ row, numRows, participant, event }) => {
@@ -81,7 +81,7 @@ export class RegistrationRow extends React.Component {
 		return <tr className={p.errors.length > 0 ? "error registration" : "registration"}>
 			{row === 0 && <this.ParticipantFields numRows={numRows} participant={p} />}
 			<this.RegistrationControls row={row} numRows={numRows} participant={p} />
-			{row === 0 && <td className="delete"><button className="button-close small red" onClick={e => this.Registration.deleteParticipant(p.id)} /></td>}
+			{row === 0 && <td className="vcenter"><button className="button-close small red" onClick={e => this.Registration.deleteParticipant(p.id)} /></td>}
 		</tr>;
 	}
 
