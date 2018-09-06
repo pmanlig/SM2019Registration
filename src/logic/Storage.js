@@ -7,6 +7,7 @@ export class Storage {
 		registry: "registry",
 		newCompetition: "newCompetition",
 		tokens: "tokens",
+		localTokens: "localTokens",
 		results: "results",
 		serverMode: "serverMode",
 		scheduleService: "scheduleService",

@@ -21,7 +21,7 @@ export class CompetitionList extends React.Component {
 				return {
 					...c,
 					status: c.status ? parseInt(c.status.toString(), 10) : Status.Open,
-					permissions: c.permissions ? parseInt(c.permissions.toString(), 10) : Permissions.Any
+					permissions: c.permissions ? parseInt(c.permissions.toString(), 10) : Permissions.Own
 				}
 			})
 		}));
@@ -29,7 +29,7 @@ export class CompetitionList extends React.Component {
 
 	componentDidMount() {
 		this.EventBus.fire(this.Events.changeTitle, "Anmälningssystem Gävle PK");
-		this.loadCompetitions();
+		this.loadCompetitions(); // Needs to be done here to avoid calling setState before the component is mounted when using local code/storage
 	}
 
 	getToken(c) {

@@ -88,7 +88,7 @@ export class RegistrationRow extends React.Component {
 	numRounds(participant) {
 		let maxRound = 1;
 		participant.registrationInfo.forEach(e => {
-			if (e.rounds.length > maxRound) {
+			if (e.rounds && e.rounds.length > maxRound) {
 				maxRound = e.rounds.length;
 			}
 		});

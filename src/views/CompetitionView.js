@@ -41,6 +41,7 @@ export class CompetitionView extends React.Component {
 					t.status === this.Competition.status
 				)));
 
+		console.log(`Tabs length: ${tabs.length}`);
 		if (tabs.length === 0) { return <Redirect to="/" />; }
 
 		// Handle links to the competition in general

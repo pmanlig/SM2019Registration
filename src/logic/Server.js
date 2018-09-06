@@ -111,32 +111,14 @@ export class Server {
 		this.load(this.jsonFile("divisions"), callback);
 	}
 
-	registrationJson(reg) {
-		return JSON.stringify({
-			competition: reg.competition.id,
-			token: reg.token,
-			contact: { name: reg.contact.name, email: reg.contact.email, organization: reg.contact.organization, account: reg.contact.account },
-			registration: reg.participants.map(p => {
-				return {
-					participant: {
-						name: p.name,
-						id: p.competitionId,
-						organization: p.organization
-					},
-					entries: p.registrationInfo
-				};
-			})
-		});
-	}
-
 	sendRegistration(reg) {
 		console.log("Sending registration");
-		console.log(JSON.parse(this.registrationJson(reg)));
+		console.log(JSON.parse(reg));
 		this.Busy.setBusy(this, true);
 		return fetch(Server.baseUrl + "register", {
 			crossDomain: true,
 			method: 'POST',
-			body: this.registrationJson(reg),
+			body: reg,
 			headers: new Headers({ 'Content-Type': 'application/json' })
 		})
 			.then(res => {

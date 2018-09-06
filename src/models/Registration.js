@@ -3,8 +3,7 @@ import { Person, Participant } from '.';
 
 export class Registration {
 	static register = { name: "Registration", createInstance: true };
-	static wire = ["subscribe", "fire", "Competition", "Storage", "Server", "EventBus", "Events", "Registry", "Footers"];
-	// static wire = ["subscribe"];
+	static wire = ["subscribe", "fire", "Competition", "Storage", "Server", "EventBus", "Events", "Registry", "Footers", "Tokens"];
 
 	token = undefined;
 	contact = new Person();
@@ -20,9 +19,9 @@ export class Registration {
 	}
 
 	load(id, token) {
+		console.log(`Loading registration info ${id}, ${token}`);
 		if (token === undefined) {
-			let tokens = this.Storage.get(this.Storage.keys.tokens) || this.Storage.get("Tokens") || {};
-			token = tokens[this.Competition.id];
+			token = this.Tokens.getToken(id);
 		}
 
 		if (token !== undefined) {
@@ -118,17 +117,33 @@ export class Registration {
 		return events;
 	}
 
+	toJson() {
+		return JSON.stringify({
+			competition: this.competition.id,
+			token: this.token,
+			contact: { name: this.contact.name, email: this.contact.email, organization: this.contact.organization, account: this.contact.account },
+			registration: this.participants.map(p => {
+				return {
+					participant: {
+						name: p.name,
+						id: p.competitionId,
+						organization: p.organization
+					},
+					entries: p.registrationInfo
+				};
+			})
+		});
+	}
+
 	sendRegistration() {
 		if (window._debug) { console.log("Sending registration"); }
 		this.Registry.storeCompetitors(this.participants);
 		this.Storage.set("Contact", this.contact);
-		this.Server.sendRegistration(this)
+		this.Server.sendRegistration(this.toJson())
 			.then(res => {
 				if (window._debug) { console.log(res.token); }
 				this.token = res.token;
-				let tokens = this.Storage.get(this.Storage.keys.tokens) || this.Storage.get("Tokens") || [];
-				tokens[this.Competition.id] = res.token;
-				this.Storage.set(this.Storage.keys.tokens, tokens);
+				this.Tokens.setToken(this.Competition.id, res.token);
 				this.Footers.addFooter(this.countEvents() + " starter registrerade", "info");
 				this.fire(this.Events.registrationUpdated, this);
 			})

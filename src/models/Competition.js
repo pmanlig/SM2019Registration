@@ -45,8 +45,10 @@ export class Competition {
 
 	load(id) {
 		if (this.id !== id) {
+			// ToDo: Replace static loading of enumerations
 			this.ClassGroups.load(loaded => { if (loaded) { this.fire(this.Events.competitionUpdated) } });
 			this.DivisionGroups.load(loaded => { if (loaded) { this.fire(this.Events.competitionUpdated) } });
+			
 			this.Server.loadCompetition(id, obj => {
 				// Prevent multiple requests from screwing up the state
 				if (obj !== undefined && obj.id !== this.id) {
@@ -70,7 +72,7 @@ export class Competition {
 			this.divisionGroups = obj.divisionGroups || this.divisionGroups;
 			this.classGroups = obj.classGroups || this.classGroups;
 			this.rules = obj.rules || this.rules;
-			this.permissions = obj.permissions ? parseInt(obj.permissions.toString(), 10) : Permissions.Any;
+			this.permissions = obj.permissions ? parseInt(obj.permissions.toString(), 10) : Permissions.Own;
 			this.status = obj.status ? parseInt(obj.status.toString(), 10) : Status.Open;
 			this.fire(this.Events.competitionUpdated);
 		}
