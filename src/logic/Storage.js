@@ -12,7 +12,8 @@ export class Storage {
 		serverMode: "serverMode",
 		scheduleService: "scheduleService",
 		competitionService: "competitionService",
-		resultService: "resultService"
+		resultService: "resultService",
+		registrationService: "registrationService"
 	};
 
 	set(key, value) {

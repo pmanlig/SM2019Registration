@@ -19,12 +19,11 @@ export class Registration {
 	}
 
 	load(id, token) {
-		console.log(`Loading registration info ${id}, ${token}`);
-		if (token === undefined) {
+		if (token === undefined || token === null) {
 			token = this.Tokens.getToken(id);
 		}
 
-		if (token !== undefined) {
+		if (token !== undefined && token !== null) {
 			this.Server.loadRegistration(id, token, json => {
 				this.token = token;
 
@@ -118,8 +117,8 @@ export class Registration {
 	}
 
 	toJson() {
-		return JSON.stringify({
-			competition: this.competition.id,
+		return {
+			competition: this.Competition.id,
 			token: this.token,
 			contact: { name: this.contact.name, email: this.contact.email, organization: this.contact.organization, account: this.contact.account },
 			registration: this.participants.map(p => {
@@ -132,32 +131,23 @@ export class Registration {
 					entries: p.registrationInfo
 				};
 			})
-		});
-	}
-
-	sendRegistration() {
-		if (window._debug) { console.log("Sending registration"); }
-		this.Registry.storeCompetitors(this.participants);
-		this.Storage.set("Contact", this.contact);
-		this.Server.sendRegistration(this.toJson())
-			.then(res => {
-				if (window._debug) { console.log(res.token); }
-				this.token = res.token;
-				this.Tokens.setToken(this.Competition.id, res.token);
-				this.Footers.addFooter(this.countEvents() + " starter registrerade", "info");
-				this.fire(this.Events.registrationUpdated, this);
-			})
-			.catch(error => {
-				if (window._debug) { console.log(error); }
-				this.Footers.addFooter(`Registreringen misslyckades! (${error})`);
-			});
+		}
 	}
 
 	register() {
 		let errors = new Validation(this.Competition).validate(this.participants);
 		if (errors.length === 0) {
-			this.sendRegistration();
-		} else {
+			this.Registry.storeCompetitors(this.participants);
+			this.Storage.set("Contact", this.contact);
+			this.Server.sendRegistration(this.toJson(), res => {
+				this.token = res.token;
+				this.Tokens.setToken(this.Competition.id, res.token);
+				this.Footers.addFooter(this.countEvents() + " starter registrerade", "info");
+				this.fire(this.Events.registrationUpdated, this);
+			}, error => {
+				this.Footers.addFooter(`Registreringen misslyckades! (${error.message || error})`);
+			});
+			} else {
 			this.Footers.addFooter(errors.length === 1 ? errors[0].error : errors.length + " fel hindrar registrering!");
 			this.fire(this.Events.registrationUpdated, this);
 		}

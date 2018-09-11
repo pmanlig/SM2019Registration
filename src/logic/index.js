@@ -8,3 +8,4 @@ export { setCookie, getCookie, deleteCookie } from './Cookies';
 export { LocalScheduleService } from './LocalScheduleService';
 export { LocalCompetitionService } from './LocalCompetitionService';
 export { LocalResultService } from './LocalResultService';
+export { LocalRegistrationService } from './LocalRegistrationService';

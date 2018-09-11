@@ -1,9 +1,56 @@
 export class Server {
 	static register = { name: "Server", createInstance: true };
-	static wire = ["fire", "Events", "Busy", "Storage", "ScheduleService", "CompetitionService", "ResultService"];
+	static wire = ["fire", "Events", "Busy", "Storage", "ScheduleService", "CompetitionService", "ResultService", "RegistrationService"];
 	static baseUrl = 'https://dev.bitnux.com/sm2019';
 
+	//#region Main fetch/send method
+	load(url, callback) {
+		this.Busy.setBusy(this, true);
+		fetch(url)
+			.then(result => result.json())
+			.then(json => {
+				callback(json);
+				this.Busy.setBusy(this, false);
+			})
+			.catch(e => {
+				console.log(e);
+				this.Busy.setBusy(this, false);
+			});
+		// finally() not supported in several browsers :(
+		// .finally(() => this.Busy.setBusy(Server.id, false));
+	}
+
+	send(url, data, callback, error) {
+		this.Busy.setBusy(this, true);
+		return fetch(url, {
+			crossDomain: true,
+			method: 'POST',
+			body: JSON.stringify(data),
+			headers: new Headers({ 'Content-Type': 'application/json' })
+		})
+			.then(res => {
+				this.Busy.setBusy(this, false);
+				if (res.ok) {
+					res.json()
+						.then(callback)
+						.catch(e => {
+							console.log(e);
+							if (error) { error(e); }
+						});
+				}
+				res.json().then(e => {
+					console.log(e);
+					if (error) { error(e); }
+				});
+			});
+	}
+	//#endregion
+
 	//#region Remote Services
+	jsonFile(name) {
+		return `${process.env.PUBLIC_URL}/${name}.json`;
+	}
+
 	remoteCompetitionService() {
 		return {
 			loadCompetitionList: (callback) => { this.load(`${Server.baseUrl}/competition`, callback); },
@@ -25,7 +72,10 @@ export class Server {
 	}
 
 	remoteRegistrationService() {
-		return {};
+		return {
+			loadRegistration: (id, token, callback) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(`${id}_token`) : `${Server.baseUrl}/competition/${id}/${token}`, callback); },
+			sendRegistration: (data, callback, error) => { this.send(`${Server.baseUrl}/register`, data, callback, error) }
+		}
 	}
 	//#endregion
 
@@ -53,10 +103,6 @@ export class Server {
 	}
 	//#endregion
 
-	jsonFile(name) {
-		return `${process.env.PUBLIC_URL}/${name}.json`;
-	}
-
 	//#region Logging
 	logFetchCallback(msg, c) {
 		if (!window._debug) { return c; }
@@ -69,30 +115,15 @@ export class Server {
 
 	logSendCallback(msg, data, c) {
 		if (!window._debug) { return c; }
+		console.log(msg);
+		console.log(data);
 		return json => {
-			console.log(msg);
-			console.log(data);
+			console.log("Reply:");
 			console.log(json);
 			c(json);
 		}
 	}
 	//#endregion
-
-	load(url, callback) {
-		this.Busy.setBusy(this, true);
-		fetch(url)
-			.then(result => result.json())
-			.then(json => {
-				callback(json);
-				this.Busy.setBusy(this, false);
-			})
-			.catch(e => {
-				console.log(e);
-				this.Busy.setBusy(this, false);
-			});
-		// finally() not supported in several browsers :(
-		// .finally(() => this.Busy.setBusy(Server.id, false));
-	}
 
 	//#region Competition
 	loadCompetitionList(callback) { this.competitionService.loadCompetitionList(this.logFetchCallback("Loading competition list", callback)); }
@@ -105,11 +136,11 @@ export class Server {
 	//#region Results
 	loadResults(competitionId, eventId, callback) { this.resultService.loadResults(competitionId, eventId, this.logFetchCallback(`Loading competition results for ${competitionId}/${eventId}`, callback)); }
 	//#endregion
-	
-	loadRegistration(competitionId, token, callback) {
-		this.load(isNaN(parseInt(competitionId, 10)) ? this.jsonFile(`${competitionId}_token`) : `${Server.baseUrl}/competition/${competitionId}/${token}`,
-			this.logFetchCallback(`Loading competition registration data for competition ${competitionId}`, callback));
-	}
+
+	//#region Registration
+	loadRegistration(competitionId, token, callback) { this.registrationService.loadRegistration(competitionId, token, this.logFetchCallback(`Loading registration data for ${competitionId}/${token}`, callback)); }
+	sendRegistration(data, callback, error) { this.registrationService.sendRegistration(data, this.logSendCallback(`Sending registration`, data, callback), error); }
+	//#endregion
 
 	createSchedule(callback) {
 		// ToDo: connect to real service instead
@@ -138,34 +169,5 @@ export class Server {
 
 	loadDivisionGroups(callback) {
 		this.load(this.jsonFile("divisions"), callback);
-	}
-
-	sendRegistration(reg) {
-		console.log("Sending registration");
-		console.log(JSON.parse(reg));
-		this.Busy.setBusy(this, true);
-		return fetch(Server.baseUrl + "register", {
-			crossDomain: true,
-			method: 'POST',
-			body: reg,
-			headers: new Headers({ 'Content-Type': 'application/json' })
-		})
-			.then(res => {
-				this.Busy.setBusy(this, false);
-				console.log(res);
-				if (res.ok) {
-					return res.json();
-				}
-				/*
-				// Don't remember why this was used before...?
-				if (res.statusText) {
-					throw Error(res.statusText);
-				}
-				*/
-				return res.json().then(json => {
-					console.log(json);
-					throw Error(json.message);
-				});
-			});
 	}
 }

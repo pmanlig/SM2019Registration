@@ -24,11 +24,37 @@ schedule.squads[1].participants.push(new Participant(new Person("Tor Kangas", 3,
 schedule.squads[1].participants.push(new Participant(new Person("Åsa Juhlén", 4, "Gävle PK")));
 
 export class ComponentTest extends React.Component {
-	static wire = ["ScheduleProperties", "SquadPicker"];
+	static wire = ["ScheduleProperties", "SquadPicker", "Server"];
 
 	constructor(props) {
 		super(props);
 		this.state = { showDialog: true };
+
+		let registration = {
+			competition: "1",
+			contact: {
+				name: "Patrik Manlig",
+				email: "ordforande@gavlepistol.se",
+				organization: "Gävle PK",
+				account: "344085-6"
+			},
+			registration: [
+				{
+					participant: {
+						name: "Patrik Manlig",
+						id: "28283",
+						organization: "Gävle PK"
+					},
+					entries: [
+						{
+							event: 3,
+							rounds: [{}]
+						}
+					]
+				}
+			]
+		}
+		this.Server.sendRegistration(registration, res => { console.log("OK:"); console.log(res); }, error => { console.log("Error:"); console.log(error); });
 	}
 
 	render() {
