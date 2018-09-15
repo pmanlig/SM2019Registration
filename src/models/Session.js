@@ -2,16 +2,18 @@ import { Events, setCookie, getCookie, deleteCookie } from '../logic';
 
 export class Session {
 	static register = { name: "Session", createInstance: true };
-	static wire = ["fire"];
+	static wire = ["fire", "Server"];
 
 	constructor() {
 		this.user = getCookie("user", "");
 	}
 
 	login(user, password) {
-		this.user = user;
-		setCookie("user", this.user);
-		this.fire(Events.userChanged);
+		this.Server.login(user, password, status => {
+			this.user = user;
+			setCookie("user", this.user);
+			this.fire(Events.userChanged);
+		});
 	}
 
 	logout() {

@@ -9,26 +9,13 @@ export class RegistrationView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = { schedule: undefined };
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.registrationUpdated, () => this.setState({}));
-		this.subscribe(this.Events.showSchedule, this.showSchedule);
 		this.Registration.load(props.match.params.id, props.match.params.token);
 	}
 
 	componentDidMount() {
 		this.fire(this.Events.changeTitle, "Anmälan till " + this.Competition.name);
-	}
-
-	showSchedule = (participant, event, round) => {
-		this.Server.loadSchedule(event.schedule, json => {
-			this.setState({ event: event, schedule: json, participant: participant, round: round });
-		});
-	}
-
-	selectSquad = (squad) => {
-		// this.state.participant.addSquad(this.state.event, squad, this.state.round);
-		this.setState({ schedule: undefined });
 	}
 
 	render() {
@@ -37,7 +24,7 @@ export class RegistrationView extends React.Component {
 		}
 
 		return <div>
-			{this.state.schedule && <this.SquadPicker schedule={this.state.schedule} onSelect={this.selectSquad} />}
+			<this.SquadPicker />
 			<this.RegistrationContact />
 			<this.RegistrationForm />
 			<this.Summary />

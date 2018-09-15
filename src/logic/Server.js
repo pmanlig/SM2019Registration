@@ -5,6 +5,7 @@ export class Server {
 
 	//#region Main fetch/send method
 	load(url, callback) {
+		if (window._debug) { console.log(`URL: ${url}`); }
 		this.Busy.setBusy(this, true);
 		fetch(url)
 			.then(result => result.json())
@@ -21,6 +22,10 @@ export class Server {
 	}
 
 	send(url, data, callback, error) {
+		if (window._debug) {
+			console.log(`URL: ${url}`);
+			if (error === undefined) { error = e => console.log(e) }
+		}
 		this.Busy.setBusy(this, true);
 		return fetch(url, {
 			crossDomain: true,
@@ -30,18 +35,13 @@ export class Server {
 		})
 			.then(res => {
 				this.Busy.setBusy(this, false);
-				if (res.ok) {
-					res.json()
-						.then(callback)
-						.catch(e => {
-							console.log(e);
-							if (error) { error(e); }
-						});
+				if (!res.ok) {
+					res.json().then(error);
+					return;
 				}
-				res.json().then(e => {
-					console.log(e);
-					if (error) { error(e); }
-				});
+				res.json()
+					.then(callback)
+					.catch(error);
 			});
 	}
 	//#endregion
@@ -142,6 +142,7 @@ export class Server {
 	sendRegistration(data, callback, error) { this.registrationService.sendRegistration(data, this.logSendCallback(`Sending registration`, data, callback), error); }
 	//#endregion
 
+	//#region Schedule
 	createSchedule(callback) {
 		// ToDo: connect to real service instead
 		this.ScheduleService.createNewSchedule(this.logFetchCallback("Creating schedule", callback));
@@ -162,7 +163,9 @@ export class Server {
 		// ToDo: connect to real service instead
 		this.ScheduleService.updateSchedule(schedule);
 	}
+	//#endregion
 
+	//#region Value lists
 	loadClassGroups(callback) {
 		this.load(this.jsonFile("classes"), callback);
 	}
@@ -170,4 +173,23 @@ export class Server {
 	loadDivisionGroups(callback) {
 		this.load(this.jsonFile("divisions"), callback);
 	}
+	//#endregion
+
+	//#region Login
+	login(user, password, callback) {
+		if (this.local) {
+			callback({});
+		} else {
+			this.send(`${Server.baseUrl}/login`, { email: user, password: password }, this.logSendCallback("Login", user, callback));
+		}
+	}
+
+	logout(callback) {
+		if (this.local) {
+			callback({});
+		} else {
+			this.load(`${Server.baseUrl}/logout`, this.logFetchCallback("Logout", callback));
+		}
+	}
+	//#endregion
 }

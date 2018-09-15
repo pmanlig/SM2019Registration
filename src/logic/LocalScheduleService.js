@@ -25,10 +25,12 @@ export class LocalScheduleService {
 	}
 
 	getSchedule(scheduleId, callback) {
-		callback(this.schedules.find(s => s.id === scheduleId));
+		callback(this.schedules.find(s => s.id === scheduleId) || Schedule.fromJson({ id: scheduleId, squads: [], squadId: 1 }));
 	}
 
 	updateSchedule(schedule) {
+		console.log("Updating schedule");
+		console.log(schedule);
 		this.schedules = this.schedules.map(s => s.id === schedule.id ? schedule : s);
 		this.Storage.set(this.Storage.keys.scheduleService, this.schedules);
 	}

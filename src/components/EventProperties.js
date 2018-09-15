@@ -5,12 +5,7 @@ import { Spinner, Dropdown, Label } from '.';
 
 export class EventProperties extends React.Component {
 	static register = { name: "EventProperties" };
-	static wire = ["fire", "Events", "Competition", "ScheduleProperties", "Server"];
-
-	constructor(props) {
-		super(props);
-		this.state = { showSchedule: false };
-	}
+	static wire = ["fire", "Events", "Competition", "Server"];
 
 	setGroup = (event, property, group) => {
 		group = parseInt(group, 10);
@@ -18,22 +13,7 @@ export class EventProperties extends React.Component {
 	}
 
 	showSchedule = () => {
-		let callback = s => {
-			this.props.event.schedule = s;
-			this.fire(this.Events.competitionUpdated);
-			this.setState({ showSchedule: true });
-		}
-
-		if (this.props.event.schedule === undefined) {
-			this.Server.createSchedule(callback);
-		} else {
-			let scheduleId = parseInt(this.props.event.schedule, 10);
-			if (!isNaN(scheduleId)) {
-				this.Server.loadSchedule(scheduleId, callback);
-			} else {
-				this.setState({ showSchedule: true });
-			}
-		}
+		this.fire(this.Events.editSchedule, this.props.event);
 	}
 
 	render() {
@@ -50,7 +30,6 @@ export class EventProperties extends React.Component {
 				<Label text="Vapengrupper"><Dropdown className="eventProperty" value={event.divisions || -1} list={this.props.divisionGroups} onChange={e => this.setGroup(event, "divisions", e.target.value)} /></Label>
 				<Label text="Max starter" align="center"><Spinner className="eventProperty" value={event.maxRegistrations || 1} onChange={value => this.Competition.updateEvent(event, "maxRegistrations", Math.max(1, value))} /></Label>
 				<Label text="Skjutlag/patruller" align="center"><button className="eventProperty button" onClick={this.showSchedule}>{event.schedule ? "Redigera" : "Skapa"}</button></Label>
-				{this.state.showSchedule && <this.ScheduleProperties divisions={this.props.divisionGroups.find(d => d.id === event.divisions)} schedule={event.schedule} onClose={e => this.setState({ showSchedule: false })} />}
 			</div>
 		</div>;
 	}

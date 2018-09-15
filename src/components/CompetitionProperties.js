@@ -5,7 +5,7 @@ import { Dropdown } from '.';
 
 export class CompetitionProperties extends React.Component {
 	static register = { name: "CompetitionProperties" };
-	static wire = ["Server", "Competition", "EventProperties", "EventBus", "Events"]
+	static wire = ["Server", "Competition", "EventProperties", "ScheduleProperties", "EventBus", "Events"]
 
 	status = [{ id: Status.Hidden, description: "Gömd" }, { id: Status.Open, description: "Öppen" }, { id: Status.Closed, description: "Stängd" }];
 
@@ -24,6 +24,7 @@ export class CompetitionProperties extends React.Component {
 	render() {
 		let { classGroups, divisionGroups } = this.state;
 		return <div>
+			<this.ScheduleProperties divisionGroups={divisionGroups} />
 			<table className="competitionInfo">
 				<tbody>
 					<tr>

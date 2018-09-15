@@ -3,7 +3,27 @@ import React from 'react';
 
 export class SquadPicker extends React.Component {
 	static register = { name: "SquadPicker" };
-	static wire = ["Competition"];
+	static wire = ["EventBus", "Events", "Server", "Competition"];
+
+	constructor(props) {
+		super(props);
+		this.state = {};
+		this.EventBus.manageEvents(this);
+		this.EventBus.subscribe(this.Events.showSchedule, this.showSchedule);
+	}
+
+	showSchedule = (participant, event, round) => {
+		this.Server.loadSchedule(event.schedule, json => {
+			console.log("Showing Schedule");
+			console.log(json);
+			this.setState({ event: event, schedule: json, participant: participant, round: round });
+		});
+	}
+
+	selectSquad = (squad) => {
+		// this.state.participant.addSquad(this.state.event, squad, this.state.round);
+		this.setState({ schedule: undefined });
+	}
 
 	squadStatus(squad) {
 		if (squad.slots === squad.participants.length) { return "full"; }
@@ -34,7 +54,9 @@ export class SquadPicker extends React.Component {
 	}
 
 	render() {
-		let schedule = this.props.schedule;
+		let schedule = this.state.schedule;
+		// if (schedule === undefined) { return null; }
+
 		return <div className="squad-picker">
 			<h1>Starttider</h1>
 			<table>
@@ -45,7 +67,7 @@ export class SquadPicker extends React.Component {
 					</tr>
 				</thead>
 				<tbody>
-					{schedule.squads && schedule.squads.map(s => this.renderSquad(s))}
+					{schedule && schedule.squads && schedule.squads.map(s => this.renderSquad(s))}
 				</tbody>
 			</table>
 		</div>;

@@ -8,13 +8,61 @@ import { SquadProperties } from './SquadProperties';
 
 export class ScheduleProperties extends React.Component {
 	static register = { name: "ScheduleProperties" };
-	static wire = ["Server"];
+	static wire = ["Events", "EventBus", "Server"];
+	schedules = [];
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			slots: 8, startTime: "8:00", interval: 10, mixDivisions: true, selectedDivisions: this.props.divisions ? this.props.divisions.divisions : []
-		};
+		this.state = {};
+		this.EventBus.manageEvents(this);
+		this.EventBus.subscribe(this.Events.editSchedule, this.editSchedule);
+	}
+
+	findDivisions() {
+		return (!this.state.event || !this.state.event.divisions) ? undefined :
+			this.props.divisionGroups.filter(dg => dg.id === this.state.event.divisions).map(dg => dg.divisions).find(d => { return true; });
+	}
+
+	newScheduleInformation(event, schedule) {
+		this.schedules[schedule.id] =
+			{
+				slots: 8,
+				startTime: "8:00",
+				interval: 10,
+				mixDivisions: true,
+				selectedDivisions: ((!event || !event.divisions) ? undefined :
+					this.props.divisionGroups.filter(dg => dg.id === event.divisions).map(dg => dg.divisions).find(d => { return true; })) || [],
+				event: event,
+				schedule: schedule
+			};
+		return this.schedules[schedule.id];
+	}
+
+	loadScheduleInformation(event, schedule) {
+		this.setState(this.schedules[schedule.id] || this.newScheduleInformation(event, schedule));
+	}
+
+	editSchedule = (event) => {
+		// Create new schedule if one doesn't exist		
+		if (event.schedule === undefined) {
+			this.Server.createSchedule(schedule => {
+				event.schedule = schedule.id;
+				this.loadScheduleInformation(event, schedule);
+			});
+			return;
+		}
+		// Test schedule to handle old data format; patch event if old format
+		let scheduleId = parseInt(event.schedule, 10);
+		if (isNaN(scheduleId)) {
+			let schedule = event.schedule;
+			event.schedule = schedule.id;
+			this.loadScheduleInformation(event, schedule);
+			return;
+		}
+		// Schedule exists; load and show it
+		this.Server.loadSchedule(scheduleId, schedule => {
+			this.loadScheduleInformation(event, schedule);
+		});
 	}
 
 	updateStartTime(t) {
@@ -43,20 +91,20 @@ export class ScheduleProperties extends React.Component {
 
 	addSquad = () => {
 		let { startTime, slots, selectedDivisions, mixDivisions, interval } = this.state;
-		this.props.schedule.addSquad(startTime, slots, selectedDivisions, mixDivisions);
-		this.Server.updateSchedule(this.props.schedule);
+		this.state.schedule.addSquad(startTime, slots, selectedDivisions, mixDivisions);
+		this.Server.updateSchedule(this.state.schedule);
 		this.setState({ startTime: new Time(startTime).increase(interval).toString() });
 	}
 
 	deleteSquad = (s) => {
-		this.props.schedule.deleteSquad(s);
-		this.Server.updateSchedule(this.props.schedule);
+		this.state.schedule.deleteSquad(s);
+		this.Server.updateSchedule(this.state.schedule);
 		this.setState({});
 	}
 
 	updateSquadProperty = (id, property, value) => {
-		this.props.schedule.updateSquadProperty(id, property, value);
-		this.Server.updateSchedule(this.props.schedule);
+		this.state.schedule.updateSquadProperty(id, property, value);
+		this.Server.updateSchedule(this.state.schedule);
 	}
 
 	selectDivision = (d) => {
@@ -64,14 +112,22 @@ export class ScheduleProperties extends React.Component {
 		this.setState({ selectedDivisions: divisions.includes(d) ? divisions.filter(x => x !== d) : divisions.concat([d]) });
 	}
 
+	onClose = () => {
+		// ToDo: Save schedule
+		this.setState({ schedule: undefined });
+	}
+
 	render() {
+		if (this.state.schedule === undefined) { return null; }
+
 		let rowWidth = 11.0;
-		if (this.props.divisions) {
+		let divisions = this.findDivisions();
+		if (divisions) { // ToDo: update
 			rowWidth += 4;
-			this.props.divisions.divisions.forEach(d => rowWidth += d.length + 0.5);
+			divisions.forEach(d => rowWidth += d.length + 0.5);
 		}
 		rowWidth = rowWidth + "em";
-		return <ModalDialog className="schedule-properties" title="Skjutlag/patruller" onClose={this.props.onClose}>
+		return <ModalDialog className="schedule-properties" title="Skjutlag/patruller" onClose={this.onClose}>
 			<Toolbar className="schedule-tools">
 				<Label text="Starttid">
 					<input className="schedule-property" value={this.state.startTime} size="5"
@@ -79,9 +135,9 @@ export class ScheduleProperties extends React.Component {
 						onBlur={e => this.blurStartTime(e.target.value)} />
 				</Label>
 				<Label text="Platser" align="center"><Spinner className="schedule-property" value={this.state.slots} onChange={this.updateSlots} /></Label>
-				{this.props.divisions && this.props.divisions.divisions.map(d =>
+				{divisions && divisions.map(d =>
 					<Label key={d} text={d} align="center"> <input type="checkbox" checked={this.state.selectedDivisions.includes(d)} onChange={e => this.selectDivision(d)} /></Label>)}
-				{this.props.divisions && <Label text="Blanda" align="center"><input type="checkbox" checked={this.state.mixDivisions} onChange={e => this.setState({ mixDivisions: e.target.value })} /></Label>}
+				{divisions && <Label text="Blanda" align="center"><input type="checkbox" checked={this.state.mixDivisions} onChange={e => this.setState({ mixDivisions: e.target.value })} /></Label>}
 				<Label text="Tid till nästa" align="center"><input className="schedule-property" value={this.state.interval} onChange={this.updateInterval} /></Label>
 				<Label text="Lägg till" align="center"><button className="button-add green schedule-property" onClick={this.addSquad} /></Label>
 			</Toolbar>
@@ -91,17 +147,17 @@ export class ScheduleProperties extends React.Component {
 						<tr>
 							<th className="schedule-start-time">Tid</th>
 							<th className="schedule-slots">Platser</th>
-							{this.props.divisions && this.props.divisions.divisions.map(d => {
+							{divisions && divisions.map(d => {
 								let w = (d.length + 0.5) + "em";
 								return <th key={d} className="schedule-division" style={{ minWidth: w, maxWidth: w, width: w }}>{d}</th>
 							})}
-							{this.props.divisions && <th className="schedule-mix">Blanda</th>}
+							{divisions && <th className="schedule-mix">Blanda</th>}
 							<th className="schedule-delete"></th>
 							<th className="schedule-pad"></th>
 						</tr>
 					</thead>
 					<tbody>
-						{this.props.schedule.squads.map(s => <SquadProperties key={s.id} squad={s} divisions={this.props.divisions} onUpdate={this.updateSquadProperty} onDelete={this.deleteSquad} />)}
+						{this.state.schedule.squads.map(s => <SquadProperties key={s.id} squad={s} divisions={divisions} onUpdate={this.updateSquadProperty} onDelete={this.deleteSquad} />)}
 					</tbody>
 				</table>
 			</div>

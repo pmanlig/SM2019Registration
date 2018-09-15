@@ -10,12 +10,18 @@ export class Event {
 		this.date = date;
 	}
 
+	static toNumber(x) {
+		if (x === undefined) { return undefined; }
+		x = parseInt(x.toString(), 10);
+		return isNaN(x) ? undefined : x;
+	}
+
 	static fromJson(e) {
 		let nE = new Event(e.name, new Date(e.date));
-		nE.id = e.id;
-		nE.classes = e.classes;
-		nE.divisions = e.divisions;
-		nE.schedule = e.schedule;
+		nE.id = Event.toNumber(e.id);
+		nE.classes = Event.toNumber(e.classes);
+		nE.divisions = Event.toNumber(e.divisions);
+		nE.schedule = ((typeof e.schedule === "object") ? e.schedule.id : e.schedule);
 		nE.maxRegistrations = e.maxRegistrations;
 		return nE;
 	}

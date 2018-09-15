@@ -53,7 +53,7 @@ export class Competition {
 				// Prevent multiple requests from screwing up the state
 				if (obj !== undefined && obj.id !== this.id) {
 					this.initialize();
-					this.loadFrom(obj);
+					this.fromJson(obj);
 				}
 			});
 		} else {
@@ -61,7 +61,7 @@ export class Competition {
 		}
 	}
 
-	loadFrom(obj) {
+	fromJson(obj) {
 		if (obj) {
 			// ToDo: remove when service is fixed!
 			this.id = obj.id || obj.competition_id || this.id;

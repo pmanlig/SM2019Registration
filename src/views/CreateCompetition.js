@@ -43,7 +43,7 @@ export class CreateCompetition extends React.Component {
 			}
 		});
 		this.Competition.initialize();
-		this.Competition.loadFrom(data);
+		this.Competition.fromJson(data);
 	}
 
 	createCompetition = () => {
