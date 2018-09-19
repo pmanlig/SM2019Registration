@@ -24,10 +24,24 @@ export class Participant extends Person {
 		return this.event(id);
 	}
 
-	addSquad(event, squad, round) {
-		let info = this.addEvent(event.id);
+	addSquad(event, round, squad) {
+		let info = this.addEvent(event);
+		if (window._debug) {
+			console.log(`Setting squad for ${event}, ${round}`);
+			console.log(squad);
+			console.log(info);
+		}
 		info.rounds[round].squad = squad.id;
 		info.rounds[round].time = squad.startTime;
+	}
+
+	getStartTime(event, round) {
+		let info = this.event(event);
+		if (window._debug) {
+			console.log(`Getting start time for ${event}, ${round}`);
+			console.log(info);
+		}
+		return info === undefined ? undefined : (info.rounds[round] === undefined ? undefined : info.rounds[round].time);
 	}
 
 	removeEvent(id) {

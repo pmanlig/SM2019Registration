@@ -13,6 +13,7 @@ export class Registration {
 	initialize() {
 		this.subscribe(this.Events.setRegistrationInfo, this.setContactField.bind(this));
 		this.subscribe(this.Events.deleteParticipant, this.deleteParticipant.bind(this));
+		this.subscribe(this.Events.selectSquad, this.selectSquad.bind(this));
 		this.subscribe(this.Events.registerForCompetition, () => this.register());
 		this.contact = this.Storage.get("Contact") || new Person();
 		this.contact.account = this.contact.account || ""; // Patch to handle stored information without account
@@ -108,6 +109,16 @@ export class Registration {
 		if (field === "account" && (value.length > 8 || !(/^\d*[-]?\d*$/.test(value)))) { return; } // Add more validation rules later?
 		this.contact[field] = value;
 		this.fire(this.Events.registrationUpdated, this);
+	}
+
+	selectSquad(participant, event, round, squad) {
+		console.log("Selecting squad");
+		console.log(participant);
+		console.log(event);
+		console.log(round);
+		console.log(squad);
+		this.getParticipant(participant).addSquad(event, round, squad);
+		this.fire(this.Events.registrationUpdated);
 	}
 
 	countEvents() {

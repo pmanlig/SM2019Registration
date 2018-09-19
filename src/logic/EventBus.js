@@ -19,6 +19,7 @@ export class Events {
 	static registerForCompetition = Events.eventId++;
 	static userChanged = Events.eventId++;
 	static serverChanged = Events.eventId++;
+	static selectSquad = Events.eventId++;
 }
 
 export class EventBus {

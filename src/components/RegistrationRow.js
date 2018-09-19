@@ -19,9 +19,9 @@ export class RegistrationRow extends React.Component {
 		</td>;
 	}
 
-	scheduleButton(row, participantId, event, rounds) {
+	scheduleButton(row, participant, event, rounds) {
 		return <td key={`s${event.id}${row}`} className="vcenter">
-			{row < rounds.length && <button className="scheduleButton" onClick={e => this.fire(this.Events.showSchedule, participantId, event, row)}>Välj starttid</button>}
+			{row < rounds.length && <button className="scheduleButton" onClick={e => this.fire(this.Events.showSchedule, participant.id, event, row)}>{participant.getStartTime(event.id, row) || "Välj starttid"}</button>}
 		</td>;
 	}
 
@@ -46,7 +46,7 @@ export class RegistrationRow extends React.Component {
 			controls.push(this.divisionDropdown(row, participant.id, event.id, eventInfo.rounds, this.Competition.divisions(event.divisions)));
 		}
 		if (event.schedule) {
-			controls.push(this.scheduleButton(row, participant.id, event, eventInfo.rounds));
+			controls.push(this.scheduleButton(row, participant, event, eventInfo.rounds));
 			if (event.maxRegistrations > 1) {
 				controls.push(this.roundButton(row, participant.id, event, eventInfo.rounds));
 			}

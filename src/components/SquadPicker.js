@@ -21,7 +21,8 @@ export class SquadPicker extends React.Component {
 	}
 
 	selectSquad = (squad) => {
-		// this.state.participant.addSquad(this.state.event, squad, this.state.round);
+		let { participant, event, round } = this.state;
+		this.EventBus.fire(this.Events.selectSquad, participant, event.id, round, squad);
 		this.setState({ schedule: undefined });
 	}
 
@@ -33,7 +34,7 @@ export class SquadPicker extends React.Component {
 
 	renderSquad(squad) {
 		let rows = [];
-		rows.push(<tr key={squad.id} className={this.squadStatus(squad)} onClick={e => this.props.onSelect(squad)}>
+		rows.push(<tr key={squad.id} className={this.squadStatus(squad)} onClick={e => this.selectSquad(squad)}>
 			<td className="time">{squad.startTime}</td>
 			<td>{`${squad.participants.length} / ${squad.slots}`}</td>
 			<td>
