@@ -1,16 +1,16 @@
 {
   "name": "sm2019",
   "version": "0.1.0",
-	"private": true,
-	"homepage": "http://manlig.org/sm2019/",
+  "private": true,
+  "homepage": "http://manlig.org/sm2019/",
   "dependencies": {
     "react": "^16.4.1",
-    "react-date-picker": "^6.10.1",
+    "react-date-picker": "^6.13.0",
     "react-dom": "^16.4.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "^1.1.1",
-    "rxjs": "^6.2.0"
+    "react-scripts": "^2.1.1",
+    "rxjs": "^6.3.3"
   },
   "scripts": {
     "start": "react-scripts start",
