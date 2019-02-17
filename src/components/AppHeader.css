@@ -36,8 +36,8 @@
 	vertical-align: middle;
 	background: red;
 	background-image: -moz-radial-gradient(45px 45px 45deg, circle cover, yellow 0%, orange 100%, red 95%);
-	background-image: -webkit-radial-gradient(45px 45px, circle cover, yellow, orange);
-	background-image: radial-gradient(45px 45px 45deg, circle cover, yellow 0%, orange 100%, red 95%);
+	background-image: -webkit-radial-gradient(45px 45px, circle farthest-corner, yellow, orange);
+	background-image: radial-gradient(45px 45px 45deg, circle farthest-corner, yellow 0%, orange 100%, red 95%);
 	/*animation-name: App-logo-spin;
 	animation-duration: 3s;
 	animation-iteration-count: infinite;

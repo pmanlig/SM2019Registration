@@ -1,6 +1,6 @@
 export { Events } from '../logic';
 export { Participant } from './Participant';
-export { Person, PersonDefinition } from './Person';
+export { Person } from './Person';
 export { Registry } from './Registry';
 export { Competition, Permissions, Status, Operations } from './Competition';
 export { Registration } from './Registration';
