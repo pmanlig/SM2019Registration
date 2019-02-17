@@ -1,4 +1,5 @@
 import { Event } from '.';
+import { EventGroup } from './EventGroup';
 
 export class Permissions {
 	static Any = 0;
@@ -48,7 +49,7 @@ export class Competition {
 			// ToDo: Replace static loading of enumerations
 			this.ClassGroups.load(loaded => { if (loaded) { this.fire(this.Events.competitionUpdated) } });
 			this.DivisionGroups.load(loaded => { if (loaded) { this.fire(this.Events.competitionUpdated) } });
-			
+
 			this.Server.loadCompetition(id, obj => {
 				// Prevent multiple requests from screwing up the state
 				if (obj !== undefined && obj.id !== this.id) {
@@ -67,13 +68,15 @@ export class Competition {
 			this.id = obj.id || obj.competition_id || this.id;
 			this.name = obj.name || this.name;
 			this.description = obj.description || this.description;
-			this.eventGroups = obj.eventGroups || this.eventGroups;
+			this.eventGroups = obj.eventGroups ? obj.eventGroups.map(eg => EventGroup.fromJson(eg)) : this.eventGroups;
 			this.events = obj.events ? obj.events.map(e => Event.fromJson(e)) : this.events;
 			this.divisionGroups = obj.divisionGroups || this.divisionGroups;
 			this.classGroups = obj.classGroups || this.classGroups;
 			this.rules = obj.rules || this.rules;
 			this.permissions = obj.permissions ? parseInt(obj.permissions.toString(), 10) : Permissions.Own;
 			this.status = obj.status ? parseInt(obj.status.toString(), 10) : Status.Open;
+			console.log("Competition data loded");
+			console.log(this);
 			this.fire(this.Events.competitionUpdated);
 		}
 	}
@@ -143,7 +146,11 @@ export class Competition {
 	eventList(eventGroup) {
 		if (this.eventGroups.length === 0) return this.events;
 		let events = [];
-		this.eventGroups.forEach(eg => (eventGroup === undefined || eg.id === eventGroup) && eg.events.forEach(e => events.push(this.event(e))));
+		this.eventGroups.forEach(eg => {
+			if (eventGroup === undefined || eg.id === eventGroup) {
+				eg.events.forEach(e => events.push(this.event(e)))
+			}
+		});
 		return events;
 	}
 
