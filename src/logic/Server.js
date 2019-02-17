@@ -24,7 +24,7 @@ export class Server {
 	send(url, data, callback, error) {
 		if (window._debug) {
 			console.log(`URL: ${url}`);
-			if (error === undefined) { error = e => console.log(e) }
+			if (error === undefined) { error = e => { console.log("Error"); console.log(e); } }
 		}
 		this.Busy.setBusy(this, true);
 		return fetch(url, {
@@ -180,7 +180,7 @@ export class Server {
 		if (this.local) {
 			callback({});
 		} else {
-			this.send(`${Server.baseUrl}/login`, { email: user, password: password }, this.logSendCallback("Login", user, callback));
+			this.send(`${Server.baseUrl}/login`, { user: user, password: password }, this.logSendCallback("Login", user, callback));
 		}
 	}
 
