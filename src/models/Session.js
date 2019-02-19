@@ -17,8 +17,10 @@ export class Session {
 	}
 
 	logout() {
-		this.user = "";
-		deleteCookie("user");
-		this.fire(Events.userChanged);
+		if (this.user != "") {
+			this.user = "";
+			deleteCookie("user");
+			this.fire(Events.userChanged);
+		}
 	}
 }

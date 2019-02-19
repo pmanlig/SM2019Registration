@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 
 export class LocalToggle extends React.Component {
 	static register = { name: "LocalToggle" }
-	static wire = ["Server"];
+	static wire = ["Server", "Session"];
 
 	toggle = e => {
 		this.Server.setLocal(!this.Server.local);
+		this.Session.logout();
 		e.preventDefault();
 		this.setState({});
 	}
