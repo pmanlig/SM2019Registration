@@ -17,7 +17,7 @@ export class Session {
 	}
 
 	logout() {
-		if (this.user != "") {
+		if (this.user !== "") {
 			this.Server.logout();
 			this.user = "";
 			deleteCookie("user");
