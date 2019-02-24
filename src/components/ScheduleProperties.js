@@ -84,8 +84,8 @@ export class ScheduleProperties extends React.Component {
 		}
 	}
 
-	updateInterval = (i) => {
-		let newInterval = parseInt(i, 10);
+	updateInterval = (e) => {
+		let newInterval = parseInt(e.target.value, 10);
 		if (isNaN(newInterval)) { return }
 		this.setState({ interval: newInterval });
 	}
@@ -138,7 +138,7 @@ export class ScheduleProperties extends React.Component {
 				<Label text="Platser" align="center"><Spinner className="schedule-property" value={this.state.slots} onChange={this.updateSlots} /></Label>
 				{divisions && divisions.map(d =>
 					<Label key={d} text={d} align="center"> <input type="checkbox" checked={this.state.selectedDivisions.includes(d)} onChange={e => this.selectDivision(d)} /></Label>)}
-				{divisions && <Label text="Blanda" align="center"><input type="checkbox" checked={this.state.mixDivisions} onChange={e => this.setState({ mixDivisions: e.target.value })} /></Label>}
+				{divisions && <Label text="Blanda" align="center"><input type="checkbox" checked={this.state.mixDivisions} onChange={e => this.setState({ mixDivisions: e.target.checked })} /></Label>}
 				<Label text="Tid till nästa" align="center"><input className="schedule-property" value={this.state.interval} onChange={this.updateInterval} /></Label>
 				<Label text="Lägg till" align="center"><button className="button-add green schedule-property" onClick={this.addSquad} /></Label>
 			</Toolbar>
