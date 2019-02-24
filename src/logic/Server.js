@@ -7,7 +7,10 @@ export class Server {
 	load(url, callback) {
 		if (window._debug) { console.log(`URL: ${url}`); }
 		this.Busy.setBusy(this, true);
-		fetch(url)
+		fetch(url, {
+			crossDomain: true,
+			credentials: 'include',
+		})
 			.then(result => result.json())
 			.then(json => {
 				callback(json);
