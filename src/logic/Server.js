@@ -1,6 +1,6 @@
 export class Server {
 	static register = { name: "Server", createInstance: true };
-	static wire = ["fire", "Events", "Busy", "Storage", "ScheduleService", "CompetitionService", "ResultService", "RegistrationService"];
+	static wire = ["fire", "Events", "Busy", "Storage", "ScheduleService", "CompetitionService", "ResultService", "RegistrationService", "Footers"];
 	static baseUrl = 'https://dev.bitnux.com/sm2019';
 
 	//#region Main fetch/send method
@@ -103,13 +103,17 @@ export class Server {
 		return `${process.env.PUBLIC_URL}/${name}.json`;
 	}
 
+	errorHandler(msg) {
+		return res => { this.Footers.addFooter(msg + (res.message ? " - " + res.message : "")); }
+	}
+
 	remoteCompetitionService() {
 		return {
 			loadCompetitionList: (callback) => { this.load(`${Server.baseUrl}/competition`, callback); },
 			loadCompetition: (id, callback) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(id) : `${Server.baseUrl}/competition/${id}`, callback); },
-			createCompetition: (competition, callback) => { this.send(`${Server.baseUrl}/competition`, competition, callback); },
-			updateCompetition: (id, competition, callback) => { this.update(`${Server.baseUrl}/competition/${id}`, competition, callback); },
-			deleteCompetition: (id, callback) => { this.delete(`${Server.baseUrl}/competition/${id}`, callback); }
+			createCompetition: (competition, callback) => { this.send(`${Server.baseUrl}/competition`, competition, callback, this.errorHandler("Kan inte skapa tävling")); },
+			updateCompetition: (id, competition, callback) => { this.update(`${Server.baseUrl}/competition/${id}`, competition, callback, this.errorHandler("Kan inte uppdatera tävling")); },
+			deleteCompetition: (id, callback) => { this.delete(`${Server.baseUrl}/competition/${id}`, callback, this.errorHandler("Kan inte radera tävling")); }
 		};
 	}
 
