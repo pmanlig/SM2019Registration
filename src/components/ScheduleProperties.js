@@ -8,7 +8,7 @@ import { SquadProperties } from './SquadProperties';
 
 export class ScheduleProperties extends React.Component {
 	static register = { name: "ScheduleProperties" };
-	static wire = ["Events", "EventBus", "Server"];
+	static wire = ["Events", "EventBus", "Competition", "Server"];
 	schedules = [];
 
 	constructor(props) {
@@ -48,6 +48,7 @@ export class ScheduleProperties extends React.Component {
 			this.Server.createSchedule(schedule => {
 				event.schedule = schedule.id;
 				this.loadScheduleInformation(event, schedule);
+				this.Competition.updateEvent(event);
 			});
 			return;
 		}

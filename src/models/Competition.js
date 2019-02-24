@@ -122,11 +122,13 @@ export class Competition {
 	}
 
 	updateEvent(event, prop, value) {
-		this.events.forEach(e => {
-			if (e.id === event.id) {
-				e[prop] = value;
-			}
-		});
+		if (prop && value) {
+			this.events.forEach(e => {
+				if (e.id === event.id) {
+					e[prop] = value;
+				}
+			});
+		}
 		this.fire(this.Events.competitionUpdated);
 	}
 
