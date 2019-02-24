@@ -139,7 +139,11 @@ export class Registration {
 						id: p.competitionId,
 						organization: p.organization
 					},
-					entries: p.registrationInfo
+					entries: p.registrationInfo.map(r => { return {
+						class: r.class,
+						event: r.event,
+						rounds: r.rounds
+					}})
 				};
 			})
 		}

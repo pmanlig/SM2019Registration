@@ -29,6 +29,7 @@ export class Server {
 		this.Busy.setBusy(this, true);
 		return fetch(url, {
 			crossDomain: true,
+			credentials: 'include',
 			method: 'POST',
 			body: JSON.stringify(data),
 			headers: new Headers({ 'Content-Type': 'application/json' })
@@ -55,7 +56,7 @@ export class Server {
 		return {
 			loadCompetitionList: (callback) => { this.load(`${Server.baseUrl}/competition`, callback); },
 			loadCompetition: (id, callback) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(id) : `${Server.baseUrl}/competition/${id}`, callback); },
-			createCompetition: (competition, callback) => { console.log("Create competition - Not implemented"); },
+			createCompetition: (competition, callback) => { this.send(`${Server.baseUrl}/competition`, competition, callback); },
 			updateCompetition: (competition, callback) => { console.log("Update competition - Not implemented"); },
 			deleteCompetition: (id, callback) => { console.log("Delete competition - Not implemented"); }
 		};
