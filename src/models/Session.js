@@ -18,10 +18,11 @@ export class Session {
 
 	logout() {
 		if (this.user !== "") {
-			this.Server.logout();
-			this.user = "";
-			deleteCookie("user");
-			this.fire(Events.userChanged);
+			this.Server.logout(res => {
+				this.user = "";
+				deleteCookie("user");
+				this.fire(Events.userChanged);
+			});
 		}
 	}
 }
