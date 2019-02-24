@@ -236,7 +236,7 @@ export class Server {
 		if (this.local) {
 			callback({});
 		} else {
-			this.send(`${Server.baseUrl}/login`, { user: user, password: password }, this.logSendCallback("Login", user, callback));
+			this.send(`${Server.baseUrl}/login`, { user: user, password: password }, this.logSendCallback("Login", user, callback), this.errorHandler("Kunde inte logga in"));
 		}
 	}
 
