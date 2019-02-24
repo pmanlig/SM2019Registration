@@ -17,7 +17,7 @@ export class Event {
 	}
 
 	static fromJson(e) {
-		let nE = new Event(e.name, new Date(e.date));
+		let nE = new Event(e.name, new Date(e.date || Date.now()));
 		nE.id = Event.toNumber(e.id);
 		nE.classes = Event.toNumber(e.classes);
 		nE.divisions = Event.toNumber(e.divisions);

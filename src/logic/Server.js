@@ -48,6 +48,54 @@ export class Server {
 					.catch(error);
 			});
 	}
+
+	update(url, data, callback, error) {
+		if (window._debug) {
+			console.log(`URL: ${url}`);
+			if (error === undefined) { error = e => { console.log("Error"); console.log(e); } }
+		}
+		this.Busy.setBusy(this, true);
+		return fetch(url, {
+			crossDomain: true,
+			credentials: 'include',
+			method: 'PUT',
+			body: JSON.stringify(data),
+			headers: new Headers({ 'Content-Type': 'application/json' })
+		})
+			.then(res => {
+				this.Busy.setBusy(this, false);
+				if (!res.ok) {
+					res.json().then(error);
+					return;
+				}
+				res.json()
+					.then(callback)
+					.catch(error);
+			});
+	}
+
+	delete(url, callback, error) {
+		if (window._debug) {
+			console.log(`Delete URL: ${url}`);
+			if (error === undefined) { error = e => { console.log("Error"); console.log(e); } }
+		}
+		this.Busy.setBusy(this, true);
+		return fetch(url, {
+			crossDomain: true,
+			credentials: 'include',
+			method: 'DELETE',
+		})
+			.then(res => {
+				this.Busy.setBusy(this, false);
+				if (!res.ok) {
+					res.json().then(error);
+					return;
+				}
+				res.json()
+					.then(callback)
+					.catch(error);
+			});
+	}
 	//#endregion
 
 	//#region Remote Services
@@ -60,8 +108,8 @@ export class Server {
 			loadCompetitionList: (callback) => { this.load(`${Server.baseUrl}/competition`, callback); },
 			loadCompetition: (id, callback) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(id) : `${Server.baseUrl}/competition/${id}`, callback); },
 			createCompetition: (competition, callback) => { this.send(`${Server.baseUrl}/competition`, competition, callback); },
-			updateCompetition: (competition, callback) => { console.log("Update competition - Not implemented"); },
-			deleteCompetition: (id, callback) => { console.log("Delete competition - Not implemented"); }
+			updateCompetition: (id, competition, callback) => { this.update(`${Server.baseUrl}/competition/${id}`, competition, callback); },
+			deleteCompetition: (id, callback) => { this.delete(`${Server.baseUrl}/competition/${id}`, callback); }
 		};
 	}
 

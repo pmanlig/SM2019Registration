@@ -53,7 +53,7 @@ export class LocalCompetitionService {
 		callback(competition.id);
 	}
 
-	updateCompetition(competition, callback) {
+	updateCompetition(id, competition, callback) {
 		competition.creator = this.Session.user;
 		this.competitions = this.competitions.map(c => ((c.id === competition.id) ? competition : c));
 		this.store();

@@ -75,8 +75,6 @@ export class Competition {
 			this.rules = obj.rules || this.rules;
 			this.permissions = obj.permissions ? parseInt(obj.permissions.toString(), 10) : Permissions.Own;
 			this.status = obj.status ? parseInt(obj.status.toString(), 10) : Status.Open;
-			console.log("Competition data loded");
-			console.log(this);
 			this.fire(this.Events.competitionUpdated);
 		}
 	}
