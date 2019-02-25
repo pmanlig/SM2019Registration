@@ -29,6 +29,7 @@ export class ScheduleProperties extends React.Component {
 				slots: 8,
 				startTime: "8:00",
 				interval: 10,
+				duration: "2:00",
 				mixDivisions: true,
 				selectedDivisions: ((!event || !event.divisions) ? undefined :
 					this.props.divisionGroups.filter(dg => dg.id === event.divisions).map(dg => dg.divisions).find(d => { return true; })) || [],
@@ -67,12 +68,12 @@ export class ScheduleProperties extends React.Component {
 	}
 
 	updateStartTime(t) {
-		if (!Time.canSetValue(t)) { return; }
+		if (!Time.canSetTime(t)) { return; }
 		this.setState({ startTime: t });
 	}
 
 	blurStartTime(t) {
-		this.setState({ startTime: new Time(t).toString() });
+		this.setState({ startTime: Time.format(Time.timeFromText(t)) });
 	}
 
 	updateSlots = (v) => {
@@ -90,11 +91,20 @@ export class ScheduleProperties extends React.Component {
 		this.setState({ interval: newInterval });
 	}
 
+	updateDuration(t) {
+		if (!Time.canSetTime(t)) { return; }
+		this.setState({ duration: t });
+	}
+
+	blurDuration(t) {
+		this.setState({ duration: Time.format(Time.durationFromText(t)) });
+	}
+
 	addSquad = () => {
 		let { startTime, slots, selectedDivisions, mixDivisions, interval } = this.state;
 		this.state.schedule.addSquad(startTime, slots, selectedDivisions, mixDivisions);
 		this.Server.updateSchedule(this.state.schedule.toJson());
-		this.setState({ startTime: new Time(startTime).increase(interval).toString() });
+		this.setState({ startTime: Time.format(Time.timeFromText(startTime) + interval) });
 	}
 
 	deleteSquad = (s) => {
@@ -140,6 +150,11 @@ export class ScheduleProperties extends React.Component {
 					<Label key={d} text={d} align="center"> <input type="checkbox" checked={this.state.selectedDivisions.includes(d)} onChange={e => this.selectDivision(d)} /></Label>)}
 				{divisions && <Label text="Blanda" align="center"><input type="checkbox" checked={this.state.mixDivisions} onChange={e => this.setState({ mixDivisions: e.target.checked })} /></Label>}
 				<Label text="Tid till nästa" align="center"><input className="schedule-property" value={this.state.interval} onChange={this.updateInterval} /></Label>
+				<Label text="Tidsåtgång" align="center">
+					<input className="schedule-property" value={this.state.duration}
+						onChange={e => this.updateDuration(e.target.value)}
+						onBlur={e => this.blurDuration(e.target.value)} />
+				</Label>
 				<Label text="Lägg till" align="center"><button className="button-add green schedule-property" onClick={this.addSquad} /></Label>
 			</Toolbar>
 			<div className="schedule-table">

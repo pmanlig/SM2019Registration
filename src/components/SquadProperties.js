@@ -20,13 +20,13 @@ export class SquadProperties extends React.Component {
 	}
 
 	changeStartTime = t => {
-		if (!Time.canSetValue(t)) { return; }
+		if (!Time.canSetTime(t)) { return; }
 		this.updateSquadProperty("startTime", t);
 		this.setState({});
 	}
 
 	onTimeBlur = () => {
-		this.updateSquadProperty("startTime", new Time(this.props.squad.startTime).toString());
+		this.updateSquadProperty("startTime", Time.format(Time.timeFromText(this.props.squad.startTime)));
 		this.setState({});
 	}
 
