@@ -112,9 +112,9 @@ export class Server {
 		return {
 			loadCompetitionList: (callback) => { this.load(`${Server.baseUrl}/competition`, callback); },
 			loadCompetition: (id, callback) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(id) : `${Server.baseUrl}/competition/${id}`, callback); },
-			createCompetition: (competition, callback) => { this.send(`${Server.baseUrl}/competition`, competition, callback, this.errorHandler("Kan inte skapa tävling")); },
-			updateCompetition: (id, competition, callback) => { this.update(`${Server.baseUrl}/competition/${id}`, competition, callback, this.errorHandler("Kan inte uppdatera tävling")); },
-			deleteCompetition: (id, callback) => { this.delete(`${Server.baseUrl}/competition/${id}`, callback, this.errorHandler("Kan inte radera tävling")); }
+			createCompetition: (competition, callback, error) => { this.send(`${Server.baseUrl}/competition`, competition, callback, error || this.errorHandler("Kan inte skapa tävling")); },
+			updateCompetition: (id, competition, callback, error) => { this.update(`${Server.baseUrl}/competition/${id}`, competition, callback, error || this.errorHandler("Kan inte uppdatera tävling")); },
+			deleteCompetition: (id, callback, error) => { this.delete(`${Server.baseUrl}/competition/${id}`, callback, error || this.errorHandler("Kan inte radera tävling")); }
 		};
 	}
 
@@ -183,11 +183,11 @@ export class Server {
 	//#endregion
 
 	//#region Competition
-	loadCompetitionList(callback) { this.competitionService.loadCompetitionList(this.logFetchCallback("Loading competition list", callback)); }
-	loadCompetition(competitionId, callback) { this.competitionService.loadCompetition(competitionId, this.logFetchCallback("Loading competition data", callback)); }
-	createCompetition(competition, callback) { this.competitionService.createCompetition(competition, this.logSendCallback("Creating new competition", competition, callback)); }
-	updateCompetition(competition, callback) { this.competitionService.updateCompetition(competition, this.logSendCallback("Updating competition", competition, callback)); }
-	deleteCompetition(competitionId, callback) { this.competitionService.deleteCompetition(competitionId, this.logSendCallback("Deleting competition", competitionId, callback)); }
+	loadCompetitionList(callback, error) { this.competitionService.loadCompetitionList(this.logFetchCallback("Loading competition list", callback), error); }
+	loadCompetition(competitionId, callback, error) { this.competitionService.loadCompetition(competitionId, this.logFetchCallback("Loading competition data", callback), error); }
+	createCompetition(competition, callback, error) { this.competitionService.createCompetition(competition, this.logSendCallback("Creating new competition", competition, callback), error); }
+	updateCompetition(competition, callback, error) { this.competitionService.updateCompetition(competition, this.logSendCallback("Updating competition", competition, callback), error); }
+	deleteCompetition(competitionId, callback, error) { this.competitionService.deleteCompetition(competitionId, this.logSendCallback("Deleting competition", competitionId, callback), error); }
 	//#endregion
 
 	//#region Results

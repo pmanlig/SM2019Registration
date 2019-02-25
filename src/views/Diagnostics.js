@@ -19,7 +19,7 @@ class TestReport extends React.Component {
 }
 
 export class Diagnostics extends React.Component {
-	static register = true;
+	static register = { name: "Diagnostics" };
 	static wire = ["Server"];
 
 	runTests = (tests) => {
@@ -38,6 +38,20 @@ export class Diagnostics extends React.Component {
 		return new Promise(resolve => this.Server.login("patrik", "pangpang", s => resolve(true), e => resolve(false)));
 	}
 
+	testCreateCompetition = () => {
+		return new Promise(resolve => this.Server.createCompetition({
+			name: "__TestTävlingen__",
+			description: "Automattest",
+			status: 0,
+			events: [{ name: "" }]
+		},
+			s => resolve(true),
+			e => {
+				console.log(e.message);
+				resolve(false);
+			}));
+	}
+
 	testLogout = () => {
 		return new Promise(resolve => this.Server.logout(s => resolve(true), e => resolve(false)));
 	}
@@ -47,15 +61,17 @@ export class Diagnostics extends React.Component {
 		this.bus = new Subject();
 		this.tests = [
 			{ test: this.testLogin, description: "Login" },
+			{ test: this.testCreateCompetition, description: "Skapa tävling" },
 			{ test: this.testLogout, description: "Logout" }
 		];
 		window.setTimeout(this.runTests, 10);
 	}
 
 	render() {
-		return <div class="content">
+		let i = 1;
+		return <div className="content">
 			<h1>Diagnostics</h1>
-			{this.tests.map(t => <TestReport test={t.test} bus={this.bus} description={t.description} />)}
+			{this.tests.map(t => <TestReport key={i++} test={t.test} bus={this.bus} description={t.description} />)}
 		</div>;
 	}
 }
