@@ -9,3 +9,4 @@ export { CreateCompetition } from './CreateCompetition';
 export { ComponentTest } from './ComponentTest';
 export { AboutView } from './AboutView';
 export { CompetitionAdmin } from './CompetitionAdmin';
+export { Diagnostics } from './Diagnostics';

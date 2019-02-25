@@ -6,7 +6,7 @@ import { ComponentTest } from './views';
 export class App extends React.Component {
 	static register = { name: "App" };
 	static wire = ["AppHeader", "BusyIndicator", "Footers", "Footer", "StoreQuestion", "Storage", "CompetitionList",
-		"LoginView", "CompetitionView", "ReportView", "CreateCompetition", "AboutView", "WithLogin"]
+		"LoginView", "CompetitionView", "ReportView", "CreateCompetition", "AboutView", "WithLogin", "Diagnostics"]
 
 	render() {
 		if (this.Storage.get("allowStorage") === undefined) {
@@ -29,6 +29,7 @@ export class App extends React.Component {
 						<Route path="/create" component={props => <this.WithLogin><this.CreateCompetition /></this.WithLogin>} />
 						<Route path="/about" component={this.AboutView} />
 						<Route path="/test" component={ComponentTest} />
+						<Route path="/diagnostic" component={this.Diagnostics} />
 						<Route exact path="/" component={this.CompetitionList} />
 						<Route path="/" component={props => <div><h1>404 - Den här sidan finns inte</h1></div>} />
 					</Switch>

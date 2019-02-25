@@ -4,8 +4,9 @@ export class Server {
 	static baseUrl = 'https://dev.bitnux.com/sm2019';
 
 	//#region Main fetch/send method
-	load(url, callback) {
+	load(url, callback, error) {
 		if (window._debug) { console.log(`URL: ${url}`); }
+		error = error || (e => console.log(e));
 		this.Busy.setBusy(this, true);
 		fetch(url, {
 			crossDomain: true,
@@ -17,7 +18,7 @@ export class Server {
 				this.Busy.setBusy(this, false);
 			})
 			.catch(e => {
-				console.log(e);
+				error(e);
 				this.Busy.setBusy(this, false);
 			});
 		// finally() not supported in several browsers :(
@@ -232,19 +233,19 @@ export class Server {
 	//#endregion
 
 	//#region Login
-	login(user, password, callback) {
+	login(user, password, callback, error) {
 		if (this.local) {
 			callback({});
 		} else {
-			this.send(`${Server.baseUrl}/login`, { user: user, password: password }, this.logSendCallback("Login", user, callback), this.errorHandler("Kunde inte logga in"));
+			this.send(`${Server.baseUrl}/login`, { user: user, password: password }, this.logSendCallback("Login", user, callback), error || this.errorHandler("Kunde inte logga in"));
 		}
 	}
 
-	logout(callback) {
+	logout(callback, error) {
 		if (this.local) {
 			callback({});
 		} else {
-			this.load(`${Server.baseUrl}/logout`, this.logFetchCallback("Logout", callback));
+			this.load(`${Server.baseUrl}/logout`, this.logFetchCallback("Logout", callback), error);
 		}
 	}
 	//#endregion

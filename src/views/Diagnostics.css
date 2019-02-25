@@ -1,0 +1,26 @@
+div > div.testResult {
+	vertical-align: middle;
+}
+
+div.testResult {
+	width: 8ex;
+	margin-right: 5px;
+	margin-bottom: 2px;
+	border: 1px solid black;
+	text-align: center;
+	display: inline-block;
+}
+
+div.running {
+	background-color: goldenrod;
+}
+
+div.fail {
+	background-color: firebrick;
+	color: white;
+}
+
+div.success {
+	background-color: darkgreen;
+	color: white;
+}
