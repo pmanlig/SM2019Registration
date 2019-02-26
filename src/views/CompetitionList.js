@@ -38,7 +38,7 @@ export class CompetitionList extends React.Component {
 		return tokens[c.id];
 	}
 
-	competition(competition) {
+	competition = ({ competition }) => {
 		let links = Operations.filter(o => (
 			competition.permissions === Permissions.Own ||
 			(competition.permissions >= o.permission && (o.status === undefined || o.status === competition.status))
@@ -61,7 +61,7 @@ export class CompetitionList extends React.Component {
 		return <div id='competitions' className='content'>
 			<h1>Tävlingar{this.Server.local && " (felsökning)"}</h1>
 			<ul>
-				{competitions.map(c => this.competition(c))}
+				{competitions.map(c => <this.competition key={c.id} competition={c} />)}
 				{loggedIn && <li><Link className="competition-link" to={`/create`}>Skapa ny tävling</Link></li>}
 				{competitions.length === 0 && !loggedIn && <p>Inga tävlingar att visa - logga in för att skapa en tävling</p>}
 			</ul>
