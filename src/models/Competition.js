@@ -22,7 +22,7 @@ export const Operations = [
 
 export class Competition {
 	static register = { name: "Competition", createInstance: true };
-	static wire = ["fire", "subscribe", "Events", "Server", "ClassGroups", "DivisionGroups"];
+	static wire = ["fire", "subscribe", "Events", "Server", "ClassGroups", "DivisionGroups", "Session"];
 
 	initialize = () => {
 		this.id = 0;
@@ -73,7 +73,8 @@ export class Competition {
 			this.divisionGroups = obj.divisionGroups || this.divisionGroups;
 			this.classGroups = obj.classGroups || this.classGroups;
 			this.rules = obj.rules || this.rules;
-			this.permissions = obj.permissions ? parseInt(obj.permissions.toString(), 10) : Permissions.Own;
+			this.permissions = obj.permissions ? parseInt(obj.permissions.toString(), 10) :
+				(this.Session.user === "" || this.Session.user === undefined ? Permissions.Any : Permissions.Own);
 			this.status = obj.status ? parseInt(obj.status.toString(), 10) : Status.Open;
 			this.fire(this.Events.competitionUpdated);
 		}

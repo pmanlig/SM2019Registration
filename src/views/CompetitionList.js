@@ -21,7 +21,8 @@ export class CompetitionList extends React.Component {
 				return {
 					...c,
 					status: c.status ? parseInt(c.status.toString(), 10) : Status.Open,
-					permissions: c.permissions ? parseInt(c.permissions.toString(), 10) : Permissions.Own
+					permissions: c.permissions ? parseInt(c.permissions.toString(), 10) :
+						(this.Session.user === "" ? Permissions.Any : Permissions.Own)
 				}
 			})
 		}));
@@ -39,6 +40,7 @@ export class CompetitionList extends React.Component {
 	}
 
 	competition = ({ competition }) => {
+		console.log(competition);
 		let links = Operations.filter(o => (
 			competition.permissions === Permissions.Own ||
 			(competition.permissions >= o.permission && (o.status === undefined || o.status === competition.status))
