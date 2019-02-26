@@ -2,7 +2,7 @@ import { Events, setCookie, getCookie, deleteCookie } from '../logic';
 
 export class Session {
 	static register = { name: "Session", createInstance: true };
-	static wire = ["fire", "Server"];
+	static wire = ["fire", "Server", "Storage"];
 
 	constructor() {
 		this.user = getCookie("user", "");
@@ -12,6 +12,7 @@ export class Session {
 		this.Server.login(user, password, status => {
 			this.user = user;
 			setCookie("user", this.user);
+			if (user === "patrik") this.Storage.set(this.Storage.keys.toggleServerMode, true);
 			this.fire(Events.userChanged);
 		});
 	}

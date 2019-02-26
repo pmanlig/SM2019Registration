@@ -10,6 +10,7 @@ export class Storage {
 		localTokens: "localTokens",
 		results: "results",
 		serverMode: "serverMode",
+		toggleServerMode: "toggleServer",
 		scheduleService: "scheduleService",
 		competitionService: "competitionService",
 		resultService: "resultService",

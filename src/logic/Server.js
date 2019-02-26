@@ -139,7 +139,7 @@ export class Server {
 	//#region Property manipulation
 	initialize() {
 		// ToDo: Change to false in production code
-		this.setLocal(this.Storage.get(this.Storage.keys.serverMode));
+		this.setLocal(this.Storage.get(this.Storage.keys.toggleServerMode) && this.Storage.get(this.Storage.keys.serverMode));
 	}
 
 	setLocal(on) {
