@@ -40,7 +40,6 @@ export class CompetitionList extends React.Component {
 	}
 
 	competition = ({ competition }) => {
-		console.log(competition);
 		let links = Operations.filter(o => (
 			competition.permissions === Permissions.Own ||
 			(competition.permissions >= o.permission && (o.status === undefined || o.status === competition.status))
