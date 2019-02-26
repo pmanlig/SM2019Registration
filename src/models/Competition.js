@@ -76,6 +76,7 @@ export class Competition {
 			this.permissions = obj.permissions ? parseInt(obj.permissions.toString(), 10) :
 				(this.Session.user === "" || this.Session.user === undefined ? Permissions.Any : Permissions.Own);
 			this.status = obj.status ? parseInt(obj.status.toString(), 10) : Status.Open;
+			this.setEventKeys();
 			this.fire(this.Events.competitionUpdated);
 		}
 	}
@@ -100,9 +101,9 @@ export class Competition {
 		this.fire(this.Events.competitionUpdated);
 	}
 
-	setEventIds() {
+	setEventKeys() {
 		let id = 1;
-		this.events.forEach(e => e.id = id++);
+		this.events.forEach(e => e.key = id++);
 		this.fire(this.Events.competitionUpdated);
 	}
 
@@ -111,26 +112,26 @@ export class Competition {
 			this.events[0].name = "Deltävling 1";
 		}
 		this.events.push(new Event("Deltävling " + (this.events.length + 1), new Date()));
-		this.setEventIds();
+		this.setEventKeys();
 	}
 
 	removeEvent(event) {
-		this.events = this.events.filter(e => e.id !== event.id);
+		this.events = this.events.filter(e => e.key !== event.key);
 		if (this.events.length === 1) {
 			this.events[0].name = "";
 		}
-		this.setEventIds();
+		this.setEventKeys();
 	}
 
 	updateEvent(event, prop, value) {
-		if (prop && value) {
+		if (prop) {
 			this.events.forEach(e => {
-				if (e.id === event.id) {
+				if (e.key === event.key) {
 					e[prop] = value;
 				}
 			});
+			this.fire(this.Events.competitionUpdated);
 		}
-		this.fire(this.Events.competitionUpdated);
 	}
 
 	/*** Methods*********************************************************************************************************/

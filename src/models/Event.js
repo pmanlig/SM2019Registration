@@ -1,5 +1,4 @@
 export class Event {
-	id = 0;
 	classes = undefined;
 	divisions = undefined;
 	schedule = undefined;
