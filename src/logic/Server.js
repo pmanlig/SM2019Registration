@@ -66,12 +66,9 @@ export class Server {
 			.then(res => {
 				this.Busy.setBusy(this, false);
 				if (!res.ok) {
-					res.json().then(error);
-					return;
-				}
-				res.json()
-					.then(callback)
-					.catch(error);
+					error();
+				} else
+					callback();
 			});
 	}
 
@@ -89,12 +86,9 @@ export class Server {
 			.then(res => {
 				this.Busy.setBusy(this, false);
 				if (!res.ok) {
-					res.json().then(error);
-					return;
-				}
-				res.json()
-					.then(callback)
-					.catch(error);
+					error();
+				} else
+					callback();
 			});
 	}
 	//#endregion
@@ -186,6 +180,14 @@ export class Server {
 			c(json);
 		}
 	}
+
+	logUpdateCallback(msg, data, c) {
+		if (c === undefined) c = () => { };
+		if (!window._debug) { return c; }
+		console.log(msg);
+		console.log(data);
+		return c;
+	}
 	//#endregion
 
 	//#region Competition
@@ -208,8 +210,8 @@ export class Server {
 	//#region Schedule
 	createSchedule(schedule, callback, error) { this.scheduleService.createSchedule(schedule, this.logSendCallback("Creating schedule", schedule, callback), error); }
 	loadSchedule(scheduleId, callback, error) { this.scheduleService.getSchedule(scheduleId, this.logFetchCallback("Loading schedule", callback), error); }
-	updateSchedule(schedule, callback, error) { this.scheduleService.updateSchedule(schedule, this.logSendCallback("Updating schedule", schedule, callback), error); }
-	deleteSchedule(scheduleId, callback, error) { this.scheduleService.deleteSchedule(scheduleId, this.logSendCallback("Deleting schedule", scheduleId, callback), error); }
+	updateSchedule(schedule, callback, error) { this.scheduleService.updateSchedule(schedule, this.logUpdateCallback("Updating schedule", schedule, callback), error); }
+	deleteSchedule(scheduleId, callback, error) { this.scheduleService.deleteSchedule(scheduleId, this.logUpdateCallback("Deleting schedule", scheduleId, callback), error); }
 	//#endregion
 
 	//#region Value lists

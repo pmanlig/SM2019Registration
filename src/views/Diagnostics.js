@@ -1,6 +1,7 @@
 import './Diagnostics.css';
 import React from 'react';
 import { Subject } from 'rxjs';
+import { Schedule } from '../models';
 
 class TestReport extends React.Component {
 	constructor(props) {
@@ -39,8 +40,8 @@ export class Diagnostics extends React.Component {
 	}
 
 	testCreateSchedule = () => {
-		return new Promise(resolve => this.Server.createSchedule(res => {
-			this.scheduleTestId = res.id;
+		return new Promise(resolve => this.Server.createSchedule(new Schedule().toJson(), res => {
+			this.testSchedule = Schedule.fromJson(res);
 			resolve(true);
 		}, e => {
 			console.log(e);
@@ -48,9 +49,16 @@ export class Diagnostics extends React.Component {
 		}));
 	}
 
+	testUpdateSchedule = () => {
+		return new Promise(resolve => {
+			this.testSchedule.addSquad("8:00", 10, ["C", "B", "A", "R"], true);
+			this.Server.updateSchedule(this.testSchedule.toJson(), s => resolve(true), e => resolve(false))
+		});
+	}
+
 	testDeleteSchedule = () => {
 		return new Promise(resolve =>
-			this.Server.deleteSchedule(this.scheduleTestId, s => resolve(true), e => resolve(false)));
+			this.Server.deleteSchedule(this.testSchedule.id, s => resolve(true), e => resolve(false)));
 	}
 
 	testCreateCompetition = () => {
@@ -86,6 +94,7 @@ export class Diagnostics extends React.Component {
 			{ test: this.testCreateCompetition, description: "Skapa tävling" },
 			{ test: this.testDeleteCompetition, description: "Radera tävling" },
 			{ test: this.testCreateSchedule, description: "Skapa startlista" },
+			{ test: this.testUpdateSchedule, description: "Uppdatera startlista" },
 			{ test: this.testDeleteSchedule, description: "Radera startlista" },
 			{ test: this.testLogout, description: "Logout" }
 		];
