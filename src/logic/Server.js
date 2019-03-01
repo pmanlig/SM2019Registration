@@ -28,7 +28,7 @@ export class Server {
 	send(url, data, callback, error) {
 		if (window._debug) {
 			console.log(`URL: ${url}`);
-			if (error === undefined) { error = e => { console.log("Error"); console.log(e); } }
+			error = error || (e => { console.log("Error"); console.log(e); });
 		}
 		this.Busy.setBusy(this, true);
 		return fetch(url, {
@@ -110,8 +110,8 @@ export class Server {
 
 	remoteCompetitionService() {
 		return {
-			loadCompetitionList: (callback) => { this.load(`${Server.baseUrl}/competition`, callback); },
-			loadCompetition: (id, callback) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(id) : `${Server.baseUrl}/competition/${id}`, callback); },
+			loadCompetitionList: (callback, error) => { this.load(`${Server.baseUrl}/competition`, callback, error); },
+			loadCompetition: (id, callback, error) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(id) : `${Server.baseUrl}/competition/${id}`, callback, error); },
 			createCompetition: (competition, callback, error) => { this.send(`${Server.baseUrl}/competition`, competition, callback, error || this.errorHandler("Kan inte skapa tävling")); },
 			updateCompetition: (id, competition, callback, error) => { this.update(`${Server.baseUrl}/competition/${id}`, competition, callback, error || this.errorHandler("Kan inte uppdatera tävling")); },
 			deleteCompetition: (id, callback, error) => { this.delete(`${Server.baseUrl}/competition/${id}`, callback, error || this.errorHandler("Kan inte radera tävling")); }
@@ -125,7 +125,12 @@ export class Server {
 	}
 
 	remoteScheduleService() {
-		return {};
+		return {
+			createSchedule: (callback, error) => { this.send(`${Server.baseUrl}/schedules`, {}, callback, error); },
+			getSchedule: (scheduleId, callback, error) => { this.load(`${Server.baseUrl}/schedules/${scheduleId}`, callback, error); },
+			updateSchedule: (schedule, callback, error) => { this.update(`${Server.baseUrl}/schedules/${schedule.id}`, schedule, callback, error); },
+			deleteSchedule: (scheduleId, callback, error) => { this.delete(`${Server.baseUrl}/schedules/${scheduleId}`, callback, error); }
+		};
 	}
 
 	remoteRegistrationService() {
@@ -163,8 +168,8 @@ export class Server {
 	//#region Logging
 	logFetchCallback(msg, c) {
 		if (!window._debug) { return c; }
+		console.log(msg);
 		return json => {
-			console.log(msg);
 			console.log(json);
 			c(json);
 		}
@@ -200,26 +205,10 @@ export class Server {
 	//#endregion
 
 	//#region Schedule
-	createSchedule(callback) {
-		// ToDo: connect to real service instead
-		this.ScheduleService.createNewSchedule(this.logFetchCallback("Creating schedule", callback));
-	}
-
-	loadSchedule(scheduleId, callback) {
-		// ToDo: connect to real service instead
-		this.ScheduleService.getSchedule(scheduleId, this.logFetchCallback("Loading schedule", callback));
-		/*
-		let numId = parseInt(competitionId, 10);
-		this.load(isNaN(numId) ?
-			this.jsonFile(`${competitionId}_schedule`) :
-			`${Server.baseUrl}/schedule/${scheduleId}`, callback);
-			*/
-	}
-
-	updateSchedule(schedule) {
-		// ToDo: connect to real service instead
-		this.ScheduleService.updateSchedule(schedule);
-	}
+	createSchedule(callback, error) { this.scheduleService.createSchedule(this.logFetchCallback("Creating schedule", callback), error); }
+	loadSchedule(scheduleId, callback, error) { this.scheduleService.getSchedule(scheduleId, this.logFetchCallback("Loading schedule", callback), error); }
+	updateSchedule(schedule, callback, error) { this.scheduleService.updateSchedule(schedule, this.logSendCallback("Updating schedule", schedule, callback), error); }
+	deleteSchedule(scheduleId, callback, error) { this.scheduleService.deleteSchedule(scheduleId, this.logSendCallback("Deleting schedule", scheduleId, callback), error); }
 	//#endregion
 
 	//#region Value lists

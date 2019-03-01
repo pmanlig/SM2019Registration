@@ -38,6 +38,21 @@ export class Diagnostics extends React.Component {
 		return new Promise(resolve => this.Server.login("patrik", "pangpang", s => resolve(true), e => resolve(false)));
 	}
 
+	testCreateSchedule = () => {
+		return new Promise(resolve => this.Server.createSchedule(res => {
+			this.scheduleTestId = res.id;
+			resolve(true);
+		}, e => {
+			console.log(e);
+			resolve(false);
+		}));
+	}
+
+	testDeleteSchedule = () => {
+		return new Promise(resolve =>
+			this.Server.deleteSchedule(this.scheduleTestId, s => resolve(true), e => resolve(false)));
+	}
+
 	testCreateCompetition = () => {
 		return new Promise(resolve => this.Server.createCompetition({
 			name: "__TestTävlingen__",
@@ -70,6 +85,8 @@ export class Diagnostics extends React.Component {
 			{ test: this.testLogin, description: "Login" },
 			{ test: this.testCreateCompetition, description: "Skapa tävling" },
 			{ test: this.testDeleteCompetition, description: "Radera tävling" },
+			{ test: this.testCreateSchedule, description: "Skapa startlista" },
+			{ test: this.testDeleteSchedule, description: "Radera startlista" },
 			{ test: this.testLogout, description: "Logout" }
 		];
 		window.setTimeout(this.runTests, 10);
