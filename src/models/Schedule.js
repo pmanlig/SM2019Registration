@@ -1,22 +1,26 @@
 import { Squad } from '.';
+import { Time } from '../logic';
 
 export class Schedule {
 	nextSquadId = 1;
 	squads = [];
+	duration = "2:00";
 
 	static fromJson(s) {
 		let schedule = new Schedule();
 		schedule.id = s.id;
-		schedule.nextSquadId = s.squadId;
+		schedule.nextSquadId = s.squads.length > 0 ? Math.max(...s.squads.map(sq => parseInt(sq.id.toString(), 10))) : 1;
 		// ToDo: why is null present?
-		schedule.squads = s.squads.filter(x => x !== null).map(s => Squad.fromJson(s));
+		schedule.squads = s.squads ? s.squads.filter(x => x !== null).map(s => Squad.fromJson(s)) : [];
+		schedule.duration = s.duration ? Time.format(parseInt(s.duration.toString(), 10)) : "2:00";
 		return schedule;
 	}
 
 	toJson() {
 		return {
 			id: this.id,
-			squads: this.squads
+			squads: this.squads,
+			duration: Time.durationFromText(this.duration),
 		};
 	}
 

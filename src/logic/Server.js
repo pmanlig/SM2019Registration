@@ -126,7 +126,7 @@ export class Server {
 
 	remoteScheduleService() {
 		return {
-			createSchedule: (callback, error) => { this.send(`${Server.baseUrl}/schedules`, {}, callback, error); },
+			createSchedule: (schedule, callback, error) => { this.send(`${Server.baseUrl}/schedules`, schedule, callback, error); },
 			getSchedule: (scheduleId, callback, error) => { this.load(`${Server.baseUrl}/schedules/${scheduleId}`, callback, error); },
 			updateSchedule: (schedule, callback, error) => { this.update(`${Server.baseUrl}/schedules/${schedule.id}`, schedule, callback, error); },
 			deleteSchedule: (scheduleId, callback, error) => { this.delete(`${Server.baseUrl}/schedules/${scheduleId}`, callback, error); }
@@ -176,6 +176,7 @@ export class Server {
 	}
 
 	logSendCallback(msg, data, c) {
+		if (c === undefined) c = () => { };
 		if (!window._debug) { return c; }
 		console.log(msg);
 		console.log(data);
@@ -205,7 +206,7 @@ export class Server {
 	//#endregion
 
 	//#region Schedule
-	createSchedule(callback, error) { this.scheduleService.createSchedule(this.logFetchCallback("Creating schedule", callback), error); }
+	createSchedule(schedule, callback, error) { this.scheduleService.createSchedule(schedule, this.logSendCallback("Creating schedule", schedule, callback), error); }
 	loadSchedule(scheduleId, callback, error) { this.scheduleService.getSchedule(scheduleId, this.logFetchCallback("Loading schedule", callback), error); }
 	updateSchedule(schedule, callback, error) { this.scheduleService.updateSchedule(schedule, this.logSendCallback("Updating schedule", schedule, callback), error); }
 	deleteSchedule(scheduleId, callback, error) { this.scheduleService.deleteSchedule(scheduleId, this.logSendCallback("Deleting schedule", scheduleId, callback), error); }

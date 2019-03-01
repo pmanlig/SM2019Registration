@@ -1,6 +1,7 @@
 import './ScheduleProperties.css';
 import React from 'react';
 import { Time } from '../logic';
+import { Schedule } from '../models';
 import { ModalDialog } from '../general';
 import { ButtonToolbar as Toolbar, Label } from './Toolbar';
 import { Spinner } from './Spinner';
@@ -29,7 +30,7 @@ export class ScheduleProperties extends React.Component {
 				slots: 8,
 				startTime: "8:00",
 				interval: 10,
-				duration: "2:00",
+				duration: schedule.duration,
 				mixDivisions: true,
 				selectedDivisions: ((!event || !event.divisions) ? undefined :
 					this.props.divisionGroups.filter(dg => dg.id === event.divisions).map(dg => dg.divisions).find(d => { return true; })) || [],
@@ -40,13 +41,16 @@ export class ScheduleProperties extends React.Component {
 	}
 
 	loadScheduleInformation(event, schedule) {
-		this.setState(this.schedules[schedule.id] || this.newScheduleInformation(event, schedule));
+		let newState = this.schedules[schedule.id] || this.newScheduleInformation(event, schedule);
+		newState.duration = schedule.duration;
+		this.setState(newState);
 	}
 
 	editSchedule = (event) => {
 		// Create new schedule if one doesn't exist		
 		if (event.schedule === undefined) {
-			this.Server.createSchedule(schedule => {
+			this.Server.createSchedule(new Schedule().toJson(), schedule => {
+				schedule = Schedule.fromJson(schedule);
 				event.schedule = schedule.id;
 				this.loadScheduleInformation(event, schedule);
 				this.Competition.updateEvent(event);
@@ -63,7 +67,7 @@ export class ScheduleProperties extends React.Component {
 		}
 		// Schedule exists; load and show it
 		this.Server.loadSchedule(scheduleId, schedule => {
-			this.loadScheduleInformation(event, schedule);
+			this.loadScheduleInformation(event, Schedule.fromJson(schedule));
 		});
 	}
 
@@ -124,7 +128,9 @@ export class ScheduleProperties extends React.Component {
 	}
 
 	onClose = () => {
-		// ToDo: Save schedule
+		let schedule = this.state.schedule;
+		schedule.duration = this.state.duration;
+		this.Server.updateSchedule(schedule.toJson());
 		this.setState({ schedule: undefined });
 	}
 

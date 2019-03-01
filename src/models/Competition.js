@@ -124,14 +124,16 @@ export class Competition {
 	}
 
 	updateEvent(event, prop, value) {
-		if (prop) {
-			this.events.forEach(e => {
-				if (e.key === event.key) {
+		this.events.forEach(e => {
+			if (e.key === event.key) {
+				if (prop) {
 					e[prop] = value;
+				} else {
+					Object.keys(e).forEach((k, i) => e[k] = event[k]);
 				}
-			});
-			this.fire(this.Events.competitionUpdated);
-		}
+			}
+		});
+		this.fire(this.Events.competitionUpdated);
 	}
 
 	/*** Methods*********************************************************************************************************/

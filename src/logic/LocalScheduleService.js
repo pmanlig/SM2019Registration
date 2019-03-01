@@ -16,8 +16,9 @@ export class LocalScheduleService {
 		}
 	}
 
-	createSchedule(callback) {
+	createSchedule(schedule, callback) {
 		let newSchedule = new Schedule();
+		newSchedule = { ...schedule };
 		newSchedule.id = this.id++;
 		this.schedules.push(newSchedule);
 		this.Storage.set(this.Storage.keys.scheduleService, this.schedules);
@@ -29,8 +30,6 @@ export class LocalScheduleService {
 	}
 
 	updateSchedule(schedule, callback) {
-		console.log("Updating schedule");
-		console.log(schedule);
 		this.schedules = this.schedules.map(s => s.id === schedule.id ? schedule : s);
 		this.Storage.set(this.Storage.keys.scheduleService, this.schedules);
 		callback({});
