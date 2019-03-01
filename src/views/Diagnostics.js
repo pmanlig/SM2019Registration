@@ -45,11 +45,18 @@ export class Diagnostics extends React.Component {
 			status: 0,
 			events: [{ name: "" }]
 		},
-			s => resolve(true),
+			s => {
+				this.competitionTestId = s.id;
+				resolve(true);
+			},
 			e => {
 				console.log(e.message);
 				resolve(false);
 			}));
+	}
+
+	testDeleteCompetition = () => {
+		return new Promise(resolve => this.Server.deleteCompetition(this.competitionTestId, s => resolve(true), e => resolve(false)));
 	}
 
 	testLogout = () => {
@@ -62,6 +69,7 @@ export class Diagnostics extends React.Component {
 		this.tests = [
 			{ test: this.testLogin, description: "Login" },
 			{ test: this.testCreateCompetition, description: "Skapa tävling" },
+			{ test: this.testDeleteCompetition, description: "Radera tävling" },
 			{ test: this.testLogout, description: "Logout" }
 		];
 		window.setTimeout(this.runTests, 10);

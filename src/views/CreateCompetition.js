@@ -47,10 +47,10 @@ export class CreateCompetition extends React.Component {
 	}
 
 	createCompetition = () => {
-		this.Server.createCompetition(this.Competition.toJson(), id => {
+		this.Server.createCompetition(this.Competition.toJson(), response => {
 			// ToDo: unsub?
 			this.Storage.set(this.Storage.keys.newCompetition, null);
-			this.setState({ redirect: id.id });
+			this.setState({ redirect: response.id });
 		});
 	}
 
