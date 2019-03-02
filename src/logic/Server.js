@@ -66,7 +66,7 @@ export class Server {
 			.then(res => {
 				this.Busy.setBusy(this, false);
 				if (!res.ok) {
-					error();
+					res.json().then(e => error(e));
 				} else
 					callback();
 			});
@@ -86,7 +86,7 @@ export class Server {
 			.then(res => {
 				this.Busy.setBusy(this, false);
 				if (!res.ok) {
-					error();
+					res.json().then(e => error(e));
 				} else
 					callback();
 			});

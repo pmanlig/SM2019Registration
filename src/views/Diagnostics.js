@@ -40,8 +40,9 @@ export class Diagnostics extends React.Component {
 	}
 
 	testCreateSchedule = () => {
-		return new Promise(resolve => this.Server.createSchedule(new Schedule().toJson(), res => {
-			this.testSchedule = Schedule.fromJson(res);
+		this.testSchedule = new Schedule();
+		return new Promise(resolve => this.Server.createSchedule(this.testSchedule.toJson(), res => {
+			this.testSchedule.id = res.id;
 			resolve(true);
 		}, e => {
 			console.log(e);
@@ -52,7 +53,11 @@ export class Diagnostics extends React.Component {
 	testUpdateSchedule = () => {
 		return new Promise(resolve => {
 			this.testSchedule.addSquad("8:00", 10, ["C", "B", "A", "R"], true);
-			this.Server.updateSchedule(this.testSchedule.toJson(), s => resolve(true), e => resolve(false))
+			this.Server.updateSchedule(this.testSchedule.toJson(), s => resolve(true), e => {
+				console.log("Error:");
+				console.log(e);
+				resolve(false);
+			})
 		});
 	}
 

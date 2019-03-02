@@ -107,13 +107,11 @@ export class ScheduleProperties extends React.Component {
 	addSquad = () => {
 		let { startTime, slots, selectedDivisions, mixDivisions, interval } = this.state;
 		this.state.schedule.addSquad(startTime, slots, selectedDivisions, mixDivisions);
-		this.Server.updateSchedule(this.state.schedule.toJson());
 		this.setState({ startTime: Time.format(Time.timeFromText(startTime) + interval) });
 	}
 
 	deleteSquad = (s) => {
 		this.state.schedule.deleteSquad(s);
-		this.Server.updateSchedule(this.state.schedule.toJson());
 		this.setState({});
 	}
 

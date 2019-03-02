@@ -19,7 +19,7 @@ export class Schedule {
 	toJson() {
 		return {
 			id: this.id,
-			squads: this.squads,
+			squads: this.squads.map(s => s.toJson()),
 			duration: Time.durationFromText(this.duration),
 		};
 	}
