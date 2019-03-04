@@ -20,7 +20,7 @@ export class Event {
 		nE.id = Event.toNumber(e.id);
 		nE.classes = Event.toNumber(e.classes);
 		nE.divisions = Event.toNumber(e.divisions);
-		nE.schedule = ((typeof e.schedule === "object") ? e.schedule.id : e.schedule);
+		nE.schedule = ((typeof e.schedule === "object") ? e.schedule.id : Event.toNumber(e.schedule));
 		nE.maxRegistrations = e.maxRegistrations;
 		return nE;
 	}

@@ -48,10 +48,10 @@ export class Diagnostics extends React.Component {
 		this.bus = new Subject();
 		this.tests = [{ test: this.testLogin, description: "Login" }]
 			.concat(
-				new ClassesTests().tests(),
-				new DivisionsTests().tests(),
+				// new ClassesTests().tests(),
+				// new DivisionsTests().tests(),
 				new CompetitionTests().tests(),
-				new ScheduleTests().tests(),
+				// new ScheduleTests().tests(),
 				[{ test: this.testLogout, description: "Logout" }]);
 
 		window.setTimeout(this.runTests, 10);

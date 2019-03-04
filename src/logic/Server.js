@@ -53,7 +53,10 @@ export class Server {
 	update(url, data, callback, error) {
 		if (window._debug) {
 			console.log(`URL: ${url}`);
-			if (error === undefined) { error = e => { console.log("Error"); console.log(e); } }
+			if (error === undefined) {
+				console.log("Replacing error handler");
+				error = e => { console.log("Error"); console.log(e); }
+			}
 		}
 		this.Busy.setBusy(this, true);
 		return fetch(url, {
@@ -96,8 +99,8 @@ export class Server {
 		return `${process.env.PUBLIC_URL}/${name}.json`;
 	}
 
-	errorHandler(msg) {
-		return res => { this.Footers.addFooter(msg + (res.message ? " - " + res.message : "")); }
+	errorHandler(msg, error) {
+		return (error === undefined) ? (res => { this.Footers.addFooter(msg + (res.message ? " - " + res.message : "")); }) : error;
 	}
 	//#endregion
 
@@ -106,9 +109,9 @@ export class Server {
 		return {
 			loadCompetitionList: (callback, error) => { this.load(`${Server.baseUrl}/competition`, callback, error); },
 			loadCompetition: (id, callback, error) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(id) : `${Server.baseUrl}/competition/${id}`, callback, error); },
-			createCompetition: (competition, callback, error) => { this.send(`${Server.baseUrl}/competition`, competition, callback, error || this.errorHandler("Kan inte skapa tävling")); },
-			updateCompetition: (id, competition, callback, error) => { this.update(`${Server.baseUrl}/competition/${id}`, competition, callback, error || this.errorHandler("Kan inte uppdatera tävling")); },
-			deleteCompetition: (id, callback, error) => { this.delete(`${Server.baseUrl}/competition/${id}`, callback, error || this.errorHandler("Kan inte radera tävling")); }
+			createCompetition: (competition, callback, error) => { this.send(`${Server.baseUrl}/competition`, competition, callback, error); },
+			updateCompetition: (competition, callback, error) => { this.update(`${Server.baseUrl}/competition/${competition.id}`, competition, callback, error); },
+			deleteCompetition: (id, callback, error) => { this.delete(`${Server.baseUrl}/competition/${id}`, callback, error); }
 		};
 	}
 
@@ -210,10 +213,10 @@ export class Server {
 
 	//#region Competition
 	loadCompetitionList(callback, error) { this.competitionService.loadCompetitionList(this.logFetchCallback("Loading competition list", callback), error); }
-	loadCompetition(competitionId, callback, error) { this.competitionService.loadCompetition(competitionId, this.logFetchCallback("Loading competition data", callback), error); }
-	createCompetition(competition, callback, error) { this.competitionService.createCompetition(competition, this.logSendCallback("Creating new competition", competition, callback), error); }
-	updateCompetition(competition, callback, error) { this.competitionService.updateCompetition(competition, this.logSendCallback("Updating competition", competition, callback), error); }
-	deleteCompetition(competitionId, callback, error) { this.competitionService.deleteCompetition(competitionId, this.logSendCallback("Deleting competition", competitionId, callback), error); }
+	loadCompetition(competitionId, callback, error) { this.competitionService.loadCompetition(competitionId, this.logFetchCallback("Loading competition data", callback), this.errorHandler("Kan inte hämta tävling", error)); }
+	createCompetition(competition, callback, error) { this.competitionService.createCompetition(competition, this.logSendCallback("Creating new competition", competition, callback), this.errorHandler("Kan inte skapa tävling", error)); }
+	updateCompetition(competition, callback, error) { this.competitionService.updateCompetition(competition, this.logSendCallback("Updating competition", competition, callback), this.errorHandler("Kan inte uppdatera tävling", error)); }
+	deleteCompetition(competitionId, callback, error) { this.competitionService.deleteCompetition(competitionId, this.logSendCallback("Deleting competition", competitionId, callback), this.errorHandler("Kan inte radera tävling", error)); }
 	//#endregion
 
 	//#region Results
