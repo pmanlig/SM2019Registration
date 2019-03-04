@@ -1,7 +1,7 @@
 import './Diagnostics.css';
 import React from 'react';
 import { Subject } from 'rxjs';
-import { Schedule } from '../models';
+import { CompetitionTests, ScheduleTests, DivisionsTests, ClassesTests } from '../test';
 
 class TestReport extends React.Component {
 	constructor(props) {
@@ -39,54 +39,6 @@ export class Diagnostics extends React.Component {
 		return new Promise(resolve => this.Server.login("patrik", "pangpang", s => resolve(true), e => resolve(false)));
 	}
 
-	testCreateSchedule = () => {
-		this.testSchedule = new Schedule();
-		return new Promise(resolve => this.Server.createSchedule(this.testSchedule.toJson(), res => {
-			this.testSchedule.id = res.id;
-			resolve(true);
-		}, e => {
-			console.log(e);
-			resolve(false);
-		}));
-	}
-
-	testUpdateSchedule = () => {
-		return new Promise(resolve => {
-			this.testSchedule.addSquad("8:00", 10, ["C", "B", "A", "R"], true);
-			this.Server.updateSchedule(this.testSchedule.toJson(), s => resolve(true), e => {
-				console.log("Error:");
-				console.log(e);
-				resolve(false);
-			})
-		});
-	}
-
-	testDeleteSchedule = () => {
-		return new Promise(resolve =>
-			this.Server.deleteSchedule(this.testSchedule.id, s => resolve(true), e => resolve(false)));
-	}
-
-	testCreateCompetition = () => {
-		return new Promise(resolve => this.Server.createCompetition({
-			name: "__TestTävlingen__",
-			description: "Automattest",
-			status: 0,
-			events: [{ name: "" }]
-		},
-			s => {
-				this.competitionTestId = s.id;
-				resolve(true);
-			},
-			e => {
-				console.log(e.message);
-				resolve(false);
-			}));
-	}
-
-	testDeleteCompetition = () => {
-		return new Promise(resolve => this.Server.deleteCompetition(this.competitionTestId, s => resolve(true), e => resolve(false)));
-	}
-
 	testLogout = () => {
 		return new Promise(resolve => this.Server.logout(s => resolve(true), e => resolve(false)));
 	}
@@ -94,15 +46,14 @@ export class Diagnostics extends React.Component {
 	constructor(props) {
 		super(props);
 		this.bus = new Subject();
-		this.tests = [
-			{ test: this.testLogin, description: "Login" },
-			{ test: this.testCreateCompetition, description: "Skapa tävling" },
-			{ test: this.testDeleteCompetition, description: "Radera tävling" },
-			{ test: this.testCreateSchedule, description: "Skapa startlista" },
-			{ test: this.testUpdateSchedule, description: "Uppdatera startlista" },
-			{ test: this.testDeleteSchedule, description: "Radera startlista" },
-			{ test: this.testLogout, description: "Logout" }
-		];
+		this.tests = [{ test: this.testLogin, description: "Login" }]
+			.concat(
+				new ClassesTests().tests(),
+				new DivisionsTests().tests(),
+				new CompetitionTests().tests(),
+				new ScheduleTests().tests(),
+				[{ test: this.testLogout, description: "Logout" }]);
+
 		window.setTimeout(this.runTests, 10);
 	}
 

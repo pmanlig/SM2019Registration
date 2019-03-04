@@ -3,7 +3,7 @@ export class Server {
 	static wire = ["fire", "Events", "Busy", "Storage", "ScheduleService", "CompetitionService", "ResultService", "RegistrationService", "Footers"];
 	static baseUrl = 'https://dev.bitnux.com/sm2019';
 
-	//#region Main fetch/send method
+	//#region Main fetch/send methods and helpers
 	load(url, callback, error) {
 		if (window._debug) { console.log(`URL: ${url}`); }
 		error = error || (e => console.log(e));
@@ -91,9 +91,7 @@ export class Server {
 					callback();
 			});
 	}
-	//#endregion
 
-	//#region Remote Services
 	jsonFile(name) {
 		return `${process.env.PUBLIC_URL}/${name}.json`;
 	}
@@ -101,7 +99,9 @@ export class Server {
 	errorHandler(msg) {
 		return res => { this.Footers.addFooter(msg + (res.message ? " - " + res.message : "")); }
 	}
+	//#endregion
 
+	//#region Remote Services
 	remoteCompetitionService() {
 		return {
 			loadCompetitionList: (callback, error) => { this.load(`${Server.baseUrl}/competition`, callback, error); },
@@ -133,6 +133,22 @@ export class Server {
 			sendRegistration: (data, callback, error) => { this.send(`${Server.baseUrl}/register`, data, callback, error) }
 		}
 	}
+
+	remoteCategoryServive() {
+		return {
+			loadClassGroups: (callback, error) => { this.load(`${Server.baseUrl}/classes`, callback, error); },
+			loadDivisionGroups: (callback, error) => { this.load(`${Server.baseUrl}/divisions`, callback, error); }
+		}
+	}
+	//#endregion
+
+	//#region Local Services
+	localCategoryServive() {
+		return {
+			loadClassGroups: (callback, error) => { this.load(this.jsonFile("classes"), callback); },
+			loadDivisionGroups: (callback, error) => { this.load(this.jsonFile("divisions"), callback); }
+		}
+	}
 	//#endregion
 
 	//#region Property manipulation
@@ -148,11 +164,13 @@ export class Server {
 			this.scheduleService = this.ScheduleService;
 			this.resultService = this.ResultService;
 			this.registrationService = this.RegistrationService;
+			this.categoryService = this.localCategoryService();
 		} else {
 			this.competitionService = this.remoteCompetitionService();
 			this.scheduleService = this.remoteScheduleService();
 			this.resultService = this.remoteResultService();
 			this.registrationService = this.remoteRegistrationService();
+			this.categoryService = this.remoteCategoryServive();
 		}
 		this.Storage.set(this.Storage.keys.serverMode, this.local);
 		this.fire(this.Events.serverChanged);
@@ -215,13 +233,10 @@ export class Server {
 	//#endregion
 
 	//#region Value lists
-	loadClassGroups(callback) {
-		this.load(this.jsonFile("classes"), callback);
-	}
+	loadClassGroups(callback, error) { this.categoryService.loadClassGroups(this.logFetchCallback("Loading class groups", callback, error)); }
+	loadDivisionGroups(callback, error) { this.categoryService.loadDivisionGroups(this.logFetchCallback("Loading division groups", callback, error)); }
 
-	loadDivisionGroups(callback) {
-		this.load(this.jsonFile("divisions"), callback);
-	}
+	createClassGroup(classgroup, callback, error) {this.send(`${Server.baseUrl}/classes`)}
 	//#endregion
 
 	//#region Login

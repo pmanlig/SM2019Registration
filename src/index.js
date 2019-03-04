@@ -10,6 +10,7 @@ import * as components from './components';
 import * as models from './models';
 import * as logic from './logic';
 import * as views from './views';
+import * as test from './test';
 import { App } from './App';
 
 window._debug = true;
@@ -20,6 +21,7 @@ injector.registerModule(components);
 injector.registerModule(models);
 injector.registerModule(logic);
 injector.registerModule(views);
+injector.registerModule(test);
 injector.register(App);
 
 // ToDo: Implement method registration
