@@ -46,7 +46,7 @@ export class Server {
 				}
 				res.json()
 					.then(callback)
-					.catch(error);
+					.catch(callback); // res.ok but no JSON returned
 			});
 	}
 
@@ -238,6 +238,9 @@ export class Server {
 
 	createClassGroup(classgroup, callback, error) { this.send(`${Server.baseUrl}/classes`, classgroup, callback, error); }
 	createDivisionGroup(classgroup, callback, error) { this.send(`${Server.baseUrl}/divisions`, classgroup, callback, error); }
+
+	deleteClassGroup(classGroupId, callback, error) { this.delete(`${Server.baseUrl}/classes/${classGroupId}`, callback, error); }
+	deleteDivisionGroup(divisionGroupId, callback, error) { this.delete(`${Server.baseUrl}/divisions/${divisionGroupId}`, callback, error); }
 	//#endregion
 
 	//#region Login
