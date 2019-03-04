@@ -236,7 +236,8 @@ export class Server {
 	loadClassGroups(callback, error) { this.categoryService.loadClassGroups(this.logFetchCallback("Loading class groups", callback, error)); }
 	loadDivisionGroups(callback, error) { this.categoryService.loadDivisionGroups(this.logFetchCallback("Loading division groups", callback, error)); }
 
-	createClassGroup(classgroup, callback, error) {this.send(`${Server.baseUrl}/classes`)}
+	createClassGroup(classgroup, callback, error) { this.send(`${Server.baseUrl}/classes`, classgroup, callback, error); }
+	createDivisionGroup(classgroup, callback, error) { this.send(`${Server.baseUrl}/divisions`, classgroup, callback, error); }
 	//#endregion
 
 	//#region Login

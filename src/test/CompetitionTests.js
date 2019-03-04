@@ -13,7 +13,7 @@ export class CompetitionTests {
 			name: "__TestTävlingen__",
 			description: "Automattest",
 			status: 0,
-			events: [{ name: "", date: Date.now(), maxRegistrations: 1 }]
+			events: [{ name: "", date: Date.now(), maxRegistrations: 1, id: 1 }]
 		};
 		return new Promise(resolve => this.Server.createCompetition(this.testCompetition,
 			s => {
