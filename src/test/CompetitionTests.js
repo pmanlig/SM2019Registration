@@ -5,7 +5,9 @@ export class CompetitionTests {
 		return [
 			{ test: this.testCreateCompetition, description: "Skapa tävling" },
 			{ test: this.testLoadCreatedCompetition, description: "Hämta skapad tävling" },
+			{ test: this.testGetCompetitions, description: "Hämta tävlingar" },
 			{ test: this.testUpdateCompetition, description: "Uppdatera tävling" },
+			{ test: this.verifyCompetitionList, description: "Kontrollera tävlingar" },
 			{ test: this.testLoadChangedCompetition, description: "Hämta ändrad tävling" },
 			{ test: this.testDeleteCompetition, description: "Radera tävling" },
 			{ test: this.testCompetitionIsDeleted, description: "Kontrollerar att tävling raderades" }
@@ -84,18 +86,34 @@ export class CompetitionTests {
 		return new Promise(resolve => this.Server.deleteCompetition(this.testCompetition.id, s => resolve(true), e => resolve(false)));
 	}
 
+	testGetCompetitions = () => {
+		return new Promise(resolve => this.Server.loadCompetitionList(
+			s => {
+				this.competitionList = s;
+				resolve(true);
+			},
+			e => resolve(false)));
+	}
+
+	verifyCompetitionList = () => {
+		return new Promise(resolve => this.Server.loadCompetitionList(
+			s => {
+				resolve(this.competitionList.length === s.length);
+			},
+			e => resolve(false)));
+	}
+
 	testCompetitionIsDeleted = () => {
-		return new Promise(resolve => this.Server.loadCompetition(
-			this.testCompetition.id,
+		return new Promise(resolve => this.Server.loadCompetitionList(
 			s => {
 				console.log("Success");
 				console.log(s);
-				resolve(false);
+				resolve(s.every(c => c.id !== this.testCompetition.id));
 			},
 			e => {
 				console.log("Error");
 				console.log(e);
-				resolve(true);
+				resolve(false);
 			}
 		));
 	}

@@ -213,7 +213,7 @@ export class Server {
 	//#endregion
 
 	//#region Competition
-	loadCompetitionList(callback, error) { this.competitionService.loadCompetitionList(this.logFetchCallback("Loading competition list", callback), error); }
+	loadCompetitionList(callback, error) { this.competitionService.loadCompetitionList(this.logFetchCallback("Loading competition list", callback), this.errorHandler("Kan inte hämta tävlingar", error)); }
 	loadCompetition(competitionId, callback, error) { this.competitionService.loadCompetition(competitionId, this.logFetchCallback("Loading competition data", callback), this.errorHandler("Kan inte hämta tävling", error)); }
 	createCompetition(competition, callback, error) { this.competitionService.createCompetition(competition, this.logSendCallback("Creating new competition", competition, callback), this.errorHandler("Kan inte skapa tävling", error)); }
 	updateCompetition(competition, callback, error) { this.competitionService.updateCompetition(competition, this.logSendCallback("Updating competition", competition, callback), this.errorHandler("Kan inte uppdatera tävling", error)); }
