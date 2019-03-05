@@ -12,15 +12,16 @@ export class Server {
 			crossDomain: true,
 			credentials: 'include',
 		})
-			.then(result => result.json())
-			.then(json => {
-				callback(json);
+			.then(res => {
 				this.Busy.setBusy(this, false);
+				if (!res.ok) {
+					res.json().then(error);
+					return;
+				}
+				res.json()
+					.then(callback)
+					.catch(error);
 			})
-			.catch(e => {
-				error(e);
-				this.Busy.setBusy(this, false);
-			});
 		// finally() not supported in several browsers :(
 		// .finally(() => this.Busy.setBusy(Server.id, false));
 	}

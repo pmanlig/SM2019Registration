@@ -7,7 +7,8 @@ export class CompetitionTests {
 			{ test: this.testLoadCreatedCompetition, description: "Hämta skapad tävling" },
 			{ test: this.testUpdateCompetition, description: "Uppdatera tävling" },
 			{ test: this.testLoadChangedCompetition, description: "Hämta ändrad tävling" },
-			{ test: this.testDeleteCompetition, description: "Radera tävling" }
+			{ test: this.testDeleteCompetition, description: "Radera tävling" },
+			{ test: this.testCompetitionIsDeleted, description: "Kontrollerar att tävling raderades" }
 		];
 	}
 
@@ -81,5 +82,21 @@ export class CompetitionTests {
 
 	testDeleteCompetition = () => {
 		return new Promise(resolve => this.Server.deleteCompetition(this.testCompetition.id, s => resolve(true), e => resolve(false)));
+	}
+
+	testCompetitionIsDeleted = () => {
+		return new Promise(resolve => this.Server.loadCompetition(
+			this.testCompetition.id,
+			s => {
+				console.log("Success");
+				console.log(s);
+				resolve(false);
+			},
+			e => {
+				console.log("Error");
+				console.log(e);
+				resolve(true);
+			}
+		));
 	}
 }
