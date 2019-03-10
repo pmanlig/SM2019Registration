@@ -57,8 +57,8 @@ export class CompetitionTests {
 				this.testCompetition = s;
 				console.log("Loaded competition");
 				console.log(JSON.parse(JSON.stringify(this.testCompetition)));
-				resolve(parseInt(this.testCompetition.events[0].classes.toString(), 10) === 101 &&
-					parseInt(this.testCompetition.events[0].divisions.toString(), 10) === 102 &&
+				resolve(parseInt(this.testCompetition.events[0].classes.toString(), 10) === 1101 &&
+					parseInt(this.testCompetition.events[0].divisions.toString(), 10) === 1101 &&
 					this.testCompetition.events[0].divisionGroup === undefined);
 			},
 			e => {
@@ -69,8 +69,8 @@ export class CompetitionTests {
 	}
 
 	testUpdateCompetition = () => {
-		this.testCompetition.events[0].classes = 101;
-		this.testCompetition.events[0].divisions = 102;
+		this.testCompetition.events[0].classes = 1101;
+		this.testCompetition.events[0].divisions = 1101;
 		return new Promise(resolve => this.Server.updateCompetition(
 			this.testCompetition,
 			s => resolve(true),
