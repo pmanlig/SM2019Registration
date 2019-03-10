@@ -47,7 +47,8 @@ export class ScheduleProperties extends React.Component {
 	}
 
 	editSchedule = (event) => {
-		// Create new schedule if one doesn't exist		
+		console.log("Editing schedule " + JSON.stringify(event.schedule));
+		// Create new schedule if one doesn't exist
 		if (event.schedule === undefined) {
 			this.Server.createSchedule(new Schedule().toJson(), schedule => {
 				schedule = Schedule.fromJson(schedule);

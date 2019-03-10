@@ -1,5 +1,6 @@
 import './SquadPicker.css';
 import React from 'react';
+import { Schedule } from '../models';
 
 export class SquadPicker extends React.Component {
 	static register = { name: "SquadPicker" };
@@ -16,7 +17,7 @@ export class SquadPicker extends React.Component {
 		this.Server.loadSchedule(event.schedule, json => {
 			console.log("Showing Schedule");
 			console.log(json);
-			this.setState({ event: event, schedule: json, participant: participant, round: round });
+			this.setState({ event: event, schedule: Schedule.fromJson(json), participant: participant, round: round });
 		});
 	}
 
@@ -27,6 +28,7 @@ export class SquadPicker extends React.Component {
 	}
 
 	squadStatus(squad) {
+		console.log(squad);
 		if (squad.slots === squad.participants.length) { return "full"; }
 		if (squad.participants.length === 0) { return "empty"; }
 		return "partial";
