@@ -1,6 +1,6 @@
 RewriteEngine On
-RewriteBase /
-RewriteRule ^/sm2019/index\.html$ - [L]
+RewriteBase /sm2019/
+RewriteRule ^index\.html$ - [L]
  RewriteCond %{REQUEST_FILENAME} !-f
  RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /sm2019/index.html [L]
+RewriteRule . index.html [L]
