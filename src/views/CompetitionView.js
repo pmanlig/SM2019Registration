@@ -18,6 +18,7 @@ export class CompetitionView extends React.Component {
 		super(props);
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.competitionUpdated, () => this.setState({}));
+		this.subscribe(this.Events.userChanged, () => props.history.push('/'));
 		this.subscribe(this.Events.serverChanged, () => this.Competition.load(props.match.params.id));
 		this.Competition.load(props.match.params.id);
 	}

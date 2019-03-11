@@ -5,7 +5,7 @@ import { Event } from "../models";
 
 export class CreateCompetition extends React.Component {
 	static register = { name: "CreateCompetition" };
-	static wire = ["Storage", "Competition", "CompetitionProperties", "WithLogin", "EventBus", "Events", "Server"];
+	static wire = ["Storage", "Competition", "CompetitionProperties", "EventBus", "Events", "Server"];
 
 	constructor(props) {
 		super(props);
