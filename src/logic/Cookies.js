@@ -1,3 +1,5 @@
+import { startsWith } from '.';
+
 export function setCookie(name, value, expiration) {
 	document.cookie = `${name}=${value}` + (expiration ? "; " + expiration : "") + "; path=/";
 }
@@ -5,7 +7,7 @@ export function setCookie(name, value, expiration) {
 export function getCookie(name, defaultValue = null) {
 	let d = decodeURIComponent(document.cookie)
 		.split(";")
-		.filter(c => c.trim().startsWith(name + "="))
+		.filter(c => startsWith(c.trim(), name + "="))
 		.map(c => c.split("=")[1]);
 	if (d.length === 0)
 		return defaultValue;
