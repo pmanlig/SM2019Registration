@@ -19,7 +19,11 @@ export class CompetitionAdmin extends React.Component {
 	}
 
 	saveCompetition = () => {
-		this.Server.updateCompetition(this.Competition.toJson(), success => this.setState({ dirty: !success }));
+		this.Server.updateCompetition(this.Competition.toJson(), success => {
+			console.log("stored competition");
+			this.Competition.refresh();
+			this.setState({ dirty: false });
+		});
 	}
 
 	render() {

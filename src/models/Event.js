@@ -4,7 +4,8 @@ export class Event {
 	schedule = undefined;
 	maxRegistrations = 1;
 
-	constructor(name, date) {
+	constructor(id, name, date) {
+		this.id = id;
 		this.name = name;
 		this.date = date;
 	}
@@ -16,8 +17,7 @@ export class Event {
 	}
 
 	static fromJson(e) {
-		let nE = new Event(e.name, new Date(e.date || Date.now()));
-		nE.id = Event.toNumber(e.id);
+		let nE = new Event(Event.toNumber(e.id), e.name, new Date(e.date || Date.now()));
 		nE.classes = Event.toNumber(e.classes);
 		nE.divisions = Event.toNumber(e.divisions);
 		nE.schedule = ((typeof e.schedule === "object") ? e.schedule.id : Event.toNumber(e.schedule));

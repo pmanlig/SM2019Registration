@@ -23,7 +23,6 @@ export class CompetitionProperties extends React.Component {
 
 	render() {
 		let { classGroups, divisionGroups } = this.state;
-		let tempId = 1;
 		return <div>
 			<this.ScheduleProperties divisionGroups={divisionGroups} />
 			<table className="competitionInfo">
@@ -50,7 +49,7 @@ export class CompetitionProperties extends React.Component {
 					</tr>
 				</tbody>
 			</table>
-			{this.Competition.events.map(e => <this.EventProperties key={e.id || tempId++} event={e} classGroups={classGroups} divisionGroups={divisionGroups} />)}
+			{this.Competition.events.map(e => <this.EventProperties key={e.id} event={e} classGroups={classGroups} divisionGroups={divisionGroups} />)}
 		</div>;
 	}
 }

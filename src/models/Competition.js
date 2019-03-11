@@ -33,9 +33,12 @@ export class Competition {
 		this.divisionGroups = [];
 		this.classGroups = [];
 		this.eventGroups = [];
-		this.events = [new Event("", new Date())];
+		this.events = [new Event(1, "", new Date())];
 		this.rules = [];
-		this.subscribe(this.Events.serverChanged, this.changeServer);
+		this.nextNewEvent = 2;
+		if (!this.subscription) {
+			this.subscription = this.subscribe(this.Events.serverChanged, this.changeServer);
+		}
 	}
 
 	changeServer = () => {
@@ -55,11 +58,22 @@ export class Competition {
 				if (obj !== undefined && obj.id !== this.id) {
 					this.initialize();
 					this.fromJson(obj);
+					this.fire(this.Events.competitionUpdated);
 				}
 			});
 		} else {
 			this.fire(this.Events.competitionUpdated);
 		}
+	}
+
+	refresh() {
+		this.Server.loadCompetition(this.id, obj => {
+			if (obj !== undefined && obj.id !== this.id) {
+				this.initialize();
+				this.fromJson(obj);
+				this.fire(this.Events.competitionUpdated);
+			}
+		});
 	}
 
 	fromJson(obj) {
@@ -76,7 +90,6 @@ export class Competition {
 			this.permissions = obj.permissions ? parseInt(obj.permissions.toString(), 10) :
 				(this.Session.user === "" || this.Session.user === undefined ? Permissions.Any : Permissions.Own);
 			this.status = obj.status ? parseInt(obj.status.toString(), 10) : Status.Open;
-			this.setEventKeys();
 			this.fire(this.Events.competitionUpdated);
 		}
 	}
@@ -101,26 +114,20 @@ export class Competition {
 		this.fire(this.Events.competitionUpdated);
 	}
 
-	setEventKeys() {
-		let id = 1;
-		this.events.forEach(e => e.key = id++);
-		this.fire(this.Events.competitionUpdated);
-	}
-
 	addEvent() {
 		if (this.events.length === 1) {
 			this.events[0].name = "Deltävling 1";
 		}
-		this.events.push(new Event("Deltävling " + (this.events.length + 1), new Date()));
-		this.setEventKeys();
+		this.events.push(new Event(this.nextNewEvent++, "Deltävling " + (this.events.length + 1), new Date()));
+		this.fire(this.Events.competitionUpdated);
 	}
 
 	removeEvent(event) {
-		this.events = this.events.filter(e => e.key !== event.key);
+		this.events = this.events.filter(e => e.id !== event.id);
 		if (this.events.length === 1) {
 			this.events[0].name = "";
 		}
-		this.setEventKeys();
+		this.fire(this.Events.competitionUpdated);
 	}
 
 	updateEvent(event, prop, value) {

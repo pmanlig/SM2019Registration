@@ -28,10 +28,12 @@ export class CreateCompetition extends React.Component {
 
 			// handle old format
 			if (data.event && data.events.length === 0) {
-				data.events.push(new Event(data.event.name, new Date(data.event.date)));
+				data.events.push(new Event(1, data.event.name, new Date(data.event.date)));
+				this.Competition.nextNewEvent = 2;
 			}
 			if (data.events.length === 0) {
-				data.events.push(new Event("", new Date()));
+				data.events.push(new Event(1, "", new Date()));
+				this.Competition.nextNewEvent = 2;
 			}
 		}
 		this.EventBus.manageEvents(this);
