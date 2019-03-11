@@ -16,7 +16,7 @@ export class ScheduleProperties extends React.Component {
 		super(props);
 		this.state = {};
 		this.EventBus.manageEvents(this);
-		this.EventBus.subscribe(this.Events.editSchedule, this.editSchedule);
+		this.subscribe(this.Events.editSchedule, this.editSchedule);
 	}
 
 	findDivisions() {
@@ -51,6 +51,7 @@ export class ScheduleProperties extends React.Component {
 		// Create new schedule if one doesn't exist
 		if (event.schedule === undefined) {
 			this.Server.createSchedule(new Schedule().toJson(), schedule => {
+				console.log("Schedule created " + JSON.stringify(schedule));
 				schedule = Schedule.fromJson(schedule);
 				event.schedule = schedule.id;
 				this.loadScheduleInformation(event, schedule);

@@ -197,7 +197,19 @@ export class Server {
 		console.log(msg);
 		console.log(data);
 		return json => {
-			console.log("Reply:");
+			console.log(`Reply:`);
+			console.log(json);
+			c(json);
+		}
+	}
+
+	logSendCallback2(msg, data, c) {
+		if (c === undefined) c = () => { };
+		if (!window._debug) { return c; }
+		console.log(msg);
+		console.log(data);
+		return json => {
+			console.log(`Reply (${msg}):`);
 			console.log(json);
 			c(json);
 		}
@@ -230,7 +242,7 @@ export class Server {
 	//#endregion
 
 	//#region Schedule
-	createSchedule(schedule, callback, error) { this.scheduleService.createSchedule(schedule, this.logSendCallback("Creating schedule", schedule, callback), error); }
+	createSchedule(schedule, callback, error) { this.scheduleService.createSchedule(schedule, this.logSendCallback2("Creating schedule", schedule, callback), error); }
 	loadSchedule(scheduleId, callback, error) { this.scheduleService.getSchedule(scheduleId, this.logFetchCallback("Loading schedule", callback), error); }
 	updateSchedule(schedule, callback, error) { this.scheduleService.updateSchedule(schedule, this.logUpdateCallback("Updating schedule", schedule, callback), error); }
 	deleteSchedule(scheduleId, callback, error) { this.scheduleService.deleteSchedule(scheduleId, this.logUpdateCallback("Deleting schedule", scheduleId, callback), error); }

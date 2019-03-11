@@ -54,6 +54,12 @@ export class CreateCompetition extends React.Component {
 		});
 	}
 
+	clearForm = () => {
+		this.Competition.initialize();
+		this.Storage.set(this.Storage.keys.newCompetition, null);
+		this.setState({});
+	}
+
 	componentDidMount() {
 		this.EventBus.fire(this.Events.changeTitle, "Skapa ny tävling");
 	}
@@ -61,7 +67,8 @@ export class CreateCompetition extends React.Component {
 	render() {
 		if (this.state.redirect) { return <Redirect to={`/competition/${this.state.redirect}/admin`} />; }
 		return <div className="content">
-			<button id="saveButton" className="button" onClick={this.createCompetition}>Skapa tävling</button>
+			<button id="saveButton" className="createTool button" onClick={this.createCompetition}>Skapa tävling</button>
+			<button id="clearButton" className="createTool button" onClick={this.clearForm}>Rensa formulär</button>
 			<this.CompetitionProperties />
 		</div >;
 	}
