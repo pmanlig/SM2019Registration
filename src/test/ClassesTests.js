@@ -23,8 +23,6 @@ export class ClassesTests {
 			"description": "PPC",
 			"classes": ["Marksman", "Sharpshooter", "Expert", "Master", "High Master"]
 		};
-		console.log("Creating class group");
-		console.log(classGroup);
 		return new Promise(resolve => this.Server.createClassGroup(
 			classGroup,
 			s => {

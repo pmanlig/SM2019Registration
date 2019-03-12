@@ -55,8 +55,6 @@ export class CompetitionTests {
 			this.testCompetition.id,
 			s => {
 				this.testCompetition = s;
-				console.log("Loaded competition");
-				console.log(JSON.parse(JSON.stringify(this.testCompetition)));
 				resolve(parseInt(this.testCompetition.events[0].classes.toString(), 10) === 1101 &&
 					parseInt(this.testCompetition.events[0].divisions.toString(), 10) === 1101 &&
 					this.testCompetition.events[0].divisionGroup === undefined);

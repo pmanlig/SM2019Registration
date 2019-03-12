@@ -21,6 +21,7 @@ export class Event {
 		nE.classes = Event.toNumber(e.classes);
 		nE.divisions = Event.toNumber(e.divisions);
 		nE.schedule = ((typeof e.schedule === "object") ? e.schedule.id : Event.toNumber(e.schedule));
+		nE.schedule = nE.schedule === 0 ? undefined : nE.schedule;
 		nE.maxRegistrations = e.maxRegistrations;
 		return nE;
 	}
