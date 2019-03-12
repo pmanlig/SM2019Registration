@@ -17,7 +17,7 @@ export class ClassGroups {
 		if (this.classGroups.length === 0) {
 			this.Server.loadClassGroups(data => {
 				this.classGroups = this.fromJson(data);
-				callback(data);
+				callback(this.classGroups);
 			});
 		} else {
 			callback(null);

@@ -30,8 +30,6 @@ export class Competition {
 		this.description = "";
 		this.permissions = Permissions.Own;
 		this.status = Status.Hidden;
-		this.divisionGroups = [];
-		this.classGroups = [];
 		this.eventGroups = [];
 		this.events = [new Event(1, "", new Date())];
 		this.rules = [];
@@ -84,8 +82,6 @@ export class Competition {
 			this.description = obj.description || this.description;
 			this.eventGroups = obj.eventGroups ? obj.eventGroups.map(eg => EventGroup.fromJson(eg)) : this.eventGroups;
 			this.events = obj.events ? obj.events.map(e => Event.fromJson(e)) : this.events;
-			this.divisionGroups = obj.divisionGroups || this.divisionGroups;
-			this.classGroups = obj.classGroups || this.classGroups;
 			this.rules = obj.rules || this.rules;
 			this.permissions = obj.permissions ? parseInt(obj.permissions.toString(), 10) :
 				(this.Session.user === "" || this.Session.user === undefined ? Permissions.Any : Permissions.Own);

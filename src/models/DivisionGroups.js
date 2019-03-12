@@ -17,7 +17,7 @@ export class DivisionGroups {
 		if (this.divisionGroups.length === 0) {
 			this.Server.loadDivisionGroups(data => {
 				this.divisionGroups = this.fromJson(data);
-				callback(data);
+				callback(this.divisionGroups);
 			});
 		} else {
 			callback(null);

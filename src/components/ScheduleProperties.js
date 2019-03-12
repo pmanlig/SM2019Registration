@@ -19,11 +19,6 @@ export class ScheduleProperties extends React.Component {
 		this.subscribe(this.Events.editSchedule, this.editSchedule);
 	}
 
-	findDivisions() {
-		return (!this.state.event || !this.state.event.divisions) ? undefined :
-			this.props.divisionGroups.filter(dg => dg.id === this.state.event.divisions).map(dg => dg.divisions).find(d => { return true; });
-	}
-
 	newScheduleInformation(event, schedule) {
 		this.schedules[schedule.id] =
 			{
@@ -41,17 +36,18 @@ export class ScheduleProperties extends React.Component {
 	}
 
 	loadScheduleInformation(event, schedule) {
+		schedule = Schedule.fromJson(schedule);
 		let newState = this.schedules[schedule.id] || this.newScheduleInformation(event, schedule);
 		newState.duration = schedule.duration;
+		newState.divisions = event.divisions ?
+			this.props.divisionGroups.filter(dg => dg.id === event.divisions).map(dg => dg.divisions).find(d => { return true; }) : undefined;
 		this.setState(newState);
 	}
 
 	editSchedule = (event) => {
-		console.log("Editing schedule " + JSON.stringify(event.schedule));
 		// Create new schedule if one doesn't exist
 		if (event.schedule === undefined) {
 			this.Server.createSchedule(new Schedule().toJson(), schedule => {
-				console.log("Schedule created " + JSON.stringify(schedule));
 				schedule = Schedule.fromJson(schedule);
 				event.schedule = schedule.id;
 				this.loadScheduleInformation(event, schedule);
@@ -60,7 +56,7 @@ export class ScheduleProperties extends React.Component {
 			return;
 		}
 		// Test schedule to handle old data format; patch event if old format
-		let scheduleId = parseInt(event.schedule, 10);
+		let scheduleId = parseInt(event.schedule.toString(), 10);
 		if (isNaN(scheduleId)) {
 			let schedule = event.schedule;
 			event.schedule = schedule.id;
@@ -69,7 +65,7 @@ export class ScheduleProperties extends React.Component {
 		}
 		// Schedule exists; load and show it
 		this.Server.loadSchedule(scheduleId, schedule => {
-			this.loadScheduleInformation(event, Schedule.fromJson(schedule));
+			this.loadScheduleInformation(event, schedule);
 		});
 	}
 
@@ -119,7 +115,6 @@ export class ScheduleProperties extends React.Component {
 
 	updateSquadProperty = (id, property, value) => {
 		this.state.schedule.updateSquadProperty(id, property, value);
-		this.Server.updateSchedule(this.state.schedule.toJson());
 	}
 
 	selectDivision = (d) => {
@@ -137,8 +132,8 @@ export class ScheduleProperties extends React.Component {
 	render() {
 		if (this.state.schedule === undefined) { return null; }
 
+		let divisions = this.state.divisions;
 		let rowWidth = 11.0;
-		let divisions = this.findDivisions();
 		if (divisions) { // ToDo: update
 			rowWidth += 4;
 			divisions.forEach(d => rowWidth += d.length + 0.5);

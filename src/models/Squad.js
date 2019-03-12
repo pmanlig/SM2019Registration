@@ -12,12 +12,14 @@ export class Squad {
 		let n = new Squad();
 		n.stored = true;
 		if (s) {
-			n.startTime = s.startTime;
+			n.startTime = s.startTime.split(":").slice(0, 2).join(":");
+			while (n.startTime[0] === '0') { n.startTime = n.startTime.slice(1); }
 			n.slots = s.slots;
 			n.divisions = s.divisions;
-			n.mixed = s.mixed;
+			n.mixed = s.mixed === "true";
 			n.id = s.id;
 			n.participants = s.participants || [];
+			n.duration = s.duration || 120;
 		}
 		return n;
 	}

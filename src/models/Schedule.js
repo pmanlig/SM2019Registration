@@ -8,13 +8,11 @@ export class Schedule {
 
 	static fromJson(s) {
 		let schedule = new Schedule();
-		schedule.id = s.id;
+		schedule.id = parseInt(s.id.toString(), 10);
 		schedule.nextSquadId = s.squads && s.squads.length > 0 ? Math.max(...s.squads.map(sq => parseInt(sq.id.toString(), 10))) : 1;
 		// ToDo: why is null present?
 		schedule.squads = s.squads ? s.squads.filter(x => x !== null).map(s => Squad.fromJson(s)) : [];
 		schedule.duration = s.duration ? Time.format(parseInt(s.duration.toString(), 10)) : "2:00";
-		console.log("Loaded schedule");
-		console.log(schedule);
 		return schedule;
 	}
 

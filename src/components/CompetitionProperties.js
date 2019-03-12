@@ -5,7 +5,7 @@ import { Dropdown } from '.';
 
 export class CompetitionProperties extends React.Component {
 	static register = { name: "CompetitionProperties" };
-	static wire = ["Server", "Competition", "EventProperties", "ScheduleProperties", "EventBus", "Events"]
+	static wire = ["Server", "Competition", "EventProperties", "ScheduleProperties", "EventBus", "Events", "DivisionGroups", "ClassGroups"]
 
 	status = [{ id: Status.Hidden, description: "Gömd" }, { id: Status.Open, description: "Öppen" }, { id: Status.Closed, description: "Stängd" }];
 
@@ -16,8 +16,22 @@ export class CompetitionProperties extends React.Component {
 			divisionGroups: [{ id: -1, description: "Inget val av vapengrupp" }]
 		};
 		this.EventBus.manageEvents(this);
-		this.Server.loadClassGroups(list => this.setState({ classGroups: this.state.classGroups.concat(list) }));
-		this.Server.loadDivisionGroups(list => this.setState({ divisionGroups: this.state.divisionGroups.concat(list) }));
+		this.ClassGroups.load(list => {
+			if (list !== null) {
+				this.setState({ classGroups: this.state.classGroups.concat(list) });
+			}
+			else {
+				this.state.classGroups = this.ClassGroups.classGroups;
+			}
+		});
+		this.DivisionGroups.load(list => {
+			if (list !== null) {
+				this.setState({ divisionGroups: this.state.divisionGroups.concat(list) });
+			}
+			else {
+				this.state.divisionGroups = this.DivisionGroups.divisionGroups;
+			}
+		});
 		this.subscribe(this.Events.competitionUpdated, () => this.setState({}));
 	}
 
