@@ -4,10 +4,19 @@ export class ClassGroups {
 
 	classGroups = [];
 
+	fromJson(data) {
+		return data.map(c => {
+			return {
+				...c,
+				id: parseInt(c.id.toString(), 10)
+			}
+		});
+	}
+
 	load(callback) {
 		if (this.classGroups.length === 0) {
 			this.Server.loadClassGroups(data => {
-				this.classGroups = data;
+				this.classGroups = this.fromJson(data);
 				callback(data);
 			});
 		} else {

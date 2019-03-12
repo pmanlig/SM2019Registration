@@ -4,10 +4,19 @@ export class DivisionGroups {
 
 	divisionGroups = [];
 
+	fromJson(data) {
+		return data.map(c => {
+			return {
+				...c,
+				id: parseInt(c.id.toString(), 10)
+			}
+		});
+	}
+
 	load(callback) {
 		if (this.divisionGroups.length === 0) {
 			this.Server.loadDivisionGroups(data => {
-				this.divisionGroups = data;
+				this.divisionGroups = this.fromJson(data);
 				callback(data);
 			});
 		} else {
