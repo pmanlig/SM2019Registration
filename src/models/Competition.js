@@ -132,7 +132,7 @@ export class Competition {
 
 	updateEvent(event, prop, value) {
 		this.events.forEach(e => {
-			if (e.key === event.key) {
+			if (e.id === event.id) {
 				if (prop) {
 					e[prop] = value;
 				} else {
