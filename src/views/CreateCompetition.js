@@ -5,7 +5,7 @@ import { Event } from "../models";
 
 export class CreateCompetition extends React.Component {
 	static register = { name: "CreateCompetition" };
-	static wire = ["Storage", "Competition", "CompetitionProperties", "EventBus", "Events", "Server"];
+	static wire = ["Storage", "Competition", "CompetitionProperties", "EventBus", "Events", "Server", "Footers"];
 
 	constructor(props) {
 		super(props);
@@ -49,6 +49,10 @@ export class CreateCompetition extends React.Component {
 	}
 
 	createCompetition = () => {
+		if (this.Competition.name === "") {
+			this.Footers.addFooter("Tävlingen måste ha ett namn!");
+			return;
+		}
 		this.Server.createCompetition(this.Competition.toJson(), response => {
 			// ToDo: unsub?
 			this.Storage.set(this.Storage.keys.newCompetition, null);
