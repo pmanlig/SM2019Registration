@@ -43,7 +43,7 @@ export class Registration {
 				this.participants = newParticipants;
 
 				this.fire(this.Events.registrationUpdated, this);
-			});
+			}, this.Footers.errorHandler("Kan inte hämta anmälan"));
 		} else {
 			this.token = undefined;
 			this.contact = new Person();

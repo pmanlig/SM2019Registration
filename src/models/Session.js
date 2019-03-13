@@ -2,7 +2,7 @@ import { Events, setCookie, getCookie, deleteCookie } from '../logic';
 
 export class Session {
 	static register = { name: "Session", createInstance: true };
-	static wire = ["fire", "Server", "Storage"];
+	static wire = ["fire", "Server", "Storage", "Footers"];
 
 	constructor() {
 		this.user = getCookie("user", "");
@@ -14,7 +14,7 @@ export class Session {
 			setCookie("user", this.user);
 			if (user === "patrik") this.Storage.set(this.Storage.keys.toggleServerMode, true);
 			this.fire(Events.userChanged);
-		});
+		}, this.Footers.errorHandler("Kan inte logga in"));
 	}
 
 	logout() {
@@ -23,7 +23,7 @@ export class Session {
 				this.user = "";
 				deleteCookie("user");
 				this.fire(Events.userChanged);
-			});
+			}, this.Footers.errorHandler("Kan inte logga ut"));
 		}
 	}
 }

@@ -3,7 +3,7 @@ import React from 'react';
 
 export class ReportView extends React.Component {
 	static register = { name: "ReportView" };
-	static wire = ["fire", "Competition", "Registration", "Results", "Server", "ResultsTable", "EventBus", "Events"];
+	static wire = ["fire", "Competition", "Registration", "Results", "Server", "ResultsTable", "EventBus", "Events", "Footers"];
 
 	constructor(props) {
 		super(props);
@@ -28,7 +28,9 @@ export class ReportView extends React.Component {
 
 	changeEvent(newEvent) {
 		if (newEvent === 'none') { this.setState({ eventId: 'none', results: [] }); }
-		else { this.Server.loadResults(this.Competition.id, newEvent, r => this.setState({ eventId: newEvent, results: r })); }
+		else {
+			this.Server.loadResults(this.Competition.id, newEvent, r => this.setState({ eventId: newEvent, results: r }), this.Footers.errorHandler("Kan inte hämta resultat"));
+		}
 	}
 
 	getSelectedEvent(competition) {

@@ -36,6 +36,18 @@ export class Footers {
 		this.footers = this.footers.filter(f => f.id !== id);
 		this.fire(this.Events.footersChanged, id);
 	}
+
+	errorHandler(msg) {
+		return e => {
+			if (e === undefined) {
+				this.addFooter("Oväntat fel!");
+				console.log(msg);
+			}
+			else if (e.msg !== undefined) this.addFooter(`${msg} - ${e.msg}`);
+			else if (e.message !== undefined) this.addFooter(`${msg} - ${e.message}`);
+			else this.addFooter(`${msg} - ${e.toString()}`);
+		}
+	}
 }
 
 export class Footer extends React.Component {

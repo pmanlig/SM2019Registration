@@ -1,6 +1,6 @@
 export class Results {
 	static register = { name: "Results", createInstance: true };
-	static wire = ["fire", "Competition", "Storage", "Server", "Events"];
+	static wire = ["fire", "Competition", "Storage", "Server", "Events", "Footers"];
 
 	scores = [];
 
@@ -21,7 +21,7 @@ export class Results {
 			this.scores.forEach(p => this.calculate(p));
 			this.sort();
 			this.fire(this.Events.resultsUpdated);
-		});
+		}, this.Footers.errorHandler("Kan inte hämta resultat"));
 	}
 
 	calculate(participant) {

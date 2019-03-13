@@ -57,7 +57,7 @@ export class CreateCompetition extends React.Component {
 			// ToDo: unsub?
 			this.Storage.set(this.Storage.keys.newCompetition, null);
 			this.setState({ redirect: response.id });
-		});
+		}, this.Footers.errorHandler("Kan inte skapa tävling"));
 	}
 
 	clearForm = () => {

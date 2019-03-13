@@ -4,7 +4,7 @@ import { Schedule } from '../models';
 
 export class SquadPicker extends React.Component {
 	static register = { name: "SquadPicker" };
-	static wire = ["EventBus", "Events", "Server", "Competition"];
+	static wire = ["EventBus", "Events", "Server", "Competition", "Footers"];
 
 	constructor(props) {
 		super(props);
@@ -15,10 +15,8 @@ export class SquadPicker extends React.Component {
 
 	showSchedule = (participant, event, round) => {
 		this.Server.loadSchedule(event.schedule, json => {
-			console.log("Showing Schedule");
-			console.log(json);
 			this.setState({ event: event, schedule: Schedule.fromJson(json), participant: participant, round: round });
-		});
+		}, this.Footers.errorHandler("Kan inte hämta schema"));
 	}
 
 	selectSquad = (squad) => {

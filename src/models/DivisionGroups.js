@@ -1,6 +1,6 @@
 export class DivisionGroups {
 	static register = { name: "DivisionGroups", createInstance: true };
-	static wire = ["Server"];
+	static wire = ["Server", "Footers"];
 
 	divisionGroups = [];
 
@@ -18,7 +18,7 @@ export class DivisionGroups {
 			this.Server.loadDivisionGroups(data => {
 				this.divisionGroups = this.fromJson(data);
 				callback(this.divisionGroups);
-			});
+			}, this.Footers.errorHandler("Kan inte hämta vapengruppsindelning"));
 		} else {
 			callback(null);
 		}

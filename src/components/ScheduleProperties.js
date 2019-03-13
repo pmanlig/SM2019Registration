@@ -9,7 +9,7 @@ import { SquadProperties } from './SquadProperties';
 
 export class ScheduleProperties extends React.Component {
 	static register = { name: "ScheduleProperties" };
-	static wire = ["Events", "EventBus", "Competition", "Server"];
+	static wire = ["Events", "EventBus", "Competition", "Server", "Footers"];
 	schedules = [];
 
 	constructor(props) {
@@ -52,7 +52,7 @@ export class ScheduleProperties extends React.Component {
 				event.schedule = schedule.id;
 				this.loadScheduleInformation(event, schedule);
 				this.Competition.updateEvent(event);
-			});
+			}, this.Footers.errorHandler("Kan inte skapa schema"));
 			return;
 		}
 		// Test schedule to handle old data format; patch event if old format
@@ -66,7 +66,7 @@ export class ScheduleProperties extends React.Component {
 		// Schedule exists; load and show it
 		this.Server.loadSchedule(scheduleId, schedule => {
 			this.loadScheduleInformation(event, schedule);
-		});
+		}, this.Footers.errorHandler("Kan inte hämta schema"));
 	}
 
 	updateStartTime(t) {
@@ -125,7 +125,7 @@ export class ScheduleProperties extends React.Component {
 	onClose = () => {
 		let schedule = this.state.schedule;
 		schedule.duration = this.state.duration;
-		this.Server.updateSchedule(schedule.toJson());
+		this.Server.updateSchedule(schedule.toJson(), () => { }, this.Footers.errorHandler("Kan inte spara schema"));
 		this.setState({ schedule: undefined });
 	}
 

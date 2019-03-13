@@ -22,7 +22,7 @@ export const Operations = [
 
 export class Competition {
 	static register = { name: "Competition", createInstance: true };
-	static wire = ["fire", "subscribe", "Events", "Server", "ClassGroups", "DivisionGroups", "Session"];
+	static wire = ["fire", "subscribe", "Events", "Server", "ClassGroups", "DivisionGroups", "Session", "Footers"];
 
 	initialize = () => {
 		this.id = 0;
@@ -58,20 +58,22 @@ export class Competition {
 					this.fromJson(obj);
 					this.fire(this.Events.competitionUpdated);
 				}
-			});
+			}, this.Footers.errorHandler("Kan inte hämta tävling"));
 		} else {
 			this.fire(this.Events.competitionUpdated);
 		}
 	}
 
 	refresh() {
-		this.Server.loadCompetition(this.id, obj => {
-			if (obj !== undefined && obj.id !== this.id) {
-				this.initialize();
-				this.fromJson(obj);
-				this.fire(this.Events.competitionUpdated);
-			}
-		});
+		this.Server.loadCompetition(this.id,
+			obj => {
+				if (obj !== undefined && obj.id !== this.id) {
+					this.initialize();
+					this.fromJson(obj);
+					this.fire(this.Events.competitionUpdated);
+				}
+			},
+			this.Footers.errorHandler("Kan inte hämta tävling"));
 	}
 
 	fromJson(obj) {

@@ -1,6 +1,6 @@
 export class ClassGroups {
 	static register = { name: "ClassGroups", createInstance: true };
-	static wire = ["Server"];
+	static wire = ["Server", "Footers"];
 
 	classGroups = [];
 
@@ -18,7 +18,7 @@ export class ClassGroups {
 			this.Server.loadClassGroups(data => {
 				this.classGroups = this.fromJson(data);
 				callback(this.classGroups);
-			});
+			}, this.Footers.errorHandler("Kan inte hämta klassindelning"));
 		} else {
 			callback(null);
 		}

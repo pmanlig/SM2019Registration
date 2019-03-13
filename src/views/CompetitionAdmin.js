@@ -2,7 +2,7 @@ import React from 'react';
 
 export class CompetitionAdmin extends React.Component {
 	static register = { name: "CompetitionAdmin" };
-	static wire = ["fire", "Events", "EventBus", "Server", "CompetitionProperties", "Competition"];
+	static wire = ["fire", "Events", "EventBus", "Server", "CompetitionProperties", "Competition", "Footers"];
 
 	constructor(props) {
 		super(props);
@@ -19,10 +19,10 @@ export class CompetitionAdmin extends React.Component {
 	}
 
 	saveCompetition = () => {
-		this.Server.updateCompetition(this.Competition.toJson(), success => {
+		this.Server.updateCompetition(this.Competition.toJson(), s => {
 			this.Competition.refresh();
 			this.setState({ dirty: false });
-		});
+		}, this.Footers.errorHandler("Kan inte spara tävling"));
 	}
 
 	render() {

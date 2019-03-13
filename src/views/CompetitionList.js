@@ -5,7 +5,7 @@ import { Permissions, Status, Operations } from '../models';
 
 export class CompetitionList extends React.Component {
 	static register = { name: "CompetitionList" };
-	static wire = ["Server", "Session", "Storage", "EventBus", "Events"];
+	static wire = ["Server", "Session", "Storage", "EventBus", "Events", "Footers"];
 
 	constructor(props) {
 		super(props);
@@ -25,7 +25,11 @@ export class CompetitionList extends React.Component {
 						(this.Session.user === "" ? Permissions.Any : Permissions.Own)
 				}
 			})
-		}));
+		}), this.Footers.errorHandler("Kan inte hämta tävlingar"));
+	}
+
+	deleteCompetition = (id) => {
+		this.Server.deleteCompetition(id, this.loadCompetitions, this.Footers.errorHandler("Kan inte ta bort tävling"));
 	}
 
 	componentDidMount() {
@@ -48,7 +52,7 @@ export class CompetitionList extends React.Component {
 			<div className="event-title">
 				<Link className="competition-link" to={`/competition/${competition.id}`}>{competition.name}</Link>
 				{competition.permissions === Permissions.Own && <button className="button-close small red"
-					onClick={e => this.Server.deleteCompetition(competition.id, this.loadCompetitions)} />}
+					onClick={e => this.deleteCompetition(competition.id)} />}
 			</div>
 			{links.map(l =>
 				<span key={l.name}>&nbsp;<Link to={`/competition/${competition.id}/${l.path}`}>{l.name}</Link>&nbsp;</span>)}

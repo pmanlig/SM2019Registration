@@ -1,12 +1,13 @@
+import { logFetchCallback, logSendCallback, logSendCallback2, logUpdateCallback, logErrorHandler, logUrl } from './Log';
+
 export class Server {
 	static register = { name: "Server", createInstance: true };
-	static wire = ["fire", "Events", "Busy", "Storage", "ScheduleService", "CompetitionService", "ResultService", "RegistrationService", "Footers"];
+	static wire = ["fire", "Events", "Busy", "Storage", "ScheduleService", "CompetitionService", "ResultService", "RegistrationService"];
 	static baseUrl = 'https://dev.bitnux.com/sm2019';
 
 	//#region Main fetch/send methods and helpers
 	load(url, callback, error) {
-		if (window._debug) { console.log(`URL: ${url}`); }
-		error = error || (e => console.log(e));
+		logUrl(url);
 		this.Busy.setBusy(this, true);
 		fetch(url, {
 			crossDomain: true,
@@ -14,23 +15,17 @@ export class Server {
 		})
 			.then(res => {
 				this.Busy.setBusy(this, false);
-				if (!res.ok) {
-					res.json().then(error);
-					return;
-				}
-				res.json()
-					.then(callback)
-					.catch(error);
+				if (!res.ok) { this.handleSafely(res, error); } else
+					res.json()
+						.then(callback)
+						.catch(error);
 			})
 		// finally() not supported in several browsers :(
 		// .finally(() => this.Busy.setBusy(Server.id, false));
 	}
 
 	send(url, data, callback, error) {
-		if (window._debug) {
-			console.log(`URL: ${url}`);
-			error = error || (e => { console.log("Error"); console.log(e); });
-		}
+		logUrl(url);
 		this.Busy.setBusy(this, true);
 		return fetch(url, {
 			crossDomain: true,
@@ -41,24 +36,15 @@ export class Server {
 		})
 			.then(res => {
 				this.Busy.setBusy(this, false);
-				if (!res.ok) {
-					res.json().then(error);
-					return;
-				}
-				res.json()
-					.then(callback)
-					.catch(callback); // res.ok but no JSON returned
+				if (!res.ok) { this.handleSafely(res, error); } else
+					res.json()
+						.then(callback)
+						.catch(() => callback(true)); // res.ok but no JSON returned
 			});
 	}
 
 	update(url, data, callback, error) {
-		if (window._debug) {
-			console.log(`URL: ${url}`);
-			if (error === undefined) {
-				console.log("Replacing error handler");
-				error = e => { console.log("Error"); console.log(e); }
-			}
-		}
+		logUrl(url);
 		this.Busy.setBusy(this, true);
 		return fetch(url, {
 			crossDomain: true,
@@ -69,18 +55,13 @@ export class Server {
 		})
 			.then(res => {
 				this.Busy.setBusy(this, false);
-				if (!res.ok) {
-					res.json().then(e => error(e));
-				} else
-					callback();
+				if (!res.ok) { this.handleSafely(res, error); } else
+					callback(true);
 			});
 	}
 
 	delete(url, callback, error) {
-		if (window._debug) {
-			console.log(`Delete URL: ${url}`);
-			if (error === undefined) { error = e => { console.log("Error"); console.log(e); } }
-		}
+		logUrl(url);
 		this.Busy.setBusy(this, true);
 		return fetch(url, {
 			crossDomain: true,
@@ -89,15 +70,24 @@ export class Server {
 		})
 			.then(res => {
 				this.Busy.setBusy(this, false);
-				if (!res.ok) {
-					res.json().then(e => error(e));
-				} else
-					callback();
+				if (!res.ok) { this.handleSafely(res, error); } else
+					callback(true);
 			});
 	}
 
 	jsonFile(name) {
 		return `${process.env.PUBLIC_URL}/${name}.json`;
+	}
+
+	handleSafely(res, error) {
+		res.text().then(txt => {
+			try {
+				let json = JSON.parse(txt);
+				error(json);
+			} catch (e) {
+				error(txt);
+			}
+		}).catch(error);
 	}
 	//#endregion
 
@@ -177,164 +167,85 @@ export class Server {
 	}
 	//#endregion
 
-	//#region Logging
-	logFetchCallback(c, msg) {
-		if (!window._debug) { return c; }
-		console.log(msg);
-		return json => {
-			console.log(json);
-			c(json);
-		}
-	}
-
-	logSendCallback(c, data, msg) {
-		if (c === undefined) c = () => { };
-		if (!window._debug) { return c; }
-		console.log(msg);
-		console.log(data);
-		return json => {
-			console.log(`Reply:`);
-			console.log(json);
-			c(json);
-		}
-	}
-
-	logSendCallback2(c, data, msg) {
-		if (c === undefined) c = () => { };
-		if (!window._debug) { return c; }
-		console.log(msg);
-		console.log(data);
-		return json => {
-			console.log(`Reply (${msg}):`);
-			console.log(json);
-			c(json);
-		}
-	}
-
-	logUpdateCallback(c, data, msg) {
-		if (c === undefined) c = () => { };
-		if (!window._debug) { return c; }
-		console.log(msg);
-		console.log(data);
-		return c;
-	}
-
-	errorHandler(error, msg) {
-		// ToDo: Should log to console, and create proper errors only when required by GUI...
-		return (error === undefined) ? (res => { this.Footers.addFooter(msg + (res.message ? " - " + res.message : "")); }) : error;
-	}
-	//#endregion
-
 	//#region Competition
 	loadCompetitionList(callback, error) {
-		this.competitionService.loadCompetitionList(this.logFetchCallback(callback, "Loading competition list"),
-			this.errorHandler(error, "Kan inte hämta tävlingar"));
+		this.competitionService.loadCompetitionList(logFetchCallback(callback, "Loading competition list"), logErrorHandler(error));
 	}
 
 	loadCompetition(competitionId, callback, error) {
-		this.competitionService.loadCompetition(competitionId,
-			this.logFetchCallback(callback, `Loading competition data for competition ${competitionId}`),
-			this.errorHandler(error, "Kan inte hämta tävling"));
+		this.competitionService.loadCompetition(competitionId, logFetchCallback(callback, `Loading competition data for competition ${competitionId}`), logErrorHandler(error));
 	}
 
 	createCompetition(competition, callback, error) {
-		this.competitionService.createCompetition(competition,
-			this.logSendCallback(callback, competition, "Creating new competition"),
-			this.errorHandler(error, "Kan inte skapa tävling"));
+		this.competitionService.createCompetition(competition, logSendCallback(callback, competition, "Creating new competition"), logErrorHandler(error));
 	}
 
 	updateCompetition(competition, callback, error) {
-		this.competitionService.updateCompetition(competition,
-			this.logSendCallback(callback, competition, "Updating competition"),
-			this.errorHandler(error, "Kan inte uppdatera tävling"));
+		this.competitionService.updateCompetition(competition, logSendCallback(callback, competition, "Updating competition"), logErrorHandler(error));
 	}
 
 	deleteCompetition(competitionId, callback, error) {
-		this.competitionService.deleteCompetition(competitionId,
-			this.logFetchCallback(callback, `Deleting competition ${competitionId}`),
-			this.errorHandler(error, "Kan inte radera tävling"));
+		this.competitionService.deleteCompetition(competitionId, logFetchCallback(callback, `Deleting competition ${competitionId}`), logErrorHandler(error));
 	}
 	//#endregion
 
 	//#region Results
-	loadResults(competitionId, eventId, callback) {
-		this.resultService.loadResults(competitionId, eventId,
-			this.logFetchCallback(callback, `Loading competition results for ${competitionId}/${eventId}`));
+	loadResults(competitionId, eventId, callback, error) {
+		this.resultService.loadResults(competitionId, eventId, logFetchCallback(callback, `Loading competition results for ${competitionId}/${eventId}`), logErrorHandler(error));
 	}
 	//#endregion
 
 	//#region Registration
-	loadRegistration(competitionId, token, callback) {
-		this.registrationService.loadRegistration(competitionId, token,
-			this.logFetchCallback(callback, `Loading registration data for ${competitionId}/${token}`));
+	loadRegistration(competitionId, token, callback, error) {
+		this.registrationService.loadRegistration(competitionId, token, logFetchCallback(callback, `Loading registration data for ${competitionId}/${token}`), logErrorHandler(error));
 	}
 
 	sendRegistration(data, callback, error) {
-		this.registrationService.sendRegistration(data,
-			this.logSendCallback(callback, data, `Sending registration`),
-			this.errorHandler(error, "Kan inte registrera"));
+		this.registrationService.sendRegistration(data, logSendCallback(callback, data, `Sending registration`), logErrorHandler(error));
 	}
 	//#endregion
 
 	//#region Schedule
 	createSchedule(schedule, callback, error) {
-		this.scheduleService.createSchedule(schedule,
-			this.logSendCallback2(callback, schedule, "Creating schedule"),
-			this.errorHandler(error, "Kan inte skapa schema"));
+		this.scheduleService.createSchedule(schedule, logSendCallback2(callback, schedule, "Creating schedule"), logErrorHandler(error));
 	}
 
 	loadSchedule(scheduleId, callback, error) {
-		this.scheduleService.getSchedule(scheduleId,
-			this.logFetchCallback(callback, "Loading schedule"),
-			this.errorHandler(error, "Kan inte hämta schema"));
+		this.scheduleService.getSchedule(scheduleId, logFetchCallback(callback, "Loading schedule"), logErrorHandler(error));
 	}
 
 	updateSchedule(schedule, callback, error) {
-		this.scheduleService.updateSchedule(schedule,
-			this.logUpdateCallback(callback, schedule, "Updating schedule"),
-			this.errorHandler(error, "Kan inte uppdatera schema"));
+		this.scheduleService.updateSchedule(schedule, logUpdateCallback(callback, schedule, "Updating schedule"), logErrorHandler(error));
 	}
 
 	deleteSchedule(scheduleId, callback, error) {
-		this.scheduleService.deleteSchedule(scheduleId,
-			this.logFetchCallback(callback, `Deleting schedule ${scheduleId}`),
-			this.errorHandler(error, "Kan inte radera schema"));
+		this.scheduleService.deleteSchedule(scheduleId, logFetchCallback(callback, `Deleting schedule ${scheduleId}`), logErrorHandler(error));
 	}
 	//#endregion
 
 	//#region Value lists
 	loadClassGroups(callback, error) {
-		this.categoryService.loadClassGroups(this.logFetchCallback(callback, "Loading class groups"),
-			this.errorHandler(error, "Kan inte hämta klassindelning"));
+		this.categoryService.loadClassGroups(logFetchCallback(callback, "Loading class groups"), logErrorHandler(error));
 	}
 
 	loadDivisionGroups(callback, error) {
-		this.categoryService.loadDivisionGroups(this.logFetchCallback(callback, "Loading division groups"),
-			this.errorHandler(error, "Kan inte hämta vapengrupper"));
+		this.categoryService.loadDivisionGroups(logFetchCallback(callback, "Loading division groups"), logErrorHandler(error));
 	}
 
 	createClassGroup(classGroup, callback, error) {
-		this.send(`${Server.baseUrl}/classes`, classGroup,
-			this.logUpdateCallback(callback, classGroup, "Creating ClassGroup"),
-			this.errorHandler(error, "Kan inte skapa klassindelning"));
+		this.send(`${Server.baseUrl}/classes`, classGroup, logUpdateCallback(callback, classGroup, "Creating ClassGroup"), logErrorHandler(error));
 	}
 
 	createDivisionGroup(divisionGroup, callback, error) {
-		this.send(`${Server.baseUrl}/divisions`, divisionGroup,
-			this.logUpdateCallback(callback, divisionGroup, "Uppdaterar vapengrupper"),
-			this.errorHandler(error, "Kan inte skapa vapengrupper"));
+		this.send(`${Server.baseUrl}/divisions`, divisionGroup, logUpdateCallback(callback, divisionGroup, "Uppdaterar vapengrupper"), logErrorHandler(error));
 	}
 
 	deleteClassGroup(classGroupId, callback, error) {
-		this.delete(`${Server.baseUrl}/classes/${classGroupId}`,
-			this.logFetchCallback(callback, `Raderar klassindelning ${classGroupId}`),
-			this.errorHandler(error, "Kan inte radera klassindelning"));
+		this.delete(`${Server.baseUrl}/classes/${classGroupId}`, logFetchCallback(callback, `Raderar klassindelning ${classGroupId}`), logErrorHandler(error));
 	}
 
 	deleteDivisionGroup(divisionGroupId, callback, error) {
-		this.delete(`${Server.baseUrl}/divisions/${divisionGroupId}`,
-			this.logFetchCallback(callback, `Raderar vapengrupper ${divisionGroupId}`),
-			this.errorHandler(error, "Kan inte radera vapengrupper"));
+		this.delete(`${Server.baseUrl}/divisions/${divisionGroupId}`, logFetchCallback(callback, `Raderar vapengrupper ${divisionGroupId}`), logErrorHandler(error));
 	}
 	//#endregion
 
@@ -343,7 +254,7 @@ export class Server {
 		if (this.local) {
 			callback({});
 		} else {
-			this.send(`${Server.baseUrl}/login`, { user: user, password: password }, this.logSendCallback(callback, user, "Login"), this.errorHandler(error, "Kunde inte logga in"));
+			this.send(`${Server.baseUrl}/login`, { user: user, password: password }, logSendCallback(callback, user, "Login"), logErrorHandler(error));
 		}
 	}
 
@@ -351,7 +262,7 @@ export class Server {
 		if (this.local) {
 			callback({});
 		} else {
-			this.load(`${Server.baseUrl}/logout`, this.logFetchCallback(callback, "Logout"), this.errorHandler(error, "Kunde inte logga ut"));
+			this.load(`${Server.baseUrl}/logout`, logFetchCallback(callback, "Logout"), logErrorHandler(error));
 		}
 	}
 	//#endregion
