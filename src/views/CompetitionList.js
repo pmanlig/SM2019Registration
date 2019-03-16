@@ -48,7 +48,7 @@ export class CompetitionList extends React.Component {
 			competition.permissions === Permissions.Own ||
 			(competition.permissions >= o.permission && (o.status === undefined || o.status === competition.status))
 		));
-		return <li key={competition.id}>
+		return <li key={competition.id} className={competition.status === Status.Hidden ? "hidden" : (competition.status === Status.Closed ? "closed" : "")}>
 			<div className="event-title">
 				<Link className="competition-link" to={`/competition/${competition.id}`}>{competition.name}</Link>
 				{competition.permissions === Permissions.Own && <button className="button-close small red"

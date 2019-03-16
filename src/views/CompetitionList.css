@@ -22,6 +22,15 @@
 	background-color: #a0cfff;
 }
 
+#competitions > ul > li.hidden {
+	border: 1px solid grey;
+	background-color: white;
+}
+
+#competitions > ul > li.closed {
+	background-color: darksalmon;
+}
+
 #competitions a {
 	text-decoration: none;
 }
