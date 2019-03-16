@@ -9,7 +9,7 @@ export class App extends React.Component {
 		"LoginView", "CompetitionView", "ReportView", "CreateCompetition", "AboutView", "WithLogin", "Diagnostics"]
 
 	render() {
-		if (this.Storage.get("allowStorage") === undefined) {
+		if (this.Storage.get(this.Storage.keys.allowStorage) === undefined) {
 			this.Footers.addCustomFooter(<this.StoreQuestion key="cookieAlert" storage={this.Storage} />);
 		}
 

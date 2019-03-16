@@ -1,5 +1,5 @@
 export { BusyIndicator, Busy } from './BusyIndicator';
-export { LoginLogoutButton } from './LoginLogoutButton';
+export { LoginLogout, DeleteCookies, LocalToggle } from './GlobalTools';
 export { RegistrationToolbar, ButtonToolbar, Label } from './RegistrationToolbar';
 export { Summary } from './Summary';
 export { ParticipantPicker } from './ParticipantPicker';
@@ -17,4 +17,3 @@ export { ScheduleProperties } from './ScheduleProperties';
 export { Spinner } from './Spinner';
 export { LoginControl } from './LoginControl';
 export { SquadPicker } from './SquadPicker';
-export { LocalToggle } from './LocalToggle';

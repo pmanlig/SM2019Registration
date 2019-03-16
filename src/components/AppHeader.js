@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 export class AppHeader extends React.Component {
 	static register = { name: "AppHeader" };
-	static wire = ["LoginLogoutButton", "LocalToggle", "subscribe", "Events"];
+	static wire = ["LoginLogout", "LocalToggle", "DeleteCookies", "subscribe", "Events"];
 
 	constructor(props) {
 		super(props);
@@ -28,7 +28,8 @@ export class AppHeader extends React.Component {
 				{this.state.title}
 			</h1>
 			<this.LocalToggle />
-			<this.LoginLogoutButton />
+			<this.DeleteCookies />
+			<this.LoginLogout />
 			<Link to="/about" className='globaltool'>Om...</Link>
 		</header>
 	}
