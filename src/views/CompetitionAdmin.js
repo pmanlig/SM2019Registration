@@ -6,10 +6,11 @@ export class CompetitionAdmin extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = { dirty: false };
+		this.state = {};
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.competitionUpdated, () => {
-			this.setState({ dirty: true });
+			this.Competition.dirty = true;
+			this.setState({});
 			this.fire(this.Events.changeTitle, `Administrera ${this.Competition.name}`)
 		});
 	}
@@ -21,13 +22,14 @@ export class CompetitionAdmin extends React.Component {
 	saveCompetition = () => {
 		this.Server.updateCompetition(this.Competition.toJson(), s => {
 			this.Competition.refresh();
-			this.setState({ dirty: false });
+			this.Competition.dirty = false;
+			this.setState({});
 		}, this.Footers.errorHandler("Kan inte spara tävling"));
 	}
 
 	render() {
 		return <div className="content">
-			<button className={this.state.dirty ? "button" : "button disabled"} onClick={this.saveCompetition}>Spara</button>
+			<button className={this.Competition.dirty ? "button" : "button disabled"} onClick={this.saveCompetition}>Spara</button>
 			<this.CompetitionProperties />
 		</div>;
 	}

@@ -3,6 +3,9 @@ import React from 'react';
 import { Status } from '../models';
 import { Dropdown } from '.';
 
+let default_class_group = [{ id: -1, description: "Ingen klassindelning" }];
+let default_division_group = [{ id: -1, description: "Inget val av vapengrupp" }];
+
 export class CompetitionProperties extends React.Component {
 	static register = { name: "CompetitionProperties" };
 	static wire = ["Server", "Competition", "EventProperties", "ScheduleProperties", "EventBus", "Events", "DivisionGroups", "ClassGroups"]
@@ -12,24 +15,24 @@ export class CompetitionProperties extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			classGroups: [{ id: -1, description: "Ingen klassindelning" }],
-			divisionGroups: [{ id: -1, description: "Inget val av vapengrupp" }]
+			classGroups: default_class_group,
+			divisionGroups: default_division_group
 		};
 		this.EventBus.manageEvents(this);
 		this.ClassGroups.load(list => {
 			if (list !== null) {
-				this.setState({ classGroups: this.state.classGroups.concat(list) });
+				this.setState({ classGroups: default_class_group.concat(list) });
 			}
 			else {
-				this.state.classGroups = this.ClassGroups.classGroups;
+				this.state.classGroups = default_class_group.concat(this.ClassGroups.classGroups);
 			}
 		});
 		this.DivisionGroups.load(list => {
 			if (list !== null) {
-				this.setState({ divisionGroups: this.state.divisionGroups.concat(list) });
+				this.setState({ divisionGroups: default_division_group.concat(list) });
 			}
 			else {
-				this.state.divisionGroups = this.DivisionGroups.divisionGroups;
+				this.state.divisionGroups = default_division_group.concat(this.DivisionGroups.divisionGroups);
 			}
 		});
 		this.subscribe(this.Events.competitionUpdated, () => this.setState({}));
