@@ -19,7 +19,7 @@
 	padding: 7px;
 	border-radius: 4px;
 	color: white;
-	background-color: #a0cfa0;
+	background-color: #a0cfff;
 }
 
 #competitions > ul > li.hidden {
@@ -29,6 +29,10 @@
 
 #competitions > ul > li.closed {
 	background-color: #a0cfff;
+}
+
+#competitions > ul > li.open {
+	background-color: #a0cfa0;
 }
 
 #competitions a {
