@@ -3,7 +3,7 @@ import React from 'react';
 import { Time } from '../logic';
 import { Schedule } from '../models';
 import { ModalDialog } from '../general';
-import { ButtonToolbar as Toolbar, Label } from './Toolbar';
+import { ButtonToolbar as Toolbar, Label } from './RegistrationToolbar';
 import { Spinner } from './Spinner';
 import { SquadProperties } from './SquadProperties';
 

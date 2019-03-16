@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 
 export class RegistrationView extends React.Component {
 	static register = { name: "RegistrationView" };
-	static wire = ["Competition", "EventBus", "Events", "Registration", "ParticipantPicker", "Toolbar",
+	static wire = ["Competition", "EventBus", "Events", "Registration", "ParticipantPicker", "RegistrationToolbar",
 		"RegistrationContact", "RegistrationForm", "Summary", "SquadPicker", "Server"];
 
 	constructor(props) {
@@ -28,7 +28,7 @@ export class RegistrationView extends React.Component {
 			<this.RegistrationContact />
 			<this.RegistrationForm />
 			<this.Summary />
-			<this.Toolbar />
+			<this.RegistrationToolbar />
 			<this.ParticipantPicker />
 		</div>;
 	}

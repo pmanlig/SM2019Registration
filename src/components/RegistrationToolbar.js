@@ -1,4 +1,4 @@
-import "./Toolbar.css";
+import "./RegistrationToolbar.css";
 import React from 'react';
 
 export function Label({ text, align, children }) {
@@ -12,8 +12,8 @@ export function ButtonToolbar({ className, children }) {
 	return <div className={"toolbar " + className}>{children}</div>;
 }
 
-export class Toolbar extends React.Component {
-	static register = { name: "Toolbar" };
+export class RegistrationToolbar extends React.Component {
+	static register = { name: "RegistrationToolbar" };
 	static wire = ["subscribe", "fire", "Registration", "Registry", "Storage", "EventBus", "Events"];
 
 	constructor(props) {
