@@ -26,7 +26,6 @@ export class SquadPicker extends React.Component {
 	}
 
 	squadStatus(squad) {
-		console.log(squad);
 		if (squad.slots === squad.participants.length) { return "full"; }
 		if (squad.participants.length === 0) { return "empty"; }
 		return "partial";
@@ -56,7 +55,7 @@ export class SquadPicker extends React.Component {
 
 	render() {
 		let schedule = this.state.schedule;
-		// if (schedule === undefined) { return null; }
+		if (schedule === undefined) { return null; }
 
 		return <div className="squad-picker">
 			<h1>Starttider</h1>

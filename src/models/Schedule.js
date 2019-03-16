@@ -13,7 +13,6 @@ export class Schedule {
 		// ToDo: why is null present?
 		schedule.squads = s.squads ? s.squads.filter(x => x !== null).map(s => Squad.fromJson(s)) : [];
 		schedule.duration = s.duration ? Time.format(parseInt(s.duration.toString(), 10)) : "2:00";
-		console.log(`Loaded schedule: ${JSON.stringify(schedule)}`);
 		return schedule;
 	}
 
