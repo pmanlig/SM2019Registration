@@ -76,32 +76,37 @@ export class Registration {
 	}
 
 	setParticipantEvent(pId, event, value) {
-		this.getParticipant(pId).setParticipate(event, value);
+		this.getParticipant(pId).setParticipate(event.id, value);
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
 	setParticipantClass(pId, event, value) {
-		this.getParticipant(pId).addEvent(event).class = value;
+		this.getParticipant(pId).addEvent(event.id).class = value;
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
-	addParticipantRound(pId, event) {
-		this.getParticipant(pId).addEvent(event).rounds.push({});
+	addParticipantRound(pId, id) {
+		this.getParticipant(pId).addEvent(id).rounds.push({});
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
 	deleteParticipantRound(pId, event, round) {
-		this.getParticipant(pId).event(event).rounds.splice(round, 1);
+		this.getParticipant(pId).event(event.id).rounds.splice(round, 1);
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
-	setParticipantDivision(pId, event, round, value) {
-		this.getParticipant(pId).addEvent(event).rounds[round].division = value;
+	setParticipantDivision(pId, eventId, round, value) {
+		if (window._debug) {
+			let event = this.getParticipant(pId).addEvent(eventId);
+			console.log(`Setting division for ${pId}, ${eventId}, ${round}, ${value}`);
+			console.log(event);
+		}
+		this.getParticipant(pId).addEvent(eventId).rounds[round].division = value;
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
 	setParticipantSlot(pId, event, round, value) {
-		this.getParticipant(pId).addEvent(event).rounds[round].slot = value;
+		this.getParticipant(pId).addEvent(event.id).rounds[round].slot = value;
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
@@ -111,13 +116,8 @@ export class Registration {
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
-	selectSquad(participant, event, round, squad) {
-		console.log("Selecting squad");
-		console.log(participant);
-		console.log(event);
-		console.log(round);
-		console.log(squad);
-		this.getParticipant(participant).addSquad(event, round, squad);
+	selectSquad(participant, id, round, squad) {
+		this.getParticipant(participant).addSquad(id, round, squad);
 		this.fire(this.Events.registrationUpdated);
 	}
 

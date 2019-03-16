@@ -12,10 +12,10 @@ export class RegistrationRow extends React.Component {
 		</td>;
 	}
 
-	divisionDropdown(row, participantId, event, rounds, values) {
-		return <td key={`d${event.id}${row}`} className="division vcenter">
+	divisionDropdown(row, participantId, eventId, rounds, values) {
+		return <td key={`d${eventId}${row}`} className="division vcenter">
 			{row < rounds.length && <Dropdown placeholder="Välj vapengrupp..." value={rounds[row].division} list={values.map(v => { return { id: v, description: v } })}
-				onChange={e => this.Registration.setParticipantDivision(participantId, event, row, e.target.value)} />}
+				onChange={e => this.Registration.setParticipantDivision(participantId, eventId, row, e.target.value)} />}
 		</td>;
 	}
 

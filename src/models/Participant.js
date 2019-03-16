@@ -24,10 +24,10 @@ export class Participant extends Person {
 		return this.event(id);
 	}
 
-	addSquad(event, round, squad) {
-		let info = this.addEvent(event);
+	addSquad(id, round, squad) {
+		let info = this.addEvent(id);
 		if (window._debug) {
-			console.log(`Setting squad for ${event}, ${round}`);
+			console.log(`Setting squad for ${id}, ${round}`);
 			console.log(squad);
 			console.log(info);
 		}
