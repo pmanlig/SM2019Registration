@@ -48,7 +48,6 @@ export class ScheduleProperties extends React.Component {
 		// Create new schedule if one doesn't exist
 		if (event.schedule === undefined) {
 			this.Server.createSchedule(new Schedule().toJson(), schedule => {
-				schedule = Schedule.fromJson(schedule);
 				event.schedule = schedule.id;
 				this.loadScheduleInformation(event, schedule);
 				this.Competition.updateEvent(event);
