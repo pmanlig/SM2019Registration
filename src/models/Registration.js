@@ -36,6 +36,7 @@ export class Registration {
 
 				// Loading participants from json
 				this.participants = json.registration.map(p => Participant.fromJson(p));
+				this.validateParticipants();
 
 				this.fire(this.Events.registrationUpdated, this);
 			}, this.Footers.errorHandler("Kan inte hämta anmälan"));
@@ -46,12 +47,31 @@ export class Registration {
 		}
 	}
 
+	validateParticipants() {
+		this.participants.forEach(p => {
+			p.registrationInfo.forEach(r => {
+				let event = this.Competition.event(r.event);
+				if (event.classes) {
+					let classes = this.Competition.classes(event.classes);
+					if (!classes.includes(r.class)) r.class = classes[0];
+				}
+				if (event.divisions) {
+					let divisions = this.Competition.divisions(event.divisions);
+					r.rounds.forEach(rd => {
+						if (!divisions.includes(rd.division)) rd.division = divisions[0];
+					});
+				}
+			});
+		});
+	}
+
 	addParticipant(p) {
 		if (p !== undefined && this.participants.find(f => f.competitionId === p.competitionId) !== undefined) {
 			this.fire(this.Events.addFooter, "Deltagaren finns redan!");
 			return;
 		}
 		this.participants.push(new Participant(p));
+		this.validateParticipants();
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
@@ -82,6 +102,7 @@ export class Registration {
 
 	addParticipantRound(pId, id) {
 		this.getParticipant(pId).addEvent(id).rounds.push({});
+		this.validateParticipants();
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
@@ -91,11 +112,6 @@ export class Registration {
 	}
 
 	setParticipantDivision(pId, eventId, round, value) {
-		if (window._debug) {
-			let event = this.getParticipant(pId).addEvent(eventId);
-			console.log(`Setting division for ${pId}, ${eventId}, ${round}, ${value}`);
-			console.log(event);
-		}
 		this.getParticipant(pId).addEvent(eventId).rounds[round].division = value;
 		this.fire(this.Events.registrationUpdated, this);
 	}
@@ -127,24 +143,12 @@ export class Registration {
 			competition: this.Competition.id,
 			token: this.token,
 			contact: { name: this.contact.name, email: this.contact.email, organization: this.contact.organization, account: this.contact.account },
-			registration: this.participants.map(p => {
-				return {
-					participant: {
-						name: p.name,
-						id: p.competitionId,
-						organization: p.organization
-					},
-					entries: p.registrationInfo.map(r => { return {
-						class: r.class,
-						event: r.event,
-						rounds: r.rounds
-					}})
-				};
-			})
+			registration: this.participants.map(p => p.toJson())
 		}
 	}
 
 	register() {
+		this.validateParticipants();  // ToDo: missing values should result in errors instead?
 		let errors = new Validation(this.Competition).validate(this.participants);
 		if (errors.length === 0) {
 			this.Registry.storeCompetitors(this.participants);
@@ -157,7 +161,7 @@ export class Registration {
 			}, error => {
 				this.Footers.addFooter(`Registreringen misslyckades! (${error.message || error})`);
 			});
-			} else {
+		} else {
 			this.Footers.addFooter(errors.length === 1 ? errors[0].error : errors.length + " fel hindrar registrering!");
 			this.fire(this.Events.registrationUpdated, this);
 		}

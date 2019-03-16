@@ -2,7 +2,7 @@ export class Validation {
 	static register = { name: "Validation" };
 	competitionInfo;
 
-	constructor(competitionInfo, errors) {
+	constructor(competitionInfo) {
 		this.competitionInfo = competitionInfo;
 	}
 
@@ -16,22 +16,28 @@ export class Validation {
 			p.errors.push(this.error("Namn saknas!", p));
 		}
 		if (p.competitionId === undefined || p.competitionId === "") {
-			p.errors.push(this.error(p.name !== undefined && p.name !== "" ? p.name + " saknar ID!" : "Ogiltigt ID!", p));
+			p.errors.push(this.error(p.name !== undefined && p.name !== "" ? `${p.name} saknar ID!` : "ID saknas!", p));
 		}
 		if (p.organization === undefined || p.organization === "") {
-			p.errors.push(this.error(p.name !== undefined && p.name !== "" ? p.name + " har ingen förening!" : "Ogiltig förening!", p));
+			p.errors.push(this.error(p.name !== undefined && p.name !== "" ? `${p.name} har ingen förening!` : "Förening saknas!", p));
 		}
 	}
 
-	validateAtLeastOneRegistration(p) {
-		let pReg = false;
-		p.registrationInfo.forEach(r => { if (r) { pReg = true; } });
-		if (!pReg) { p.errors.push(this.error("Ingen start vald!", p)); }
+	validateRegistration(p) {
+		if (p.registrationInfo.length === 0) { p.errors.push(this.error("Ingen start vald!", p)); }
+		p.registrationInfo.forEach(r => {
+			let event = this.competitionInfo.event(r.event);
+			if (event.classes && !r.class) p.errors.push(this.error("Ingen klass vald!", p));
+			p.rounds.forEach(rd => {
+				if (event.divisions && !r.division) p.errors.push(this.error("Ingen vapengrupp vald!", p));
+				if (event.schedule && !r.squad) p.errors.push(this.error("Ingen starttid vald!", p));
+			});
+		});
 	}
 
 	validateParticipant(p) {
 		this.validateParticipantInfo(p);
-		this.validateAtLeastOneRegistration(p);
+		this.validateRegistration(p);
 	}
 
 	validate(participants) {

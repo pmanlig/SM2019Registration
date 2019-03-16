@@ -25,6 +25,23 @@ export class Participant extends Person {
 		}));
 	}
 
+	toJson() {
+		return {
+			participant: {
+				name: this.name,
+				id: this.competitionId,
+				organization: this.organization
+			},
+			entries: this.registrationInfo.map(r => {
+				return {
+					class: r.class,
+					event: r.event,
+					rounds: r.rounds
+				}
+			})
+		};
+	}
+
 	event(id) {
 		return this.registrationInfo.find(e => e.event === id);
 	}
