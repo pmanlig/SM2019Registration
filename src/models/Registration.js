@@ -35,12 +35,7 @@ export class Registration {
 				this.contact = newContact;
 
 				// Loading participants from json
-				let newParticipants = [];
-				json.registration.forEach(entry => {
-					let p = entry.participant;
-					newParticipants.push(new Participant({ name: p.name, competitionId: p.id, organization: p.organization }, entry.entries));
-				});
-				this.participants = newParticipants;
+				this.participants = json.registration.map(p => Participant.fromJson(p));
 
 				this.fire(this.Events.registrationUpdated, this);
 			}, this.Footers.errorHandler("Kan inte hämta anmälan"));

@@ -43,7 +43,10 @@ export function logErrorHandler(e) {
 	if (e === undefined) e = () => { };
 	if (!window._debug) { return e; }
 	return txt => {
-		console.log(`Error: ${txt}`);
+		if (typeof txt === 'object')
+			console.log(`Error: ${JSON.stringify(txt)}`);
+		else
+			console.log(`Error: ${txt}`);
 		e(txt);
 	}
 }

@@ -12,6 +12,19 @@ export class Participant extends Person {
 		this.registrationInfo = registrationInfo || [];
 	}
 
+	static fromJson({ participant, entries }) {
+		return new Participant({
+			name: participant.name,
+			competitionId: participant.id,
+			organization: participant.organization
+		}, entries.map(e => {
+			return {
+				...e,
+				event: parseInt(e.event, 10)
+			}
+		}));
+	}
+
 	event(id) {
 		return this.registrationInfo.find(e => e.event === id);
 	}
@@ -26,21 +39,12 @@ export class Participant extends Person {
 
 	addSquad(id, round, squad) {
 		let info = this.addEvent(id);
-		if (window._debug) {
-			console.log(`Setting squad for ${id}, ${round}`);
-			console.log(squad);
-			console.log(info);
-		}
 		info.rounds[round].squad = squad.id;
 		info.rounds[round].time = squad.startTime;
 	}
 
 	getStartTime(event, round) {
 		let info = this.event(event);
-		if (window._debug) {
-			console.log(`Getting start time for ${event}, ${round}`);
-			console.log(info);
-		}
 		return info === undefined ? undefined : (info.rounds[round] === undefined ? undefined : info.rounds[round].time);
 	}
 
