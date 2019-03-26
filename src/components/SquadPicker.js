@@ -15,7 +15,9 @@ export class SquadPicker extends React.Component {
 
 	showSchedule = (participant, event, round) => {
 		this.Server.loadSchedule(event.schedule, json => {
-			this.setState({ event: event, schedule: Schedule.fromJson(json), participant: participant, round: round });
+			this.Server.loadParticipants(event.schedule, pJson => {
+				this.setState({ event: event, schedule: Schedule.fromJson(json, pJson), participant: participant, round: round });
+			}, this.Footers.errorHandler("Kan inte hämta deltagare"));
 		}, this.Footers.errorHandler("Kan inte hämta schema"));
 	}
 

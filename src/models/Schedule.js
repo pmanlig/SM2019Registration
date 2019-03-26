@@ -6,11 +6,16 @@ export class Schedule {
 	squads = [];
 	duration = "2:00";
 
-	static fromJson(s) {
+	static fromJson(s, p) {
 		let schedule = new Schedule();
 		schedule.id = parseInt(s.id.toString(), 10);
 		schedule.nextSquadId = s.squads && s.squads.length > 0 ? Math.max(...s.squads.map(sq => parseInt(sq.id.toString(), 10))) : 1;
 		// ToDo: why is null present?
+		if (p && s.squads) {
+			s.squads.forEach(sq => {
+				sq.participants = p.find(ps => ps.id === sq.id).entries;
+			});
+		}
 		schedule.squads = s.squads ? s.squads.filter(x => x !== null).map(s => Squad.fromJson(s)) : [];
 		schedule.duration = s.duration ? Time.format(parseInt(s.duration.toString(), 10)) : "2:00";
 		return schedule;

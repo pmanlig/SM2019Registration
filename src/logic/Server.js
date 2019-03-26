@@ -112,6 +112,7 @@ export class Server {
 		return {
 			createSchedule: (schedule, callback, error) => { this.send(`${Server.baseUrl}/schedules`, schedule, callback, error); },
 			getSchedule: (scheduleId, callback, error) => { this.load(`${Server.baseUrl}/schedules/${scheduleId}`, callback, error); },
+			getParticipants: (scheduleId, callback, error) => { this.load(`${Server.baseUrl}/schedules/${scheduleId}/squad`, callback, error) },
 			updateSchedule: (schedule, callback, error) => { this.update(`${Server.baseUrl}/schedules/${schedule.id}`, schedule, callback, error); },
 			deleteSchedule: (scheduleId, callback, error) => { this.delete(`${Server.baseUrl}/schedules/${scheduleId}`, callback, error); }
 		};
@@ -212,6 +213,10 @@ export class Server {
 
 	loadSchedule(scheduleId, callback, error) {
 		this.scheduleService.getSchedule(scheduleId, logFetchCallback(callback, "Loading schedule"), logErrorHandler(error));
+	}
+
+	loadParticipants(scheduleId, callback, error) {
+		this.scheduleService.getParticipants(scheduleId, logFetchCallback(callback, "Loading participants"), logErrorHandler(error));
 	}
 
 	updateSchedule(schedule, callback, error) {
