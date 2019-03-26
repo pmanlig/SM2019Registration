@@ -1,7 +1,7 @@
 import { startsWith } from '.';
 
 export function setCookie(name, value, expiration) {
-	document.cookie = `${name}=${value}` + (expiration ? "; " + expiration : "") + "; path=/";
+	document.cookie = `${name}=${value}; ${(expiration ? expiration + "; " : "")}path=/`;
 }
 
 export function getCookie(name, defaultValue = null) {
@@ -15,5 +15,5 @@ export function getCookie(name, defaultValue = null) {
 }
 
 export function deleteCookie(name) {
-	document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/"
+	document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`
 }

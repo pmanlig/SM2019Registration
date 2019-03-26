@@ -21,6 +21,6 @@ export class StoreQuestion extends React.Component {
 			<p className="centered">Vill du att information du matar in ska sparas så att det blir lättare att anmäla nästa gång?</p>
 			<input className="button cookieButton" type="button" value="Nej" onClick={() => this.hide(false)} />
 			<input className="button cookieButton" type="button" value="Ja" onClick={() => this.hide(true)} />
-		</div >;
+		</div>;
 	}
 }
