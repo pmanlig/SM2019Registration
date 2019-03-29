@@ -15,8 +15,9 @@ export class Registration {
 		this.subscribe(this.Events.deleteParticipant, this.deleteParticipant.bind(this));
 		this.subscribe(this.Events.selectSquad, this.selectSquad.bind(this));
 		this.subscribe(this.Events.registerForCompetition, () => this.register());
-		this.contact = this.Storage.get("Contact") || new Person();
-		this.contact.account = this.contact.account || ""; // Patch to handle stored information without account
+		// this.contact = this.Storage.get(this.Storage.keys.registrationContact) || new Person();
+		// this.contact.account = this.contact.account || ""; // Patch to handle stored information without account
+		this.loadContact();
 	}
 
 	load(id, token) {
@@ -30,9 +31,15 @@ export class Registration {
 
 				// Hack to compensate for server not storing organization
 				// this.contact = new Person(json.contact);
-				let newContact = new Person(json.contact);
-				newContact.organization = this.contact.organization;
-				this.contact = newContact;
+				let nC = Person.fromJson(json.contact);
+				if ((nC.name && nC.name !== "") ||
+					(nC.competitionId && nC.competitionId !== "") ||
+					(nC.organization && nC.organization !== "") ||
+					(nC.email && nC.email !== "") ||
+					(nC.account && nC.account !== "")) {
+					if (!nC.organization) nC.organization = this.contact.organization;
+					this.contact = nC;
+				}
 
 				// Loading participants from json
 				this.participants = json.registration.map(p => Participant.fromJson(p));
@@ -42,9 +49,16 @@ export class Registration {
 			}, this.Footers.errorHandler("Kan inte hämta anmälan"));
 		} else {
 			this.token = undefined;
-			this.contact = new Person();
+			this.loadContact();
+			// ToDo: ???
 			this.participants = [];
 		}
+	}
+
+	loadContact() {
+		this.contact = this.Storage.get(this.Storage.keys.registrationContact) || new Person();
+		this.contact.account = this.contact.account || ""; // Patch to handle stored information without account
+		this.fire(this.Events.registrationUpdated, this);
 	}
 
 	validateParticipants() {
@@ -148,11 +162,11 @@ export class Registration {
 	}
 
 	register() {
+		this.Storage.set(this.Storage.keys.registrationContact, this.contact);
+		this.Registry.storeCompetitors(this.participants);
 		this.validateParticipants();  // ToDo: missing values should result in errors instead?
 		let errors = new Validation(this.Competition).validate(this.participants);
 		if (errors.length === 0) {
-			this.Registry.storeCompetitors(this.participants);
-			this.Storage.set("Contact", this.contact);
 			this.Server.sendRegistration(this.toJson(), res => {
 				this.token = res.token;
 				this.Tokens.setToken(this.Competition.id, res.token);

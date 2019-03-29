@@ -14,17 +14,20 @@ export class Storage {
 		scheduleService: "scheduleService",
 		competitionService: "competitionService",
 		resultService: "resultService",
-		registrationService: "registrationService"
+		registrationService: "registrationService",
+		registrationContact: "Contact"
 	};
 
 	set(key, value) {
 		// if (!this.keys[key]) { throw new Error("The key has not been registered! (" + key + ")"); }
-		window.localStorage[key] = JSON.stringify(value);
+		if (key === this.keys.allowStorage && value) this.allowStorage = true;
+		if (this.allowStorage) window.localStorage[key] = JSON.stringify(value);
 	}
 
 	get(key) {
 		// if (!this.keys[key]) { throw new Error("The key has not been registered! (" + key + ")"); }
 		try {
+			if (key === this.keys.allowStorage) this.allowStorage = JSON.parse(window.localStorage[key]);
 			return JSON.parse(window.localStorage[key]);
 		} catch (error) {
 			return undefined;
