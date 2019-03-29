@@ -28,9 +28,6 @@ export class RegistrationToolbar extends React.Component {
 				<input type='button' className="button" id="getButton" onClick={e => this.fire(this.Events.showParticipantPicker)} value='Hämta deltagare' />}
 			<input type='button' className="button" id="addButton" onClick={e => this.Registration.addParticipant()} value='Ny deltagare' />
 			<input type='button' className="button" id="registerButton" onClick={e => this.fire(this.Events.registerForCompetition)} value='Registrera' />
-
-			{/* For debugging */}
-			<input type='button' className="button" id="deleteStorageButton" onClick={e => this.Storage.delete()} value='Radera sparad information' />
 		</div>
 	}
 }
