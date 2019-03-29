@@ -28,10 +28,12 @@ export class Validation {
 		p.registrationInfo.forEach(r => {
 			let event = this.competitionInfo.event(r.event);
 			if (event.classes && !r.class) p.errors.push(this.error("Ingen klass vald!", p));
-			p.rounds.forEach(rd => {
-				if (event.divisions && !r.division) p.errors.push(this.error("Ingen vapengrupp vald!", p));
-				if (event.schedule && !r.squad) p.errors.push(this.error("Ingen starttid vald!", p));
-			});
+			if (r.rounds) {
+				r.rounds.forEach(rd => {
+					if (event.divisions && !rd.division) p.errors.push(this.error("Ingen vapengrupp vald!", p));
+					if (event.schedule && !rd.squad) p.errors.push(this.error("Ingen starttid vald!", p));
+				});
+			}
 		});
 	}
 

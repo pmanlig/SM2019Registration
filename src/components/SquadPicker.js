@@ -22,7 +22,6 @@ export class SquadPicker extends React.Component {
 	}
 
 	selectSquad = (squad) => {
-		console.log("select");
 		let { participant, event, round } = this.state;
 		this.EventBus.fire(this.Events.selectSquad, participant, event.id, round, squad);
 		this.setState({ schedule: undefined });
@@ -35,7 +34,6 @@ export class SquadPicker extends React.Component {
 	}
 
 	toggleExpand = (e, squad) => {
-		console.log("toggle");
 		e.stopPropagation();
 		squad.expand = !squad.expand;
 		this.setState({});
