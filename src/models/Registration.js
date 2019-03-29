@@ -43,7 +43,7 @@ export class Registration {
 
 				// Loading participants from json
 				this.participants = json.registration.map(p => Participant.fromJson(p));
-				this.validateParticipants();
+				this.setParticipantDefaults();
 
 				this.fire(this.Events.registrationUpdated, this);
 			}, this.Footers.errorHandler("Kan inte hämta anmälan"));
@@ -61,7 +61,7 @@ export class Registration {
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
-	validateParticipants() {
+	setParticipantDefaults() {
 		this.participants.forEach(p => {
 			p.registrationInfo.forEach(r => {
 				let event = this.Competition.event(r.event);
@@ -85,7 +85,7 @@ export class Registration {
 			return;
 		}
 		this.participants.push(new Participant(p));
-		this.validateParticipants();
+		this.setParticipantDefaults();
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
@@ -116,7 +116,7 @@ export class Registration {
 
 	addParticipantRound(pId, id) {
 		this.getParticipant(pId).addEvent(id).rounds.push({});
-		this.validateParticipants();
+		this.setParticipantDefaults();
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
@@ -164,7 +164,7 @@ export class Registration {
 	register() {
 		this.Storage.set(this.Storage.keys.registrationContact, this.contact);
 		this.Registry.storeCompetitors(this.participants);
-		this.validateParticipants();  // ToDo: missing values should result in errors instead?
+		this.setParticipantDefaults();  // ToDo: missing values should result in errors instead?
 		let errors = new Validation(this.Competition).validate(this.participants);
 		if (errors.length === 0) {
 			this.Server.sendRegistration(this.toJson(), res => {
