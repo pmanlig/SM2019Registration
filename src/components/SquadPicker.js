@@ -22,6 +22,7 @@ export class SquadPicker extends React.Component {
 	}
 
 	selectSquad = (squad) => {
+		console.log("select");
 		let { participant, event, round } = this.state;
 		this.EventBus.fire(this.Events.selectSquad, participant, event.id, round, squad);
 		this.setState({ schedule: undefined });
@@ -33,6 +34,13 @@ export class SquadPicker extends React.Component {
 		return "partial";
 	}
 
+	toggleExpand = (e, squad) => {
+		console.log("toggle");
+		e.stopPropagation();
+		squad.expand = !squad.expand;
+		this.setState({});
+	}
+
 	renderSquad(squad) {
 		let rows = [];
 		rows.push(<tr key={squad.id} className={this.squadStatus(squad)} onClick={e => this.selectSquad(squad)}>
@@ -40,7 +48,7 @@ export class SquadPicker extends React.Component {
 			<td>{`${squad.participants.length} / ${squad.slots}`}</td>
 			<td>
 				{squad.participants.length > 0 &&
-					<button className={(squad.expand ? "button-collapse small" : "button-expand small")} onClick={e => { squad.expand = !squad.expand; this.setState({}); }} />}
+					<button className={(squad.expand ? "button-collapse small" : "button-expand small")} onClick={e => this.toggleExpand(e, squad)} />}
 			</td>
 		</tr>);
 		if (squad.expand && squad.participants.length > 0) {
