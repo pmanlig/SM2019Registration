@@ -242,7 +242,7 @@ export class Server {
 	}
 
 	createDivisionGroup(divisionGroup, callback, error) {
-		this.send(`${Server.baseUrl}/divisions`, divisionGroup, logUpdateCallback(callback, divisionGroup, "Uppdaterar vapengrupper"), logErrorHandler(error));
+		this.send(`${Server.baseUrl}/divisions`, divisionGroup, logUpdateCallback(callback, divisionGroup, "Skapar vapengrupper"), logErrorHandler(error));
 	}
 
 	deleteClassGroup(classGroupId, callback, error) {

@@ -55,8 +55,8 @@ export class CompetitionTests {
 			this.testCompetition.id,
 			s => {
 				this.testCompetition = s;
-				resolve(parseInt(this.testCompetition.events[0].classes.toString(), 10) === 1101 &&
-					parseInt(this.testCompetition.events[0].divisions.toString(), 10) === 1101 &&
+				resolve(parseInt(this.testCompetition.events[0].classes.toString(), 10) === 1144 &&
+					parseInt(this.testCompetition.events[0].divisions.toString(), 10) === 1170 &&
 					this.testCompetition.events[0].divisionGroup === undefined);
 			},
 			e => {
@@ -67,8 +67,8 @@ export class CompetitionTests {
 	}
 
 	testUpdateCompetition = () => {
-		this.testCompetition.events[0].classes = 1101;
-		this.testCompetition.events[0].divisions = 1101;
+		this.testCompetition.events[0].classes = 1144;
+		this.testCompetition.events[0].divisions = 1170;
 		return new Promise(resolve => this.Server.updateCompetition(
 			this.testCompetition,
 			s => resolve(true),

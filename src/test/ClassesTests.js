@@ -1,3 +1,8 @@
+/*let full = {
+	description: "SPSF full klassindelning",
+	classes: ["1", "2", "3", "Dam/1", "Dam/2", "Dam/3", "Jun/1", "Jun/2", "Jun/3", "VetY/1", "VetY/2", "VetY/3", "VetÄ/1", "VetÄ/2", "VetÄ/3"]
+};*/
+
 export class ClassesTests {
 	static wire = ["Server"];
 
@@ -23,6 +28,7 @@ export class ClassesTests {
 			"description": "PPC",
 			"classes": ["Marksman", "Sharpshooter", "Expert", "Master", "High Master"]
 		};
+		// this.Server.createClassGroup(full, s => { }, e => { });
 		return new Promise(resolve => this.Server.createClassGroup(
 			classGroup,
 			s => {
@@ -36,6 +42,7 @@ export class ClassesTests {
 	}
 
 	testDeleteClasses = () => {
+		// this.Server.deleteClassGroup(1101, s => { }, e => { });
 		return new Promise(resolve => this.Server.deleteClassGroup(
 			this.testID,
 			s => resolve(true),

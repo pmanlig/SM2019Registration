@@ -23,8 +23,7 @@ export class DivisionsTests {
 			"description": "SPSF PPC",
 			"divisions": ["SR2,75\"", "SR4\"", "SSA", "Dist. Revolver", "Dist. Pistol", "Open", "R1500", "P1500"]
 		};
-		console.log("Creating division group");
-		console.log(divisionGroup);
+		// this.Server.createDivisionGroup(prec, s => { }, e => { });
 		return new Promise(resolve => this.Server.createDivisionGroup(
 			divisionGroup,
 			s => {
@@ -38,6 +37,7 @@ export class DivisionsTests {
 	}
 
 	testDeleteDivisions = () => {
+		// this.Server.deleteDivisionGroup(1172, s => { }, e => { });
 		return new Promise(resolve => this.Server.deleteDivisionGroup(
 			this.testID,
 			s => resolve(true),
