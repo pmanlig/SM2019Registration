@@ -14,7 +14,7 @@ export class Squad {
 		if (s) {
 			n.startTime = s.startTime.split(":").slice(0, 2).join(":");
 			while (n.startTime[0] === '0') { n.startTime = n.startTime.slice(1); }
-			n.slots = s.slots;
+			n.slots = parseInt(s.slots.toString(), 10);
 			n.divisions = [...new Set(s.divisions)]; // Fix to mitigate server bug
 			n.mixed = s.mixed === "true";
 			n.id = s.id;

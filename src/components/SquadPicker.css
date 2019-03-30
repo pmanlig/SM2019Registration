@@ -43,6 +43,6 @@
 	width: 10em;
 }
 
-.squad-picker tbody tr:hover {
+.squad-picker tbody tr.squad:hover {
 	background-color: aquamarine;
 }

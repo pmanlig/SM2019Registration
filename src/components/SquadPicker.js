@@ -22,6 +22,7 @@ export class SquadPicker extends React.Component {
 	}
 
 	selectSquad = (squad) => {
+		if (this.squadStatus(squad) === "full") return;
 		let { participant, event, round } = this.state;
 		this.EventBus.fire(this.Events.selectSquad, participant, event.id, round, squad);
 		this.setState({ schedule: undefined });
@@ -41,7 +42,7 @@ export class SquadPicker extends React.Component {
 
 	renderSquad(squad) {
 		let rows = [];
-		rows.push(<tr key={squad.id} className={this.squadStatus(squad)} onClick={e => this.selectSquad(squad)}>
+		rows.push(<tr key={squad.id} className={"squad " + this.squadStatus(squad)} onClick={e => this.selectSquad(squad)}>
 			<td className="time">{squad.startTime}</td>
 			<td>{`${squad.participants.length} / ${squad.slots}`}</td>
 			<td>
@@ -67,17 +68,20 @@ export class SquadPicker extends React.Component {
 
 		return <div className="squad-picker">
 			<h1>Starttider</h1>
-			<table>
-				<thead>
-					<tr>
-						<th className="time">Tid</th>
-						<th>Platser</th>
-					</tr>
-				</thead>
-				<tbody>
-					{schedule && schedule.squads && schedule.squads.map(s => this.renderSquad(s))}
-				</tbody>
-			</table>
+			<div style={{ overflowY: "auto" }}>
+				<table>
+					<thead>
+						<tr>
+							<th className="time">Tid</th>
+							<th>Platser</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						{schedule && schedule.squads && schedule.squads.map(s => this.renderSquad(s))}
+					</tbody>
+				</table>
+			</div>
 		</div>;
 	}
 }
