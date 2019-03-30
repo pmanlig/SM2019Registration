@@ -24,7 +24,8 @@
 }
 
 .squad-picker .full {
-	background-color: crimson;
+	color: white;
+	background-color: darkred;
 }
 
 .squad-picker .partial {
@@ -43,6 +44,10 @@
 	width: 10em;
 }
 
-.squad-picker tbody tr.squad:hover {
+.squad-picker tbody tr.empty:hover {
+	background-color: aquamarine;
+}
+
+.squad-picker tbody tr.partial:hover {
 	background-color: aquamarine;
 }
