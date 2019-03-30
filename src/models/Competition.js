@@ -16,7 +16,7 @@ export class Status {
 export const Operations = [
 	{ name: "Anmälan", path: "register", permission: Permissions.Any, status: Status.Open },
 	{ name: "Rapportera", path: "report", permission: Permissions.Admin },
-	{ name: "Resultat", path: "results", permission: Permissions.Any, status: Status.Closed },
+	// { name: "Resultat", path: "results", permission: Permissions.Any, status: Status.Closed },
 	{ name: "Administrera", path: "admin", permission: Permissions.Own }
 ];
 
@@ -35,11 +35,14 @@ export class Competition {
 		this.rules = [];
 		this.nextNewEvent = 2;
 		if (!this.subscription) {
-			this.subscription = this.subscribe(this.Events.serverChanged, this.changeServer);
+			this.subscription = this.subscribe(this.Events.serverChanged, () => this.changeServer());
+		}
+		if (!this.userSub) {
+			this.userSub = this.subscribe(this.Events.userChanged, () => this.refresh());
 		}
 	}
 
-	changeServer = () => {
+	changeServer() {
 		let id = this.id;
 		this.id = 0;
 		this.load(id);
@@ -67,7 +70,7 @@ export class Competition {
 	refresh() {
 		this.Server.loadCompetition(this.id,
 			obj => {
-				if (obj !== undefined && obj.id !== this.id) {
+				if (obj !== undefined) {
 					this.initialize();
 					this.fromJson(obj);
 					this.fire(this.Events.competitionUpdated);

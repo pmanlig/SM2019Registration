@@ -15,8 +15,6 @@ export class Registration {
 		this.subscribe(this.Events.deleteParticipant, this.deleteParticipant.bind(this));
 		this.subscribe(this.Events.selectSquad, this.selectSquad.bind(this));
 		this.subscribe(this.Events.registerForCompetition, () => this.register());
-		// this.contact = this.Storage.get(this.Storage.keys.registrationContact) || new Person();
-		// this.contact.account = this.contact.account || ""; // Patch to handle stored information without account
 		this.loadContact();
 	}
 
@@ -44,7 +42,6 @@ export class Registration {
 				// Loading participants from json
 				this.participants = json.registration.map(p => Participant.fromJson(p));
 				this.setParticipantDefaults();
-
 				this.fire(this.Events.registrationUpdated, this);
 			}, this.Footers.errorHandler("Kan inte hämta anmälan"));
 		} else {

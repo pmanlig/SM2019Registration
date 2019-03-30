@@ -19,11 +19,12 @@ export class Person {
 		}
 	}
 
-	static fronJson(json) {
-		this.name = json.name || "";
-		this.competitionId = json.competitionId || "";
-		this.organization = json.organization || "";
-		this.email = json.email || "";
-		this.account = json.account || "";
+	static fromJson(json) {
+		return new Person(
+			json.name || "",
+			json.competitionId || "",
+			json.organization || "",
+			json.email || "",
+			json.account || "");
 	}
 }
