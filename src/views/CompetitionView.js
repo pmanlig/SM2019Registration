@@ -32,7 +32,6 @@ export class CompetitionView extends React.Component {
 		// Wait; competition is loading
 		if (this.Competition.id !== this.props.match.params.id) { return <div className="content"><p>Hämtar tävling...</p></div>; }
 
-		console.log("Rendering with permissions: " + this.Competition.permissions);
 		let tabs = Operations.filter(t =>
 			this.Competition.permissions === Permissions.Own ||
 			(
