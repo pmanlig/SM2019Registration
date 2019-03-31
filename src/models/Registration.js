@@ -117,8 +117,8 @@ export class Registration {
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
-	deleteParticipantRound(pId, event, round) {
-		this.getParticipant(pId).event(event.id).rounds.splice(round, 1);
+	deleteParticipantRound(pId, eventId, round) {
+		this.getParticipant(pId).event(eventId).rounds.splice(round, 1);
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
