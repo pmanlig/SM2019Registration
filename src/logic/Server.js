@@ -5,6 +5,13 @@ export class Server {
 	static wire = ["fire", "Events", "Busy", "Storage", "ScheduleService", "CompetitionService", "ResultService", "RegistrationService"];
 	static baseUrl = 'https://dev.bitnux.com/sm2019';
 
+	initialize() {
+		this.setLocal(this.Storage.get(this.Storage.keys.toggleServerMode) && this.Storage.get(this.Storage.keys.serverMode));
+		fetch("/config.json").then(res => res.json()).then(json => {
+			Server.baseUrl = json.baseUrl;
+		});
+	}
+
 	//#region Main fetch/send methods and helpers
 	load(url, callback, error) {
 		logUrl(url);
@@ -143,11 +150,6 @@ export class Server {
 	//#endregion
 
 	//#region Property manipulation
-	initialize() {
-		// ToDo: Change to false in production code
-		this.setLocal(this.Storage.get(this.Storage.keys.toggleServerMode) && this.Storage.get(this.Storage.keys.serverMode));
-	}
-
 	setLocal(on) {
 		this.local = on;
 		if (this.local) {
