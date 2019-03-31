@@ -15,6 +15,7 @@ export class Status {
 
 export const Operations = [
 	{ name: "Anmälan", path: "register", permission: Permissions.Any, status: Status.Open },
+	// ToDo: implement
 	// { name: "Rapportera", path: "report", permission: Permissions.Admin },
 	// { name: "Resultat", path: "results", permission: Permissions.Any, status: Status.Closed },
 	{ name: "Administrera", path: "admin", permission: Permissions.Own }
