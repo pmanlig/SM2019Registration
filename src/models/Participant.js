@@ -60,9 +60,14 @@ export class Participant extends Person {
 		info.rounds[round].time = squad.startTime;
 	}
 
-	getStartTime(event, round) {
-		let info = this.event(event);
+	getStartTime(eventId, round) {
+		let info = this.event(eventId);
 		return info === undefined ? undefined : (info.rounds[round] === undefined ? undefined : info.rounds[round].time);
+	}
+
+	getDivision(eventId, round) {
+		let info = this.event(eventId);
+		return info === undefined ? undefined : (info.rounds[round] === undefined ? undefined : info.rounds[round].division);
 	}
 
 	removeEvent(id) {

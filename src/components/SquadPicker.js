@@ -16,15 +16,21 @@ export class SquadPicker extends React.Component {
 	showSchedule = (participant, event, round) => {
 		this.Server.loadSchedule(event.schedule, json => {
 			this.Server.loadParticipants(event.schedule, pJson => {
-				this.setState({ event: event, schedule: Schedule.fromJson(json, pJson), participant: participant, round: round });
+				this.setState({
+					event: event,
+					schedule: Schedule.fromJson(json, pJson),
+					participant: participant,
+					round: round,
+					division: participant.getDivision(event.id, round)
+				});
 			}, this.Footers.errorHandler("Kan inte hämta deltagare"));
 		}, this.Footers.errorHandler("Kan inte hämta schema"));
 	}
 
 	selectSquad = (squad) => {
-		if (this.squadStatus(squad) === "full") return;
+		if (!this.canRegister(squad)) return;
 		let { participant, event, round } = this.state;
-		this.EventBus.fire(this.Events.selectSquad, participant, event.id, round, squad);
+		this.EventBus.fire(this.Events.selectSquad, participant.id, event.id, round, squad);
 		this.setState({ schedule: undefined });
 	}
 
@@ -34,26 +40,38 @@ export class SquadPicker extends React.Component {
 		return "partial";
 	}
 
+	canRegister(squad) {
+		return this.squadStatus(squad) !== "full" && squad.divisions.some(d => d.includes(this.state.division));
+	}
+
 	toggleExpand = (e, squad) => {
 		e.stopPropagation();
 		squad.expand = !squad.expand;
 		this.setState({});
 	}
 
-	renderSquad(squad) {
-		let rows = [];
-		rows.push(<tr key={squad.id} className={"squad " + this.squadStatus(squad)} onClick={e => this.selectSquad(squad)}>
+	squadHeader(squad) {
+		let className = this.squadStatus(squad);
+		if (this.canRegister(squad)) className = className + " selectable";
+		return <tr key={squad.id} className={className} onClick={e => this.selectSquad(squad)}>
 			<td className="time">{squad.startTime}</td>
+			<td>{squad.divisions.join()}</td>
 			<td>{`${squad.participants.length} / ${squad.slots}`}</td>
 			<td>
 				{squad.participants.length > 0 &&
 					<button className={(squad.expand ? "button-collapse small" : "button-expand small")} onClick={e => this.toggleExpand(e, squad)} />}
 			</td>
-		</tr>);
+		</tr>;
+	}
+
+	renderSquad(squad) {
+		let rows = [];
+		rows.push(this.squadHeader(squad));
 		if (squad.expand && squad.participants.length > 0) {
 			rows = rows.concat(squad.participants.map(p =>
 				<tr key={p.id} className="participant">
 					<td className="time">{p.name}</td>
+					<td>?</td>
 					<td>&nbsp;</td>
 					<td>{p.division}</td>
 				</tr>
@@ -73,6 +91,7 @@ export class SquadPicker extends React.Component {
 					<thead>
 						<tr>
 							<th className="time">Tid</th>
+							<th>Vapengrupp</th>
 							<th>Platser</th>
 							<th></th>
 						</tr>

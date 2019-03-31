@@ -21,7 +21,7 @@ export class RegistrationRow extends React.Component {
 
 	scheduleButton(row, participant, event, rounds) {
 		return <td key={`s${event.id}${row}`} className="vcenter">
-			{row < rounds.length && <button className="scheduleButton" onClick={e => this.fire(this.Events.showSchedule, participant.id, event, row)}>{participant.getStartTime(event.id, row) || "Välj starttid"}</button>}
+			{row < rounds.length && <button className="scheduleButton" onClick={e => this.fire(this.Events.showSchedule, participant, event, row)}>{participant.getStartTime(event.id, row) || "Välj starttid"}</button>}
 		</td>;
 	}
 

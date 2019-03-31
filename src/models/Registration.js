@@ -138,8 +138,8 @@ export class Registration {
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
-	selectSquad(participant, id, round, squad) {
-		this.getParticipant(participant).addSquad(id, round, squad);
+	selectSquad(pId, id, round, squad) {
+		this.getParticipant(pId).addSquad(id, round, squad);
 		this.fire(this.Events.registrationUpdated);
 	}
 
