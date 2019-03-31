@@ -58,3 +58,14 @@
 	color: #f5f5f5;
 	display: inline-block;
 }
+
+.App-header-tools {
+	display: inline-flex;
+	flex-direction: column;
+	justify-items: right;
+}
+
+p.version {
+	font-size: x-small;
+	text-align: right;
+}

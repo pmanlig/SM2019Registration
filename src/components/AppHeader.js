@@ -3,6 +3,8 @@ import logo from './../gpk_logo_wht.png';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+let lastModified = "2019-03-31";
+
 export class AppHeader extends React.Component {
 	static register = { name: "AppHeader" };
 	static wire = ["LoginLogout", "LocalToggle", "DeleteCookies", "subscribe", "Events"];
@@ -27,12 +29,17 @@ export class AppHeader extends React.Component {
 				<Link to="/"><img src={logo} className="Gpk-logo" alt="logo" /></Link>
 				{this.state.title}
 			</h1>
-			<this.LocalToggle />
-			<this.DeleteCookies />
-			<this.LoginLogout />
-			<Link to="/" className='globaltool'>Tävlingar</Link>
-			<Link to="/help" className='globaltool'>Hjälp?</Link>
-			<Link to="/about" className='globaltool'>Om...</Link>
+			<div id="App-header-tools">
+				<div id="global-tools">
+					<this.LocalToggle />
+					<this.DeleteCookies />
+					<this.LoginLogout />
+					<Link to="/" className='globaltool'>Tävlingar</Link>
+					<Link to="/help" className='globaltool'>Hjälp?</Link>
+					<Link to="/about" className='globaltool'>Om...</Link>
+				</div>
+				<p className="version">Senast uppdaterad: {lastModified}</p>
+			</div>
 		</header>
 	}
 }
