@@ -1,10 +1,10 @@
 export class Squad {
 	constructor(startTime, slots, divisions, mixed, id) {
+		this.id = id;
 		this.startTime = startTime;
 		this.slots = slots;
 		this.divisions = divisions;
 		this.mixed = mixed;
-		this.id = id;
 		this.participants = [];
 	}
 
@@ -19,7 +19,6 @@ export class Squad {
 			n.mixed = s.mixed === "true";
 			n.id = s.id;
 			n.participants = s.participants || [];
-			n.duration = s.duration || 120;
 		}
 		return n;
 	}

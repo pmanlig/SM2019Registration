@@ -23,8 +23,6 @@ export class RegistrationToolbar extends React.Component {
 	}
 
 	render() {
-		console.log("Rendering toolbar");
-		console.log(this.Registry);
 		return <div className="buttons center content">
 			{this.Registry.competitors.length > 0 &&
 				<input type='button' className="button" id="getButton" onClick={e => this.fire(this.Events.showParticipantPicker)} value='Hämta deltagare' />}

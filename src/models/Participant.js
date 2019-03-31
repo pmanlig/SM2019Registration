@@ -2,8 +2,6 @@ import { Person } from './Person';
 
 export class Participant extends Person {
 	static nextId = 0;
-	id;
-	registrationInfo = [];
 	errors = [];
 
 	constructor(p, registrationInfo) {
@@ -63,6 +61,14 @@ export class Participant extends Person {
 	getStartTime(eventId, round) {
 		let info = this.event(eventId);
 		return info === undefined ? undefined : (info.rounds[round] === undefined ? undefined : info.rounds[round].time);
+	}
+
+	getSquadsExcept(eventId, round) {
+		let squads = [];
+		this.registrationInfo.forEach(e => e.rounds.forEach((r, i) => {
+			if (e.event !== eventId && round !== i && r.squad !== undefined) squads.push(r.squad);
+		}));
+		return squads;
 	}
 
 	getDivision(eventId, round) {
