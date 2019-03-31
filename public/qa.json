@@ -9,6 +9,6 @@
 	},
 	{
 		"q": "Sidan fungerar inte i Internet Explorer?",
-		"a": "Tyvärr inte. Internet Explorer är vid det här laget en gammal webbläsare som tyvärr inte stödjer de senaste standarderna för webbutveckling. Vi kan lägga till stöd för IE, men det innebär extra jobb som vi inte har haft tid med än. Tills vidare rekommenderar vi att du använder $https://www.google.com/chrome/~Chrome$."
+		"a": "Tyvärr inte. Internet Explorer är vid det här laget en gammal webbläsare som tyvärr inte stödjer de senaste standarderna för webbutveckling. Vi kan lägga till stöd för IE, men det innebär extra jobb som vi inte har haft tid med än. Tills vidare rekommenderar vi att du använder $https://www.google.com/chrome/~Google Chrome$."
 	}
 ]
