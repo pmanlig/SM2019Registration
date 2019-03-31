@@ -32,7 +32,7 @@ export class HelpView extends React.Component {
 		return <div className="content">
 			<p>Vi gör vårt bästa för att alla funktioner i systemet ska vara intuitiva och självförklarande,
 				men om vi misslyckas med det kan du hitta svar på de vanligaste frågorna på den här sidan.</p>
-			<p>Hittar du inte svaret på det du undrar över? Skicka ett mail till <a href="mailto:anmalan@xkretsen.se">anmalan@xkretsen.se</a></p>
+			<p>Hittar du inte svaret på det du undrar över? Kontakta oss via mail: <a href="mailto:anmalan@xkretsen.se">anmalan@xkretsen.se</a></p>
 			{this.state.qa.map(qa => <div key={qaId++}>
 				<h3>{qa.q}</h3>
 				{this.linkify(qa.a)}
