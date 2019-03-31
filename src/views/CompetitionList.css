@@ -28,11 +28,11 @@
 }
 
 #competitions > ul > li.closed {
-	background-color: #a0cfff;
+	background-color: #a0cfa0;
 }
 
 #competitions > ul > li.open {
-	background-color: #a0cfa0;
+	background-color: #a0cfff;
 }
 
 #competitions a {
