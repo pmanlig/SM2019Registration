@@ -45,8 +45,9 @@
 }
 
 .globaltool {
-	height: 25px;
-	font-size: 20px;
+	height: 20px;
+	font-size: 15px;
+	font-weight: bold;
 	text-decoration: none;
 	border-radius: 15px;
 	vertical-align: middle;

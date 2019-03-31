@@ -30,6 +30,8 @@ export class AppHeader extends React.Component {
 			<this.LocalToggle />
 			<this.DeleteCookies />
 			<this.LoginLogout />
+			<Link to="/" className='globaltool'>Tävlingar</Link>
+			<Link to="/help" className='globaltool'>Hjälp?</Link>
 			<Link to="/about" className='globaltool'>Om...</Link>
 		</header>
 	}
