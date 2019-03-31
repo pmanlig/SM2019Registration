@@ -124,6 +124,7 @@ export class Registration {
 
 	setParticipantDivision(pId, eventId, round, value) {
 		this.getParticipant(pId).addEvent(eventId).rounds[round].division = value;
+		this.getParticipant(pId).addSquad(eventId, round, {});
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
@@ -138,8 +139,8 @@ export class Registration {
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
-	selectSquad(pId, id, round, squad) {
-		this.getParticipant(pId).addSquad(id, round, squad);
+	selectSquad(pId, eventId, round, squad) {
+		this.getParticipant(pId).addSquad(eventId, round, squad);
 		this.fire(this.Events.registrationUpdated);
 	}
 

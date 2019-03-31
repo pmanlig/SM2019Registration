@@ -54,8 +54,8 @@ export class Participant extends Person {
 		return this.event(id);
 	}
 
-	addSquad(id, round, squad) {
-		let info = this.addEvent(id);
+	addSquad(eventId, round, squad) {
+		let info = this.addEvent(eventId);
 		info.rounds[round].squad = squad.id;
 		info.rounds[round].time = squad.startTime;
 	}
