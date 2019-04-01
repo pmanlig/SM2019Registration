@@ -2,7 +2,7 @@
   "name": "sm2019",
   "version": "0.2.0",
   "private": true,
-  "homepage": "http://anmalan.gavlepistol.se/",
+  "homepage": ".",
   "dependencies": {
     "react": "^16.8.2",
     "react-date-picker": "^7.2.0",
