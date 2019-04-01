@@ -50,7 +50,7 @@ export class Competition {
 	}
 
 	load(id) {
-		if (this.id !== id) {
+		if (id !== 0 && this.id !== id) {
 			// ToDo: Replace static loading of enumerations
 			this.ClassGroups.load(loaded => { if (loaded) { this.fire(this.Events.competitionUpdated) } });
 			this.DivisionGroups.load(loaded => { if (loaded) { this.fire(this.Events.competitionUpdated) } });
