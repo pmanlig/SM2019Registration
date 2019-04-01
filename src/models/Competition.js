@@ -50,7 +50,7 @@ export class Competition {
 	}
 
 	load(id) {
-		if (this.id === 0) return;
+		if (id === 0) return;
 		if (this.id !== id) {
 			// ToDo: Replace static loading of enumerations
 			this.ClassGroups.load(loaded => { if (loaded) { this.fire(this.Events.competitionUpdated) } });
