@@ -50,7 +50,8 @@ export class Competition {
 	}
 
 	load(id) {
-		if (id !== 0 && this.id !== id) {
+		if (this.id === 0) return;
+		if (this.id !== id) {
 			// ToDo: Replace static loading of enumerations
 			this.ClassGroups.load(loaded => { if (loaded) { this.fire(this.Events.competitionUpdated) } });
 			this.DivisionGroups.load(loaded => { if (loaded) { this.fire(this.Events.competitionUpdated) } });
@@ -69,6 +70,7 @@ export class Competition {
 	}
 
 	refresh() {
+		if (this.id === 0) return;
 		this.Server.loadCompetition(this.id,
 			obj => {
 				if (obj !== undefined) {
