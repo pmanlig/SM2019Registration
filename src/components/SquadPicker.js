@@ -11,18 +11,31 @@ export class SquadPicker extends React.Component {
 		this.state = {};
 		this.EventBus.manageEvents(this);
 		this.EventBus.subscribe(this.Events.showSchedule, this.showSchedule);
+		this._isMounted = false;
+	}
+
+	componentDidMount() {
+		this._isMounted = true;
+	}
+
+	componentWillUnmount() {
+		this._isMounted = false;
 	}
 
 	showSchedule = (participant, event, round) => {
 		this.Server.loadSchedule(event.schedule, json => {
 			this.Server.loadParticipants(event.schedule, pJson => {
-				this.setState({
+				let newState = {
 					event: event,
 					schedule: Schedule.fromJson(json, pJson),
 					participant: participant,
 					round: round,
 					division: participant.getDivision(event.id, round) || this.Competition.divisions(event.divisions)[0]
-				});
+				};
+				if (this._isMounted)
+					this.setState(newState);
+				// else
+					// this.state = newState();
 			}, this.Footers.errorHandler("Kan inte hämta deltagare"));
 		}, this.Footers.errorHandler("Kan inte hämta schema"));
 	}
