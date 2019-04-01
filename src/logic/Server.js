@@ -127,7 +127,7 @@ export class Server {
 
 	remoteRegistrationService() {
 		return {
-			loadRegistration: (id, token, callback) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(`${id}_token`) : `competition/${id}/${token}`, callback); },
+			loadRegistration: (id, token, callback, error) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(`${id}_token`) : `competition/${id}/${token}`, callback, error); },
 			sendRegistration: (data, callback, error) => { this.send(`register`, data, callback, error) }
 		}
 	}

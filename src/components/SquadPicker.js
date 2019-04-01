@@ -35,7 +35,7 @@ export class SquadPicker extends React.Component {
 				if (this._isMounted)
 					this.setState(newState);
 				// else
-					// this.state = newState();
+				// this.state = newState();
 			}, this.Footers.errorHandler("Kan inte hämta deltagare"));
 		}, this.Footers.errorHandler("Kan inte hämta schema"));
 	}
@@ -53,8 +53,14 @@ export class SquadPicker extends React.Component {
 		return "partial";
 	}
 
+	allowedDivisions(squad) {
+		if (squad.mixed) return squad.divisions;
+		if (squad.participants.length > 0) return [...new Set(squad.participants.map(p => p.division))];
+		return squad.divisions;
+	}
+
 	canRegister(squad) {
-		return this.squadStatus(squad) !== "full" && squad.divisions.some(d => d.includes(this.state.division));
+		return this.squadStatus(squad) !== "full" && this.allowedDivisions(squad).some(d => d.includes(this.state.division));
 	}
 
 	toggleExpand = (e, squad) => {
@@ -68,7 +74,7 @@ export class SquadPicker extends React.Component {
 		if (this.canRegister(squad)) className = className + " selectable";
 		return <tr key={squad.id} className={className} onClick={e => this.selectSquad(squad)}>
 			<td className="time">{squad.startTime}</td>
-			<td>{squad.divisions.join()}</td>
+			<td>{this.allowedDivisions(squad).join()}</td>
 			<td>{`${squad.participants.length} / ${squad.slots}`}</td>
 			<td>
 				{squad.participants.length > 0 &&
@@ -77,18 +83,20 @@ export class SquadPicker extends React.Component {
 		</tr>;
 	}
 
+	renderParticipant(p) {
+		return <tr key={p.id} className="participant">
+			<td className="time">{p.name}</td>
+			<td>{p.division}</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>;
+	}
+
 	renderSquad(squad) {
 		let rows = [];
 		rows.push(this.squadHeader(squad));
 		if (squad.expand && squad.participants.length > 0) {
-			rows = rows.concat(squad.participants.map(p =>
-				<tr key={p.id} className="participant">
-					<td className="time">{p.name}</td>
-					<td>?</td>
-					<td>&nbsp;</td>
-					<td>{p.division}</td>
-				</tr>
-			));
+			rows = rows.concat(squad.participants.map(p => this.renderParticipant(p)));
 		}
 		return rows;
 	}
