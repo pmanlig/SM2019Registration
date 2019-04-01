@@ -10,10 +10,6 @@ export class LocalScheduleService {
 		this.schedules = this.schedules.filter(l => l !== undefined && l.id !== undefined).map(s => Schedule.fromJson(s));
 		this.id = 1;
 		this.schedules.forEach(s => { if (s.id >= this.id) { this.id = s.id + 1; } });
-		if (window._debug) {
-			console.log("Initialized Schedule Service");
-			console.log(this);
-		}
 	}
 
 	createSchedule(schedule, callback) {

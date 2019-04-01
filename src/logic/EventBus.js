@@ -20,6 +20,7 @@ export class Events {
 	static userChanged = Events.eventId++;
 	static serverChanged = Events.eventId++;
 	static selectSquad = Events.eventId++;
+	static configurationLoaded = Events.eventId++;
 }
 
 export class EventBus {

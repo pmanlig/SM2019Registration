@@ -6,7 +6,17 @@ import { ComponentTest } from './views';
 export class App extends React.Component {
 	static register = { name: "App" };
 	static wire = ["AppHeader", "BusyIndicator", "Footers", "Footer", "StoreQuestion", "Storage", "CompetitionList",
-		"LoginView", "CompetitionView", "ReportView", "CreateCompetition", "AboutView", "WithLogin", "HelpView", "Diagnostics"]
+		"LoginView", "CompetitionView", "ReportView", "CreateCompetition", "AboutView", "WithLogin", "HelpView", "Diagnostics",
+		"Configuration", "EventBus", "Events"];
+
+	constructor(props) {
+		super(props);
+		this.EventBus.manageEvents(this);
+		this.subscribe(this.Events.configurationLoaded, () => {
+			console.log("Configuration loaded - re-rendering");
+			this.setState({});
+		});
+	}
 
 	render() {
 		let ua = navigator.userAgent;
@@ -16,6 +26,8 @@ export class App extends React.Component {
 				<p>Internet Explorer saknar tyvärr stöd för den web-teknik som vi använder på sidan, vilket gör att vi i
 					dagsläget inte kan stödja Internet Explorer. Vi rekommenderar i stället <a href="https://www.google.com/chrome/">Google Chrome</a></p>
 			</div>;
+
+		if (!this.Configuration.loaded) return <div className="content">Hämtar konfiguration...</div>;
 
 		if (this.Storage.get(this.Storage.keys.allowStorage) === undefined) {
 			this.Footers.addCustomFooter(<this.StoreQuestion key="cookieAlert" storage={this.Storage} />);

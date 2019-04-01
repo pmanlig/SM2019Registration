@@ -2,18 +2,15 @@ import { logFetchCallback, logSendCallback, logSendCallback2, logUpdateCallback,
 
 export class Server {
 	static register = { name: "Server", createInstance: true };
-	static wire = ["fire", "Events", "Busy", "Storage", "ScheduleService", "CompetitionService", "ResultService", "RegistrationService"];
-	static baseUrl = 'https://dev.bitnux.com/sm2019';
+	static wire = ["fire", "Events", "Busy", "Storage", "ScheduleService", "CompetitionService", "ResultService", "RegistrationService", "Configuration"];
 
 	initialize() {
 		this.setLocal(this.Storage.get(this.Storage.keys.toggleServerMode) && this.Storage.get(this.Storage.keys.serverMode));
-		fetch("/config.json").then(res => res.json()).then(json => {
-			Server.baseUrl = json.baseUrl;
-		});
 	}
 
 	//#region Main fetch/send methods and helpers
 	load(url, callback, error) {
+		url = `${this.Configuration.baseUrl}/${url}`;
 		logUrl(url);
 		this.Busy.setBusy(this, true);
 		fetch(url, {
@@ -32,6 +29,7 @@ export class Server {
 	}
 
 	send(url, data, callback, error) {
+		url = `${this.Configuration.baseUrl}/${url}`;
 		logUrl(url);
 		this.Busy.setBusy(this, true);
 		return fetch(url, {
@@ -51,6 +49,7 @@ export class Server {
 	}
 
 	update(url, data, callback, error) {
+		url = `${this.Configuration.baseUrl}/${url}`;
 		logUrl(url);
 		this.Busy.setBusy(this, true);
 		return fetch(url, {
@@ -68,6 +67,7 @@ export class Server {
 	}
 
 	delete(url, callback, error) {
+		url = `${this.Configuration.baseUrl}/${url}`;
 		logUrl(url);
 		this.Busy.setBusy(this, true);
 		return fetch(url, {
@@ -101,41 +101,41 @@ export class Server {
 	//#region Remote Services
 	remoteCompetitionService() {
 		return {
-			loadCompetitionList: (callback, error) => { this.load(`${Server.baseUrl}/competition`, callback, error); },
-			loadCompetition: (id, callback, error) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(id) : `${Server.baseUrl}/competition/${id}`, callback, error); },
-			createCompetition: (competition, callback, error) => { this.send(`${Server.baseUrl}/competition`, competition, callback, error); },
-			updateCompetition: (competition, callback, error) => { this.update(`${Server.baseUrl}/competition/${competition.id}`, competition, callback, error); },
-			deleteCompetition: (id, callback, error) => { this.delete(`${Server.baseUrl}/competition/${id}`, callback, error); }
+			loadCompetitionList: (callback, error) => { this.load("competition", callback, error); },
+			loadCompetition: (id, callback, error) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(id) : `competition/${id}`, callback, error); },
+			createCompetition: (competition, callback, error) => { this.send("competition", competition, callback, error); },
+			updateCompetition: (competition, callback, error) => { this.update(`competition/${competition.id}`, competition, callback, error); },
+			deleteCompetition: (id, callback, error) => { this.delete(`competition/${id}`, callback, error); }
 		};
 	}
 
 	remoteResultService() {
 		return {
-			loadResults: (c, e, callback) => { this.load(isNaN(parseInt(c, 10)) ? this.jsonFile(`${c}_result`) : `${Server.baseUrl}/result/${c}/${e}`, callback); }
+			loadResults: (c, e, callback) => { this.load(isNaN(parseInt(c, 10)) ? this.jsonFile(`${c}_result`) : `result/${c}/${e}`, callback); }
 		};
 	}
 
 	remoteScheduleService() {
 		return {
-			createSchedule: (schedule, callback, error) => { this.send(`${Server.baseUrl}/schedules`, schedule, callback, error); },
-			getSchedule: (scheduleId, callback, error) => { this.load(`${Server.baseUrl}/schedules/${scheduleId}`, callback, error); },
-			getParticipants: (scheduleId, callback, error) => { this.load(`${Server.baseUrl}/schedules/${scheduleId}/squad`, callback, error) },
-			updateSchedule: (schedule, callback, error) => { this.update(`${Server.baseUrl}/schedules/${schedule.id}`, schedule, callback, error); },
-			deleteSchedule: (scheduleId, callback, error) => { this.delete(`${Server.baseUrl}/schedules/${scheduleId}`, callback, error); }
+			createSchedule: (schedule, callback, error) => { this.send(`schedules`, schedule, callback, error); },
+			getSchedule: (scheduleId, callback, error) => { this.load(`schedules/${scheduleId}`, callback, error); },
+			getParticipants: (scheduleId, callback, error) => { this.load(`schedules/${scheduleId}/squad`, callback, error) },
+			updateSchedule: (schedule, callback, error) => { this.update(`schedules/${schedule.id}`, schedule, callback, error); },
+			deleteSchedule: (scheduleId, callback, error) => { this.delete(`schedules/${scheduleId}`, callback, error); }
 		};
 	}
 
 	remoteRegistrationService() {
 		return {
-			loadRegistration: (id, token, callback) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(`${id}_token`) : `${Server.baseUrl}/competition/${id}/${token}`, callback); },
-			sendRegistration: (data, callback, error) => { this.send(`${Server.baseUrl}/register`, data, callback, error) }
+			loadRegistration: (id, token, callback) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(`${id}_token`) : `competition/${id}/${token}`, callback); },
+			sendRegistration: (data, callback, error) => { this.send(`register`, data, callback, error) }
 		}
 	}
 
 	remoteCategoryServive() {
 		return {
-			loadClassGroups: (callback, error) => { this.load(`${Server.baseUrl}/classes`, callback, error); },
-			loadDivisionGroups: (callback, error) => { this.load(`${Server.baseUrl}/divisions`, callback, error); }
+			loadClassGroups: (callback, error) => { this.load(`classes`, callback, error); },
+			loadDivisionGroups: (callback, error) => { this.load(`divisions`, callback, error); }
 		}
 	}
 	//#endregion
@@ -240,19 +240,19 @@ export class Server {
 	}
 
 	createClassGroup(classGroup, callback, error) {
-		this.send(`${Server.baseUrl}/classes`, classGroup, logUpdateCallback(callback, classGroup, "Creating ClassGroup"), logErrorHandler(error));
+		this.send(`classes`, classGroup, logUpdateCallback(callback, classGroup, "Creating ClassGroup"), logErrorHandler(error));
 	}
 
 	createDivisionGroup(divisionGroup, callback, error) {
-		this.send(`${Server.baseUrl}/divisions`, divisionGroup, logUpdateCallback(callback, divisionGroup, "Skapar vapengrupper"), logErrorHandler(error));
+		this.send(`divisions`, divisionGroup, logUpdateCallback(callback, divisionGroup, "Skapar vapengrupper"), logErrorHandler(error));
 	}
 
 	deleteClassGroup(classGroupId, callback, error) {
-		this.delete(`${Server.baseUrl}/classes/${classGroupId}`, logFetchCallback(callback, `Raderar klassindelning ${classGroupId}`), logErrorHandler(error));
+		this.delete(`classes/${classGroupId}`, logFetchCallback(callback, `Raderar klassindelning ${classGroupId}`), logErrorHandler(error));
 	}
 
 	deleteDivisionGroup(divisionGroupId, callback, error) {
-		this.delete(`${Server.baseUrl}/divisions/${divisionGroupId}`, logFetchCallback(callback, `Raderar vapengrupper ${divisionGroupId}`), logErrorHandler(error));
+		this.delete(`divisions/${divisionGroupId}`, logFetchCallback(callback, `Raderar vapengrupper ${divisionGroupId}`), logErrorHandler(error));
 	}
 	//#endregion
 
@@ -261,7 +261,7 @@ export class Server {
 		if (this.local) {
 			callback({});
 		} else {
-			this.send(`${Server.baseUrl}/login`, { user: user, password: password }, logSendCallback(callback, user, "Login"), logErrorHandler(error));
+			this.send(`login`, { user: user, password: password }, logSendCallback(callback, user, "Login"), logErrorHandler(error));
 		}
 	}
 
@@ -269,7 +269,7 @@ export class Server {
 		if (this.local) {
 			callback({});
 		} else {
-			this.load(`${Server.baseUrl}/logout`, logFetchCallback(callback, "Logout"), logErrorHandler(error));
+			this.load(`logout`, logFetchCallback(callback, "Logout"), logErrorHandler(error));
 		}
 	}
 	//#endregion
