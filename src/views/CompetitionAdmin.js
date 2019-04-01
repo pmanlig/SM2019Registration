@@ -9,9 +9,8 @@ export class CompetitionAdmin extends React.Component {
 		this.state = {};
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.competitionUpdated, () => {
-			this.Competition.dirty = true;
 			this.setState({});
-			this.fire(this.Events.changeTitle, `Administrera ${this.Competition.name}`)
+			this.fire(this.Events.changeTitle, `Administrera ${this.Competition.name}`);
 		});
 	}
 
@@ -22,7 +21,6 @@ export class CompetitionAdmin extends React.Component {
 	saveCompetition = () => {
 		this.Server.updateCompetition(this.Competition.toJson(), s => {
 			this.Competition.refresh();
-			this.Competition.dirty = false;
 			this.setState({});
 		}, this.Footers.errorHandler("Kan inte spara tävling"));
 	}

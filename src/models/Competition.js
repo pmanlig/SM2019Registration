@@ -35,6 +35,7 @@ export class Competition {
 		this.events = [new Event(1, "", new Date())];
 		this.rules = [];
 		this.nextNewEvent = 2;
+		this.dirty = false;
 		if (!this.subscription) {
 			this.subscription = this.subscribe(this.Events.serverChanged, () => this.changeServer());
 		}
@@ -94,6 +95,7 @@ export class Competition {
 			this.permissions = obj.permissions ? parseInt(obj.permissions.toString(), 10) :
 				(this.Session.user === "" || this.Session.user === undefined ? Permissions.Any : Permissions.Own);
 			this.status = obj.status ? parseInt(obj.status.toString(), 10) : Status.Open;
+			this.dirty = false;
 			this.fire(this.Events.competitionUpdated);
 		}
 	}
@@ -115,6 +117,7 @@ export class Competition {
 
 	setProperty(prop, value) {
 		this[prop] = value;
+		this.dirty = true;
 		this.fire(this.Events.competitionUpdated);
 	}
 
@@ -123,6 +126,7 @@ export class Competition {
 			this.events[0].name = "Deltävling 1";
 		}
 		this.events.push(new Event(this.nextNewEvent++, "Deltävling " + (this.events.length + 1), new Date()));
+		this.dirty = true;
 		this.fire(this.Events.competitionUpdated);
 	}
 
@@ -131,6 +135,7 @@ export class Competition {
 		if (this.events.length === 1) {
 			this.events[0].name = "";
 		}
+		this.dirty = true;
 		this.fire(this.Events.competitionUpdated);
 	}
 
@@ -144,6 +149,7 @@ export class Competition {
 				}
 			}
 		});
+		this.dirty = true;
 		this.fire(this.Events.competitionUpdated);
 	}
 
