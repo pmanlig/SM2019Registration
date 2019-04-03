@@ -146,7 +146,7 @@ export class Registration {
 
 	countEvents() {
 		let events = 0;
-		this.participants.forEach(p => { p.registrationInfo.forEach(r => { if (r) events++; }) });
+		this.participants.forEach(p => { p.registrationInfo.forEach(r => { events += r.rounds.length; }) });
 		return events;
 	}
 

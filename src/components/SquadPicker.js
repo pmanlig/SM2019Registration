@@ -67,7 +67,7 @@ export class SquadPicker extends React.Component {
 
 	allowedDivisions(squad) {
 		if (squad.mixed) return squad.divisions;
-		if (squad.participants.length > 0) return [...new Set(squad.participants.map(p => p.division))];
+		if (squad.participants.length > 0) return squad.divisions.filter(d => squad.participants.some(p => d.includes(p.division)));
 		return squad.divisions;
 	}
 
