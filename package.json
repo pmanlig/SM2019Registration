@@ -2,7 +2,7 @@
   "name": "sm2019",
   "version": "0.2.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "https://anmalan.manlig.org",
   "dependencies": {
     "react": "^16.8.2",
     "react-date-picker": "^7.2.0",

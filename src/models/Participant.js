@@ -17,8 +17,15 @@ export class Participant extends Person {
 			organization: participant.organization
 		}, entries.map(e => {
 			return {
-				...e,
-				event: parseInt(e.event, 10)
+				class: e.class,
+				event: parseInt(e.event, 10),
+				rounds: e.rounds === undefined ? undefined : e.rounds.map(r => {
+					return {
+						division: r.division,
+						squad: r.squad === undefined ? undefined : parseInt(r.squad, 10),
+						time: r.time
+					}
+				})
 			}
 		}));
 	}

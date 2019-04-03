@@ -1,13 +1,9 @@
 export class Event {
-	classes = undefined;
-	divisions = undefined;
-	schedule = undefined;
-	maxRegistrations = 1;
-
 	constructor(id, name, date) {
 		this.id = id;
 		this.name = name;
 		this.date = date;
+		this.maxRegistrations = 1;
 	}
 
 	static toNumber(x) {

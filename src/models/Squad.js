@@ -17,7 +17,7 @@ export class Squad {
 			n.slots = parseInt(s.slots.toString(), 10);
 			n.divisions = [...new Set(s.divisions)]; // Fix to mitigate server bug
 			n.mixed = s.mixed === "true";
-			n.id = s.id;
+			n.id = parseInt(s.id.toString(), 10);
 			n.participants = s.participants || [];
 		}
 		return n;

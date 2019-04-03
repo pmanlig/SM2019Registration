@@ -1,5 +1,6 @@
 import './SquadPicker.css';
 import React from 'react';
+import { Time } from '../logic';
 import { Schedule } from '../models';
 
 export class SquadPicker extends React.Component {
@@ -8,10 +9,12 @@ export class SquadPicker extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.schedulesToLoad = this.Competition.events.map(e => e.schedule).filter(s => s !== undefined);
+		this.schedules = [];
 		this.EventBus.manageEvents(this);
 		this.EventBus.subscribe(this.Events.showSchedule, this.showSchedule);
 		this._isMounted = false;
+		this.state = {};
 	}
 
 	componentDidMount() {
@@ -22,22 +25,27 @@ export class SquadPicker extends React.Component {
 		this._isMounted = false;
 	}
 
+	loadSchedule = (scheduleId, callback) => {
+		this.Server.loadSchedule(scheduleId, json => {
+			this.Server.loadParticipants(scheduleId, pJson => {
+				this.schedules.push(Schedule.fromJson(json, pJson));
+				callback();
+			}, this.Footers.errorHandler("Kan inte hämta deltagare"));
+		}, this.Footers.errorHandler("Kan inte hämta schema"));
+	}
+
 	showSchedule = (participant, event, round) => {
-		this.Server.loadSchedule(event.schedule, json => {
-			this.Server.loadParticipants(event.schedule, pJson => {
-				let newState = {
+		if (this.schedulesToLoad.length > 0) {
+			this.loadSchedule(this.schedulesToLoad.pop(), () => this.showSchedule(participant, event, round));
+		} else {
+			if (this._isMounted)
+				this.setState({
 					event: event,
-					schedule: Schedule.fromJson(json, pJson),
 					participant: participant,
 					round: round,
 					division: participant.getDivision(event.id, round) || this.Competition.divisions(event.divisions)[0]
-				};
-				if (this._isMounted)
-					this.setState(newState);
-				// else
-				// this.state = newState();
-			}, this.Footers.errorHandler("Kan inte hämta deltagare"));
-		}, this.Footers.errorHandler("Kan inte hämta schema"));
+				});
+		}
 	}
 
 	selectSquad = (squad) => {
@@ -45,6 +53,10 @@ export class SquadPicker extends React.Component {
 		let { participant, event, round } = this.state;
 		this.EventBus.fire(this.Events.selectSquad, participant.id, event.id, round, squad);
 		this.setState({ schedule: undefined });
+	}
+
+	getSchedule = (scheduleId) => {
+		return this.schedules.find(s => s.id === scheduleId);
 	}
 
 	squadStatus(squad) {
@@ -59,8 +71,36 @@ export class SquadPicker extends React.Component {
 		return squad.divisions;
 	}
 
+	timeFromSquad(eventId, squadId) {
+		let schedule = this.getSchedule(this.Competition.events.find(e => e.id === eventId).schedule);
+		let startTime = Time.timeFromText(schedule.squads.find(s => s.id === squadId).startTime);
+		return { from: startTime, to: startTime + Time.timeFromText(schedule.duration) };
+	}
+
+	calculateStartTimes() {
+		let p = this.state.participant;
+		let registeredSquads = [].concat(...p.registrationInfo.map(ri => ri.rounds.map(rd => { return { event: ri.event, squad: rd.squad } })));
+		return registeredSquads
+			.filter(s => s.squad !== p.registrationInfo.find(ri => ri.event === this.state.event.id).rounds[this.state.round].squad)
+			.filter(s => s.squad !== undefined)
+			.map(st => this.timeFromSquad(st.event, st.squad));
+	}
+
+	allowedStartTime(squad) {
+		let times = this.calculateStartTimes();
+		let myTime = this.timeFromSquad(this.state.event.id, squad.id);
+		return !times.some(t =>
+			(t.from >= myTime.from && t.from < myTime.to) ||
+			(t.to <= myTime.to && t.to > myTime.from) ||
+			(myTime.from >= t.from && myTime.from < t.to) ||
+			(myTime.to <= t.to && myTime.to > t.from)
+		);
+	}
+
 	canRegister(squad) {
-		return this.squadStatus(squad) !== "full" && this.allowedDivisions(squad).some(d => d.includes(this.state.division));
+		return this.squadStatus(squad) !== "full" &&
+			this.allowedStartTime(squad) &&
+			this.allowedDivisions(squad).some(d => d.includes(this.state.division));
 	}
 
 	toggleExpand = (e, squad) => {
@@ -102,7 +142,9 @@ export class SquadPicker extends React.Component {
 	}
 
 	render() {
-		let schedule = this.state.schedule;
+		if (this.schedulesToLoad.length > 0) return null;
+
+		let schedule = this.getSchedule(this.state.event.schedule);
 		if (schedule === undefined) { return null; }
 
 		return <div className="squad-picker">
