@@ -18,7 +18,9 @@ if (ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1)
 	ReactDOM.render(<div className="content">
 		<h2>Webbläsaren stöds inte</h2>
 		<p>Internet Explorer saknar tyvärr stöd för den web-teknik som vi använder på sidan, vilket gör att vi i
-	dagsläget inte kan stödja Internet Explorer. Vi rekommenderar i stället <a href="https://www.google.com/chrome/">Google Chrome</a></p>
+			dagsläget inte kan stödja Internet Explorer. Vi rekommenderar i stället en modernare webbläsare som <a href="https://www.google.com/chrome/">Google
+			Chrome</a>, <a href="https://www.mozilla.org/sv-SE/firefox/new/">Mozilla Firefox</a>, <a href="https://support.apple.com/sv-se/HT204416">Safari</a>
+			eller <a href="https://www.microsoft.com/sv-se/windows/microsoft-edge">Microsoft Edge</a>.</p>
 	</div>, document.getElementById('root'));
 else {
 	window._debug = true;
