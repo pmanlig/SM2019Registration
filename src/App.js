@@ -19,14 +19,6 @@ export class App extends React.Component {
 	}
 
 	render() {
-		let ua = navigator.userAgent;
-		if (ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1)
-			return <div className="content">
-				<h2>Webbläsaren stöds inte</h2>
-				<p>Internet Explorer saknar tyvärr stöd för den web-teknik som vi använder på sidan, vilket gör att vi i
-					dagsläget inte kan stödja Internet Explorer. Vi rekommenderar i stället <a href="https://www.google.com/chrome/">Google Chrome</a></p>
-			</div>;
-
 		if (!this.Configuration.loaded) return <div className="content">Hämtar konfiguration...</div>;
 
 		if (this.Storage.get(this.Storage.keys.allowStorage) === undefined) {
