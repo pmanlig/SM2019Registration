@@ -9,8 +9,6 @@ export class SquadPicker extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.schedulesToLoad = this.Competition.events.map(e => e.schedule).filter(s => s !== undefined);
-		this.schedules = [];
 		this.EventBus.manageEvents(this);
 		this.EventBus.subscribe(this.Events.showSchedule, this.showSchedule);
 		this._isMounted = false;
@@ -25,27 +23,31 @@ export class SquadPicker extends React.Component {
 		this._isMounted = false;
 	}
 
-	loadSchedule = (scheduleId, callback) => {
-		this.Server.loadSchedule(scheduleId, json => {
-			this.Server.loadParticipants(scheduleId, pJson => {
-				this.schedules.push(Schedule.fromJson(json, pJson));
-				callback();
-			}, this.Footers.errorHandler("Kan inte hämta deltagare"));
-		}, this.Footers.errorHandler("Kan inte hämta schema"));
+	loadSchedules = (scheduleIds, schedules, callback) => {
+		if (scheduleIds.length > 0) {
+			let scheduleId = scheduleIds.pop();
+			this.Server.loadSchedule(scheduleId, json => {
+				this.Server.loadParticipants(scheduleId, pJson => {
+					schedules.push(Schedule.fromJson(json, pJson));
+					this.loadSchedules(scheduleIds, schedules, callback);
+				}, this.Footers.errorHandler("Kan inte hämta deltagare"));
+			}, this.Footers.errorHandler("Kan inte hämta schema"));
+		} else {
+			callback(schedules);
+		}
 	}
 
 	showSchedule = (participant, event, round) => {
-		if (this.schedulesToLoad.length > 0) {
-			this.loadSchedule(this.schedulesToLoad.pop(), () => this.showSchedule(participant, event, round));
-		} else {
+		this.loadSchedules(this.Competition.events.map(e => e.schedule).filter(s => s !== undefined), [], (schedules) => {
 			if (this._isMounted)
 				this.setState({
+					schedules: schedules,
 					event: event,
 					participant: participant,
 					round: round,
 					division: participant.getDivision(event.id, round) || this.Competition.divisions(event.divisions)[0]
 				});
-		}
+		});
 	}
 
 	selectSquad = (squad) => {
@@ -56,7 +58,7 @@ export class SquadPicker extends React.Component {
 	}
 
 	getSchedule = (scheduleId) => {
-		return this.schedules.find(s => s.id === scheduleId);
+		return this.state.schedules.find(s => s.id === scheduleId);
 	}
 
 	squadStatus(squad) {
@@ -141,7 +143,7 @@ export class SquadPicker extends React.Component {
 	}
 
 	render() {
-		if (this.schedulesToLoad.length > 0 || this.state.participant === undefined) return null;
+		if (this.state.participant === undefined) return null;
 		let schedule = this.getSchedule(this.state.event.schedule);
 		return <div className="squad-picker">
 			<h1>Starttider</h1>
