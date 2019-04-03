@@ -52,7 +52,7 @@ export class SquadPicker extends React.Component {
 		if (!this.canRegister(squad)) return;
 		let { participant, event, round } = this.state;
 		this.EventBus.fire(this.Events.selectSquad, participant.id, event.id, round, squad);
-		this.setState({ schedule: undefined });
+		this.setState({ participant: undefined });
 	}
 
 	getSchedule = (scheduleId) => {
@@ -110,8 +110,7 @@ export class SquadPicker extends React.Component {
 	}
 
 	squadHeader(squad) {
-		let className = this.squadStatus(squad);
-		if (this.canRegister(squad)) className = className + " selectable";
+		let className = this.squadStatus(squad) + (this.canRegister(squad) ? " selectable" : " unavailable");
 		return <tr key={squad.id} className={className} onClick={e => this.selectSquad(squad)}>
 			<td className="time">{squad.startTime}</td>
 			<td>{this.allowedDivisions(squad).join()}</td>
@@ -142,11 +141,8 @@ export class SquadPicker extends React.Component {
 	}
 
 	render() {
-		if (this.schedulesToLoad.length > 0) return null;
-
+		if (this.schedulesToLoad.length > 0 || this.state.participant === undefined) return null;
 		let schedule = this.getSchedule(this.state.event.schedule);
-		if (schedule === undefined) { return null; }
-
 		return <div className="squad-picker">
 			<h1>Starttider</h1>
 			<div style={{ overflowY: "auto" }}>

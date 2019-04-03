@@ -36,6 +36,10 @@
 	background-color: lightgreen;
 }
 
+.squad-picker .unavailable {
+	background-color: lightgray;
+}
+
 .squad-picker .participant {
 	background-color: white;
 }
