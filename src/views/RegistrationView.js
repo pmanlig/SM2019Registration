@@ -25,6 +25,7 @@ export class RegistrationView extends React.Component {
 
 		return <div>
 			<this.SquadPicker />
+			<div className="content">{this.Competition.description}</div>
 			<this.RegistrationContact />
 			<this.RegistrationForm />
 			<this.Summary />
