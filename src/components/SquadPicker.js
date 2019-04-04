@@ -11,6 +11,7 @@ export class SquadPicker extends React.Component {
 		super(props);
 		this.EventBus.manageEvents(this);
 		this.EventBus.subscribe(this.Events.showSchedule, this.showSchedule);
+		this.EventBus.subscribe(this.Events.registrationUpdated, () => this.setState({ participant: undefined }));
 		this._isMounted = false;
 		this.state = {};
 	}

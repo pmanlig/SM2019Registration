@@ -1,11 +1,11 @@
 .squad-picker {
 	border-radius: 10px;
-	background-color: lightseagreen;
+	background-color: #a0cfff;
 	position: fixed;
 	margin: auto 0;
 	padding: 0 10px 10px 10px;
 	right: 20px;
-	top: 100px;
+	top: 90px;
 	max-height: calc(100vh - 120px);
 	overflow-y: auto;
 	display: flex;
@@ -37,7 +37,9 @@
 }
 
 .squad-picker .unavailable {
-	background-color: lightgray;
+	color: white;
+	background-color: darkgray;
+	opacity:0.7;
 }
 
 .squad-picker .participant {
@@ -49,5 +51,5 @@
 }
 
 .squad-picker tbody tr.selectable:hover {
-	background-color: aquamarine;
+	background-color: cornflowerblue;
 }

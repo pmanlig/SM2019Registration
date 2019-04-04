@@ -1,6 +1,6 @@
 [
 	{
-		"q": "Hur hittar jag tävlingar?",
+		"q": "Hur kommer jag tillbaka till listan med tävlingar?",
 		"a": "Klicka på knappen \"tävlingar\", eller på logotypen i övre vänstra hörnet."
 	},
 	{
@@ -9,6 +9,6 @@
 	},
 	{
 		"q": "Sidan fungerar inte i Internet Explorer?",
-		"a": "Tyvärr inte. Internet Explorer är vid det här laget en gammal webbläsare som tyvärr inte stödjer de senaste standarderna för webbutveckling. Vi kan lägga till stöd för IE, men det innebär extra jobb som vi inte har haft tid med än. Tills vidare rekommenderar vi att du använder $https://www.google.com/chrome/~Google Chrome$."
+		"a": "Tyvärr inte. Microsoft lägger inte till nya funktioner i Internet Explorer sedan 2015, vilket gör att funktionerna som behövs för att få den här sidan att fungera inte finns i Internet Explorer. Microsoft rekommenderar i stället $https://www.microsoft.com/sv-se/windows/microsoft-edge~Microsoft Edge$. Du kan också använda $https://www.google.com/chrome/~Google Chrome$, $https://www.mozilla.org/sv-SE/firefox/new/~Mozilla Firefox$ eller $https://support.apple.com/sv-se/HT204416~Safari$."
 	}
 ]
