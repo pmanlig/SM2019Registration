@@ -7,7 +7,7 @@ export class Summary extends React.Component {
 
 	countEntries(participants) {
 		var entries = 0;
-		participants.forEach(p => { p.registrationInfo.forEach(r => { if (r) entries++; }) });
+		participants.forEach(p => { p.registrationInfo.forEach(r => { if (r) entries += r.rounds.length; }) });
 		return entries;
 	}
 
