@@ -19,6 +19,7 @@ export class RegistrationForm extends React.Component {
 			minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Vapengrupp</th>);
 		}
 		if (event.schedule) {
+			if (event.maxRegistrations > 1) { this.addButtonHeader(minorHeaders); }
 			minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Starttid</th>);
 			if (event.maxRegistrations > 1) { this.addButtonHeader(minorHeaders); }
 		}
@@ -79,7 +80,7 @@ export class RegistrationForm extends React.Component {
 	}
 
 	render() {
-		return <div id='registration' className='content'>
+		return <div id='registration' className='content' style={{ overflow: "visible" }}>
 			<table>
 				<this.RegistrationHeader />
 				<this.RegistrationRows />

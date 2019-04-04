@@ -81,7 +81,9 @@ export class Registration {
 			this.fire(this.Events.addFooter, "Deltagaren finns redan!");
 			return;
 		}
-		this.participants.push(new Participant(p));
+		let newParticipant = new Participant(p);
+		if (p === undefined) newParticipant.organization = this.contact.organization;
+		this.participants.push(newParticipant);
 		this.setParticipantDefaults();
 		this.fire(this.Events.registrationUpdated, this);
 	}

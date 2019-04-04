@@ -25,17 +25,6 @@ export class RegistrationRow extends React.Component {
 		</td>;
 	}
 
-	roundButton(row, participantId, event, rounds) {
-		let button = null;
-		if (row === 0 && rounds.length < event.maxRegistrations) {
-			button = <button className="button-add small" onClick={e => this.Registration.addParticipantRound(participantId, event.id)} />;
-		}
-		if (row < rounds.length && (row > 0 || rounds.length === event.maxRegistrations)) {
-			button = <button className="button-close small deleteButton" onClick={e => this.Registration.deleteParticipantRound(participantId, event.id, row)} />;
-		}
-		return <td key={`r${event.id}${row}`} className="vcenter">{button}</td>;
-	}
-
 	EventControls = ({ row, numRows, participant, event }) => {
 		const eventInfo = participant.event(event.id) || { event: event.id, rounds: [{}] };
 		let controls = [];
@@ -46,9 +35,20 @@ export class RegistrationRow extends React.Component {
 			controls.push(this.divisionDropdown(row, participant.id, event.id, eventInfo.rounds, this.Competition.divisions(event.divisions)));
 		}
 		if (event.schedule) {
+			if (event.maxRegistrations > 1) {
+				if (row > 0 || eventInfo.rounds.length === event.maxRegistrations)
+					controls.push(<td></td>);
+				else
+					controls.push(<td key={`r${event.id}${row}`} className="vcenter tooltip"
+						style={{ position: "relative" }} tooltip="Lägg till ytterligare starttid" tooltip-position="top">
+						<button className="button-add small" onClick={e => this.Registration.addParticipantRound(participant.id, event.id)} />
+					</td>);
+			}
 			controls.push(this.scheduleButton(row, participant, event, eventInfo.rounds));
 			if (event.maxRegistrations > 1) {
-				controls.push(this.roundButton(row, participant.id, event, eventInfo.rounds));
+				controls.push(<td key={`x${event.id}${row}`} className="vcenter tooltip" style={{ position: "relative" }} tooltip="Ta bort starttid" tooltip-position="top">
+					<button className="button-close small red deleteButton" onClick={e => this.Registration.deleteParticipantRound(participant.id, event.id, row)} />
+				</td>);
 			}
 		}
 
@@ -81,7 +81,8 @@ export class RegistrationRow extends React.Component {
 		return <tr className={p.errors.length > 0 ? "error registration" : "registration"}>
 			{row === 0 && <this.ParticipantFields numRows={numRows} participant={p} />}
 			<this.RegistrationControls row={row} numRows={numRows} participant={p} />
-			{row === 0 && <td className="vcenter"><button className="button-close small red" onClick={e => this.Registration.deleteParticipant(p.id)} /></td>}
+			{row === 0 && <td className="vcenter tooltip" style={{ position: "relative" }} tooltip="Ta bort deltagare" tooltip-position="top">
+				<button className="button-close small red" onClick={e => this.Registration.deleteParticipant(p.id)} /></td>}
 		</tr>;
 	}
 
