@@ -15,7 +15,7 @@ export class Summary extends React.Component {
 		let participants = this.Registration.participants;
 		return (
 			<div id='summary' className='center content'>
-				<p>Antal deltagare: {participants.length}<br />Antal starter: {this.countEntries(participants)}</p>
+				Antal deltagare: {participants.length}<br />Antal starter: {this.countEntries(participants)}
 			</div>);
 	}
 }
