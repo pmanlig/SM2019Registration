@@ -13,7 +13,7 @@ import * as views from './views';
 import * as test from './test';
 import { App } from './App';
 
-let ua = navigator.userAgent;
+let ua = ""; // navigator.userAgent;
 if (ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1)
 	ReactDOM.render(<div className="content">
 		<h2>Webbläsaren stöds inte</h2>
