@@ -1,0 +1,22 @@
+.roster {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.rv-event {
+	min-width:400px;
+	width: 400px;
+}
+
+.rv-squad-header {
+	color: white;
+	background-color: green;
+	padding: 3px;
+	border-radius: 3px;
+}
+
+.rv-participant {
+	margin-left: 5px;
+}
