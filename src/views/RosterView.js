@@ -34,6 +34,11 @@ export class RosterView extends React.Component {
 		});
 	}
 
+	dragOver = (ev, squad) => {
+		ev.preventDefault();
+		this.setState({ dropTarget: squad });
+	}
+
 	moveTo = (json, squadId) => {
 		let participant = JSON.parse(json);
 		this.state.events.forEach(e => {
@@ -46,7 +51,7 @@ export class RosterView extends React.Component {
 				});
 			}
 		});
-		this.setState({});
+		this.setState({ dropTarget: null });
 	}
 
 	Participant = ({ participant }) => {
@@ -57,8 +62,8 @@ export class RosterView extends React.Component {
 
 	Squad = ({ squad }) => {
 		// if (squad.participants.length === 0) return null;
-		return <div className="rv-squad" onDragOver={e => e.preventDefault()} onDrop={e => this.moveTo(e.dataTransfer.getData("text/json"), squad.id)}>
-			<div className="rv-squad-header">{squad.startTime}</div>
+		return <div className="rv-squad" onDragOver={e => this.dragOver(e, squad)} onDrop={e => this.moveTo(e.dataTransfer.getData("text/json"), squad.id)}>
+			<div className={squad === this.state.dropTarget ? "rv-squad-header drop-target" : "rv-squad-header"}>{squad.startTime}</div>
 			{squad.participants.map(p => <this.Participant key={p.id} participant={p} />)}
 		</div>;
 	}

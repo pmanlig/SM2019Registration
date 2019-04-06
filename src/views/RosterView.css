@@ -20,3 +20,8 @@
 .rv-participant {
 	margin-left: 5px;
 }
+
+.drop-target {
+	color: black;
+	background-color: lightblue;
+}
