@@ -273,4 +273,10 @@ export class Server {
 		}
 	}
 	//#endregion
+
+	//#region Admin
+	getRegistrations(competitionId, callback, error) {
+		this.load(`admin/competition/${competitionId}/list_token`, logFetchCallback(callback, "Getting registrations"), logErrorHandler(error));
+	}
+	//#endregion
 }
