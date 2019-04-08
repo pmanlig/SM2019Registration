@@ -6,9 +6,5 @@
 	{
 		"q": "Kommer ni att mobilanpassa sidan?",
 		"a": "Vi planerar att göra det när vi får tid. Tyvärr kan vi inte lova att vi kommer att ha tid att göra det innan SM 2019; det är helt enkelt för mycket jobb för att vi ska kunna garantera det."
-	},
-	{
-		"q": "Sidan fungerar inte i Internet Explorer?",
-		"a": "Tyvärr inte. Microsoft lägger inte till nya funktioner i Internet Explorer sedan 2015, vilket gör att funktionerna som behövs för att få den här sidan att fungera inte finns i Internet Explorer. Microsoft rekommenderar i stället $https://www.microsoft.com/sv-se/windows/microsoft-edge~Microsoft Edge$. Du kan också använda $https://www.google.com/chrome/~Google Chrome$, $https://www.mozilla.org/sv-SE/firefox/new/~Mozilla Firefox$ eller $https://support.apple.com/sv-se/HT204416~Safari$."
 	}
 ]
