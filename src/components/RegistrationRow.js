@@ -25,7 +25,7 @@ export class RegistrationRow extends React.Component {
 		</td>;
 	}
 
-	addButton(row, participant, event, rounds) {
+	addRoundButton(row, participant, event, rounds) {
 		if (event.maxRegistrations > 1) {
 			if (row > 0 || rounds.length === event.maxRegistrations)
 				return <td key={`r${event.id}${row}`}></td>;
@@ -58,7 +58,7 @@ export class RegistrationRow extends React.Component {
 			controls.push(this.divisionDropdown(row, participant.id, event.id, eventInfo.rounds, this.Competition.divisions(event.divisions)));
 		}
 		if (event.schedule) {
-			controls.push(this.addButton(row, participant, event, eventInfo.rounds));
+			controls.push(this.addRoundButton(row, participant, event, eventInfo.rounds));
 			controls.push(this.scheduleButton(row, participant, event, eventInfo.rounds));
 			controls.push(this.deleteRoundButton(row, participant, event, eventInfo.rounds));
 		}
