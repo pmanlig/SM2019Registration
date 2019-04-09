@@ -10,18 +10,9 @@ export class SquadPicker extends React.Component {
 	constructor(props) {
 		super(props);
 		this.EventBus.manageEvents(this);
-		this.EventBus.subscribe(this.Events.showSchedule, this.showSchedule);
-		this.EventBus.subscribe(this.Events.registrationUpdated, () => this.setState({ participant: undefined }));
-		this._isMounted = false;
+		this.subscribe(this.Events.showSchedule, this.showSchedule);
+		this.subscribe(this.Events.registrationUpdated, () => this.setState({ participant: undefined }));
 		this.state = {};
-	}
-
-	componentDidMount() {
-		this._isMounted = true;
-	}
-
-	componentWillUnmount() {
-		this._isMounted = false;
 	}
 
 	loadSchedules = (scheduleIds, schedules, callback) => {
@@ -47,15 +38,13 @@ export class SquadPicker extends React.Component {
 
 	showSchedule = (participant, event, round) => {
 		this.loadSchedules(this.Competition.events.map(e => e.schedule).filter(s => s !== undefined), [], (schedules) => {
-			if (this._isMounted) {
-				this.setState({
-					schedules: schedules,
-					event: event,
-					participant: participant,
-					round: round,
-					division: participant.getDivision(event.id, round) || this.getDefaultDivision(event.divisions)
-				});
-			}
+			this.setState({
+				schedules: schedules,
+				event: event,
+				participant: participant,
+				round: round,
+				division: participant.getDivision(event.id, round) || this.getDefaultDivision(event.divisions)
+			});
 		});
 	}
 
