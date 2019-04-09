@@ -85,7 +85,7 @@ export class RegistrationRow extends React.Component {
 			{row === 0 && <this.ParticipantFields numRows={numRows} participant={p} />}
 			<this.RegistrationControls row={row} numRows={numRows} participant={p} />
 			{row === 0 && <td className="vcenter tooltip" style={{ position: "relative" }} tooltip="Ta bort deltagare" tooltip-position="top">
-				<button className="button-close small red" onClick={e => this.Registration.deleteParticipant(p.id)} /></td>}
+				<button className="button-close small red" onClick={e => this.fire(this.Events.deleteParticipant, p.id)} /></td>}
 		</tr>;
 	}
 

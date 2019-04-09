@@ -23,7 +23,7 @@ export class ParticipantPicker extends React.Component {
 
 	render() {
 		return !this.state.visible ? null :
-			<ModalDialog title="Hämta deltagare" onClose={e => this.setState({ visible: false })}>
+			<ModalDialog title="Hämta deltagare" showClose={true} onClose={e => this.setState({ visible: false })}>
 				<table className="picker">
 					<thead>
 						<tr className='picker'>

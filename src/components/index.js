@@ -17,3 +17,4 @@ export { ScheduleProperties } from './ScheduleProperties';
 export { Spinner } from './Spinner';
 export { LoginControl } from './LoginControl';
 export { SquadPicker } from './SquadPicker';
+export { YesNoDialog } from './YesNoDialog';
