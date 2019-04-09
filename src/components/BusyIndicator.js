@@ -28,6 +28,6 @@ export class BusyIndicator extends React.Component {
 	}
 
 	render() {
-		return this.Busy.busy.length > 0 && <div className="fullscreen shadow"><p className="centered">Working...</p></div >;
+		return this.Busy.busy.length > 0 && <div><div className="fullscreen shadow" /><p className="centered">Working...</p></div >;
 	}
 }
