@@ -17,7 +17,6 @@ export const Operations = [
 	{ name: "Anmälan", path: "register", permission: Permissions.Any, status: Status.Open },
 	{ name: "Anmälningar", path: "registrations", permission: Permissions.Admin, status: Status.Open },
 	{ name: "Startlista", path: "roster", permission: Permissions.Admin, status: Status.Open },
-	// ToDo: implement
 	// { name: "Rapportera", path: "report", permission: Permissions.Admin },
 	// { name: "Resultat", path: "results", permission: Permissions.Any, status: Status.Closed },
 	{ name: "Administrera", path: "admin", permission: Permissions.Own }
@@ -52,13 +51,15 @@ export class Competition {
 		this.load(id);
 	}
 
-	load(id) {
+	load = (id) => {
 		if (id === 0) return;
 		if (this.id !== id) {
-			// ToDo: Replace static loading of enumerations
-			this.ClassGroups.load(loaded => { if (loaded) { this.fire(this.Events.competitionUpdated) } });
-			this.DivisionGroups.load(loaded => { if (loaded) { this.fire(this.Events.competitionUpdated) } });
-
+			this.ClassGroups.load(loaded => {
+				if (loaded) { this.fire(this.Events.competitionUpdated); }
+			});
+			this.DivisionGroups.load(loaded => {
+				if (loaded) { this.fire(this.Events.competitionUpdated); }
+			});
 			this.Server.loadCompetition(id, obj => {
 				// Prevent multiple requests from screwing up the state
 				if (obj !== undefined && obj.id !== this.id) {
@@ -115,46 +116,6 @@ export class Competition {
 		};
 	}
 
-	/*** Properties *****************************************************************************************************/
-
-	setProperty(prop, value) {
-		this[prop] = value;
-		this.dirty = true;
-		this.fire(this.Events.competitionUpdated);
-	}
-
-	addEvent() {
-		if (this.events.length === 1) {
-			this.events[0].name = "Deltävling 1";
-		}
-		this.events.push(new Event(this.nextNewEvent++, "Deltävling " + (this.events.length + 1), new Date()));
-		this.dirty = true;
-		this.fire(this.Events.competitionUpdated);
-	}
-
-	removeEvent(event) {
-		this.events = this.events.filter(e => e.id !== event.id);
-		if (this.events.length === 1) {
-			this.events[0].name = "";
-		}
-		this.dirty = true;
-		this.fire(this.Events.competitionUpdated);
-	}
-
-	updateEvent(event, prop, value) {
-		this.events.forEach(e => {
-			if (e.id === event.id) {
-				if (prop) {
-					e[prop] = value;
-				} else {
-					Object.keys(e).forEach((k, i) => e[k] = event[k]);
-				}
-			}
-		});
-		this.dirty = true;
-		this.fire(this.Events.competitionUpdated);
-	}
-
 	/*** Methods*********************************************************************************************************/
 
 	/**
@@ -196,5 +157,45 @@ export class Competition {
 		// Hack to handle nonexisting divisionGroup
 		let divisionGroup = this.DivisionGroups.find(d => d.id === divisionGroupId);
 		return divisionGroup && divisionGroup.divisions;
+	}
+
+	/*** Properties *****************************************************************************************************/
+
+	addEvent() {
+		if (this.events.length === 1) {
+			this.events[0].name = "Deltävling 1";
+		}
+		this.events.push(new Event(this.nextNewEvent++, "Deltävling " + (this.events.length + 1), new Date()));
+		this.dirty = true;
+		this.fire(this.Events.competitionUpdated);
+	}
+
+	removeEvent(event) {
+		this.events = this.events.filter(e => e.id !== event.id);
+		if (this.events.length === 1) {
+			this.events[0].name = "";
+		}
+		this.dirty = true;
+		this.fire(this.Events.competitionUpdated);
+	}
+
+	updateEvent(event, prop, value) {
+		this.events.forEach(e => {
+			if (e.id === event.id) {
+				if (prop) {
+					e[prop] = value;
+				} else {
+					Object.keys(e).forEach((k, i) => e[k] = event[k]);
+				}
+			}
+		});
+		this.dirty = true;
+		this.fire(this.Events.competitionUpdated);
+	}
+
+	setProperty(prop, value) {
+		this[prop] = value;
+		this.dirty = true;
+		this.fire(this.Events.competitionUpdated);
 	}
 }
