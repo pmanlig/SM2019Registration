@@ -7,7 +7,7 @@ let lastModified = "2019-03-31";
 
 export class AppHeader extends React.Component {
 	static register = { name: "AppHeader" };
-	static wire = ["LoginLogout", "LocalToggle", "DeleteCookies", "subscribe", "Events"];
+	static wire = ["LoginLogout", "LocalToggle", "DeleteCookies", "subscribe", "Events", "Session"];
 
 	constructor(props) {
 		super(props);
@@ -23,6 +23,10 @@ export class AppHeader extends React.Component {
 		document.title = t;
 	}
 
+	AdminButton = (props) => {
+		return this.Session.user !== "" && <Link to="/admin" className="globaltool">Administrera</Link>;
+	}
+
 	render() {
 		return <header className="App-header">
 			<h1 className="App-title">
@@ -33,6 +37,7 @@ export class AppHeader extends React.Component {
 				<div id="global-tools">
 					<this.LocalToggle />
 					<this.DeleteCookies />
+					<this.AdminButton />
 					<this.LoginLogout />
 					<Link to="/" className='globaltool'>Tävlingar</Link>
 					<Link to="/help" className='globaltool'>Hjälp?</Link>

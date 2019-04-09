@@ -1,0 +1,26 @@
+#admin-view {
+	display: flex;
+	flex-direction: row;
+}
+
+#admin-view div {
+	margin-right: 10px;
+}
+
+#admin-view p {
+	margin: 0;
+	padding: 4px;
+	border-radius: 4px;
+}
+
+#admin-view p.selected {
+	background-color: #a0ffcf;
+}
+
+#admin-view p:hover {
+	background-color: #a0cfff;
+}
+
+#admin-view textarea {
+	resize: none;
+}
