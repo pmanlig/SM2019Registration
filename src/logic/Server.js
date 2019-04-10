@@ -244,15 +244,23 @@ export class Server {
 	}
 
 	createDivisionGroup(divisionGroup, callback, error) {
-		this.send(`divisions`, divisionGroup, logUpdateCallback(callback, divisionGroup, "Skapar vapengrupper"), logErrorHandler(error));
+		this.send(`divisions`, divisionGroup, logUpdateCallback(callback, divisionGroup, "Creating DivisionGroup"), logErrorHandler(error));
+	}
+
+	updateClassGroup(classGroup, callback, error) {
+		this.update(`classes/${classGroup.id}`, classGroup, logUpdateCallback(callback, classGroup, "Updating ClassGroup"), logErrorHandler(error));
+	}
+
+	updateDivisionGroup(divisionGroup, callback, error) {
+		this.update(`divisions/${divisionGroup.id}`, divisionGroup, logUpdateCallback(callback, divisionGroup, "Updating DivisionGroup"), logErrorHandler(error));
 	}
 
 	deleteClassGroup(classGroupId, callback, error) {
-		this.delete(`classes/${classGroupId}`, logFetchCallback(callback, `Raderar klassindelning ${classGroupId}`), logErrorHandler(error));
+		this.delete(`classes/${classGroupId}`, logFetchCallback(callback, `Deleting ClassGroup ${classGroupId}`), logErrorHandler(error));
 	}
 
 	deleteDivisionGroup(divisionGroupId, callback, error) {
-		this.delete(`divisions/${divisionGroupId}`, logFetchCallback(callback, `Raderar vapengrupper ${divisionGroupId}`), logErrorHandler(error));
+		this.delete(`divisions/${divisionGroupId}`, logFetchCallback(callback, `Deleting DivisionGroup ${divisionGroupId}`), logErrorHandler(error));
 	}
 	//#endregion
 

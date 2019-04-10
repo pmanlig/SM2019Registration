@@ -42,13 +42,13 @@ export class AdminView extends React.Component {
 			let draggedItem = this.state.classGroups.find(cg => cg.id.toString() === data);
 			let newList = this.state.classGroups.filter(cg => cg !== draggedItem);
 			newList.splice(newList.findIndex(cg => cg === item), 0, draggedItem);
-			this.setState({ classGroups: newList });
+			this.setState({ classGroups: newList, dirty: true });
 		}
 		if (item.divisions) {
 			let draggedItem = this.state.divisionGroups.find(cg => cg.id.toString() === data);
 			let newList = this.state.divisionGroups.filter(dg => dg !== draggedItem);
 			newList.splice(newList.findIndex(dg => dg === item), 0, draggedItem);
-			this.setState({ divisionGroups: newList });
+			this.setState({ divisionGroups: newList, dirty: true });
 		}
 	}
 
@@ -56,25 +56,23 @@ export class AdminView extends React.Component {
 		if (this.state.selected.classes) {
 			let newCG = this.state.classGroups.find(x => x.id === this.state.selected.id);
 			newCG.classes = e.target.value.replace(/^\n+/g, '').replace(/\n+$/, '\n').split("\n");
-			newCG.dirty = true;
-			this.setState({ selected: newCG });
+			this.setState({ selected: newCG, dirty: true });
 		}
 		if (this.state.selected.divisions) {
 			let newDG = this.state.divisionGroups.find(x => x.id === this.state.selected.id);
 			newDG.divisions = e.target.value.split("\n");
-			newDG.dirty = true;
-			this.setState({ selected: newDG });
+			this.setState({ selected: newDG, dirty: true });
 		}
 	}
 
 	addClassGroup = () => {
 		let newCG = { id: this.state.classGroups.filter(g => g.id < 1000).length + 1, description: "Ny lista", classes: [], dataType: "classGroup" };
-		this.setState({ classGroups: this.state.classGroups.concat([newCG]), selected: newCG });
+		this.setState({ classGroups: this.state.classGroups.concat([newCG]), selected: newCG, dirty: true });
 	}
 
 	addDivisionGroup = () => {
 		let newDG = { id: this.state.divisionGroups.filter(g => g.id < 1000).length + 1, description: "Ny lista", divisions: [], dataType: "divisionGroup" };
-		this.setState({ divisionGroups: this.state.divisionGroups.concat([newDG]), selected: newDG });
+		this.setState({ divisionGroups: this.state.divisionGroups.concat([newDG]), selected: newDG, dirty: true });
 	}
 
 	updateDescription = e => {
@@ -82,17 +80,16 @@ export class AdminView extends React.Component {
 			classGroups: this.state.classGroups.map(cg => {
 				if (cg === this.state.selected) {
 					cg.description = e.target.value;
-					cg.dirty = true;
 				}
 				return cg;
 			}),
 			divisionGroups: this.state.divisionGroups.map(dg => {
 				if (dg === this.state.selected) {
 					dg.description = e.target.value;
-					dg.dirty = true;
 				}
 				return dg;
-			})
+			}),
+			dirty: true
 		});
 	}
 
@@ -101,11 +98,17 @@ export class AdminView extends React.Component {
 			this.setState({
 				classGroups: this.state.classGroups.filter(g => g !== this.state.deleteItem),
 				divisionGroups: this.state.divisionGroups.filter(g => g !== this.state.deleteItem),
-				deleteItem: undefined
+				deleteItem: undefined, dirty: true
 			});
 		} else {
 			this.setState({ deleteItem: undefined });
 		}
+	}
+
+	save = e => {
+		this.ClassGroups.save(this.state.classGroups);
+		this.DivisionGroups.save(this.state.divisionGroups);
+		this.setState({ dirty: false });
 	}
 
 	renderGroup(item) {
@@ -117,9 +120,10 @@ export class AdminView extends React.Component {
 	}
 
 	render() {
-		return <div>
+		return <div className="content">
 			{this.state.deleteItem && <this.YesNoDialog title="Bekräfta borttagning" text={`Är du säker på att du vill radera ${this.state.deleteItem.description}?`} action={act => this.deleteItem(act)} />}
-			<div id="admin-view" className="content">
+			<button className={this.state.dirty ? "button" : "button disabled"} onClick={this.save}>Spara</button>
+			<div id="admin-view">
 				<div>
 					<h3>Klassindelningar</h3>
 					{this.state.classGroups.map(cg => this.renderGroup(cg))}
