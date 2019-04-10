@@ -42,7 +42,7 @@ export class RegistrationView extends React.Component {
 			<this.Summary />
 			<this.RegistrationToolbar />
 			<this.ParticipantPicker />
-			<this.YesNoDialog title="Bekräfta borttagning" text="Är du säker på att du vill radera deltagaren?" visible={this.state.deleteParticipant !== undefined} action={act => this.deleteParticipant(act)} />
+			{this.state.deleteParticipant !== undefined && <this.YesNoDialog title="Bekräfta borttagning" text="Är du säker på att du vill radera deltagaren?" action={act => this.deleteParticipant(act)} />}
 		</div>;
 	}
 }

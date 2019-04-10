@@ -3,7 +3,7 @@ import React from 'react';
 
 export class AdminView extends React.Component {
 	static register = { name: "AdminView" };
-	static wire = ["ClassGroups", "DivisionGroups"];
+	static wire = ["ClassGroups", "DivisionGroups", "YesNoDialog"];
 
 	constructor(props) {
 		super(props);
@@ -92,41 +92,48 @@ export class AdminView extends React.Component {
 		});
 	}
 
-	deleteItem = item => {
-		this.setState({
-			classGroups: this.state.classGroups.filter(g => g !== item),
-			divisionGroups: this.state.divisionGroups.filter(g => g !== item)
-		});
+	deleteItem = act => {
+		if (act) {
+			this.setState({
+				classGroups: this.state.classGroups.filter(g => g !== this.state.deleteItem),
+				divisionGroups: this.state.divisionGroups.filter(g => g !== this.state.deleteItem),
+				deleteItem: undefined
+			});
+		} else {
+			this.setState({ deleteItem: undefined });
+		}
 	}
 
 	renderGroup(item) {
 		return <div key={item.id} className={item === this.state.selected ? "item select selected" : "item select"}>
 			<p draggable="true" onDragStart={e => this.drag(e, item)} onDragOver={e => this.allowDrop(e, item)} onDrop={e => this.drop(e, item)}
 				onClick={e => this.setState({ selected: item })}>{item.description}</p>
-			<button className="button-close small red" onClick={e => this.deleteItem(item)} />
+			<button className="button-close small red" onClick={e => this.setState({ deleteItem: item })} />
 		</div>;
 	}
 
 	render() {
-		return <div id="admin-view" className="content">
-			<div>
-				<h3>Klassindelningar</h3>
-				{this.state.classGroups.map(cg => this.renderGroup(cg))}
-				<div className="add item"><button className="button-add small" /><p className="add" onClick={this.addClassGroup}>Skapa ny lista</p></div>
-			</div>
-			{this.state.selected && this.state.selected.classes && <div className="detail">
-				<input value={this.state.selected.description} onChange={this.updateDescription} />
-				<textarea rows="20" cols="50" multiline="true" value={this.selectedText()} onChange={this.updateText} />
-			</div>}
-			<div>
-				<h3>Vapengruppsindelningar</h3>
-				{this.state.divisionGroups.map(dg => this.renderGroup(dg))}
-				<div className="add item"><button className="button-add small" /><p className="add" onClick={this.addDivisionGroup}>Skapa ny lista</p></div>
-			</div>
-			{this.state.selected && this.state.selected.divisions && <div className="detail">
-				<input value={this.state.selected.description} onChange={this.updateDescription} />
-				<textarea rows="20" cols="50" multiline="true" value={this.selectedText()} onChange={this.updateText} />
-			</div>}
-		</div>;
+		return <div>
+			{this.state.deleteItem && <this.YesNoDialog title="Bekräfta borttagning" text={`Är du säker på att du vill radera ${this.state.deleteItem.description}?`} action={act => this.deleteItem(act)} />}
+			<div id="admin-view" className="content">
+				<div>
+					<h3>Klassindelningar</h3>
+					{this.state.classGroups.map(cg => this.renderGroup(cg))}
+					<div className="add item"><button className="button-add small" /><p className="add" onClick={this.addClassGroup}>Skapa ny lista</p></div>
+				</div>
+				{this.state.selected && this.state.selected.classes && <div className="detail">
+					<input value={this.state.selected.description} onChange={this.updateDescription} />
+					<textarea rows="20" cols="50" multiline="true" value={this.selectedText()} onChange={this.updateText} />
+				</div>}
+				<div>
+					<h3>Vapengruppsindelningar</h3>
+					{this.state.divisionGroups.map(dg => this.renderGroup(dg))}
+					<div className="add item"><button className="button-add small" /><p className="add" onClick={this.addDivisionGroup}>Skapa ny lista</p></div>
+				</div>
+				{this.state.selected && this.state.selected.divisions && <div className="detail">
+					<input value={this.state.selected.description} onChange={this.updateDescription} />
+					<textarea rows="20" cols="50" multiline="true" value={this.selectedText()} onChange={this.updateText} />
+				</div>}
+			</div></div>;
 	}
 }
