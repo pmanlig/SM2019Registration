@@ -11,8 +11,12 @@ export class AdminView extends React.Component {
 	}
 
 	componentDidMount() {
-		this.ClassGroups.load(cg => this.setState({ classGroups: cg.map(c => { c.dataType = "classGroup"; return c; }) }));
-		this.DivisionGroups.load(dg => this.setState({ divisionGroups: dg.map(d => { d.dataType = "divisionGroup"; return d; }) }));
+		this.ClassGroups.load(g => this.setState({ classGroups: this.tagList(g, "classGroup") }));
+		this.DivisionGroups.load(g => this.setState({ divisionGroups: this.tagList(g, "divisionGroup") }));
+	}
+
+	tagList(list, tag) {
+		return list.map(e => { e.dataType = tag; return e; });
 	}
 
 	selectedText() {

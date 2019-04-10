@@ -20,7 +20,7 @@ export class DivisionGroups {
 				callback(this.divisionGroups);
 			}, this.Footers.errorHandler("Kan inte hämta vapengruppsindelning"));
 		} else {
-			callback(null);
+			callback(this.divisionGroups);
 		}
 	}
 

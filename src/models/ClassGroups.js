@@ -20,7 +20,7 @@ export class ClassGroups {
 				callback(this.classGroups);
 			}, this.Footers.errorHandler("Kan inte hämta klassindelning"));
 		} else {
-			callback(null);
+			callback(this.classGroups);
 		}
 	}
 

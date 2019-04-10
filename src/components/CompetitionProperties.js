@@ -19,23 +19,12 @@ export class CompetitionProperties extends React.Component {
 			divisionGroups: default_division_group
 		};
 		this.EventBus.manageEvents(this);
-		this.ClassGroups.load(list => {
-			if (list !== null) {
-				this.setState({ classGroups: default_class_group.concat(list) });
-			}
-			else {
-				this.state.classGroups = default_class_group.concat(this.ClassGroups.classGroups);
-			}
-		});
-		this.DivisionGroups.load(list => {
-			if (list !== null) {
-				this.setState({ divisionGroups: default_division_group.concat(list) });
-			}
-			else {
-				this.state.divisionGroups = default_division_group.concat(this.DivisionGroups.divisionGroups);
-			}
-		});
 		this.subscribe(this.Events.competitionUpdated, () => this.setState({}));
+	}
+
+	componentDidMount() {
+		this.ClassGroups.load(list => this.setState({ classGroups: default_class_group.concat(list) }));
+		this.DivisionGroups.load(list => this.setState({ divisionGroups: default_division_group.concat(list) }));
 	}
 
 	render() {
