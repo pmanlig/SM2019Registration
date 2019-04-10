@@ -20,7 +20,7 @@ export class RegistrationsView extends React.Component {
 	render() {
 		return <div className="content">
 			<h2>Anmälningar</h2>
-			{this.state.registrations.map(r => <this.Reg reg={r} />)}
+			{this.state.registrations.map(r => <this.Reg reg={r} key={r.token} />)}
 		</div>
 	}
 }
