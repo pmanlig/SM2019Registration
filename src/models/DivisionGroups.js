@@ -8,7 +8,8 @@ export class DivisionGroups {
 		return data.map(c => {
 			return {
 				...c,
-				id: parseInt(c.id.toString(), 10)
+				id: parseInt(c.id.toString(), 10),
+				index: parseInt(c.index.toString(), 10)
 			}
 		});
 	}

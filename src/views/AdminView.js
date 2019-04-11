@@ -3,7 +3,7 @@ import React from 'react';
 
 export class AdminView extends React.Component {
 	static register = { name: "AdminView" };
-	static wire = ["ClassGroups", "DivisionGroups", "YesNoDialog"];
+	static wire = ["fire", "Events", "ClassGroups", "DivisionGroups", "YesNoDialog"];
 
 	constructor(props) {
 		super(props);
@@ -11,6 +11,7 @@ export class AdminView extends React.Component {
 	}
 
 	componentDidMount() {
+		this.fire(this.Events.changeTitle, "Administrera klasser och vapengrupper");
 		this.ClassGroups.load(g => this.setState({ classGroups: this.tagList(g, "classGroup") }));
 		this.DivisionGroups.load(g => this.setState({ divisionGroups: this.tagList(g, "divisionGroup") }));
 	}
@@ -27,16 +28,17 @@ export class AdminView extends React.Component {
 	}
 
 	drag = (e, item) => {
-		e.dataTransfer.setData(item.dataType, item.id);
+		e.dataTransfer.setData(item.dataType, item.id.toString());
 	}
 
 	allowDrop = (e, item) => {
-		if (e.dataTransfer.getData(item.dataType))
+		if (e.dataTransfer.getData(item.dataType) !== undefined)
 			e.preventDefault();
 	}
 
 	drop = (e, item) => {
 		let data = e.dataTransfer.getData(item.dataType);
+		console.log("Dropped " + data);
 		e.preventDefault();
 		if (item.classes) {
 			let draggedItem = this.state.classGroups.find(cg => cg.id.toString() === data);
