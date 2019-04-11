@@ -5,7 +5,7 @@ import { Permissions, Status, Operations } from '../models';
 
 export class CompetitionList extends React.Component {
 	static register = { name: "CompetitionList" };
-	static wire = ["Server", "Session", "Storage", "EventBus", "Events", "Footers"];
+	static wire = ["Server", "Session", "Storage", "EventBus", "Events", "Footers", "YesNoDialog"];
 
 	constructor(props) {
 		super(props);
@@ -28,8 +28,11 @@ export class CompetitionList extends React.Component {
 		}), this.Footers.errorHandler("Kan inte hämta tävlingar"));
 	}
 
-	deleteCompetition = (id) => {
-		this.Server.deleteCompetition(id, this.loadCompetitions, this.Footers.errorHandler("Kan inte ta bort tävling"));
+	deleteCompetition = (act) => {
+		if (act) {
+			this.Server.deleteCompetition(this.state.deleteCompetition.id, this.loadCompetitions, this.Footers.errorHandler("Kan inte ta bort tävling"));
+		}
+		this.setState({ deleteCompetition: undefined });
 	}
 
 	componentDidMount() {
@@ -52,7 +55,7 @@ export class CompetitionList extends React.Component {
 			<div className="event-title">
 				<Link className="competition-link" to={`/competition/${competition.id}`}>{competition.name}</Link>
 				{competition.permissions === Permissions.Own && <button className="button-close small red"
-					onClick={e => this.deleteCompetition(competition.id)} />}
+					onClick={e => this.setState({ deleteCompetition: competition })} />}
 			</div>
 			{links.map(l =>
 				<span key={l.name}>&nbsp;<Link to={`/competition/${competition.id}/${l.path}`}>{l.name}</Link>&nbsp;</span>)}
@@ -64,6 +67,8 @@ export class CompetitionList extends React.Component {
 		// ToDo: fix filtering of hidden competitions in server
 		let competitions = this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own));
 		return <div id='competitions' className='content'>
+			{this.state.deleteCompetition && <this.YesNoDialog title="Bekräfta borttagning"
+				text={`Är du säker på att du vill ta bort ${this.state.deleteCompetition.name}?`} action={act => this.deleteCompetition(act)} />}
 			<h1>Tävlingar{this.Server.local && " (felsökning)"}</h1>
 			<ul>
 				{competitions.map(c => <this.competition key={c.id} competition={c} />)}
