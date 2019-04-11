@@ -36,7 +36,7 @@ export class LocalToggle extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = { show: this.Storage.get(this.Storage.keys.toggleServerMode) };
+		this.state = { show: false /*this.Storage.get(this.Storage.keys.toggleServerMode)*/ };
 	}
 
 	toggle = e => {

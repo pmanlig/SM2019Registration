@@ -1,0 +1,77 @@
+#admin-view {
+	display: flex;
+	flex-direction: row;
+}
+
+#admin-view > div {
+	margin-right: 10px;
+}
+
+#admin-view > div.detail {
+	margin: 8px 25px 0 0;
+}
+
+#admin-view input {
+	display: block;
+	font-size: 18px;
+	width: 100%;
+	margin: 2px 0 6px 0;
+	border-radius: 5px;
+	padding: 2px;
+}
+
+#admin-view textarea {
+	display: block;
+	margin-bottom: 6px;
+}
+
+#admin-view div.item {
+	margin: 0 0 2px 0;
+	padding: 4px;
+	border-radius: 4px;
+	border: 1px solid lightgray;
+	display: flex;
+	flex-direction: row;
+}
+
+#admin-view div.select {
+	cursor: grab;
+}
+
+#admin-view div.select:hover {
+	background-color: #a0cfff;
+	cursor: grab;
+}
+
+#admin-view div.selected {
+	background-color: #a0ffcf;
+}
+
+#admin-view textarea {
+	resize: none;
+}
+
+#admin-view div.add {
+	background-color: lightgray;
+	cursor: pointer;
+}
+
+#admin-view div.item button {
+	position: relative;
+	top: 2px;
+	cursor: pointer;
+}
+
+#admin-view div.add button {
+	margin-right: 5px;
+}
+
+#admin-view div.select button {
+	margin-left: 5px;
+}
+
+#admin-view p {
+	display: inline;
+	margin: 0;
+	flex-grow: 1;
+}

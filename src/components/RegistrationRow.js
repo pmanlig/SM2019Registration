@@ -25,6 +25,29 @@ export class RegistrationRow extends React.Component {
 		</td>;
 	}
 
+	addRoundButton(row, participant, event, rounds) {
+		if (event.maxRegistrations > 1) {
+			if (row > 0 || rounds.length === event.maxRegistrations)
+				return <td key={`r${event.id}${row}`}></td>;
+			else
+				return <td key={`r${event.id}${row}`} className="vcenter tooltip"
+					style={{ position: "relative" }} tooltip="Lägg till ytterligare starttid" tooltip-position="top">
+					<button className="button-add small" onClick={e => this.Registration.addParticipantRound(participant.id, event.id)} />
+				</td>;
+		}
+	}
+
+	deleteRoundButton(row, participant, event, rounds) {
+		if (event.maxRegistrations > 1) {
+			if (rounds.length > 1 && row < rounds.length)
+				return <td key={`x${event.id}${row}`} className="vcenter tooltip" style={{ position: "relative" }} tooltip="Ta bort starttid" tooltip-position="top">
+					<button className="button-close small red deleteButton" onClick={e => this.Registration.deleteParticipantRound(participant.id, event.id, row)} />
+				</td>;
+			else
+				return <td key={`x${event.id}${row}`}></td>;
+		}
+	}
+
 	EventControls = ({ row, numRows, participant, event }) => {
 		const eventInfo = participant.event(event.id) || { event: event.id, rounds: [{}] };
 		let controls = [];
@@ -35,24 +58,9 @@ export class RegistrationRow extends React.Component {
 			controls.push(this.divisionDropdown(row, participant.id, event.id, eventInfo.rounds, this.Competition.divisions(event.divisions)));
 		}
 		if (event.schedule) {
-			if (event.maxRegistrations > 1) {
-				if (row > 0 || eventInfo.rounds.length === event.maxRegistrations)
-					controls.push(<td key={`r${event.id}${row}`}></td>);
-				else
-					controls.push(<td key={`r${event.id}${row}`} className="vcenter tooltip"
-						style={{ position: "relative" }} tooltip="Lägg till ytterligare starttid" tooltip-position="top">
-						<button className="button-add small" onClick={e => this.Registration.addParticipantRound(participant.id, event.id)} />
-					</td>);
-			}
+			controls.push(this.addRoundButton(row, participant, event, eventInfo.rounds));
 			controls.push(this.scheduleButton(row, participant, event, eventInfo.rounds));
-			if (event.maxRegistrations > 1) {
-				if (eventInfo.rounds.length > 1)
-					controls.push(<td key={`x${event.id}${row}`} className="vcenter tooltip" style={{ position: "relative" }} tooltip="Ta bort starttid" tooltip-position="top">
-						<button className="button-close small red deleteButton" onClick={e => this.Registration.deleteParticipantRound(participant.id, event.id, row)} />
-					</td>);
-				else
-					controls.push(<td key={`x${event.id}${row}`}></td>);
-			}
+			controls.push(this.deleteRoundButton(row, participant, event, eventInfo.rounds));
 		}
 
 		if (controls.length === 0 && row === 0) {
@@ -85,7 +93,7 @@ export class RegistrationRow extends React.Component {
 			{row === 0 && <this.ParticipantFields numRows={numRows} participant={p} />}
 			<this.RegistrationControls row={row} numRows={numRows} participant={p} />
 			{row === 0 && <td className="vcenter tooltip" style={{ position: "relative" }} tooltip="Ta bort deltagare" tooltip-position="top">
-				<button className="button-close small red" onClick={e => this.Registration.deleteParticipant(p.id)} /></td>}
+				<button className="button-close small red" onClick={e => this.fire(this.Events.deleteParticipant, p.id)} /></td>}
 		</tr>;
 	}
 

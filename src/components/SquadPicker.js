@@ -5,27 +5,19 @@ import { Schedule } from '../models';
 
 export class SquadPicker extends React.Component {
 	static register = { name: "SquadPicker" };
-	static wire = ["EventBus", "Events", "Server", "Competition", "Footers"];
+	static wire = ["EventBus", "Events", "Server", "Competition", "Footers", "Busy"];
 
 	constructor(props) {
 		super(props);
 		this.EventBus.manageEvents(this);
-		this.EventBus.subscribe(this.Events.showSchedule, this.showSchedule);
-		this.EventBus.subscribe(this.Events.registrationUpdated, () => this.setState({ participant: undefined }));
-		this._isMounted = false;
+		this.subscribe(this.Events.showSchedule, this.showSchedule);
+		this.subscribe(this.Events.registrationUpdated, () => this.setState({ participant: undefined }));
 		this.state = {};
-	}
-
-	componentDidMount() {
-		this._isMounted = true;
-	}
-
-	componentWillUnmount() {
-		this._isMounted = false;
 	}
 
 	loadSchedules = (scheduleIds, schedules, callback) => {
 		if (scheduleIds.length > 0) {
+			this.Busy.setBusy("sqPick", true);
 			let scheduleId = scheduleIds.pop();
 			this.Server.loadSchedule(scheduleId, json => {
 				this.Server.loadParticipants(scheduleId, pJson => {
@@ -34,20 +26,25 @@ export class SquadPicker extends React.Component {
 				}, this.Footers.errorHandler("Kan inte hämta deltagare"));
 			}, this.Footers.errorHandler("Kan inte hämta schema"));
 		} else {
+			this.Busy.setBusy("sqPick", false);
 			callback(schedules);
 		}
 	}
 
+	getDefaultDivision = (eventDivisions) => {
+		if (eventDivisions === undefined) return undefined;
+		return this.Competition.divisions(eventDivisions)[0];
+	}
+
 	showSchedule = (participant, event, round) => {
 		this.loadSchedules(this.Competition.events.map(e => e.schedule).filter(s => s !== undefined), [], (schedules) => {
-			if (this._isMounted)
-				this.setState({
-					schedules: schedules,
-					event: event,
-					participant: participant,
-					round: round,
-					division: participant.getDivision(event.id, round) || this.Competition.divisions(event.divisions)[0]
-				});
+			this.setState({
+				schedules: schedules,
+				event: event,
+				participant: participant,
+				round: round,
+				division: participant.getDivision(event.id, round) || this.getDefaultDivision(event.divisions)
+			});
 		});
 	}
 
@@ -75,18 +72,21 @@ export class SquadPicker extends React.Component {
 	}
 
 	timeFromSquad(eventId, squadId) {
-		let schedule = this.getSchedule(this.Competition.events.find(e => e.id === eventId).schedule);
+		let event = this.Competition.event(eventId);
+		let schedule = this.getSchedule(event.schedule);
 		let startTime = Time.timeFromText(schedule.squads.find(s => s.id === squadId).startTime);
-		return { from: startTime, to: startTime + Time.timeFromText(schedule.duration) };
+		return { from: startTime, to: startTime + Time.timeFromText(schedule.duration), date: event.date };
 	}
 
 	calculateStartTimes() {
 		let p = this.state.participant;
 		let registeredSquads = [].concat(...p.registrationInfo.map(ri => ri.rounds.map(rd => { return { event: ri.event, squad: rd.squad } })));
-		return registeredSquads
-			.filter(s => s.squad !== p.registrationInfo.find(ri => ri.event === this.state.event.id).rounds[this.state.round].squad)
+		registeredSquads = registeredSquads
 			.filter(s => s.squad !== undefined)
-			.map(st => this.timeFromSquad(st.event, st.squad));
+			.filter(s => s.squad !== p.registrationInfo.filter(ri => ri.event === this.state.event.id).map(ev => ev.rounds[this.state.round].squad).find(s => true)) // Remove current registration from consideration
+			.map(st => this.timeFromSquad(st.event, st.squad))
+			.filter(st => st.date.valueOf() === this.state.event.date.valueOf());
+		return registeredSquads;
 	}
 
 	allowedStartTime(squad) {
@@ -103,7 +103,7 @@ export class SquadPicker extends React.Component {
 	canRegister(squad) {
 		return this.squadStatus(squad) !== "full" &&
 			this.allowedStartTime(squad) &&
-			this.allowedDivisions(squad).some(d => d.includes(this.state.division));
+			(this.state.division === undefined || this.allowedDivisions(squad).some(d => d.includes(this.state.division)));
 	}
 
 	toggleExpand = (e, squad) => {

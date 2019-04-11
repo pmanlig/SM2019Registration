@@ -12,7 +12,6 @@ export class Registration {
 	// ToDo: Rewrite to not use event handlers
 	initialize() {
 		this.subscribe(this.Events.setRegistrationInfo, this.setContactField.bind(this));
-		this.subscribe(this.Events.deleteParticipant, this.deleteParticipant.bind(this));
 		this.subscribe(this.Events.selectSquad, this.selectSquad.bind(this));
 		this.subscribe(this.Events.registerForCompetition, () => this.register());
 		this.loadContact();

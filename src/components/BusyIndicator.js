@@ -19,14 +19,15 @@ export class Busy {
 // ToDo: apply withEvents
 export class BusyIndicator extends React.Component {
 	static register = { name: "BusyIndicator" };
-	static wire = ["Busy", "subscribe", "Events"];
+	static wire = ["Busy", "Events", "EventBus"];
 
 	constructor(props) {
 		super(props);
+		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.busyChanged, () => this.setState({}));
 	}
 
 	render() {
-		return this.Busy.busy.length > 0 && <div className="fullscreen shadow"><p className="centered">Working...</p></div >;
+		return this.Busy.busy.length > 0 && <div><div className="fullscreen shadow" /><p className="centered">Working...</p></div >;
 	}
 }

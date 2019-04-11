@@ -138,7 +138,7 @@ export class ScheduleProperties extends React.Component {
 			divisions.forEach(d => rowWidth += d.length + 0.5);
 		}
 		rowWidth = rowWidth + "em";
-		return <ModalDialog className="schedule-properties" title="Skjutlag/patruller" onClose={this.onClose}>
+		return <ModalDialog className="schedule-properties" title="Skjutlag/patruller" onClose={this.onClose} showClose="true">
 			<Toolbar className="schedule-tools">
 				<Label text="Starttid">
 					<input className="schedule-property" value={this.state.startTime} size="5"

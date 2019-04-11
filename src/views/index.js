@@ -13,3 +13,4 @@ export { Diagnostics } from './Diagnostics';
 export { HelpView } from './HelpView';
 export { RosterView } from './RosterView';
 export { RegistrationsView } from './RegistrationsView';
+export { AdminView } from './AdminView';

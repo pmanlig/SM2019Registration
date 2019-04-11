@@ -22,11 +22,18 @@ export class Event {
 		return nE;
 	}
 
+	pad(num) {
+		let s = num.toString();
+		while (s.length < 2) s = "0" + s;
+		return s;
+	}
+
 	// Necessary to avoid storing objects
 	toJson() {
 		return {
 			name: this.name,
-			date: this.date,
+			// date: this.date,
+			date: `${this.date.getFullYear()}-${this.pad(this.date.getMonth() + 1)}-${this.pad(this.date.getDate())}`,
 			id: this.id,
 			classes: this.classes,
 			divisions: this.divisions,
