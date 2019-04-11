@@ -3,7 +3,7 @@ import logo from './../gpk_logo_wht.png';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-let lastModified = "2019-03-31";
+let lastModified = "2019-04-11";
 
 export class AppHeader extends React.Component {
 	static register = { name: "AppHeader" };
