@@ -31,7 +31,13 @@ export class DivisionGroups {
 		this.divisionGroups = newList;
 		newList.forEach(g => g.index = index++);
 		deleteList.forEach(g => this.Server.deleteDivisionGroup(g.id, () => { }));
-		newList.forEach(g => this.Server.updateDivisionGroup(g, () => { }));
+		newList.forEach(g => {
+			if (g.id < 1000) {
+				this.Server.createDivisionGroup(g, cg => g.id = cg.id);
+			} else {
+				this.Server.updateDivisionGroup(g, () => { });
+			}
+		});
 	}
 
 	find(x) { return this.divisionGroups.find(x); }

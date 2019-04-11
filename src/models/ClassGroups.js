@@ -31,7 +31,13 @@ export class ClassGroups {
 		this.classGroups = newList;
 		newList.forEach(g => g.index = index++);
 		deleteList.forEach(g => this.Server.deleteClassGroup(g.id, () => { }));
-		newList.forEach(g => this.Server.updateClassGroup(g, () => { }));
+		newList.forEach(g => {
+			if (g.id < 1000) {
+				this.Server.createClassGroup(g, cg => g.id = cg.id);
+			} else {
+				this.Server.updateClassGroup(g, () => { });
+			}
+		});
 	}
 
 	find(x) { return this.classGroups.find(x); }
