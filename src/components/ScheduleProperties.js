@@ -127,7 +127,7 @@ export class ScheduleProperties extends React.Component {
 	onClose = () => {
 		let schedule = this.state.schedule;
 		schedule.duration = this.state.duration;
-		schedule.divisionGroup = this.state.event.divisions;
+		schedule.divisionGroup = this.state.event.divisions || 0;
 		this.Server.updateSchedule(schedule.toJson(), () => { }, this.Footers.errorHandler("Kan inte spara schema"));
 		this.setState({ schedule: undefined });
 	}
