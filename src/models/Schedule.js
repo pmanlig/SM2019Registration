@@ -4,7 +4,11 @@ import { Time } from '../logic';
 export class Schedule {
 	nextSquadId = 1;
 	squads = [];
-	duration = "2:00";
+
+	constructor(duration, divisionGroup) {
+		this.duration = duration || "2:00";
+		this.divisionGroup = divisionGroup || 0;
+	}
 
 	static fromJson(s, p) {
 		let schedule = new Schedule();
@@ -18,6 +22,7 @@ export class Schedule {
 		}
 		schedule.squads = s.squads ? s.squads.filter(x => x !== null).map(s => Squad.fromJson(s)) : [];
 		schedule.duration = s.duration ? Time.format(parseInt(s.duration.toString(), 10)) : "2:00";
+		schedule.divisionGroup = s.divisionGroup;
 		return schedule;
 	}
 
@@ -26,6 +31,7 @@ export class Schedule {
 			id: this.id,
 			squads: this.squads.map(s => s.toJson()),
 			duration: Time.durationFromText(this.duration),
+			divisionGroup: this.divisionGroup
 		};
 	}
 

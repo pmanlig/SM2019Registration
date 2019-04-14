@@ -19,6 +19,11 @@ export class ScheduleProperties extends React.Component {
 		this.subscribe(this.Events.editSchedule, this.editSchedule);
 	}
 
+	allDivisions(event) {
+		return (event && event.divisions) ?
+			this.props.divisionGroups.filter(dg => dg.id === event.divisions).map(dg => dg.divisions).find(d => { return true; }) : undefined;
+	}
+
 	newScheduleInformation(event, schedule) {
 		this.schedules[schedule.id] =
 			{
@@ -27,8 +32,7 @@ export class ScheduleProperties extends React.Component {
 				interval: 10,
 				duration: schedule.duration,
 				mixDivisions: true,
-				selectedDivisions: ((!event || !event.divisions) ? undefined :
-					this.props.divisionGroups.filter(dg => dg.id === event.divisions).map(dg => dg.divisions).find(d => { return true; })) || [],
+				selectedDivisions: this.allDivisions(event) || [],
 				event: event,
 				schedule: schedule
 			};
@@ -39,15 +43,14 @@ export class ScheduleProperties extends React.Component {
 		schedule = Schedule.fromJson(schedule);
 		let newState = this.schedules[schedule.id] || this.newScheduleInformation(event, schedule);
 		newState.duration = schedule.duration;
-		newState.divisions = event.divisions ?
-			this.props.divisionGroups.filter(dg => dg.id === event.divisions).map(dg => dg.divisions).find(d => { return true; }) : undefined;
+		newState.allDivisions = this.allDivisions(event);
 		this.setState(newState);
 	}
 
 	editSchedule = (event) => {
 		// Create new schedule if one doesn't exist
 		if (event.schedule === undefined) {
-			this.Server.createSchedule(new Schedule().toJson(), schedule => {
+			this.Server.createSchedule(new Schedule("2:00", event.divisions).toJson(), schedule => {
 				event.schedule = schedule.id;
 				this.loadScheduleInformation(event, schedule);
 				this.Competition.updateEvent(event);
@@ -117,13 +120,14 @@ export class ScheduleProperties extends React.Component {
 	}
 
 	selectDivision = (d) => {
-		let divisions = this.state.selectedDivisions;
-		this.setState({ selectedDivisions: divisions.includes(d) ? divisions.filter(x => x !== d) : divisions.concat([d]) });
+		let newDivisions = this.state.selectedDivisions;
+		this.setState({ selectedDivisions: newDivisions.includes(d) ? newDivisions.filter(x => x !== d) : newDivisions.concat([d]) });
 	}
 
 	onClose = () => {
 		let schedule = this.state.schedule;
 		schedule.duration = this.state.duration;
+		schedule.divisionGroup = this.state.event.divisions;
 		this.Server.updateSchedule(schedule.toJson(), () => { }, this.Footers.errorHandler("Kan inte spara schema"));
 		this.setState({ schedule: undefined });
 	}
@@ -131,11 +135,11 @@ export class ScheduleProperties extends React.Component {
 	render() {
 		if (this.state.schedule === undefined) { return null; }
 
-		let divisions = this.state.divisions;
+		let allDivisions = this.state.allDivisions;
 		let rowWidth = 11.0;
-		if (divisions) { // ToDo: update
+		if (allDivisions) { // ToDo: update
 			rowWidth += 4;
-			divisions.forEach(d => rowWidth += d.length + 0.5);
+			allDivisions.forEach(d => rowWidth += d.length + 0.5);
 		}
 		rowWidth = rowWidth + "em";
 		return <ModalDialog className="schedule-properties" title="Skjutlag/patruller" onClose={this.onClose} showClose="true">
@@ -146,9 +150,9 @@ export class ScheduleProperties extends React.Component {
 						onBlur={e => this.blurStartTime(e.target.value)} />
 				</Label>
 				<Label text="Platser" align="center"><Spinner className="schedule-property" value={this.state.slots} onChange={this.updateSlots} /></Label>
-				{divisions && divisions.map(d =>
+				{allDivisions && allDivisions.map(d =>
 					<Label key={d} text={d} align="center"> <input type="checkbox" checked={this.state.selectedDivisions.includes(d)} onChange={e => this.selectDivision(d)} /></Label>)}
-				{divisions && <Label text="Blanda" align="center"><input type="checkbox" checked={this.state.mixDivisions} onChange={e => this.setState({ mixDivisions: e.target.checked })} /></Label>}
+				{allDivisions && <Label text="Blanda" align="center"><input type="checkbox" checked={this.state.mixDivisions} onChange={e => this.setState({ mixDivisions: e.target.checked })} /></Label>}
 				<Label text="Tid till nästa" align="center"><input className="schedule-property" value={this.state.interval} onChange={this.updateInterval} /></Label>
 				<Label text="Tidsåtgång" align="center">
 					<input className="schedule-property" value={this.state.duration}
@@ -163,17 +167,17 @@ export class ScheduleProperties extends React.Component {
 						<tr>
 							<th className="schedule-start-time">Tid</th>
 							<th className="schedule-slots">Platser</th>
-							{divisions && divisions.map(d => {
+							{allDivisions && allDivisions.map(d => {
 								let w = (d.length + 0.5) + "em";
 								return <th key={d} className="schedule-division" style={{ minWidth: w, maxWidth: w, width: w }}>{d}</th>
 							})}
-							{divisions && <th className="schedule-mix">Blanda</th>}
+							{allDivisions && <th className="schedule-mix">Blanda</th>}
 							<th className="schedule-delete"></th>
 							<th className="schedule-pad"></th>
 						</tr>
 					</thead>
 					<tbody>
-						{this.state.schedule.squads.map(s => <SquadProperties key={s.id} squad={s} divisions={divisions} onUpdate={this.updateSquadProperty} onDelete={this.deleteSquad} />)}
+						{this.state.schedule.squads.map(s => <SquadProperties key={s.id} squad={s} divisions={allDivisions} onUpdate={this.updateSquadProperty} onDelete={this.deleteSquad} />)}
 					</tbody>
 				</table>
 			</div>
