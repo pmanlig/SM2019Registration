@@ -14,13 +14,17 @@ export class ClassGroups {
 		});
 	}
 
+	forceLoad(callback) {
+		this.Server.loadClassGroups(data => {
+			this.classGroups = this.fromJson(data);
+			this.classGroups.sort((a, b) => a.index - b.index);
+			callback(this.classGroups);
+		}, this.Footers.errorHandler("Kan inte hämta klassindelning"));
+	}
+
 	load(callback) {
 		if (this.classGroups.length === 0) {
-			this.Server.loadClassGroups(data => {
-				this.classGroups = this.fromJson(data);
-				this.classGroups.sort((a, b) => a.index - b.index);
-				callback(this.classGroups);
-			}, this.Footers.errorHandler("Kan inte hämta klassindelning"));
+			this.forceLoad(callback);
 		} else {
 			callback(this.classGroups);
 		}
@@ -39,6 +43,7 @@ export class ClassGroups {
 				this.Server.updateClassGroup(g, () => { });
 			}
 		});
+		this.forceLoad(() => { });
 	}
 
 	find(x) { return this.classGroups.find(x); }

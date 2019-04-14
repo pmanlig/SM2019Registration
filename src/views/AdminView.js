@@ -107,7 +107,7 @@ export class AdminView extends React.Component {
 		}
 	}
 
-	save = e => {
+	save = () => {
 		this.ClassGroups.save(this.state.classGroups);
 		this.DivisionGroups.save(this.state.divisionGroups);
 		this.setState({ dirty: false });

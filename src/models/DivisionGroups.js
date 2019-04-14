@@ -14,13 +14,17 @@ export class DivisionGroups {
 		});
 	}
 
+	forceLoad(callback) {
+		this.Server.loadDivisionGroups(data => {
+			this.divisionGroups = this.fromJson(data);
+			this.divisionGroups.sort((a, b) => a.index - b.index);
+			callback(this.divisionGroups);
+		}, this.Footers.errorHandler("Kan inte hämta vapengruppsindelning"));
+	}
+
 	load(callback) {
 		if (this.divisionGroups.length === 0) {
-			this.Server.loadDivisionGroups(data => {
-				this.divisionGroups = this.fromJson(data);
-				this.divisionGroups.sort((a, b) => a.index - b.index);
-				callback(this.divisionGroups);
-			}, this.Footers.errorHandler("Kan inte hämta vapengruppsindelning"));
+			this.forceLoad(callback);
 		} else {
 			callback(this.divisionGroups);
 		}
@@ -39,6 +43,7 @@ export class DivisionGroups {
 				this.Server.updateDivisionGroup(g, () => { });
 			}
 		});
+		this.forceLoad(() => { });
 	}
 
 	find(x) { return this.divisionGroups.find(x); }
