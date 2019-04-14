@@ -160,8 +160,6 @@ export class Registration {
 	}
 
 	removeUnselected() {
-		console.log("Removing unselected");
-		console.log(this.participants);
 		this.participants.forEach(p => {
 			p.registrationInfo.forEach(e => {
 				let divisions = this.Competition.event(e.event).divisions;
