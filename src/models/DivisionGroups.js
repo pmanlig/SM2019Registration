@@ -38,12 +38,12 @@ export class DivisionGroups {
 		deleteList.forEach(g => this.Server.deleteDivisionGroup(g.id, () => { }));
 		newList.forEach(g => {
 			if (g.id < 1000) {
-				this.Server.createDivisionGroup(g, cg => g.id = cg.id);
+				this.Server.createDivisionGroup(g, cg => g.id = parseInt(cg.id, 10));
 			} else {
 				this.Server.updateDivisionGroup(g, () => { });
 			}
 		});
-		this.forceLoad(() => { });
+		// this.forceLoad(() => { });
 	}
 
 	find(x) { return this.divisionGroups.find(x); }
