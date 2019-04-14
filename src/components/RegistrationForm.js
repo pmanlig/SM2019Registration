@@ -13,10 +13,10 @@ export class RegistrationForm extends React.Component {
 	addMinorHeadersFor(event, useEventName, minorHeaders) {
 		let initial = minorHeaders.length;
 		if (event.classes && this.Competition.classes(event.classes)) { // Hack to handle nonexisting classGroups
-			minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Klass</th>);
+			minorHeaders.push(<th key={minorHeaders.length} className="minor entry">{this.Competition.ClassGroups.find(c => c.id === event.classes).header || "Klass"}</th>);
 		}
 		if (event.divisions && this.Competition.divisions(event.divisions)) { // Hack to handle nonexisting classGroups
-			minorHeaders.push(<th key={minorHeaders.length} className="minor entry">Vapengrupp</th>);
+			minorHeaders.push(<th key={minorHeaders.length} className="minor entry">{this.Competition.DivisionGroups.find(c => c.id === event.divisions).header || "Vapengrupp"}</th>);
 		}
 		if (event.schedule) {
 			if (event.maxRegistrations > 1) { this.addButtonHeader(minorHeaders); }

@@ -1,5 +1,7 @@
 import './AdminView.css';
 import React from 'react';
+import { ClassGroup } from '../models/ClassGroups';
+import { DivisionGroup } from '../models/DivisionGroups';
 
 export class AdminView extends React.Component {
 	static register = { name: "AdminView" };
@@ -12,12 +14,8 @@ export class AdminView extends React.Component {
 
 	componentDidMount() {
 		this.fire(this.Events.changeTitle, "Administrera klasser och vapengrupper");
-		this.ClassGroups.load(g => this.setState({ classGroups: this.tagList(g, "classGroup") }));
-		this.DivisionGroups.load(g => this.setState({ divisionGroups: this.tagList(g, "divisionGroup") }));
-	}
-
-	tagList(list, tag) {
-		return list.map(e => { e.dataType = tag; return e; });
+		this.ClassGroups.load(g => this.setState({ classGroups: g }));
+		this.DivisionGroups.load(g => this.setState({ divisionGroups: g }));
 	}
 
 	selectedText() {
@@ -28,17 +26,16 @@ export class AdminView extends React.Component {
 	}
 
 	drag = (e, item) => {
-		e.dataTransfer.setData(item.dataType, item.id.toString());
+		e.dataTransfer.setData(item.listName, item.id.toString());
 	}
 
 	allowDrop = (e, item) => {
-		if (e.dataTransfer.getData(item.dataType) !== undefined)
+		if (e.dataTransfer.getData(item.listName) !== undefined)
 			e.preventDefault();
 	}
 
 	drop = (e, item) => {
-		let data = e.dataTransfer.getData(item.dataType);
-		console.log("Dropped " + data);
+		let data = e.dataTransfer.getData(item.listName);
 		e.preventDefault();
 		if (item.classes) {
 			let draggedItem = this.state.classGroups.find(cg => cg.id.toString() === data);
@@ -68,26 +65,26 @@ export class AdminView extends React.Component {
 	}
 
 	addClassGroup = () => {
-		let newCG = { id: this.state.classGroups.filter(g => g.id < 1000).length + 1, description: "Ny lista", classes: [], dataType: "classGroup" };
+		let newCG = new ClassGroup(this.state.classGroups.filter(g => g.id < 1000).length + 1);
 		this.setState({ classGroups: this.state.classGroups.concat([newCG]), selected: newCG, dirty: true });
 	}
 
 	addDivisionGroup = () => {
-		let newDG = { id: this.state.divisionGroups.filter(g => g.id < 1000).length + 1, description: "Ny lista", divisions: [], dataType: "divisionGroup" };
+		let newDG = new DivisionGroup(this.state.divisionGroups.filter(g => g.id < 1000).length + 1);
 		this.setState({ divisionGroups: this.state.divisionGroups.concat([newDG]), selected: newDG, dirty: true });
 	}
 
-	updateDescription = e => {
+	updateProperty = (name, val) => {
 		this.setState({
 			classGroups: this.state.classGroups.map(cg => {
 				if (cg === this.state.selected) {
-					cg.description = e.target.value;
+					cg[name] = val;
 				}
 				return cg;
 			}),
 			divisionGroups: this.state.divisionGroups.map(dg => {
 				if (dg === this.state.selected) {
-					dg.description = e.target.value;
+					dg[name] = val;
 				}
 				return dg;
 			}),
@@ -131,8 +128,9 @@ export class AdminView extends React.Component {
 					{this.state.classGroups.map(cg => this.renderGroup(cg))}
 					<div className="add item"><button className="button-add small" /><p className="add" onClick={this.addClassGroup}>Skapa ny lista</p></div>
 				</div>
-				{this.state.selected && this.state.selected.classes && <div className="detail">
-					<input value={this.state.selected.description} onChange={this.updateDescription} />
+				{this.state.selected && <div className="detail">
+					<input className="textbox-name" value={this.state.selected.description} onChange={e => this.updateProperty("description", e.target.value)} />
+					<input className="textbox-header" value={this.state.selected.header || ""} placeholder="Rubrik" onChange={e => this.updateProperty("header", e.target.value)} />
 					<textarea rows="20" cols="50" multiline="true" value={this.selectedText()} onChange={this.updateText} />
 				</div>}
 				<div>
@@ -140,10 +138,6 @@ export class AdminView extends React.Component {
 					{this.state.divisionGroups.map(dg => this.renderGroup(dg))}
 					<div className="add item"><button className="button-add small" /><p className="add" onClick={this.addDivisionGroup}>Skapa ny lista</p></div>
 				</div>
-				{this.state.selected && this.state.selected.divisions && <div className="detail">
-					<input value={this.state.selected.description} onChange={this.updateDescription} />
-					<textarea rows="20" cols="50" multiline="true" value={this.selectedText()} onChange={this.updateText} />
-				</div>}
 			</div></div>;
 	}
 }

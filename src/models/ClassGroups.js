@@ -1,22 +1,24 @@
+import { ValueList } from './ValueList';
+
+export class ClassGroup extends ValueList {
+	constructor(id, description) {
+		super("classes", id, description);
+	}
+
+	static fromJson(json) {
+		return ValueList.fromJson(json, "classes");
+	}
+}
+
 export class ClassGroups {
 	static register = { name: "ClassGroups", createInstance: true };
 	static wire = ["Server", "Footers"];
 
 	classGroups = [];
 
-	fromJson(data) {
-		return data.map(c => {
-			return {
-				...c,
-				id: parseInt(c.id.toString(), 10),
-				index: parseInt(c.index.toString(), 10)
-			}
-		});
-	}
-
 	forceLoad(callback) {
 		this.Server.loadClassGroups(data => {
-			this.classGroups = this.fromJson(data);
+			this.classGroups = data.map(c => ClassGroup.fromJson(c));
 			this.classGroups.sort((a, b) => a.index - b.index);
 			callback(this.classGroups);
 		}, this.Footers.errorHandler("Kan inte hämta klassindelning"));
@@ -38,9 +40,9 @@ export class ClassGroups {
 		deleteList.forEach(g => this.Server.deleteClassGroup(g.id, () => { }));
 		newList.forEach(g => {
 			if (g.id < 1000) {
-				this.Server.createClassGroup(g, cg => g.id = parseInt(cg.id, 10));
+				this.Server.createClassGroup(g.toJson(), cg => g.id = parseInt(cg.id, 10));
 			} else {
-				this.Server.updateClassGroup(g, () => { });
+				this.Server.updateClassGroup(g.toJson(), () => { });
 			}
 		});
 	}

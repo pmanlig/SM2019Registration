@@ -26,7 +26,11 @@ export class CompetitionView extends React.Component {
 
 	findContent(tabs) {
 		let content = null;
-		tabs.forEach(t => { if (this.props.match.params.operation === t.path) { content = this.tabs[t.path]; } });
+		tabs.forEach(t => {
+			if (this.props.match.params.operation === t.path) {
+				content = this.tabs[t.path];
+			}
+		});
 		return content;
 	}
 

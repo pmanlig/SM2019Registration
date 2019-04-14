@@ -1,22 +1,24 @@
+import { ValueList } from './ValueList';
+
+export class DivisionGroup extends ValueList {
+	constructor(id, description) {
+		super("divisions", id, description);
+	}
+
+	static fromJson(json) {
+		return ValueList.fromJson(json, "divisions");
+	}
+}
+
 export class DivisionGroups {
 	static register = { name: "DivisionGroups", createInstance: true };
 	static wire = ["Server", "Footers"];
 
 	divisionGroups = [];
 
-	fromJson(data) {
-		return data.map(c => {
-			return {
-				...c,
-				id: parseInt(c.id.toString(), 10),
-				index: parseInt(c.index.toString(), 10)
-			}
-		});
-	}
-
 	forceLoad(callback) {
 		this.Server.loadDivisionGroups(data => {
-			this.divisionGroups = this.fromJson(data);
+			this.divisionGroups = data.map(c => DivisionGroup.fromJson(c));
 			this.divisionGroups.sort((a, b) => a.index - b.index);
 			callback(this.divisionGroups);
 		}, this.Footers.errorHandler("Kan inte hämta vapengruppsindelning"));
@@ -38,9 +40,9 @@ export class DivisionGroups {
 		deleteList.forEach(g => this.Server.deleteDivisionGroup(g.id, () => { }));
 		newList.forEach(g => {
 			if (g.id < 1000) {
-				this.Server.createDivisionGroup(g, cg => g.id = parseInt(cg.id, 10));
+				this.Server.createDivisionGroup(g.toJson(), cg => g.id = parseInt(cg.id, 10));
 			} else {
-				this.Server.updateDivisionGroup(g, () => { });
+				this.Server.updateDivisionGroup(g.toJson(), () => { });
 			}
 		});
 		// this.forceLoad(() => { });
