@@ -165,13 +165,13 @@ export class Registration {
 				let divisions = this.Competition.event(e.event).divisions;
 				let schedule = this.Competition.event(e.event).schedule;
 				e.rounds = e.rounds
-					.filter(r => r.division || (divisions && !this.Competition.divisions(divisions)[0].startsWith("!")))
+					.filter(r => r.division || !divisions || !this.Competition.divisions(divisions)[0].startsWith("!"))
 					.filter(r => r.squad || !schedule);
 			});
 			p.registrationInfo = p.registrationInfo.filter(e => {
 				let event = this.Competition.event(e.event);
-				return ((e.class || (event.classes && !this.Competition.classes(event.classes)[0].startsWith("!"))) &&
-					(e.rounds.length > 0 || !(event.divisions || event.schedule)));
+				return (e.class || !event.classes || !this.Competition.classes(event.classes)[0].startsWith("!")) &&
+					(e.rounds.length > 0 || (!event.schedule && !event.divisions));
 			});
 		});
 	}
@@ -195,6 +195,7 @@ export class Registration {
 		this.Storage.set(this.Storage.keys.registrationContact, this.contact);
 		this.Registry.storeCompetitors(this.participants);
 		this.removeUnselected();
+		console.log(JSON.parse(JSON.stringify(this)));
 		this.setParticipantDefaults();  // ToDo: missing values should result in errors instead?
 		let errors = new Validation(this.Competition).validate(this.participants);
 		if (errors.length === 0) {
