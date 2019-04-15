@@ -3,13 +3,15 @@ export class Configuration {
 	static wire = ["fire", "Events"];
 	loaded = false;
 	baseUrl = '';
+	site = '';
 
 	initialize() {
-		console.log("fetching configuration");
+		console.log("Fetching configuration");
 		fetch("/config.json")
 			.then(res => res.json())
 			.then(json => {
 				this.baseUrl = json.baseUrl;
+				this.site = json.site || 'production';
 				this.loaded = true;
 				this.fire(this.Events.configurationLoaded);
 			});

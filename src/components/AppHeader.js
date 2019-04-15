@@ -5,15 +5,16 @@ import { Link } from 'react-router-dom';
 
 export class AppHeader extends React.Component {
 	static register = { name: "AppHeader" };
-	static wire = ["LoginLogout", "LocalToggle", "DeleteCookies", "subscribe", "Events", "Session"];
+	static wire = ["LoginLogout", "LocalToggle", "DeleteCookies", "Events", "EventBus", "Session", "Configuration"];
 
 	constructor(props) {
 		super(props);
 		this.state = { title: props.title };
 		document.title = props.title;
-		// ToDo: Do this more React:y
+		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.changeTitle, this.updateTitle.bind(this));
 		this.subscribe(this.Events.userChanged, () => this.setState({}));
+		this.subscribe(this.Events.configurationLoaded, () => this.setState({}));
 	}
 
 	updateTitle(t) {
@@ -41,7 +42,7 @@ export class AppHeader extends React.Component {
 					<Link to="/help" className='globaltool'>Hjälp?</Link>
 					<Link to="/about" className='globaltool'>Om...</Link>
 				</div>
-				<p className="version">version {process.env.REACT_APP_VERSION}</p>
+				<p className="version">version {process.env.REACT_APP_VERSION}{this.Configuration.loaded && this.Configuration.site === "utveckling" && " (utveckling)"}</p>
 			</div>
 		</header>
 	}
