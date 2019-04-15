@@ -14,10 +14,23 @@
 	z-index: 50;
 }
 
-.squad-picker h1 {
+.squad-picker-header {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	align-items: center;
+}
+
+.squad-picker-header h1 {
+	display: inline;
 	margin: 10px;
 	padding: 0;
 	font-size: 1.5em;
+	flex-grow: 1;
+}
+
+.squad-picker-header button:hover {
+	background-color: lightgray;
 }
 
 .squad-picker td {
@@ -53,4 +66,8 @@
 
 .squad-picker tbody tr.selectable:hover {
 	background-color: cornflowerblue;
+}
+
+.squad-picker tbody tr button:hover {
+	background-color: lightgray;
 }

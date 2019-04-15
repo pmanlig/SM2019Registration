@@ -147,7 +147,9 @@ export class SquadPicker extends React.Component {
 		if (this.state.participant === undefined) return null;
 		let schedule = this.getSchedule(this.state.event.schedule);
 		return <div className="squad-picker">
-			<h1>Starttider</h1>
+			<div className="squad-picker-header">
+				<h1>Starttider</h1><button className="button-close medium" onClick={() => this.setState({ participant: undefined })} />
+			</div>
 			<div style={{ overflowY: "auto" }}>
 				<table>
 					<thead>
