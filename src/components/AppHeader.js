@@ -3,8 +3,6 @@ import logo from './../gpk_logo_wht.png';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-let lastModified = "2019-04-15";
-
 export class AppHeader extends React.Component {
 	static register = { name: "AppHeader" };
 	static wire = ["LoginLogout", "LocalToggle", "DeleteCookies", "subscribe", "Events", "Session"];
@@ -43,7 +41,7 @@ export class AppHeader extends React.Component {
 					<Link to="/help" className='globaltool'>Hjälp?</Link>
 					<Link to="/about" className='globaltool'>Om...</Link>
 				</div>
-				<p className="version">Senast uppdaterad: {lastModified}</p>
+				<p className="version">version {process.env.REACT_APP_VERSION}</p>
 			</div>
 		</header>
 	}
