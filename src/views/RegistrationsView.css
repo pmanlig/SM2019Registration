@@ -26,6 +26,7 @@ a.registration-button {
     box-sizing: border-box;
     align-items: flex-start;
     line-height: 15px;
+    padding-left: 6px;
 }
 
 .registration-button:hover {
