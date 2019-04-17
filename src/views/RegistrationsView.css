@@ -19,13 +19,13 @@
     margin: 0 5px 0 0;
     font-size: 13px;
     font-family: Arial;
+    line-height: 15px;
 }
 
 a.registration-button {
     text-decoration: none;
     box-sizing: border-box;
     align-items: flex-start;
-    line-height: 15px;
     padding-left: 6px;
 }
 

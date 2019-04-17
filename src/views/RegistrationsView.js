@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 export class RegistrationsView extends React.Component {
 	static register = { name: "RegistrationsView" };
-	static wire = ["Server", "Competition"];
+	static wire = ["Server", "Competition", "Configuration"];
 
 	constructor(props) {
 		super(props);
@@ -31,8 +31,12 @@ export class RegistrationsView extends React.Component {
 
 	render() {
 		return <div className="content">
+			<h2>Listor</h2>
+			<a href={`${this.Configuration.baseUrl}/excel/${this.Competition.id}/division`} download="true">Alla deltagare (vapenkontroll)</a><br />
+			{this.Competition.events.map(e => <a key={`d${e.id}`} href={`${this.Configuration.baseUrl}/excel/${e.id}/list`} download="true">{`Deltagare i ${e.name}`}<br /></a>)}
+			{this.Competition.events.map(e => <a key={`s${e.id}`} href={`${this.Configuration.baseUrl}/excel/${e.id}/squad`} download="true">{`Starttider i ${e.name}`}<br /></a>)}
 			<h2>Anmälningar</h2>
 			{this.state.registrations.map(r => <this.Reg reg={r} key={r.token} />)}
-		</div>
+		</div>;
 	}
 }
