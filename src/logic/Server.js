@@ -206,6 +206,10 @@ export class Server {
 	sendRegistration(data, callback, error) {
 		this.registrationService.sendRegistration(data, logSendCallback(callback, data, `Sending registration`), logErrorHandler(error));
 	}
+
+	sendNewToken(registration, callback, error) {
+		this.send(`competition/send_token`, registration, logSendCallback(callback, registration, `Begär nytt mail`), logErrorHandler(error))
+	}
 	//#endregion
 
 	//#region Schedule
