@@ -149,7 +149,7 @@ export class Registration {
 	}
 
 	setContactField(field, value) {
-		if (field === "account" && (value.length > 8 || !(/^\d*[-]?\d*$/.test(value)))) { return; } // Add more validation rules later?
+		if (field === "account" && (value.length > 10 || !(/^\d*[-]?\d*$/.test(value)))) { return; } // Add more validation rules later?
 		this.contact[field] = value;
 		this.fire(this.Events.registrationUpdated, this);
 	}
