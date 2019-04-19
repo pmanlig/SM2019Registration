@@ -96,7 +96,7 @@ export class Competition {
 			this.rules = obj.rules || this.rules;
 			this.permissions = obj.permissions ? parseInt(obj.permissions.toString(), 10) :
 				(this.Session.user === "" || this.Session.user === undefined ? Permissions.Any : Permissions.Own);
-			this.status = obj.status ? parseInt(obj.status.toString(), 10) : Status.Open;
+			this.status = (obj.status !== undefined) ? parseInt(obj.status.toString(), 10) : Status.Open;
 			this.dirty = false;
 			this.fire(this.Events.competitionUpdated);
 		}
