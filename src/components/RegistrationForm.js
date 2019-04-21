@@ -45,14 +45,13 @@ export class RegistrationForm extends React.Component {
 		});
 	}
 
-	RegistrationHeader = props => {
-		let participantHeader = this.Competition.participantHeader();
-		const majorHeaders = [<th key="-1" className="major" colSpan={participantHeader.subFields.length}>{participantHeader.name}</th>];
-		const minorHeaders = [];
+	MinorHeader = props => {
+		return <th style={{ width: `${props.width}px`, paddingRight: 10, verticalAlign: "bottom" }} className="minor">{props.name}</th>;
+	}
 
-		participantHeader.subFields.forEach(s => {
-			minorHeaders.push(<th key={minorHeaders.length} style={{ width: s.width, paddingRight: 10, verticalAlign: "bottom" }} className="minor">{s.name}</th>);
-		});
+	RegistrationHeader = props => {
+		const majorHeaders = [<th key="-1" className="major" colSpan="3">Skytt&nbsp;<span style={{ fontSize: "x-small", verticalAlign: "top" }}>(* = obligatoriskt fält)</span></th>];
+		const minorHeaders = this.Competition.participantHeaders().map(h => <this.MinorHeader width={h.width} name={h.name} />)
 
 		if (this.Competition.eventGroups.length > 0) {
 			this.Competition.eventGroups.forEach(group => { this.addHeadersFor(this.Competition.eventList(group.id), group.name, majorHeaders, minorHeaders); });

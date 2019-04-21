@@ -84,7 +84,7 @@ export class RegistrationRow extends React.Component {
 	}
 
 	ParticipantFields = ({ numRows, participant }) => {
-		return this.Competition.participantHeader().subFields.map(h => <this.RegistrationField key={h.field} numRows={numRows} participant={participant} header={h} />);
+		return this.Competition.participantHeaders().map(h => <this.RegistrationField key={h.field} numRows={numRows} participant={participant} header={h} />);
 	}
 
 	ParticipantRow = ({ row, numRows, participant }) => {
