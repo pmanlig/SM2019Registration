@@ -195,7 +195,6 @@ export class Registration {
 		this.Storage.set(this.Storage.keys.registrationContact, this.contact);
 		this.Registry.storeCompetitors(this.participants);
 		this.removeUnselected();
-		console.log(JSON.parse(JSON.stringify(this)));
 		this.setParticipantDefaults();  // ToDo: missing values should result in errors instead?
 		let errors = new Validation(this.Competition).validate(this.participants);
 		if (errors.length === 0) {

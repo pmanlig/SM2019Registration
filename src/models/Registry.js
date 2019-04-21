@@ -9,12 +9,18 @@ export class Registry {
 	}
 
 	storeCompetitors(participants) {
-		let competitors = participants.map(p => new Person(p));
+		let competitors = participants.filter(p => p.name !== "").map(p => new Person(p));
 		this.competitors.forEach(p => {
 			if (competitors.find(e => e.competitionId === p.competitionId) === undefined)
 				competitors.push(p);
 		});
 		this.competitors = competitors;
+		this.Storage.set(this.Storage.registry, this.competitors);
+		this.fire(this.Events.registryUpdated);
+	}
+
+	deleteCompetitor(id) {
+		this.competitors = this.competitors.filter(c => c.competitionId !== id);
 		this.Storage.set(this.Storage.registry, this.competitors);
 		this.fire(this.Events.registryUpdated);
 	}

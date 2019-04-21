@@ -13,6 +13,7 @@ export class Configuration {
 				this.baseUrl = json.baseUrl;
 				this.site = json.site || 'production';
 				this.loaded = true;
+				window._debug = this.site !== 'production';
 				this.fire(this.Events.configurationLoaded);
 			});
 	}

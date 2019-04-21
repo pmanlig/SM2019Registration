@@ -4,7 +4,7 @@ import { ModalDialog } from '../general';
 
 export class ParticipantPicker extends React.Component {
 	static register = { name: "ParticipantPicker" };
-	static wire = ["subscribe", "Registration", "Registry", "EventBus", "Events"];
+	static wire = ["Registration", "Registry", "EventBus", "Events"];
 
 	constructor(props) {
 		super(props);
@@ -13,11 +13,18 @@ export class ParticipantPicker extends React.Component {
 		this.subscribe(this.Events.showParticipantPicker, () => this.setState({ visible: true }));
 	}
 
-	Competitor(props) {
+	deleteCompetitor = (e, id) => {
+		e.stopPropagation();
+		this.Registry.deleteCompetitor(id)
+		this.setState({});
+	}
+
+	Competitor = (props) => {
 		return <tr className="picker" onClick={props.onClick}>
 			<td>{props.person.name}</td>
 			<td>{props.person.competitionId}</td>
 			<td>{props.person.organization}</td>
+			<td><div className="pp-delete"><button className="button-close small red" onClick={e => this.deleteCompetitor(e, props.person.competitionId)} /></div></td>
 		</tr>
 	}
 
@@ -30,6 +37,7 @@ export class ParticipantPicker extends React.Component {
 							<th>Namn</th>
 							<th>Pistolskyttekort</th>
 							<th>Förening</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
