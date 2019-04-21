@@ -6,32 +6,46 @@
 	margin-top: 40px;
 }
 
-#competitions > ul {
-	list-style-type: none;
+#competitions > div {
 	padding: 0;
 	margin: 0;
-	width: 30%;
-	margin: auto;
+	display: flex;
+	justify-content: center;
 }
 
-#competitions > ul > li {
+#competitions > div.competition-list {
+	flex-direction: column;
+	flex-wrap: nowrap;
+}
+
+#competitions > div.competition-list-compact {
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+#competitions div.competition-tile {
 	margin: 3px;
 	padding: 7px;
 	border-radius: 4px;
 	color: white;
 	background-color: #a0cfff;
+	width: 30em;
 }
 
-#competitions > ul > li.hidden {
+#competitions > div.create-competition {
+	margin: 3px auto 3px auto;
+}
+
+#competitions > div > div.hidden {
 	border: 1px solid grey;
 	background-color: white;
 }
 
-#competitions > ul > li.closed {
+#competitions > div > div.closed {
 	background-color: #a0cfa0;
 }
 
-#competitions > ul > li.open {
+#competitions > div > div.open {
 	background-color: #a0cfff;
 }
 

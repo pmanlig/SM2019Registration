@@ -46,12 +46,12 @@ export class CompetitionList extends React.Component {
 		return tokens[c.id];
 	}
 
-	competition = ({ competition }) => {
+	Competition = ({ competition }) => {
 		let links = Operations.filter(o => (
 			competition.permissions === Permissions.Own ||
 			(competition.permissions >= o.permission && (o.status === undefined || o.status === competition.status))
 		));
-		return <li key={competition.id} className={competition.status === Status.Hidden ? "hidden" : (competition.status === Status.Closed ? "closed" : "open")}>
+		return <div key={competition.id} className={"competition-tile " + (competition.status === Status.Hidden ? "hidden" : (competition.status === Status.Closed ? "closed" : "open"))}>
 			<div className="event-title">
 				<Link className="competition-link" to={`/competition/${competition.id}`}>{competition.name}</Link>
 				{competition.permissions === Permissions.Own && <button className="button-close small red"
@@ -59,7 +59,7 @@ export class CompetitionList extends React.Component {
 			</div>
 			{links.map(l =>
 				<span key={l.name}>&nbsp;<Link to={`/competition/${competition.id}/${l.path}`}>{l.name}</Link>&nbsp;</span>)}
-		</li>
+		</div>
 	}
 
 	render() {
@@ -70,11 +70,11 @@ export class CompetitionList extends React.Component {
 			{this.state.deleteCompetition && <this.YesNoDialog title="Bekräfta borttagning"
 				text={`Är du säker på att du vill ta bort ${this.state.deleteCompetition.name}?`} action={act => this.deleteCompetition(act)} />}
 			<h1>Tävlingar{this.Server.local && " (felsökning)"}</h1>
-			<ul>
-				{competitions.map(c => <this.competition key={c.id} competition={c} />)}
-				{loggedIn && <li><Link className="competition-link" to={`/create`}>Skapa ny tävling</Link></li>}
+			<div className={competitions.length > 10 ? 'competition-list-compact' : 'competition-list'}>
+				{competitions.map(c => <this.Competition key={c.id} competition={c} />)}
 				{competitions.length === 0 && !loggedIn && <p>Inga tävlingar att visa - logga in för att skapa en tävling</p>}
-			</ul>
+			</div>
+			{loggedIn && <div className="create-competition competition-tile"><Link className="competition-link" to={`/create`}>Skapa ny tävling</Link></div>}
 		</div>;
 	}
 }
