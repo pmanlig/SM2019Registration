@@ -81,12 +81,10 @@ export class ScheduleProperties extends React.Component {
 	}
 
 	updateSlots = (v) => {
-		if (v < 0)
-			return;
+		if (v === "" || !v.match(/^\d*$/)) { return; }
 		let newVal = parseInt(v, 10);
-		if (!isNaN(newVal)) {
-			this.setState({ slots: newVal });
-		}
+		if (isNaN(newVal) || newVal < 0) { return }
+		this.setState({ slots: newVal });
 	}
 
 	updateInterval = (e) => {

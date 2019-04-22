@@ -14,8 +14,10 @@ export class SquadProperties extends React.Component {
 	}
 
 	changeSlots = n => {
-		if (n !== "" && !n.match(/^\d*$/)) { return; }
-		this.updateSquadProperty("slots", parseInt(n, 10));
+		if (n === "" || !n.match(/^\d*$/)) { return; }
+		let newVal = parseInt(n, 10);
+		if (isNaN(newVal) || newVal < 0) { return }
+		this.updateSquadProperty("slots", newVal);
 		this.setState({});
 	}
 
