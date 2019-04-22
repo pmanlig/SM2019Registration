@@ -43,6 +43,12 @@
 	margin-left: 5px;
 }
 
+.eventProperty {
+	box-sizing: border-box;
+	height: 30px;
+	margin: 0;
+}
+
 .label-box {
 	margin-top: 2px;
 }

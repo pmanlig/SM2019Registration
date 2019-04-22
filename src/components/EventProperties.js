@@ -7,6 +7,12 @@ export class EventProperties extends React.Component {
 	static register = { name: "EventProperties" };
 	static wire = ["fire", "Events", "Competition", "Server"];
 
+	setCost = (event, cost) => {
+		cost = parseInt(cost, 10);
+		if (!isNaN(cost))
+			this.Competition.updateEvent(event, "cost", cost);
+	}
+
 	setGroup = (event, property, group) => {
 		group = parseInt(group, 10);
 		this.Competition.updateEvent(event, property, group === -1 ? undefined : group);
@@ -19,7 +25,6 @@ export class EventProperties extends React.Component {
 	deleteSchedule = () => {
 		this.props.event.schedule = undefined;
 		this.Competition.updateEvent(this.props.event, "schedule", undefined);
-		this.setState({});
 	}
 
 	render() {
@@ -32,6 +37,7 @@ export class EventProperties extends React.Component {
 			</div>
 			<div className="eventProperties">
 				<Label text="Datum"><DatePicker value={event.date} onChange={d => this.Competition.updateEvent(event, "date", d)} /></Label>
+				<Label text="Startavgift"><input className="eventProperty" style={{ width: "50px" }} value={event.cost || 100} onChange={e => this.setCost(event, e.target.value)} /></Label>
 				<Label text="Klasser"><Dropdown className="eventProperty" value={event.classes || -1} list={this.props.classGroups} onChange={e => this.setGroup(event, "classes", e.target.value)} /></Label>
 				<Label text="Antal serier/stationer" align="center"><Spinner className="eventProperty" value={event.scores || 8} onChange={value => this.Competition.updateEvent(event, "scores", Math.max(1, value))} /></Label>
 				<Label text="Vapengrupper"><Dropdown className="eventProperty" value={event.divisions || -1} list={this.props.divisionGroups} onChange={e => this.setGroup(event, "divisions", e.target.value)} /></Label>

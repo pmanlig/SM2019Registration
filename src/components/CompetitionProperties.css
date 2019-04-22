@@ -41,11 +41,6 @@
 	margin-right: 5px;
 }
 
-.eventProperty {
-	height: 30px;
-	margin: 0;
-}
-
 #competition-properties {
 	display: inline-grid;
 	grid-template: 

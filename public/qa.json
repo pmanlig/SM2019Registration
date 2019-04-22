@@ -8,6 +8,10 @@
 		"a": "Ja, absolut! När du anmäler dig skickas ett mail med bekräftelse på din anmälan. Mailet innehåller en länk till din anmälan som du kan klicka på om du vill ändra något."
 	},
 	{
+		"q": "Vad är fältet \"Konto\"?",
+		"a": "På tävlingar där vinstpengar betalas ut behöver arrangören ett konto att betala eventuella vinstpengar till. På SM kommer priserna att bestå av fysiska vinster, så fältet behöver inte fyllas i för SM."
+	},
+	{
 		"q": "Hur kommer jag tillbaka till listan med tävlingar?",
 		"a": "Klicka på knappen \"tävlingar\", eller på logotypen i övre vänstra hörnet."
 	},
