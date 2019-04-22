@@ -17,6 +17,7 @@ export class Person {
 			this.email = nameOrPerson.email || "";
 			this.account = nameOrPerson.account || "";
 		}
+		this.email = this.email.trim();
 	}
 
 	static fromJson(json) {
@@ -24,7 +25,16 @@ export class Person {
 			json.name || "",
 			json.competitionId || "",
 			json.organization || "",
-			json.email || "",
+			json.email ? json.email.trim() : "",
 			json.account || "");
+	}
+
+	toJson() {
+		return {
+			name: this.name,
+			email: this.email.trim(),
+			organization: this.organization,
+			account: this.account
+		}
 	}
 }

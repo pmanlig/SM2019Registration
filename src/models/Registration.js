@@ -150,6 +150,7 @@ export class Registration {
 
 	setContactField(field, value) {
 		if (field === "account" && (value.length > 10 || !(/^\d*[-]?\d*$/.test(value)))) { return; } // Add more validation rules later?
+		if (field === "email") { value = value.trim(); }
 		this.contact[field] = value;
 		this.fire(this.Events.registrationUpdated, this);
 	}
@@ -186,7 +187,7 @@ export class Registration {
 		return {
 			competition: this.Competition.id,
 			token: this.token,
-			contact: { name: this.contact.name, email: this.contact.email, organization: this.contact.organization, account: this.contact.account },
+			contact: this.contact.toJson(),
 			registration: this.participants.map(p => p.toJson())
 		}
 	}
