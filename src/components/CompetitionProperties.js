@@ -27,37 +27,35 @@ export class CompetitionProperties extends React.Component {
 		this.DivisionGroups.load(list => this.setState({ divisionGroups: default_division_group.concat(list) }));
 	}
 
+	toggle50pct = e => {
+		if (this.Competition.rules.includes("50pct")) {
+			this.Competition.rules = this.Competition.rules.filter(r => r !== "50pct");
+		} else {
+			this.Competition.rules.push("50pct");
+		}
+		this.setState({});
+	}
+
 	render() {
 		let { classGroups, divisionGroups } = this.state;
 		return <div>
 			<this.ScheduleProperties divisionGroups={divisionGroups} />
-			<table className="competitionInfo">
-				<tbody>
-					<tr>
-						<th>Namn</th>
-						<td><input type="text" value={this.Competition.name} size="50" placeholder="Namn" onChange={e => this.Competition.setProperty("name", e.target.value)} /></td>
-					</tr>
-					<tr>
-						<th>Beskrivning</th>
-						<td>
-							<textarea rows="8" cols="50" placeholder="Beskrivning" onChange={e => this.Competition.setProperty("description", e.target.value)} value={this.Competition.description} />
-						</td>
-					</tr>
-					<tr>
-						<th>Status</th>
-						<td>
-							<Dropdown className="eventProperty" value={this.Competition.status} list={this.status} onChange={e => this.Competition.setProperty("status", parseInt(e.target.value, 10))} />
-						</td>
-					</tr>
-					<tr>
-						<th>Lägg till deltävling</th>
-						<td>
-							<button id="addEventButton" className="button-add green" onClick={e => this.Competition.addEvent()} />
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			{this.Competition.events.map(e => <this.EventProperties key={e.id} event={e} classGroups={classGroups} divisionGroups={divisionGroups} />)}
+			<div id="competition-properties">
+				<div style={{ gridArea: "competition-name-label" }} className="property-label">Namn</div>
+				<div style={{ gridArea: "competition-name-input" }}><input type="text" value={this.Competition.name} size="50" placeholder="Namn" onChange={e => this.Competition.setProperty("name", e.target.value)} /></div>
+				<div style={{ gridArea: "competition-desc-label" }} className="property-label">Beskrivning</div>
+				<div style={{ gridArea: "competition-desc-input" }}><textarea rows="8" cols="50" placeholder="Beskrivning" onChange={e => this.Competition.setProperty("description", e.target.value)} value={this.Competition.description} /></div>
+				<div style={{ gridArea: "competition-status-label" }} className="property-label">Status</div>
+				<div style={{ gridArea: "competition-status-input" }}><Dropdown className="eventProperty" value={this.Competition.status} list={this.status} onChange={e => this.Competition.setProperty("status", parseInt(e.target.value, 10))} /></div>
+				<div style={{ gridArea: "competition-50pct-label" }} className="property-label">Max 50% skyttar från samma förening</div>
+				<div style={{ gridArea: "competition-50pct-input" }}><input type="checkbox" checked={this.Competition.rules.includes("50pct")} onClick={this.toggle50pct} /></div>
+			</div>
+			<div>
+				<div className="add-event"><button id="addEventButton" className="button-add green" onClick={e => this.Competition.addEvent()} />Lägg till deltävling</div>
+				<div>
+					{this.Competition.events.map(e => <this.EventProperties key={e.id} event={e} classGroups={classGroups} divisionGroups={divisionGroups} />)}
+				</div>
+			</div>
 		</div>;
 	}
 }

@@ -1,5 +1,13 @@
 [
 	{
+		"q": "Hur vet jag att jag har anmält mig?",
+		"a": "När du anmäler dyker en grön indikation upp som säger att N starter har anmälts. Sedan skickas ett mail med bekräftelse på starterna. Mailet innehåller en länk till din anmälan som du kan klicka på om du vill ändra något."
+	},
+	{
+		"q": "Kan jag ändra de uppgifter jag har anmält?",
+		"a": "Ja, absolut! När du anmäler dig skickas ett mail med bekräftelse på din anmälan. Mailet innehåller en länk till din anmälan som du kan klicka på om du vill ändra något."
+	},
+	{
 		"q": "Hur kommer jag tillbaka till listan med tävlingar?",
 		"a": "Klicka på knappen \"tävlingar\", eller på logotypen i övre vänstra hörnet."
 	},

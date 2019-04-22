@@ -21,6 +21,14 @@
 	vertical-align: middle;
 }
 
+.add-event {
+	margin: 10px 0 5px 0;
+	display: inline-flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+}
+
 #addEventButton {
 	padding: 0;
 	border: none;
@@ -30,10 +38,26 @@
 	height: 20px;
 	text-align: center;
 	vertical-align: middle;
-	margin-left: 5px;
+	margin-right: 5px;
 }
 
 .eventProperty {
 	height: 30px;
 	margin: 0;
+}
+
+#competition-properties {
+	display: inline-grid;
+	grid-template: 
+		"competition-name-label competition-name-input competition-status-label competition-status-input"
+		"competition-desc-label competition-desc-input competition-50pct-label competition-50pct-input";
+	margin-top: 5px;
+}
+
+#competition-properties > div {
+	margin: 5px 20px 0 0;
+}
+
+#competition-properties .property-label {
+	font-weight: bold;
 }
