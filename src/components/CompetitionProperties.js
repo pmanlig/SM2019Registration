@@ -39,7 +39,9 @@ export class CompetitionProperties extends React.Component {
 					</tr>
 					<tr>
 						<th>Beskrivning</th>
-						<td><input type="text" value={this.Competition.description} size="50" placeholder="Beskrivning" onChange={e => this.Competition.setProperty("description", e.target.value)} /></td>
+						<td>
+							<textarea rows="8" cols="50" placeholder="Beskrivning" onChange={e => this.Competition.setProperty("description", e.target.value)} value={this.Competition.description} />
+						</td>
 					</tr>
 					<tr>
 						<th>Status</th>

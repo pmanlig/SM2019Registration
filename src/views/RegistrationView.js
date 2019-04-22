@@ -29,6 +29,23 @@ export class RegistrationView extends React.Component {
 		this.setState({ deleteParticipant: undefined });
 	}
 
+	link = a => {
+		return a && <a href={a}>{a}</a>;
+	}
+
+	linkify = (t, c) => {
+		let p = 1;
+		if (t.includes("[") && t.includes("]")) {
+			return t.split("]").map(s => <span key={p++}>{s.split("[")[0]}{this.link(s.split("[")[1])}</span>).concat([<br key={p++} />]);
+		}
+		return <span key={c}>{t}<br /></span>;
+	}
+
+	Description = props => {
+		let c = 1;
+		return <div className="content">{props.value.split("\n").map(t => this.linkify(t, c++))}</div>;
+	}
+
 	render() {
 		if (this.Registration.token !== undefined && this.props.match.params.token === undefined) {
 			return <Redirect to={`/competition/${this.props.match.params.id}/register/${this.Registration.token}`} />
@@ -36,7 +53,7 @@ export class RegistrationView extends React.Component {
 
 		return <div>
 			<this.SquadPicker />
-			<div className="content">{this.Competition.description}</div>
+			<this.Description value={this.Competition.description} />
 			<this.RegistrationContact />
 			<this.RegistrationForm />
 			<this.Summary />
