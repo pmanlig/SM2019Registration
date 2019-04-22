@@ -4,6 +4,7 @@ export class Event {
 		this.name = name;
 		this.date = date;
 		this.maxRegistrations = 1;
+		this.scores = 8;
 	}
 
 	static toNumber(x) {
@@ -19,6 +20,7 @@ export class Event {
 		nE.schedule = ((typeof e.schedule === "object") ? e.schedule.id : Event.toNumber(e.schedule));
 		nE.schedule = nE.schedule === 0 ? undefined : nE.schedule;
 		nE.maxRegistrations = parseInt(e.maxRegistrations.toString(), 10);
+		nE.scores = e.scores !== undefined ? parseInt(e.scores.toString(), 10) : 8;
 		return nE;
 	}
 
@@ -38,7 +40,8 @@ export class Event {
 			classes: this.classes,
 			divisions: this.divisions,
 			schedule: this.schedule && this.schedule.id ? this.schedule.id : this.schedule,
-			maxRegistrations: this.maxRegistrations
+			maxRegistrations: this.maxRegistrations,
+			scores: this.scores
 		};
 	}
 }

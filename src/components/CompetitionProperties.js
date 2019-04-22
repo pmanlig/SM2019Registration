@@ -29,11 +29,10 @@ export class CompetitionProperties extends React.Component {
 
 	toggle50pct = e => {
 		if (this.Competition.rules.includes("50pct")) {
-			this.Competition.rules = this.Competition.rules.filter(r => r !== "50pct");
+			this.Competition.removeRule("50pct");
 		} else {
-			this.Competition.rules.push("50pct");
+			this.Competition.addRule("50pct");
 		}
-		this.setState({});
 	}
 
 	render() {
@@ -48,7 +47,7 @@ export class CompetitionProperties extends React.Component {
 				<div style={{ gridArea: "competition-status-label" }} className="property-label">Status</div>
 				<div style={{ gridArea: "competition-status-input" }}><Dropdown className="eventProperty" value={this.Competition.status} list={this.status} onChange={e => this.Competition.setProperty("status", parseInt(e.target.value, 10))} /></div>
 				<div style={{ gridArea: "competition-50pct-label" }} className="property-label">Max 50% skyttar från samma förening</div>
-				<div style={{ gridArea: "competition-50pct-input" }}><input type="checkbox" checked={this.Competition.rules.includes("50pct")} onClick={this.toggle50pct} /></div>
+				<div style={{ gridArea: "competition-50pct-input" }}><input type="checkbox" checked={this.Competition.rules.includes("50pct")} onChange={this.toggle50pct} /></div>
 			</div>
 			<div>
 				<div className="add-event"><button id="addEventButton" className="button-add green" onClick={e => this.Competition.addEvent()} />Lägg till deltävling</div>

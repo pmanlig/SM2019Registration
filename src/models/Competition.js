@@ -195,4 +195,16 @@ export class Competition {
 		this.dirty = true;
 		this.fire(this.Events.competitionUpdated);
 	}
+
+	addRule(rule) {
+		this.rules.push(rule);
+		this.dirty = true;
+		this.fire(this.Events.competitionUpdated);
+	}
+
+	removeRule(rule) {
+		this.rules = this.rules.filter(r => r !== rule);
+		this.dirty = true;
+		this.fire(this.Events.competitionUpdated);
+	}
 }
