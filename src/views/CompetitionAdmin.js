@@ -18,16 +18,9 @@ export class CompetitionAdmin extends React.Component {
 		this.fire(this.Events.changeTitle, `Inställningar för ${this.Competition.name}`);
 	}
 
-	saveCompetition = () => {
-		this.Server.updateCompetition(this.Competition.toJson(), s => {
-			this.Competition.refresh();
-			this.setState({});
-		}, this.Footers.errorHandler("Kan inte spara tävling"));
-	}
-
 	render() {
 		return <div className="content">
-			<button className={this.Competition.dirty ? "button" : "button disabled"} onClick={this.saveCompetition}>Spara</button>
+			<button className={this.Competition.dirty ? "button" : "button disabled"} onClick={() => this.Competition.saveCompetition()}>Spara</button>
 			<this.CompetitionProperties />
 		</div>;
 	}

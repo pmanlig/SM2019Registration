@@ -71,6 +71,14 @@ export class Competition {
 		}
 	}
 
+	saveCompetition() {
+		this.Server.updateCompetition(this.toJson(), s => {
+			this.refresh();
+			this.fire(this.Events.competitionUpdated);
+			this.Footers.addFooter("Ändringarna har sparats", "info");
+		}, this.Footers.errorHandler("Kan inte spara tävling"));
+	}
+
 	refresh() {
 		if (this.id === 0) return;
 		this.Server.loadCompetition(this.id,
