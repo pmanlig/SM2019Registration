@@ -17,12 +17,14 @@
 	flex-direction: column;
 	flex-wrap: nowrap;
 	justify-content: center;
+	align-items: center;
 }
 
 #competitions > div.competition-list-compact {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
+	align-items: center;
 }
 
 #competitions div.competition-tile {
