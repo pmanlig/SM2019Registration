@@ -92,7 +92,7 @@ export class Competition {
 			this.description = obj.description || this.description;
 			this.eventGroups = obj.eventGroups ? obj.eventGroups.map(eg => EventGroup.fromJson(eg)) : this.eventGroups;
 			this.events = obj.events ? obj.events.map(e => Event.fromJson(e)) : this.events;
-			this.nextNewEvent = Math.max(...this.events.map(e => e.id)) + 1;
+			this.nextNewEvent = Math.max(...this.events.filter(e => e.id < 1000).map(e => e.id), 0) + 1;
 			this.rules = obj.rules || this.rules;
 			this.permissions = obj.permissions ? parseInt(obj.permissions.toString(), 10) :
 				(this.Session.user === "" || this.Session.user === undefined ? Permissions.Any : Permissions.Own);
