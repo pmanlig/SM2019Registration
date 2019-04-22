@@ -211,4 +211,14 @@ export class Registration {
 			this.fire(this.Events.registrationUpdated, this);
 		}
 	}
+
+	deleteRegistration() {
+		this.Server.deleteRegistration(this.Competition.id, this.token, () => {
+			this.token = undefined;
+			this.participants = [];
+			this.Tokens.setToken(this.Competition.id, undefined);
+			this.Footers.addFooter("Anmälan raderad", "info");
+			this.fire(this.Events.registrationUpdated, this);
+		}, this.Footers.errorHandler("Kan inte ta bort anmälan"));
+	}
 }

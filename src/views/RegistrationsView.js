@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 export class RegistrationsView extends React.Component {
 	static register = { name: "RegistrationsView" };
-	static wire = ["Server", "Competition", "Configuration"];
+	static wire = ["Server", "Competition", "Configuration", "Events", "EventBus", "Footers"];
 
 	constructor(props) {
 		super(props);
@@ -12,12 +12,16 @@ export class RegistrationsView extends React.Component {
 		this.Server.getRegistrations(this.Competition.id, json => {
 			this.setState({ registrations: json });
 		});
+		this.EventBus.manageEvents(this);
+	}
+
+	componentDidMount() {
+		this.fire(this.Events.changeTitle, `Administrera anmälningar till ${this.Competition.name}`);
 	}
 
 	resendMail = (reg) => {
-		this.Server.sendNewToken({ competition: this.Competition.id, email: "patrik@manlig.org"/*reg.email*/ }, json => {
-			console.log("Token sent");
-			console.log(json);
+		this.Server.sendNewToken({ competition: this.Competition.id, email: reg.email }, json => {
+			this.Footers.addFooter("Nytt mail skickas", "info");
 		});
 	}
 

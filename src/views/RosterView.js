@@ -4,12 +4,17 @@ import { Schedule } from '../models';
 
 export class RosterView extends React.Component {
 	static register = { name: "RosterView" };
-	static wire = ["Competition", "Server", "Footers", "Session"];
+	static wire = ["Competition", "Server", "Footers", "Session", "EventBus", "Events"];
 
 	constructor(props) {
 		super(props);
 		this.state = { events: this.constructEvents() };
 		this.loadSchedules();
+		this.EventBus.manageEvents(this);
+	}
+
+	componentDidMount() {
+		this.fire(this.Events.changeTitle, `Startlista för ${this.Competition.name}`);
 	}
 
 	constructEvents() {

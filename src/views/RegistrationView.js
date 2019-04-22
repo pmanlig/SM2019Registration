@@ -47,6 +47,10 @@ export class RegistrationView extends React.Component {
 	}
 
 	render() {
+		if (this.Registration.token === undefined && this.props.match.params.token !== undefined) {
+			return <Redirect to={`/competition/${this.props.match.params.id}/register`} />
+		}
+
 		if (this.Registration.token !== undefined && this.props.match.params.token === undefined) {
 			return <Redirect to={`/competition/${this.props.match.params.id}/register/${this.Registration.token}`} />
 		}

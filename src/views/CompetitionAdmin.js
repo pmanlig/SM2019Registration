@@ -10,12 +10,12 @@ export class CompetitionAdmin extends React.Component {
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.competitionUpdated, () => {
 			this.setState({});
-			this.fire(this.Events.changeTitle, `Administrera ${this.Competition.name}`);
+			this.fire(this.Events.changeTitle, `Inställningar för ${this.Competition.name}`);
 		});
 	}
 
 	componentDidMount() {
-		this.fire(this.Events.changeTitle, `Administrera ${this.Competition.name}`);
+		this.fire(this.Events.changeTitle, `Inställningar för ${this.Competition.name}`);
 	}
 
 	saveCompetition = () => {

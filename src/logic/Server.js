@@ -210,6 +210,10 @@ export class Server {
 	sendNewToken(registration, callback, error) {
 		this.send(`competition/send_token`, registration, logSendCallback(callback, registration, `Begär nytt mail`), logErrorHandler(error))
 	}
+
+	deleteRegistration(competitionId, token, callback, error) {
+		this.delete(`competition/${competitionId}/${token}`, logFetchCallback(callback, `Raderar anmälan ${token} i tävling ${competitionId}`), logErrorHandler(error));
+	}
 	//#endregion
 
 	//#region Schedule
