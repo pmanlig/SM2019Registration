@@ -4,7 +4,7 @@ import { Schedule } from '../models';
 
 export class RosterView extends React.Component {
 	static register = { name: "RosterView" };
-	static wire = ["Competition", "Server", "Footers"];
+	static wire = ["Competition", "Server", "Footers", "Session"];
 
 	constructor(props) {
 		super(props);
@@ -55,9 +55,12 @@ export class RosterView extends React.Component {
 	}
 
 	Participant = ({ participant }) => {
-		return <div className="rv-participant" draggable="true" onDragStart={e => e.dataTransfer.setData("text/json", JSON.stringify(participant))}>
+		return <div className="rv-participant" draggable="true" onDragStart={e => {
+			if (this.Session.user !== "")
+				e.dataTransfer.setData("text/json", JSON.stringify(participant));
+		}}>
 			{participant.name}, {participant.organization}
-		</div>;
+		</div >;
 	}
 
 	Squad = ({ squad }) => {

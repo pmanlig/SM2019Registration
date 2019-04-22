@@ -17,7 +17,6 @@ export class EventProperties extends React.Component {
 	}
 
 	deleteSchedule = () => {
-		// ToDo: delete schedule
 		this.props.event.schedule = undefined;
 		this.Competition.updateEvent(this.props.event, "schedule", undefined);
 		this.setState({});
