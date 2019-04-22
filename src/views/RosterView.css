@@ -3,6 +3,7 @@
 	flex-direction: column;
 	align-items: center;
 	flex-wrap: wrap;
+	position: relative;
 }
 
 .rv-event {
@@ -30,4 +31,20 @@
 .drop-target {
 	color: black;
 	background-color: lightblue;
+}
+
+#roster-filter {
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	background-color: gray;
+	border: 1px solid lightgray;
+	padding: 5px;
+	border-radius: 5px;
+	color: white;
+}
+
+#filter-label {
+	font-size: small;
+	margin: 2px 0;
 }

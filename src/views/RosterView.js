@@ -8,7 +8,7 @@ export class RosterView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = { events: this.constructEvents() };
+		this.state = { events: this.constructEvents(), filter: "" };
 		this.loadSchedules();
 		this.EventBus.manageEvents(this);
 	}
@@ -70,9 +70,10 @@ export class RosterView extends React.Component {
 
 	Squad = ({ squad }) => {
 		// if (squad.participants.length === 0) return null;
+		if (!squad.participants.some(p => p.name.includes(this.state.filter) || p.organization.includes(this.state.filter))) { return null; }
 		return <div className="rv-squad" onDragOver={e => this.dragOver(e, squad)} onDrop={e => this.moveTo(e.dataTransfer.getData("text/json"), squad.id)}>
 			<div className={squad === this.state.dropTarget ? "rv-squad-header drop-target" : "rv-squad-header"}>{squad.startTime}</div>
-			{squad.participants.map(p => <this.Participant key={p.id} participant={p} />)}
+			{squad.participants.filter(p => p.name.includes(this.state.filter) || p.organization.includes(this.state.filter)).map(p => <this.Participant key={p.id} participant={p} />)}
 		</div>;
 	}
 
@@ -85,6 +86,10 @@ export class RosterView extends React.Component {
 
 	render() {
 		return <div className="content roster">
+			<div id="roster-filter">
+				<p id="filter-label">Söktext</p>
+				<input id="filter-input" value={this.state.filter} onChange={e => this.setState({ filter: e.target.value })} />
+			</div>
 			{this.state.events.map(e => <this.Event event={e} key={e.name} />)}
 		</div>
 	}
