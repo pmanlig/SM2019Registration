@@ -54,7 +54,7 @@ export class Registration {
 	}
 
 	loadContact() {
-		this.contact = this.Storage.get(this.Storage.keys.registrationContact) || new Person();
+		this.contact = Person.fromJson(this.Storage.get(this.Storage.keys.registrationContact)) || new Person();
 		this.contact.account = this.contact.account || ""; // Patch to handle stored information without account
 		this.fire(this.Events.registrationUpdated, this);
 	}
