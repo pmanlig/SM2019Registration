@@ -82,4 +82,5 @@ yarn-error.log*
 # ODS temp files
 .~lock*
 
+public/config.json
 test.json
