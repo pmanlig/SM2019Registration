@@ -59,6 +59,10 @@ export class RosterView extends React.Component {
 		this.setState({ dropTarget: null });
 	}
 
+	match = s => {
+		return s.toUpperCase().includes(this.state.filter.toUpperCase());
+	}
+
 	Participant = ({ participant }) => {
 		return <div className="rv-participant" draggable="true" onDragStart={e => {
 			if (this.Session.user !== "")
@@ -70,10 +74,10 @@ export class RosterView extends React.Component {
 
 	Squad = ({ squad }) => {
 		// if (squad.participants.length === 0) return null;
-		if (!squad.participants.some(p => p.name.includes(this.state.filter) || p.organization.includes(this.state.filter))) { return null; }
+		if (!squad.participants.some(p => this.match(p.name) || this.match(p.organization))) { return null; }
 		return <div className="rv-squad" onDragOver={e => this.dragOver(e, squad)} onDrop={e => this.moveTo(e.dataTransfer.getData("text/json"), squad.id)}>
 			<div className={squad === this.state.dropTarget ? "rv-squad-header drop-target" : "rv-squad-header"}>{squad.startTime}</div>
-			{squad.participants.filter(p => p.name.includes(this.state.filter) || p.organization.includes(this.state.filter)).map(p => <this.Participant key={p.id} participant={p} />)}
+			{squad.participants.filter(p => this.match(p.name) || this.match(p.organization)).map(p => <this.Participant key={p.id} participant={p} />)}
 		</div>;
 	}
 
