@@ -42,6 +42,8 @@ export class CompetitionProperties extends React.Component {
 			<div id="competition-properties">
 				<div style={{ gridArea: "competition-name-label" }} className="property-label">Namn</div>
 				<div style={{ gridArea: "competition-name-input" }}><input type="text" value={this.Competition.name} size="50" placeholder="Namn" onChange={e => this.Competition.setProperty("name", e.target.value)} /></div>
+				<div style={{ gridArea: "competition-short-label" }} className="property-label">Underrubrik</div>
+				<div style={{ gridArea: "competition-short-input" }}><input type="text" value={this.Competition.shortDesc} size="50" placeholder="Underrubrik" onChange={e => this.Competition.setProperty("shortDesc", e.target.value)} /></div>
 				<div style={{ gridArea: "competition-desc-label" }} className="property-label">Beskrivning</div>
 				<div style={{ gridArea: "competition-desc-input" }}><textarea rows="8" cols="50" placeholder="Beskrivning" onChange={e => this.Competition.setProperty("description", e.target.value)} value={this.Competition.description} /></div>
 				<div style={{ gridArea: "competition-status-label" }} className="property-label">Status</div>

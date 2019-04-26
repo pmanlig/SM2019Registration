@@ -57,6 +57,11 @@
 	text-decoration: none;
 }
 
+#competitions .subtitle {
+	font-size: smaller;
+	color: blue;
+}
+
 .event-title {
 	display: flex;
 }

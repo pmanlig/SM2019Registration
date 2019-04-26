@@ -51,12 +51,19 @@ export class CompetitionList extends React.Component {
 			competition.permissions === Permissions.Own ||
 			(competition.permissions >= o.permission && (o.status === undefined || o.status === competition.status))
 		));
+		let subtitle = "";
+		if (competition.name.includes("$")) {
+			let parts = competition.name.split("$");
+			competition.name = parts[0];
+			subtitle = parts[1];
+		}
 		return <div key={competition.id} className={"competition-tile " + (competition.status === Status.Hidden ? "hidden" : (competition.status === Status.Closed ? "closed" : "open"))}>
 			<div className="event-title">
-				<Link className="competition-link" to={`/competition/${competition.id}`}>{competition.name}</Link>
+				<Link className="competition-link" to={`/competition/${competition.id}`}>{competition.name.split("$")[0]}</Link>
 				{competition.permissions === Permissions.Own && <button className="button-close small red"
 					onClick={e => this.setState({ deleteCompetition: competition })} />}
 			</div>
+			{subtitle !== "" && <div className="subtitle">{subtitle}</div>}
 			{links.map(l =>
 				<span key={l.name}>&nbsp;<Link to={`/competition/${competition.id}/${l.path}`}>{l.name}</Link>&nbsp;</span>)}
 		</div>

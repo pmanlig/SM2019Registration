@@ -29,6 +29,7 @@ export class Competition {
 	initialize = () => {
 		this.id = 0;
 		this.name = "";
+		this.shortDesc = "";
 		this.description = "";
 		this.permissions = Permissions.Own;
 		this.status = Status.Hidden;
@@ -97,6 +98,12 @@ export class Competition {
 			// ToDo: remove when service is fixed!
 			this.id = obj.id || obj.competition_id || this.id;
 			this.name = obj.name || this.name;
+			this.shortDesc = "";
+			if (obj.name.includes("$")) {
+				let parts = obj.name.split("$");
+				this.name = parts[0];
+				this.shortDesc = parts[1];
+			}
 			this.description = obj.description || this.description;
 			this.eventGroups = obj.eventGroups ? obj.eventGroups.map(eg => EventGroup.fromJson(eg)) : this.eventGroups;
 			this.events = obj.events ? obj.events.map(e => Event.fromJson(e)) : this.events;
@@ -114,7 +121,7 @@ export class Competition {
 	toJson() {
 		return {
 			id: this.id,
-			name: this.name,
+			name: `${this.name}$${this.shortDesc}`,
 			description: this.description,
 			status: this.status,
 			events: this.events.map(e => e.toJson()),
