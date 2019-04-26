@@ -22,6 +22,9 @@
 	background-color: green;
 	padding: 3px;
 	border-radius: 3px 3px 0 0;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 }
 
 .rv-participant {
@@ -31,6 +34,14 @@
 .drop-target {
 	color: black;
 	background-color: lightblue;
+}
+
+.full {
+	background-color: orange;
+}
+
+.over-capacity {
+	background-color: brown;
 }
 
 #roster-filter {
