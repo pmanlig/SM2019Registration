@@ -5,7 +5,13 @@ export class Registry {
 	static wire = ["fire", "Storage", "Events"];
 
 	initialize() {
-		this.competitors = this.Storage.get(this.Storage.registry) || [];
+		// Patch old bug
+		let old = this.Storage.get(this.Storage.registry);
+		if (old) {
+			this.Storage.deleteKey(this.Storage.registry);
+			this.Storage.set(this.Storage.keys.registry, old);
+		}
+		this.competitors = this.Storage.get(this.Storage.keys.registry) || [];
 	}
 
 	storeCompetitors(participants) {

@@ -19,10 +19,12 @@ export class LoginLogout extends React.Component {
 
 export class DeleteCookies extends React.Component {
 	static register = { name: "DeleteCookies" };
-	static wire = ["Storage"];
+	static wire = ["Storage", "Registration", "Registry"];
 
 	delete = () => {
 		this.Storage.delete();
+		this.Registration.newRegistration();
+		this.Registry.initialize();
 	}
 
 	render() {

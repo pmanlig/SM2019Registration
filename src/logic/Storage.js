@@ -15,7 +15,7 @@ export class Storage {
 		competitionService: "competitionService",
 		resultService: "resultService",
 		registrationService: "registrationService",
-		registrationContact: "Contact"
+		registrationContact: "registrationContact"
 	};
 
 	set(key, value) {
@@ -27,11 +27,20 @@ export class Storage {
 	get(key) {
 		// if (!this.keys[key]) { throw new Error("The key has not been registered! (" + key + ")"); }
 		try {
-			if (key === this.keys.allowStorage) this.allowStorage = JSON.parse(window.localStorage[key]);
+			if (key === this.keys.allowStorage) { this.allowStorage = JSON.parse(window.localStorage[key]); }
+			// Patch old bug
+			if (key === this.keys.registrationContact && window.localStorage["Contact"]) {
+				window.localStorage[this.keys.registrationContact] = window.localStorage["Contact"];
+				this.deleteKey("Contact");
+			}
 			return JSON.parse(window.localStorage[key]);
 		} catch (error) {
 			return undefined;
 		}
+	}
+
+	deleteKey(key) {
+		window.localStorage.removeItem(key);
 	}
 
 	delete() {
