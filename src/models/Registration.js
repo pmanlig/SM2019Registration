@@ -60,6 +60,14 @@ export class Registration {
 		this.fire(this.Events.registrationUpdated, this);
 	}
 
+	newRegistration = () => {
+		this.token = undefined;
+		this.participants = [];
+		this.loadContact();
+		this.Tokens.setToken(this.Competition.id, undefined);
+		this.fire(this.Events.registrationUpdated, this);
+	}
+
 	setParticipantDefaults() {
 		this.participants.forEach(p => {
 			p.registrationInfo.forEach(r => {

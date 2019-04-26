@@ -15,7 +15,7 @@ export function ButtonToolbar({ className, children }) {
 
 export class RegistrationToolbar extends React.Component {
 	static register = { name: "RegistrationToolbar" };
-	static wire = ["Registration", "Registry", "Storage", "EventBus", "Events"];
+	static wire = ["Registration", "Registry", "Storage", "EventBus", "Events", "Session"];
 
 	constructor(props) {
 		super(props);
@@ -28,6 +28,7 @@ export class RegistrationToolbar extends React.Component {
 			<input type='button' className="button" id="addButton" onClick={e => this.Registration.addParticipant()} value='Lägg till deltagare' />
 			{this.Registry.competitors.length > 0 &&
 				<input type='button' className="button" id="getButton" onClick={e => this.fire(this.Events.showParticipantPicker)} value='Hämta deltagare' />}
+			{this.Registration.token !== undefined && this.Session.user !== "" && <input type="button" className="button" onClick={this.Registration.newRegistration} value="Ny anmälan" />}
 			<button className={this.Registration.participants.length === 0 ? "button disabled tooltip" : "button"} id="registerButton" onClick={e => this.fire(this.Events.registerForCompetition)}
 				style={{ position: "relative" }} tooltip="Klicka här för att anmäla starter när du har lagt till alla skyttar och starter du vill anmäla" tooltip-position="right">{this.Registration.token ? "Uppdatera anmälan" : "Anmäl starter"}</button>
 			{this.Registration.token && <button className="button" onClick={e => this.Registration.deleteRegistration()}>Ta bort anmälan</button>}
