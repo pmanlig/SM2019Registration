@@ -6,9 +6,9 @@ export class RegistrationContact extends React.Component {
 
 	render() {
 		let minor = [
-			{ name: 'Namn*', width: 200, type: 'text', field: 'name' },
+			{ name: 'Namn*', placeholder: 'Namn', width: 200, type: 'text', field: 'name' },
 			{ name: 'Förening', width: 200, type: 'text', field: 'organization' },
-			{ name: 'Email*', width: 200, type: 'email', field: 'email' },
+			{ name: 'Email*', placeholder: 'Email', width: 200, type: 'email', field: 'email' },
 			{ name: 'Konto', placeholder: 'Kontonummer', width: 100, type: 'text', field: 'account' }];
 
 		let model = this.Registration.contact;
