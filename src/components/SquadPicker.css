@@ -71,3 +71,12 @@
 .squad-picker tbody tr button:hover {
 	background-color: lightgray;
 }
+
+.no-squad {
+	margin: 5px 0 0 0;
+}
+
+.no-squad:hover {
+	color: #f5f5f5;
+	background-color: #cf3f3f;
+}

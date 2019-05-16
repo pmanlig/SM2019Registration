@@ -49,8 +49,13 @@ export class SquadPicker extends React.Component {
 	}
 
 	selectSquad = (squad) => {
-		if (!this.canRegister(squad)) return;
 		let { participant, event, round } = this.state;
+		if (squad === undefined) {
+			this.EventBus.fire(this.Events.selectSquad, participant.id, event.id, round, null);
+			this.setState({ participant: undefined });
+			return;
+		}
+		if (!this.canRegister(squad)) return;
 		this.EventBus.fire(this.Events.selectSquad, participant.id, event.id, round, squad);
 		this.setState({ participant: undefined });
 	}
@@ -165,6 +170,8 @@ export class SquadPicker extends React.Component {
 					</tbody>
 				</table>
 			</div>
+			{this.state.participant.getStartTime(this.state.event.id, this.state.round) !== undefined &&
+				<div className="center"><button className="button small no-squad" onClick={e => this.selectSquad(undefined)}>Ta bort starttid</button></div>}
 		</div>;
 	}
 }
