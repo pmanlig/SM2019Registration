@@ -48,8 +48,8 @@ export class CompetitionList extends React.Component {
 
 	Competition = ({ competition }) => {
 		let links = Operations.filter(o => (
-			competition.permissions === Permissions.Own ||
-			(competition.permissions >= o.permission && (o.status === undefined || o.status === competition.status))
+			competition.permissions !== Permissions.Any ||
+			(o.permission === Permissions.Any && (o.status === undefined || o.status === competition.status))
 		));
 		let subtitle = "";
 		if (competition.name.includes("$")) {
