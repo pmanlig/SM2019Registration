@@ -1,5 +1,9 @@
 [
 	{
+		"q": "Anmälan till SM är stängd - hur gör jag om jag vill efteranmäla mig?",
+		"a": "När anmälan har stängts kan du inte längre anmäla dig eller ändra en anmälan via gränssnittet. En administratör kan däremot ändra åt dig. Den här funktionen är till för att vi ska kunna exportera startlistor och stämma av mot inbetalade startavgifter, utan att startlistan samtidigt förändras. \nFör att se dina starttider kan du gå in på respektive dag och söka efter ditt namn i sökrutan. \nOm du vill ändra din start eller efteranmäla dig kan du kontakta en administratör genom att skicka e-post till $mailto:anmalan@xkretsen.se~anmalan@xkretsen.se$"
+	},
+	{
 		"q": "Hur vet jag att jag har anmält mig?",
 		"a": "När du anmäler dyker en grön indikation upp som säger att N starter har anmälts. Sedan skickas ett mail med bekräftelse på starterna. Mailet innehåller en länk till din anmälan som du kan klicka på om du vill ändra något."
 	},

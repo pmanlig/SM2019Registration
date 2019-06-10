@@ -23,8 +23,9 @@ export class HelpView extends React.Component {
 	}
 
 	linkify(text) {
-		let parts = text.split("$").map(t => this.link(t));
-		return <p>{parts.map((p, index) => <span key={index}>{p}</span>)}</p>;
+		return text.split("\n").map((p, k) => <p key={k}>{
+			p.split("$").map((t, i) => <span key={i}>{this.link(t)}</span>)
+		}</p>);
 	}
 
 	render() {
@@ -41,7 +42,7 @@ export class HelpView extends React.Component {
 				knappen <button className="scheduleButton">Välj starttid</button> så kommer en lista över starttider att visas. Du väljer en starttid
 				genom att klicka på rubriken för ett skjutlag/patrull.</p>
 			<p>Listan över starttider hjälper dig att välja starttider som inte krockar. Om en starttid inte går att välja för att den krockar med
-				en starttid du redan har valt, kommer den starttiden att visas "dimmad" och inte gå att klicka på. Om en starttid är full kommer den 
+				en starttid du redan har valt, kommer den starttiden att visas "dimmad" och inte gå att klicka på. Om en starttid är full kommer den
 				att vara röd och går inte heller att klicka på. Du kan alltså bara välja starttider som inte krockar med redan valda starttider.</p>
 			{
 				this.state.qa.map(qa => <div key={qaId++}>
