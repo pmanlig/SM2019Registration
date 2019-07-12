@@ -122,8 +122,10 @@ export class Competition {
 		return {
 			id: this.id,
 			name: `${this.name}$${this.shortDesc}`,
+			subtitle: `${this.shortDesc}`,  // TODO: Implement!
 			description: this.description,
 			status: this.status,
+			mailTemplate: 1, // TODO: Implement!
 			events: this.events.map(e => e.toJson()),
 			eventGroups: this.eventGroups,
 			rules: this.rules
