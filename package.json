@@ -4,14 +4,14 @@
   "private": true,
   "homepage": "https://anmalan.manlig.org",
   "dependencies": {
-    "react": "^16.8.6",
-    "react-date-picker": "^7.5.0",
-    "react-dom": "^16.8.6",
+    "react": "^16.13.1",
+    "react-date-picker": "^7.10.0",
+    "react-dom": "^16.13.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.8",
-    "rxjs": "^6.4.0",
-    "typescript": "^3.4.4"
+    "rxjs": "^6.6.0",
+    "typescript": "^3.9.7"
   },
   "scripts": {
     "prestart": "set \"REACT_APP_VERSION=$npm_package_version\"",
