@@ -104,6 +104,7 @@ export class Competition {
 				this.name = parts[0];
 				this.shortDesc = parts[1];
 			}
+			if (obj.subtitle) {	this.shortDesc = obj.subtitle; }
 			this.description = obj.description || this.description;
 			this.eventGroups = obj.eventGroups ? obj.eventGroups.map(eg => EventGroup.fromJson(eg)) : this.eventGroups;
 			this.events = obj.events ? obj.events.map(e => Event.fromJson(e)) : this.events;
@@ -121,7 +122,7 @@ export class Competition {
 	toJson() {
 		return {
 			id: this.id,
-			name: `${this.name}$${this.shortDesc}`,
+			name: `${this.name}`,
 			subtitle: `${this.shortDesc}`,  // TODO: Implement!
 			description: this.description,
 			status: this.status,
