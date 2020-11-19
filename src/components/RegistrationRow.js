@@ -73,7 +73,7 @@ export class RegistrationRow extends React.Component {
 	}
 
 	RegistrationControls = ({ row, numRows, participant }) => {
-		return this.Competition.eventList().map(e => <this.EventControls key={`ev${e.id}${row}`} row={row} numRows={numRows} participant={participant} event={e} />);
+		return this.Competition.eventList().map(e => this.EventControls({ key: `ev${e.id}${row}`, row: row, numRows: numRows, participant: participant, event: e }));
 	}
 
 	RegistrationField = ({ numRows, participant, header }) => {
@@ -84,14 +84,14 @@ export class RegistrationRow extends React.Component {
 	}
 
 	ParticipantFields = ({ numRows, participant }) => {
-		return this.Competition.participantHeaders().map(h => <this.RegistrationField key={h.field} numRows={numRows} participant={participant} header={h} />);
+		return this.Competition.participantHeaders().map(h => this.RegistrationField({ key: h.field, numRows: numRows, participant: participant, header: h }));
 	}
 
 	ParticipantRow = ({ row, numRows, participant }) => {
 		let p = participant;
 		return <tr className={p.errors.length > 0 ? "error registration" : "registration"}>
-			{row === 0 && <this.ParticipantFields numRows={numRows} participant={p} />}
-			<this.RegistrationControls row={row} numRows={numRows} participant={p} />
+			{row === 0 && this.ParticipantFields({ numRows: numRows, participant: p })}
+			{this.RegistrationControls({ row: row, numRows: numRows, participant: p })}
 			{row === 0 && <td className="vcenter tooltip" style={{ position: "relative" }} tooltip="Ta bort deltagare" tooltip-position="top">
 				<button className="button-close small red" onClick={e => this.fire(this.Events.deleteParticipant, p.id)} /></td>}
 		</tr>;

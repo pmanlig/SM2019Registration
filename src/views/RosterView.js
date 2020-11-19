@@ -81,7 +81,7 @@ export class RosterView extends React.Component {
 		if (squad === this.state.dropTarget) header_class = "rv-squad-header drop-target";
 		return <div className="rv-squad" onDragOver={e => this.dragOver(e, squad)} onDrop={e => this.moveTo(e.dataTransfer.getData("text/json"), squad.id)}>
 			<div className={header_class}><span>{squad.startTime}</span><span>{squad.participants.length}/{squad.slots}</span></div>
-			{squad.participants.filter(p => this.match(p.name) || this.match(p.organization)).map(p => <this.Participant key={p.id} participant={p} />)}
+			{squad.participants.filter(p => this.match(p.name) || this.match(p.organization)).map(p => this.Participant({ key: p.id, participant: p }))}
 		</div>;
 	}
 
@@ -89,7 +89,7 @@ export class RosterView extends React.Component {
 		return <div className="rv-event">
 			<h3>{event.name}</h3>
 			<p className="subtitle">{event.schedule === undefined ? 0 : event.schedule.squads.map(c => c.participants.length).reduce((a, c) => a + c)} starter</p>
-			{event.schedule && event.schedule.squads.map(s => <this.Squad key={s.id} squad={s} />)}
+			{event.schedule && event.schedule.squads.map(s => this.Squad({ key: s.id, squad: s }))}
 		</div>;
 	}
 
@@ -99,7 +99,7 @@ export class RosterView extends React.Component {
 				<p id="filter-label">Söktext</p>
 				<input id="filter-input" value={this.state.filter} onChange={e => this.setState({ filter: e.target.value })} />
 			</div>
-			{this.state.events.map(e => <this.Event event={e} key={e.name} />)}
+			{this.state.events.map(e => this.Event({ event: e, key: e.name }))}
 		</div>
 	}
 }
