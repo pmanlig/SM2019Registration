@@ -13,7 +13,6 @@ export class App extends React.Component {
 		super(props);
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.configurationLoaded, () => {
-			console.log("Configuration loaded - re-rendering");
 			this.setState({});
 		});
 	}

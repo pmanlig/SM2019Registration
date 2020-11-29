@@ -6,7 +6,6 @@ export class Configuration {
 	site = '';
 
 	initialize() {
-		console.log("Fetching configuration");
 		fetch("/config.json")
 			.then(res => res.json())
 			.then(json => {
