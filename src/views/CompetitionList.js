@@ -80,9 +80,7 @@ export class CompetitionList extends React.Component {
 		// ToDo: fix filtering of hidden competitions in server
 		let competitions = this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own));
 		if (this.props.match.params.group_id) {
-			// ToDo: server needs to implement group
-			// competitions = competitions.filter(c => c.group == this.props.match.params.group_id);
-			competitions = competitions.filter(c => c.name.startsWith(`${this.props.match.params.group_id}$`));
+			competitions = competitions.filter(c => c.group == this.props.match.params.group_id);
 		}
 		console.log("Rendering competitions");
 		console.log(competitions);
