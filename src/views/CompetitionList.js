@@ -18,6 +18,18 @@ export class CompetitionList extends React.Component {
 	loadCompetitions = () => {
 		this.Server.loadCompetitionList(json => this.setState({
 			competitions: json.map(c => {
+				if (c.name.includes("$")) {
+					let parts = c.name.split("$");
+					if (parts.length > 2) {
+						c.group = parts[0];
+						c.name = parts[1];
+						c.subtitle = parts[2];
+					} else {
+						c.group = c.group || "";
+						c.name = parts[0];
+						c.subtitle = parts[1];
+					}
+				}
 				return {
 					...c,
 					status: c.status ? parseInt(c.status.toString(), 10) : Status.Open,
@@ -51,24 +63,13 @@ export class CompetitionList extends React.Component {
 			competition.permissions !== Permissions.Any ||
 			(o.permission === Permissions.Any && (o.status === undefined || o.status === competition.status))
 		));
-		let subtitle = "";
-		if (competition.name.includes("$")) {
-			let parts = competition.name.split("$");
-			if (parts.length > 2) {
-				competition.name = parts[1];
-				subtitle = parts[2];
-			} else {
-				competition.name = parts[0];
-				subtitle = parts[1];
-			}
-		}
 		return <div key={competition.id} className={"competition-tile " + (competition.status === Status.Hidden ? "hidden" : (competition.status === Status.Closed ? "closed" : "open"))}>
 			<div className="event-title">
 				<Link className="competition-link" to={`/competition/${competition.id}`}>{competition.name.split("$")[0]}</Link>
 				{competition.permissions === Permissions.Own && <button className="button-close small red"
 					onClick={e => this.setState({ deleteCompetition: competition })} />}
 			</div>
-			{subtitle !== "" && <div className="subtitle">{subtitle}</div>}
+			{competition.subtitle !== "" && <div className="subtitle">{competition.subtitle}</div>}
 			{links.map(l =>
 				<span key={l.name}>&nbsp;<Link to={`/competition/${competition.id}/${l.path}`}>{l.name}</Link>&nbsp;</span>)}
 		</div>
@@ -83,6 +84,8 @@ export class CompetitionList extends React.Component {
 			// competitions = competitions.filter(c => c.group == this.props.match.params.group_id);
 			competitions = competitions.filter(c => c.name.startsWith(`${this.props.match.params.group_id}$`));
 		}
+		console.log("Rendering competitions");
+		console.log(competitions);
 		return <div id='competitions' className='content'>
 			{this.state.deleteCompetition && <this.YesNoDialog title="Bekräfta borttagning"
 				text={`Är du säker på att du vill ta bort ${this.state.deleteCompetition.name}?`} action={act => this.deleteCompetition(act)} />}
