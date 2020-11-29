@@ -54,8 +54,13 @@ export class CompetitionList extends React.Component {
 		let subtitle = "";
 		if (competition.name.includes("$")) {
 			let parts = competition.name.split("$");
-			competition.name = parts[0];
-			subtitle = parts[1];
+			if (parts.length > 2) {
+				competition.name = parts[1];
+				subtitle = parts[2];
+			} else {
+				competition.name = parts[0];
+				subtitle = parts[1];
+			}
 		}
 		return <div key={competition.id} className={"competition-tile " + (competition.status === Status.Hidden ? "hidden" : (competition.status === Status.Closed ? "closed" : "open"))}>
 			<div className="event-title">
@@ -73,6 +78,11 @@ export class CompetitionList extends React.Component {
 		let loggedIn = this.Session.user !== "";
 		// ToDo: fix filtering of hidden competitions in server
 		let competitions = this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own));
+		if (this.props.match.params.group_id) {
+			// ToDo: server needs to implement group
+			// competitions = competitions.filter(c => c.group == this.props.match.params.group_id);
+			competitions = competitions.filter(c => c.name.startsWith(`${this.props.match.params.group_id}$`));
+		}
 		return <div id='competitions' className='content'>
 			{this.state.deleteCompetition && <this.YesNoDialog title="Bekräfta borttagning"
 				text={`Är du säker på att du vill ta bort ${this.state.deleteCompetition.name}?`} action={act => this.deleteCompetition(act)} />}

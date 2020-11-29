@@ -34,6 +34,7 @@ export class App extends React.Component {
 					<this.AppHeader title="Anmälningssystem Gävle PK" />
 					<Switch>
 						<Route path="/login" component={this.LoginView} />
+						<Route path="/group/:group_id" component={this.CompetitionList} />
 						<Route path="/competition/:id/:operation/:token" component={this.CompetitionView} />
 						<Route path="/competition/:id/:operation" component={this.CompetitionView} />
 						<Route path="/competition/:id" component={this.CompetitionView} />

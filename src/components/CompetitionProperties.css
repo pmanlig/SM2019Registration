@@ -44,9 +44,11 @@
 #competition-properties {
 	display: inline-grid;
 	grid-template: 
-		"competition-name-label competition-name-input competition-status-label competition-status-input"
-		"competition-short-label competition-short-input competition-50pct-label competition-50pct-input"
-		"competition-desc-label competition-desc-input . .";
+		"competition-group-label competition-group-input competition-desc-label"
+		"competition-name-label competition-name-input competition-desc-input"
+		"competition-short-label competition-short-input competition-desc-input"
+		"competition-status-label competition-status-input competition-desc-input"
+		"competition-50pct-input competition-50pct-label competition-desc-input";
 	margin-top: 5px;
 }
 

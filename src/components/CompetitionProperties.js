@@ -40,6 +40,8 @@ export class CompetitionProperties extends React.Component {
 		return <div>
 			<this.ScheduleProperties divisionGroups={divisionGroups} />
 			<div id="competition-properties">
+				<div style={{ gridArea: "competition-group-label" }} className="property-label">Grupp</div>
+				<div style={{ gridArea: "competition-group-input" }}><input type="text" value={this.Competition.group} size="50" placeholder="Grupp" onChange={e => this.Competition.setProperty("group", e.target.value)} /></div>
 				<div style={{ gridArea: "competition-name-label" }} className="property-label">Namn</div>
 				<div style={{ gridArea: "competition-name-input" }}><input type="text" value={this.Competition.name} size="50" placeholder="Namn" onChange={e => this.Competition.setProperty("name", e.target.value)} /></div>
 				<div style={{ gridArea: "competition-short-label" }} className="property-label">Underrubrik</div>

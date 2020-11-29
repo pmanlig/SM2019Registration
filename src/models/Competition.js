@@ -31,6 +31,7 @@ export class Competition {
 		this.name = "";
 		this.shortDesc = "";
 		this.description = "";
+		this.group = "";
 		this.permissions = Permissions.Own;
 		this.status = Status.Hidden;
 		this.eventGroups = [];
@@ -95,16 +96,22 @@ export class Competition {
 
 	fromJson(obj) {
 		if (obj) {
-			// ToDo: remove when service is fixed!
 			this.id = obj.id || obj.competition_id || this.id;
 			this.name = obj.name || this.name;
-			this.shortDesc = "";
+			this.shortDesc = obj.subtitle || this.shortDesc;
+			this.group = obj.group || this.group;
 			if (obj.name.includes("$")) {
+				// Compatibility
 				let parts = obj.name.split("$");
-				this.name = parts[0];
-				this.shortDesc = parts[1];
+				if (parts.length > 2) {
+					this.group = parts[0];
+					this.name = parts[1];
+					this.shortDesc = parts[2];
+				} else {
+					this.name = parts[0];
+					this.shortDesc = parts[1];
+				}
 			}
-			if (obj.subtitle) {	this.shortDesc = obj.subtitle; }
 			this.description = obj.description || this.description;
 			this.eventGroups = obj.eventGroups ? obj.eventGroups.map(eg => EventGroup.fromJson(eg)) : this.eventGroups;
 			this.events = obj.events ? obj.events.map(e => Event.fromJson(e)) : this.events;
@@ -122,8 +129,9 @@ export class Competition {
 	toJson() {
 		return {
 			id: this.id,
-			name: `${this.name}`,
-			subtitle: `${this.shortDesc}`,  // TODO: Implement!
+			name: `${this.group}$${this.name}$${this.shortDesc}`,
+			subtitle: `${this.shortDesc}`,
+			group: `${this.group}`,
 			description: this.description,
 			status: this.status,
 			mailTemplate: 1, // TODO: Implement!
