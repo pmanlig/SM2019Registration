@@ -71,3 +71,14 @@
 	flex-grow: 1;
 	margin: 3px;
 }
+
+@media only screen and (max-width: 600px) {
+	#competitions div.competition-tile {
+		margin: 2px;
+		padding: 4px;
+		border-radius: 4px;
+		color: white;
+		background-color: #a0cfff;
+		max-width: 95%;
+	}
+}
