@@ -25,8 +25,10 @@ export class LocalRegistrationService {
 	}
 
 	sendRegistration(data, callback, error) {
-		console.log("receiving registration data");
-		console.log(data);
+		if (window._debug) {
+			console.log("receiving registration data");
+			console.log(data);
+		}
 		let competitionId = data.competition;
 		if (competitionId === undefined) {
 			error({ message: "TävlingsId måste anges!" });
