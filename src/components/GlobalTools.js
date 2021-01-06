@@ -12,7 +12,7 @@ export class LoginLogout extends React.Component {
 
 	render() {
 		return this.Session.user !== "" ?
-			<Link to='' className='globaltool' onClick={this.toggle}>{'Logga ut ' + this.Session.user}</Link> :
+			<Link to='' className='globaltool' onClick={this.toggle}>Logga ut<span className="bloat">{' ' + this.Session.user}</span></Link> :
 			<Link to="/login" className='globaltool'>Logga in</Link>;
 	}
 }
