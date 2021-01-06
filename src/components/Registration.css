@@ -67,9 +67,27 @@ tr.registration td.vcenter {
 	padding-bottom: 10px;
 }
 
-/*
-tr.registration td button.scheduleButton, tr.registration td select, tr.registration td input {
-	box-sizing: border-box;
-	height: 30px;
+#registrationContact .header {
+	display: block;
+	padding: 2px;
+	border: 1px solid black;
 }
-*/
+
+#registrationContact div {
+	margin: 3px 0 0 0;
+	display: inline-flex;
+}
+
+#registrationContact p {
+	margin: 3px 5px 0 0;
+}
+
+#registrationContact input {
+	margin: 3px 5px 0 0;
+}
+
+@media only screen and (max-width:600px) {
+	#registrationContact p {
+		width: 80px;
+	}
+}

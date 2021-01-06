@@ -98,3 +98,9 @@
 .buttons {
 	margin: 10px;
 }
+
+@media only screen and (max-width:600px) {
+	.bloat {
+		display:none;
+	}
+}

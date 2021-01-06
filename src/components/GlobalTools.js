@@ -28,7 +28,7 @@ export class DeleteCookies extends React.Component {
 	}
 
 	render() {
-		return this.Storage.get(this.Storage.keys.allowStorage) !== undefined && <Link to='' className='globaltool' onClick={this.delete}>Rensa sparad information</Link>;
+		return this.Storage.get(this.Storage.keys.allowStorage) !== undefined && <Link to='' className='globaltool' onClick={this.delete}>Rensa<span className="bloat"> sparad information</span></Link>;
 	}
 }
 

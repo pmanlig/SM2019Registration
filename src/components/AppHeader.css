@@ -46,6 +46,7 @@
 }
 
 .globaltool {
+	line-height: 20px;
 	height: 20px;
 	max-height: 3vh;
 	font-size: 15px;

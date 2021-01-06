@@ -14,16 +14,9 @@ export class RegistrationContact extends React.Component {
 		let model = this.Registration.contact;
 
 		return <div id='registrationContact' className='content'>
-			<table>
-				<thead>
-					<tr><th className='major' colSpan={minor.length}>Anmälare&nbsp;<span style={{ fontSize: "x-small", verticalAlign: "top" }}>(* = obligatoriskt fält)</span></th></tr>
-					<tr>{minor.map(h => <th className='minor' key={h.name} style={{ width: h.width, paddingRight: '10px' }}>{h.name}</th>)}</tr>
-				</thead>
-				<tbody>
-					<tr>{minor.map(h => <td key={h.name}><input type='text' placeholder={h.placeholder || h.name} style={{ width: h.width }}
-						value={model[h.field]} onChange={e => this.fire(this.Events.setRegistrationInfo, h.field, e.target.value)} /></td>)}</tr>
-				</tbody>
-			</table>
+			<div className="header">Anmälare&nbsp;<span style={{ fontSize: "x-small", verticalAlign: "top" }}>(* = obligatoriskt fält)</span></div>
+			{minor.map(h => <div key={h.name}><p>{h.name}</p><input type='text' placeholder={h.placeholder || h.name} style={{ width: h.width }}
+				value={model[h.field]} onChange={e => this.fire(this.Events.setRegistrationInfo, h.field, e.target.value)} /></div>)}
 		</div>;
 	}
 }

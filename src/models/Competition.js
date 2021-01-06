@@ -112,7 +112,13 @@ export class Competition {
 					this.shortDesc = parts[1];
 				}
 			}
-			this.description = obj.description || this.description;
+			if (obj.description.includes("<desc>")) {
+				this.description = obj.description.match(/<desc>(.*)<\/desc>/)[1];
+				this.group = obj.description.match(/<group>(.*)<\/group>/)[1];
+				this.shortDesc = obj.description.match(/<sub>(.*)<\/sub>/)[1];
+			} else {
+				this.description = obj.description || this.description;
+			}
 			this.eventGroups = obj.eventGroups ? obj.eventGroups.map(eg => EventGroup.fromJson(eg)) : this.eventGroups;
 			this.events = obj.events ? obj.events.map(e => Event.fromJson(e)) : this.events;
 			this.nextNewEvent = Math.max(...this.events.filter(e => e.id < 1000).map(e => e.id), 0) + 1;
@@ -129,10 +135,10 @@ export class Competition {
 	toJson() {
 		return {
 			id: this.id,
-			name: `${this.group}$${this.name}$${this.shortDesc}`,
+			name: `${this.name}`,
 			subtitle: `${this.shortDesc}`,
 			group: `${this.group}`,
-			description: this.description,
+			description: `<desc>${this.description}</desc><group>${this.group}</group><sub>${this.shortDesc}</sub>`,
 			status: this.status,
 			mailTemplate: 1, // TODO: Implement!
 			events: this.events.map(e => e.toJson()),
