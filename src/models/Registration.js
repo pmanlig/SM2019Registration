@@ -70,6 +70,7 @@ export class Registration {
 
 	setParticipantDefaults() {
 		this.participants.forEach(p => {
+			p.registrationInfo = p.registrationInfo.filter(r => this.Competition.event(r.event) !== undefined);
 			p.registrationInfo.forEach(r => {
 				let event = this.Competition.event(r.event);
 				if (event.classes) {

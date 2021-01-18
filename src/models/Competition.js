@@ -113,7 +113,7 @@ export class Competition {
 					this.shortDesc = parts[1];
 				}
 			}
-			if (obj.description.includes("<desc>")) {
+			if (obj.description.includes("<desc>")) { // Compatibility
 				this.description = obj.description.match(/<desc>(.*)<\/desc>/)[1];
 				this.group = obj.description.match(/<group>(.*)<\/group>/)[1];
 				this.shortDesc = obj.description.match(/<sub>(.*)<\/sub>/)[1];
@@ -121,8 +121,16 @@ export class Competition {
 				if (null !== rules) {
 					this.rules = rules[1].split(',');
 				}
-			} else {
-				this.description = obj.description || this.description;
+			} else if (obj.description.includes("#desc#")) {
+					this.description = obj.description.match(/#desc#(.*)##/)[1];
+					this.group = obj.description.match(/#group#(.*)##/)[1];
+					this.shortDesc = obj.description.match(/#sub#(.*)##/)[1];
+					let rules = obj.description.match(/#rules#(.*)##/);
+					if (null !== rules) {
+						this.rules = rules[1].split(',');
+					}
+				} else {
+					this.description = obj.description || this.description;
 			}
 			this.eventGroups = obj.eventGroups ? obj.eventGroups.map(eg => EventGroup.fromJson(eg)) : this.eventGroups;
 			this.events = obj.events ? obj.events.map(e => Event.fromJson(e)) : this.events;
@@ -142,7 +150,7 @@ export class Competition {
 			name: `${this.name}`,
 			subtitle: `${this.shortDesc}`,
 			group: `${this.group}`,
-			description: `<desc>${this.description}</desc><group>${this.group}</group><sub>${this.shortDesc}</sub><rules>${this.rules.join(',')}</rules>`,
+			description: `#desc#${this.description}##group#${this.group}##sub#${this.shortDesc}##rules#${this.rules.join(',')}##`,
 			status: this.status,
 			mailTemplate: 1, // TODO: Implement!
 			events: this.events.map(e => e.toJson()),
