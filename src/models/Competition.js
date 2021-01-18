@@ -100,6 +100,7 @@ export class Competition {
 			this.name = obj.name || this.name;
 			this.shortDesc = obj.subtitle || this.shortDesc;
 			this.group = obj.group || this.group;
+			this.rules = obj.rules || this.rules;
 			if (obj.name.includes("$")) {
 				// Compatibility
 				let parts = obj.name.split("$");
@@ -116,13 +117,16 @@ export class Competition {
 				this.description = obj.description.match(/<desc>(.*)<\/desc>/)[1];
 				this.group = obj.description.match(/<group>(.*)<\/group>/)[1];
 				this.shortDesc = obj.description.match(/<sub>(.*)<\/sub>/)[1];
+				let rules = obj.description.match(/<rules>(.*)<\/rules>/);
+				if (null !== rules) {
+					this.rules = rules[1].split(',');
+				}
 			} else {
 				this.description = obj.description || this.description;
 			}
 			this.eventGroups = obj.eventGroups ? obj.eventGroups.map(eg => EventGroup.fromJson(eg)) : this.eventGroups;
 			this.events = obj.events ? obj.events.map(e => Event.fromJson(e)) : this.events;
 			this.nextNewEvent = Math.max(...this.events.filter(e => e.id < 1000).map(e => e.id), 0) + 1;
-			this.rules = obj.rules || this.rules;
 			this.permissions = obj.permissions ? parseInt(obj.permissions.toString(), 10) :
 				(this.Session.user === "" || this.Session.user === undefined ? Permissions.Any : Permissions.Own);
 			this.status = (obj.status !== undefined) ? parseInt(obj.status.toString(), 10) : Status.Open;
@@ -138,12 +142,12 @@ export class Competition {
 			name: `${this.name}`,
 			subtitle: `${this.shortDesc}`,
 			group: `${this.group}`,
-			description: `<desc>${this.description}</desc><group>${this.group}</group><sub>${this.shortDesc}</sub>`,
+			description: `<desc>${this.description}</desc><group>${this.group}</group><sub>${this.shortDesc}</sub><rules>${this.rules.join(',')}</rules>`,
 			status: this.status,
 			mailTemplate: 1, // TODO: Implement!
 			events: this.events.map(e => e.toJson()),
 			eventGroups: this.eventGroups,
-			rules: this.rules
+			rules: this.rules.filter(r => r === '50pct')
 		};
 	}
 
