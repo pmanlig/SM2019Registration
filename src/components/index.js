@@ -1,6 +1,7 @@
 export { BusyIndicator, Busy } from './BusyIndicator';
 export { LoginLogout, DeleteCookies, LocalToggle } from './GlobalTools';
 export { RegistrationToolbar, ButtonToolbar, Label } from './RegistrationToolbar';
+export { ParticipantToolbar } from './ParticipantToolbar';
 export { Summary } from './Summary';
 export { ParticipantPicker } from './ParticipantPicker';
 export { AppHeader } from './AppHeader';

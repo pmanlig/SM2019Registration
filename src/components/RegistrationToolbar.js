@@ -1,4 +1,4 @@
-import "./RegistrationToolbar.css";
+import "./Toolbar.css";
 import "../general/Tooltip.css";
 import React from 'react';
 
@@ -35,13 +35,10 @@ export class RegistrationToolbar extends React.Component {
 	render() {
 		return <div className="buttons center content" style={{ position: "relative", overflow: "visible" }}>
 			{this.state.showDialog && <this.YesNoDialog title="Bekräfta avregistrering" text="Är du säker på att du vill ta bort anmälan?" action={this.deleteRegistration} />}
-			{this.Registry.competitors.length > 0 &&
-				<input type='button' className="button" id="getButton" onClick={e => this.fire(this.Events.showParticipantPicker)} value='Hämta deltagare' />}
-			<input type='button' className="button" id="addButton" onClick={e => this.Registration.addParticipant()} value='Lägg till deltagare' />
-			{this.Registration.token && this.Session.user !== "" && <input type="button" className="button" onClick={this.Registration.newRegistration} value="Ny anmälan" />}
 			<button className={this.Registration.participants.length === 0 ? "button disabled tooltip" : "button"} id="registerButton" onClick={e => this.fire(this.Events.registerForCompetition)}
 				style={{ position: "relative" }} tooltip="Klicka här för att anmäla starter när du har lagt till alla skyttar och starter du vill anmäla" tooltip-position="right">{this.Registration.token ? "Uppdatera anmälan" : "Anmäl starter"}</button>
-			{this.Registration.token && <button className="button" onClick={e => this.setState({ showDialog: true })}>Ta bort anmälan</button>}
+			{this.Registration.token && <button className="button unfocus" onClick={e => this.setState({ showDialog: true })}>Ta bort anmälan</button>}
+			{this.Registration.token && this.Session.user !== "" && <input type="button" className="button unfocus" onClick={this.Registration.newRegistration} value="Rensa anmälan" />}
 		</div>
 	}
 }
