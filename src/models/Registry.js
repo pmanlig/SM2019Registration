@@ -4,6 +4,8 @@ export class Registry {
 	static register = { name: "Registry", createInstance: true };
 	static wire = ["fire", "Storage", "Events"];
 
+	competitors = [];
+
 	initialize() {
 		// Patch old bug
 		let old = this.Storage.get(this.Storage.registry);
@@ -11,7 +13,7 @@ export class Registry {
 			this.Storage.deleteKey(this.Storage.registry);
 			this.Storage.set(this.Storage.keys.registry, old);
 		}
-		this.competitors = this.Storage.get(this.Storage.keys.registry) || [];
+		this.competitors = this.Storage.get(this.Storage.keys.registry) || this.competitors;
 	}
 
 	storeCompetitors(participants) {
@@ -21,7 +23,7 @@ export class Registry {
 				competitors.push(p);
 		});
 		this.competitors = competitors;
-		this.Storage.set(this.Storage.registry, this.competitors);
+		this.Storage.set(this.Storage.keys.registry, this.competitors);
 		this.fire(this.Events.registryUpdated);
 	}
 

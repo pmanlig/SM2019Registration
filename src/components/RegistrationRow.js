@@ -76,8 +76,8 @@ export class RegistrationRow extends React.Component {
 		return this.Competition.eventList().map(e => this.EventControls({ key: `ev${e.id}${row}`, row: row, numRows: numRows, participant: participant, event: e }));
 	}
 
-	RegistrationField = ({ numRows, participant, header }) => {
-		return <td className="left" rowSpan={numRows}><input type="text" value={participant[header.field]}
+	RegistrationField = ({ key, numRows, participant, header }) => {
+		return <td key={key} className="left" rowSpan={numRows}><input type="text" value={participant[header.field]}
 			placeholder={header.placeholder || header.name} style={{ width: header.width }}
 			onChange={e => this.Registration.setParticipantField(participant.id, header.field, e.target.value)}
 			size={header.size} /></td>;
@@ -89,7 +89,7 @@ export class RegistrationRow extends React.Component {
 
 	ParticipantRow = ({ row, numRows, participant }) => {
 		let p = participant;
-		return <tr className={p.errors.length > 0 ? "error registration" : "registration"}>
+		return <tr className={p.errors.length > 0 ? "error registration" : "registration"} key={p.competitionId}>
 			{row === 0 && this.ParticipantFields({ numRows: numRows, participant: p })}
 			{this.RegistrationControls({ row: row, numRows: numRows, participant: p })}
 			{row === 0 && <td className="vcenter tooltip" style={{ position: "relative" }} tooltip="Ta bort deltagare" tooltip-position="top">
