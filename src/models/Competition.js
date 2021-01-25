@@ -122,10 +122,10 @@ export class Competition {
 					this.rules = rules[1].split(',');
 				}
 			} else if (obj.description.includes("#desc#")) {
-					this.description = obj.description.match(/#desc#(.*)##/)[1];
-					this.group = obj.description.match(/#group#(.*)##/)[1];
-					this.shortDesc = obj.description.match(/#sub#(.*)##/)[1];
-					let rules = obj.description.match(/#rules#(.*)##/);
+					this.description = obj.description.match(/#desc#(.*?)##/)[1];
+					this.group = obj.description.match(/#group#(.*?)##/)[1];
+					this.shortDesc = obj.description.match(/#sub#(.*?)##/)[1];
+					let rules = obj.description.match(/#rules#(.*?)##/);
 					if (null !== rules) {
 						this.rules = rules[1].split(',');
 					}
