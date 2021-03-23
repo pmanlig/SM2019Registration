@@ -20,22 +20,38 @@ export class RosterView extends React.Component {
 	constructEvents() {
 		let events = this.Competition.events.map(e => {
 			return {
-				name: e.name,
+				name: e.name !== "" ? e.name : this.Competition.name,
 				scheduleId: e.schedule
 			}
-		}).filter(e => e.scheduleId !== undefined);
+		}); // .filter(e => e.scheduleId !== undefined);
 		if (events.length === 1 && events[0].name === "") events[0].name = this.Competition.name;
 		return events;
 	}
 
 	loadSchedules = () => {
 		this.state.events.forEach(e => {
-			this.Server.loadSchedule(e.scheduleId, json => {
-				this.Server.loadParticipants(e.scheduleId, pJson => {
-					e.schedule = Schedule.fromJson(json, pJson);
+			if (e.scheduleId === undefined) {
+				let i = 0;
+				this.Server.loadRoster(this.Competition.id, json => {
+					e.schedule = {
+						squads: [
+							{
+								id: i++,
+								name: "Deltagare",
+								participants: json
+							}
+						]
+					};
 					this.setState({});
 				}, this.Footers.errorHandler("Kan inte hämta deltagare"));
-			}, this.Footers.errorHandler("Kan inte hämta schema"));
+			} else {
+				this.Server.loadSchedule(e.scheduleId, json => {
+					this.Server.loadParticipants(e.scheduleId, pJson => {
+						e.schedule = Schedule.fromJson(json, pJson);
+						this.setState({});
+					}, this.Footers.errorHandler("Kan inte hämta deltagare"));
+				}, this.Footers.errorHandler("Kan inte hämta schema"));
+			}
 		});
 	}
 
@@ -63,8 +79,8 @@ export class RosterView extends React.Component {
 		return s.toUpperCase().includes(this.state.filter.toUpperCase());
 	}
 
-	Participant = ({ participant }) => {
-		return <div className="rv-participant" draggable="true" onDragStart={e => {
+	Participant = ({ participant, key }) => {
+		return <div className="rv-participant" key={key} draggable="true" onDragStart={e => {
 			if (this.Session.user !== "")
 				e.dataTransfer.setData("text/json", JSON.stringify(participant));
 		}}>
@@ -72,21 +88,26 @@ export class RosterView extends React.Component {
 		</div >;
 	}
 
-	Squad = ({ squad }) => {
-		// if (squad.participants.length === 0) return null;
+	Squad = ({ squad, key }) => {
 		if (!squad.participants.some(p => this.match(p.name) || this.match(p.organization))) { return null; }
 		let header_class = "rv-squad-header";
-		if (squad.participants.length > squad.slots) header_class = "rv-squad-header over-capacity";
-		if (squad.participants.length === squad.slots) header_class = "rv-squad-header full";
+		let i = 0;
+		if (squad.slots !== undefined) {
+			if (squad.participants.length > squad.slots) header_class = "rv-squad-header over-capacity";
+			if (squad.participants.length === squad.slots) header_class = "rv-squad-header full";
+		}
 		if (squad === this.state.dropTarget) header_class = "rv-squad-header drop-target";
-		return <div className="rv-squad" onDragOver={e => this.dragOver(e, squad)} onDrop={e => this.moveTo(e.dataTransfer.getData("text/json"), squad.id)}>
-			<div className={header_class}><span>{squad.startTime}</span><span>{squad.participants.length}/{squad.slots}</span></div>
-			{squad.participants.filter(p => this.match(p.name) || this.match(p.organization)).map(p => this.Participant({ key: p.id, participant: p }))}
+		return <div className="rv-squad" key={key} onDragOver={e => this.dragOver(e, squad)} onDrop={e => this.moveTo(e.dataTransfer.getData("text/json"), squad.id)}>
+			<div className={header_class}>
+				{squad.startTime ? <span>{squad.startTime}</span> : <span>{squad.name}</span>}
+				{squad.slots && <span>{squad.participants.length}/{squad.slots}</span>}
+			</div>
+			{squad.participants.filter(p => this.match(p.name) || this.match(p.organization)).map(p => this.Participant({ key: p.id || i++, participant: p }))}
 		</div>;
 	}
 
-	Event = ({ event }) => {
-		return <div className="rv-event">
+	Event = ({ event, key }) => {
+		return <div className="rv-event" key={key}>
 			<h3>{event.name}</h3>
 			<p className="subtitle">{event.schedule === undefined ? 0 : event.schedule.squads.map(c => c.participants.length).reduce((a, c) => a + c)} starter</p>
 			{event.schedule && event.schedule.squads.map(s => this.Squad({ key: s.id, squad: s }))}

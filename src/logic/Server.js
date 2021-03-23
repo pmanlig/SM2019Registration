@@ -214,6 +214,10 @@ export class Server {
 	deleteRegistration(competitionId, token, callback, error) {
 		this.delete(`competition/${competitionId}/${token}`, logFetchCallback(callback, `Raderar anmälan ${token} i tävling ${competitionId}`), logErrorHandler(error));
 	}
+
+	loadRoster(competitionId, callback, error) {
+		this.load(`competition/${competitionId}/list`, logFetchCallback(callback, `Hämtar deltagare för tävling ${competitionId}`), logErrorHandler(error));
+	}
 	//#endregion
 
 	//#region Schedule
