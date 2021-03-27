@@ -30,7 +30,10 @@
 }
 
 .rv-participant {
-	margin-left: 5px;
+	margin: 0 5px 0 5px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 }
 
 .drop-target {
