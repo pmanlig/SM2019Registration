@@ -76,14 +76,14 @@ export class Registration {
 				if (event.classes) {
 					let classes = this.Competition.classes(event.classes);
 					if (!classes.includes(r.class)) {
-						r.class = classes[0].startsWith("!") ? undefined : classes[0];
+						r.class = classes.find(c => c.startsWith("!")) || undefined;
 					}
 				}
 				if (event.divisions) {
 					let divisions = this.Competition.divisions(event.divisions);
 					r.rounds.forEach(rd => {
 						if (!divisions.includes(rd.division)) {
-							rd.division = divisions[0].startsWith("!") ? undefined : divisions[0];
+							rd.division = divisions.find(d => d.startsWith("!")) || undefined;
 						}
 					});
 				}
@@ -100,6 +100,7 @@ export class Registration {
 		if (p === undefined) {
 			newParticipant.organization = this.contact.organization;
 		}
+		this.Competition.events.forEach(e => newParticipant.addEvent(e.id));
 		this.participants.push(newParticipant);
 		this.setParticipantDefaults();
 		this.fire(this.Events.registrationUpdated, this);
