@@ -9010,7 +9010,7 @@
     "react-fit" "^1.0.3"
     "update-input-width" "^1.1.1"
 
-"react-dev-utils@^11.0.1", "react-dev-utils@^11.0.3":
+"react-dev-utils@^11.0.3", "react-dev-utils@^11.0.4":
   "integrity" "sha512-dx0LvIGHcOPtKbeiSUM4jqpBl3TcY7CDjZdfOIcKeznE7BWr9dg0iPG90G5yfVQ+p/rGNMXdbfStvzQZEVEi4A=="
   "resolved" "https://registry.npmjs.org/react-dev-utils/-/react-dev-utils-11.0.4.tgz"
   "version" "11.0.4"
