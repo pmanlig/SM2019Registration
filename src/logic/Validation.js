@@ -44,7 +44,7 @@ export class Validation {
 
 	validate(participants) {
 		let errors = [];
-		if (participants.length === 0) errors.push(this.error("Inga skyttar i anmälan!",null));
+		if (participants.length === 0) errors.push(this.error("Inga skyttar i anmälan!", null));
 		participants.forEach(p => {
 			this.validateParticipant(p);
 			errors = errors.concat(p.errors);

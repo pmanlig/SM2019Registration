@@ -76,14 +76,14 @@ export class Registration {
 				if (event.classes) {
 					let classes = this.Competition.classes(event.classes);
 					if (!classes.includes(r.class)) {
-						r.class = classes.find(c => c.startsWith("!")) || undefined;
+						r.class = classes.find(c => c.startsWith("!")) || classes[0];
 					}
 				}
 				if (event.divisions) {
 					let divisions = this.Competition.divisions(event.divisions);
 					r.rounds.forEach(rd => {
 						if (!divisions.includes(rd.division)) {
-							rd.division = divisions.find(d => d.startsWith("!")) || undefined;
+							rd.division = divisions.find(d => d.startsWith("!")) || divisions[0];
 						}
 					});
 				}
@@ -177,12 +177,12 @@ export class Registration {
 				let divisions = this.Competition.event(e.event).divisions;
 				let schedule = this.Competition.event(e.event).schedule;
 				e.rounds = e.rounds
-					.filter(r => r.division || !divisions || !this.Competition.divisions(divisions)[0].startsWith("!"))
+					.filter(r => r.division || !divisions || this.Competition.divisions(divisions).some(d => d.startsWith("!")))
 					.filter(r => r.squad || !schedule);
 			});
 			p.registrationInfo = p.registrationInfo.filter(e => {
 				let event = this.Competition.event(e.event);
-				return (e.class || !event.classes || !this.Competition.classes(event.classes)[0].startsWith("!")) &&
+				return (e.class || !event.classes || this.Competition.classes(event.classes).some(c => c.startsWith("!"))) &&
 					(e.rounds.length > 0 || (!event.schedule && !event.divisions));
 			});
 		});

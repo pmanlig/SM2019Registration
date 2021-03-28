@@ -85,7 +85,7 @@ export class RosterView extends React.Component {
 				e.dataTransfer.setData("text/json", JSON.stringify(participant));
 		}}>
 			<span>{participant.name}, {participant.organization}</span>
-			<span>{participant.division}</span>
+			<span>{participant.division ? participant.division.replace(/^!/gm, '') : null}</span>
 		</div >;
 	}
 

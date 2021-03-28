@@ -31,6 +31,7 @@ export class Participant extends Person {
 	}
 
 	toJson() {
+		console.log("To JSON: ", JSON.stringify(this));
 		return {
 			participant: {
 				name: this.name,
