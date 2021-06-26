@@ -4,6 +4,7 @@ import { Dropdown } from './Dropdown';
 export class RegistrationRow extends React.Component {
 	static register = { name: "RegistrationRow" };
 	static wire = ["fire", "Competition", "Registration", "Events"];
+	static pId = 1;
 
 	classDropdown(numRows, participantId, event, value, values) {
 		return <td key={`c${event.id}`} rowSpan={numRows}>
@@ -89,7 +90,8 @@ export class RegistrationRow extends React.Component {
 
 	ParticipantRow = ({ row, numRows, participant }) => {
 		let p = participant;
-		return <tr className={p.errors.length > 0 ? "error registration" : "registration"} key={p.competitionId}>
+		if (!p.uniqueId) p.uniqueId = RegistrationRow.pId++;
+		return <tr className={p.errors.length > 0 ? "error registration" : "registration"} key={p.uniqueId}>
 			{row === 0 && this.ParticipantFields({ numRows: numRows, participant: p })}
 			{this.RegistrationControls({ row: row, numRows: numRows, participant: p })}
 			{row === 0 && <td className="vcenter tooltip" style={{ position: "relative" }} tooltip="Ta bort deltagare" tooltip-position="top">
