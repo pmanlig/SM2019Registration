@@ -62,14 +62,30 @@
 	color: blue;
 }
 
-.event-title {
+#competitions .event-title {
 	display: flex;
 }
 
-.competition-link {
+#competitions .competition-link {
 	font-size: 20px;
 	flex-grow: 1;
 	margin: 3px;
+}
+
+#competitions div.competition-group {
+	display: flex;
+	flex-direction: row;
+}
+
+#competitions div.group-text {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+}
+
+.group-icon {
+	max-width: 40px;
+	max-height: 40px;
 }
 
 @media only screen and (max-width: 600px) {

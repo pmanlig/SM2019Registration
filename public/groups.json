@@ -1,0 +1,20 @@
+[
+	{
+		"id": 1,
+		"label": "traning_gpk",
+		"name": "Gävle PK",
+		"description": "Träningar och interna tävlingar Gävle PK",
+		"icon": "GPK",
+		"background": "#000000",
+		"color": "#FFFFFF"
+	},
+	{
+		"id": 2,
+		"label": "xkretsen",
+		"name": "X-kretsen",
+		"description": "Kretstävlingar Gävleborg",
+		"icon": "XKRETSEN",
+		"background": "#CFCFFF",
+		"color": "#000000"
+	}
+]

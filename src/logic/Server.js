@@ -170,6 +170,20 @@ export class Server {
 	}
 	//#endregion
 
+	//#region Groups
+	loadCompetitionGroups(callback, error) {
+		this.Busy.setBusy(this, true);
+		fetch("/groups.json")
+			.then(res => {
+				this.Busy.setBusy(this, false);
+				if (!res.ok) { this.handleSafely(res, error); } else
+					res.json()
+						.then(callback)
+						.catch(error);
+			})
+	}
+	//#endregion
+
 	//#region Competition
 	loadCompetitionList(callback, error) {
 		this.competitionService.loadCompetitionList(logFetchCallback(callback, "Loading competition list"), logErrorHandler(error));
