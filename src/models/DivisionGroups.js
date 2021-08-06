@@ -1,5 +1,8 @@
 import { ValueList } from './ValueList';
 
+/** List of Divisions a participant can compete in. A Division is a way to separate participants
+ * based on factors not related to the participants themselves. E.g. which equipment they are using.
+ * Example: PPC SR2,75" is a Division separate from PPC SR4" */
 export class DivisionGroup extends ValueList {
 	constructor(id, description) {
 		super("divisions", id, description);
@@ -10,6 +13,10 @@ export class DivisionGroup extends ValueList {
 	}
 }
 
+/** A list of ways a competition can be stratified into different Divisions.
+ * Example: One entry might contain the different divisions for PPC, while another might contain the
+ * ones for Precision shooting.
+ */
 export class DivisionGroups {
 	static register = { name: "DivisionGroups", createInstance: true };
 	static wire = ["Server", "Footers"];

@@ -95,32 +95,53 @@ export class CompetitionList extends React.Component {
 		</div>;
 	}
 
+	Groups = ({ group_id }) => {
+		if (group_id === undefined || group_id === "")
+			return this.state.groups.map(g => <this.Group key={g.label} group={g} />);
+		return null;
+	}
+
 	groupName(group_id) {
 		if (group_id === undefined || this.state.groups === undefined) return "";
 		let group = this.state.groups.find(g => g.label === group_id);
 		return group ? " " + group.name : "";
 	}
 
+	Competitions = ({ competitions, loggedIn }) => {
+		if (competitions.length === 0 && !loggedIn) return <p>Inga tävlingar att visa - logga in för att skapa en tävling</p>;
+		return competitions.map(c => <this.Competition key={c.id} competition={c} />);
+	}
+
+	CreateCompetition = ({ loggedIn }) => {
+		if (!loggedIn) return null;
+		return <div className="create-competition competition-tile"><Link className="competition-link" to={`/create`}>Skapa ny tävling</Link></div>;
+	}
+
+	DeleteCompetitionDialog = () => {
+		if (!this.state.deleteCompetition) return null;
+		return <this.YesNoDialog title="Bekräfta borttagning"
+			text={`Är du säker på att du vill ta bort ${this.state.deleteCompetition.name}?`} action={act => this.deleteCompetition(act)} />;
+
+	}
+
 	render() {
 		let loggedIn = this.Session.user !== "";
+		let group_id = this.props.match.params.group_id;
 		// ToDo: fix filtering of hidden competitions in server
 		let competitions = this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own));
-		let group_id = this.props.match.params.group_id;
 		if (group_id) {
 			competitions = competitions.filter(c => c.group === group_id);
 		} else {
 			competitions = competitions.filter(c => c.group === undefined || c.group === "");
 		}
 		return <div id='competitions' className='content'>
-			{this.state.deleteCompetition && <this.YesNoDialog title="Bekräfta borttagning"
-				text={`Är du säker på att du vill ta bort ${this.state.deleteCompetition.name}?`} action={act => this.deleteCompetition(act)} />}
+			<this.DeleteCompetitionDialog />
 			<h1>Tävlingar{this.groupName(group_id)}{this.Server.local && " (felsökning)"}</h1>
 			<div className={competitions.length > 10 ? 'competition-list-compact' : 'competition-list'}>
-				{(group_id === undefined || group_id === "") && this.state.groups.map(g => <this.Group key={g.label} group={g} />)}
-				{competitions.map(c => <this.Competition key={c.id} competition={c} />)}
-				{competitions.length === 0 && !loggedIn && <p>Inga tävlingar att visa - logga in för att skapa en tävling</p>}
+				<this.Groups group_id={group_id} loggedIn={loggedIn} />
+				<this.Competitions  competitions={competitions} />
+				<this.CreateCompetition />
 			</div>
-			{loggedIn && <div className="create-competition competition-tile"><Link className="competition-link" to={`/create`}>Skapa ny tävling</Link></div>}
 		</div>;
 	}
 }

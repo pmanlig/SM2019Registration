@@ -3,7 +3,7 @@ export { WithLogin, LoginView } from './LoginView';
 export { RegistrationView } from './RegistrationView';
 export { ReportView } from './ReportView';
 export { ResultView, EventResult } from './ResultView';
-export { CompetitionList } from './CompetitionList';
+export { CompetitionList } from './CompetitionListView';
 export { CompetitionView } from './CompetitionView';
 export { CreateCompetition } from './CreateCompetition';
 export { ComponentTest } from './ComponentTest';

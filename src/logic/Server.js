@@ -111,7 +111,7 @@ export class Server {
 
 	remoteResultService() {
 		return {
-			loadResults: (c, e, callback) => { this.load(isNaN(parseInt(c, 10)) ? this.jsonFile(`${c}_result`) : `result/${c}/${e}`, callback); }
+			loadResults: (c, e, callback, error) => { this.load(isNaN(parseInt(c, 10)) ? this.jsonFile(`${c}_result`) : `result/${c}/${e}`, callback, error); }
 		};
 	}
 
