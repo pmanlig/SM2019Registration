@@ -78,7 +78,7 @@ tr.registration td.vcenter {
 	display: inline-flex;
 }
 
-#registrationContact p {
+#registrationContact label {
 	margin: 3px 5px 0 0;
 }
 

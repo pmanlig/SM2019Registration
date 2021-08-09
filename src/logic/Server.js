@@ -170,6 +170,21 @@ export class Server {
 	}
 	//#endregion
 
+	//#region Clubs
+	loadClubs(callback, error) {
+		error = logErrorHandler(error);
+		this.Busy.setBusy(this, true);
+		fetch("/clubs.json")
+			.then(res => {
+				this.Busy.setBusy(this, false);
+				if (!res.ok) { this.handleSafely(res, error); } else
+					res.json()
+						.then(callback)
+						.catch(error);
+			})
+	}
+	//#endregion
+
 	//#region Groups
 	loadCompetitionGroups(callback, error) {
 		this.Busy.setBusy(this, true);

@@ -185,7 +185,7 @@ export class Competition {
 		return [
 			{ name: 'Namn*', field: 'name', placeholder: 'Namn', width: 200, type: 'text' },
 			{ name: 'Pistolskyttekort*', field: 'competitionId', size: '5', placeholder: '00000', width: 40, type: 'number' },
-			{ name: 'Förening', field: 'organization', width: 200, type: 'text' }];
+			{ name: 'Förening', field: 'organization', width: 200, type: 'clubs' }];
 	}
 
 	classes(classGroupId) {

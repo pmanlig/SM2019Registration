@@ -21,6 +21,7 @@ export class Events {
 	static serverChanged = Events.eventId++;
 	static selectSquad = Events.eventId++;
 	static configurationLoaded = Events.eventId++;
+	static clubsLoaded = Events.eventId++;
 }
 
 export class EventBus {

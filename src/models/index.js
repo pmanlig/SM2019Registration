@@ -12,3 +12,4 @@ export { Event } from './Event';
 export { ClassGroups } from './ClassGroups';
 export { DivisionGroups } from './DivisionGroups';
 export { Tokens } from './Tokens';
+export { Clubs } from './Clubs';

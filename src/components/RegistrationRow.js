@@ -3,7 +3,7 @@ import { Dropdown } from './Dropdown';
 
 export class RegistrationRow extends React.Component {
 	static register = { name: "RegistrationRow" };
-	static wire = ["fire", "Competition", "Registration", "Events"];
+	static wire = ["fire", "Competition", "Registration", "Events", "ClubSelector"];
 	static pId = 1;
 
 	classDropdown(numRows, participantId, event, value, values) {
@@ -77,15 +77,23 @@ export class RegistrationRow extends React.Component {
 		return this.Competition.eventList().map(e => this.EventControls({ key: `ev${e.id}${row}`, row: row, numRows: numRows, participant: participant, event: e }));
 	}
 
-	RegistrationField = ({ key, numRows, participant, header }) => {
-		return <td key={key} className="left" rowSpan={numRows}><input type="text" value={participant[header.field]}
-			placeholder={header.placeholder || header.name} style={{ width: header.width }}
-			onChange={e => this.Registration.setParticipantField(participant.id, header.field, e.target.value)}
-			size={header.size} /></td>;
+
+
+	RegistrationField = props => {
+		return <td key={props.key} className="left" rowSpan={props.numRows}>
+			{props.clubSelector ?
+				<this.ClubSelector {...props} /> :
+				<input type="text" {...props} />}
+		</td>;
 	}
 
 	ParticipantFields = ({ numRows, participant }) => {
-		return this.Competition.participantHeaders().map(h => this.RegistrationField({ key: h.field, numRows: numRows, participant: participant, header: h }));
+		return this.Competition.participantHeaders().map(h =>
+			<this.RegistrationField key={h.field} value={participant[h.field]} placeholder={h.placeholder || h.name}
+				style={{ width: h.width }} numRows={numRows} size={h.size}
+				onChange={e => this.Registration.setParticipantField(participant.id, h.field, e.target.value)}
+				clubSelector={h.type === "clubs"}
+			/>);
 	}
 
 	ParticipantRow = ({ row, numRows, participant }) => {
