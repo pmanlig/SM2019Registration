@@ -77,8 +77,6 @@ export class RegistrationRow extends React.Component {
 		return this.Competition.eventList().map(e => this.EventControls({ key: `ev${e.id}${row}`, row: row, numRows: numRows, participant: participant, event: e }));
 	}
 
-
-
 	RegistrationField = props => {
 		return <td key={props.key} className="left" rowSpan={props.numRows}>
 			{props.clubSelector ?

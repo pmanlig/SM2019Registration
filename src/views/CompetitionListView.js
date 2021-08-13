@@ -112,8 +112,8 @@ export class CompetitionList extends React.Component {
 		return competitions.map(c => <this.Competition key={c.id} competition={c} />);
 	}
 
-	CreateCompetition = ({ loggedIn }) => {
-		if (!loggedIn) return null;
+	CreateCompetition = props => {
+		if (this.Session.user === "") return null;
 		return <div className="create-competition competition-tile"><Link className="competition-link" to={`/create`}>Skapa ny tävling</Link></div>;
 	}
 
@@ -125,7 +125,6 @@ export class CompetitionList extends React.Component {
 	}
 
 	render() {
-		let loggedIn = this.Session.user !== "";
 		let group_id = this.props.match.params.group_id;
 		// ToDo: fix filtering of hidden competitions in server
 		let competitions = this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own));
@@ -138,8 +137,8 @@ export class CompetitionList extends React.Component {
 			<this.DeleteCompetitionDialog />
 			<h1>Tävlingar{this.groupName(group_id)}{this.Server.local && " (felsökning)"}</h1>
 			<div className={competitions.length > 10 ? 'competition-list-compact' : 'competition-list'}>
-				<this.Groups group_id={group_id} loggedIn={loggedIn} />
-				<this.Competitions  competitions={competitions} />
+				<this.Groups group_id={group_id} />
+				<this.Competitions competitions={competitions} />
 				<this.CreateCompetition />
 			</div>
 		</div>;
