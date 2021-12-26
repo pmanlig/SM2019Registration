@@ -11,25 +11,27 @@ export class ReportView extends React.Component {
 			eventId: "none",
 			results: []
 		};
-		this.Results.load(props.match.params.id);
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.competitionUpdated, this.updateCompetition);
 		this.subscribe(this.Events.resultsUpdated, () => this.setState({}));
-	}
-
-	componentWillMount() {
-		this.fire(this.Events.changeTitle, "Registrera resultat för " + this.Competition.name);
+		this.Competition.load(props.match.params.id);
 	}
 
 	updateCompetition = () => {
 		this.fire(this.Events.changeTitle, "Registrera resultat för " + this.Competition.name);
-		this.setState({ eventId: "none" });
+		if (this.Competition.events.length > 0) {
+			this.setState({ eventId: this.Competition.events[0].id });
+			this.Results.load(this.Competition.id, this.Competition.events[0].id);
+		}
 	}
 
 	changeEvent(newEvent) {
-		if (newEvent === 'none') { this.setState({ eventId: 'none', results: [] }); }
-		else {
-			this.Server.loadResults(this.Competition.id, newEvent, r => this.setState({ eventId: newEvent, results: r }), this.Footers.errorHandler("Kan inte hämta resultat"));
+		if (newEvent === 'none') {
+			this.setState({ eventId: 'none', results: [] });
+		} else {
+			this.Server.loadResults(this.Competition.id, newEvent,
+				r => this.setState({ eventId: newEvent, results: r }),
+				this.Footers.errorHandler("Kan inte hämta resultat"));
 		}
 	}
 
@@ -46,7 +48,7 @@ export class ReportView extends React.Component {
 	render() {
 		let selectedEvent = this.getSelectedEvent(this.Competition);
 		return <div id="results" className="content">
-			{this.Competition.events.length > 1 &&
+			{this.Competition.events.length > 0 &&
 				<div>Resultat för deltävling <select value={this.state.eventId} onChange={e => this.changeEvent(e.target.value)}>
 					<option value="none">Välj deltävling</option>
 					{this.Competition.events.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}

@@ -12,7 +12,7 @@ export class HelpView extends React.Component {
 			.then(json => this.setState({ qa: json }));
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.EventBus.fire(this.Events.changeTitle, "Hjälp?");
 	}
 

@@ -4,7 +4,7 @@ export class AboutView extends React.Component {
 	static register = { name: "AboutView" };
 	static wire = ["EventBus", "Events"];
 
-	componentWillMount() {
+	componentDidMount() {
 		this.EventBus.fire(this.Events.changeTitle, "Om systemet");
 	}
 

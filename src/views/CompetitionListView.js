@@ -108,12 +108,15 @@ export class CompetitionList extends React.Component {
 	}
 
 	Competitions = ({ competitions, loggedIn }) => {
-		if (competitions.length === 0 && !loggedIn) return <p>Inga tävlingar att visa - logga in för att skapa en tävling</p>;
+		if (competitions.length === 0) return null;
 		return competitions.map(c => <this.Competition key={c.id} competition={c} />);
 	}
 
-	CreateCompetition = props => {
-		if (this.Session.user === "") return null;
+	CreateCompetition = ({ competitions }) => {
+		if (this.Session.user === "") {
+			if (competitions.length === 0) return <p>Inga tävlingar att visa - logga in för att skapa en tävling</p>;
+			return null;
+		}
 		return <div className="create-competition competition-tile"><Link className="competition-link" to={`/create`}>Skapa ny tävling</Link></div>;
 	}
 
@@ -139,7 +142,7 @@ export class CompetitionList extends React.Component {
 			<div className={competitions.length > 10 ? 'competition-list-compact' : 'competition-list'}>
 				<this.Groups group_id={group_id} />
 				<this.Competitions competitions={competitions} />
-				<this.CreateCompetition />
+				<this.CreateCompetition competitions={competitions} />
 			</div>
 		</div>;
 	}

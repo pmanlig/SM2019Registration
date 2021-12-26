@@ -81,7 +81,7 @@ export class ResultView extends React.Component {
 		});
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.fire(this.Events.changeTitle, "Resultat för " + this.Competition.name);
 	}
 
