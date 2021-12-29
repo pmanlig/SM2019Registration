@@ -52,3 +52,24 @@ export class LocalToggle extends React.Component {
 		return this.state.show ? <Link to='' className='globaltool' onClick={this.toggle}>{this.Server.local ? "Local" : "Online"}</Link> : null;
 	}
 }
+
+export class ModeSelector extends React.Component {
+	static register = { name: "ModeSelector" }
+	static wire = ["Configuration", "Events", "EventBus"];
+
+	constructor(props) {
+		super(props);
+		this.EventBus.manageEvents(this);
+		this.subscribe(this.Events.modeChanged, () => this.setState({}));
+	}
+
+	toggleMode = e => {
+		this.Configuration.setMode(this.Configuration.mode === "computer" ? "mobile" : "computer");
+		e.preventDefault();
+		this.setState({});
+	}
+
+	render() {
+		return <Link to='' className='globaltool' onClick={this.toggleMode}>{this.Configuration.mode === "computer" ? "Dator" : "Platta/Mobil"}</Link>
+	}
+}

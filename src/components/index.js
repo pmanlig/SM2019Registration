@@ -1,5 +1,5 @@
 export { BusyIndicator, Busy } from './BusyIndicator';
-export { LoginLogout, DeleteCookies, LocalToggle } from './GlobalTools';
+export { LoginLogout, DeleteCookies, LocalToggle, ModeSelector } from './GlobalTools';
 export { RegistrationToolbar, ButtonToolbar, Label } from './RegistrationToolbar';
 export { ParticipantToolbar } from './ParticipantToolbar';
 export { Summary } from './Summary';
@@ -13,6 +13,7 @@ export { Footer, Footers } from './Footer';
 export { EventProperties } from './EventProperties';
 export { ResultsTable } from './ResultsTable';
 export { ReportTable } from './ReportTable';
+export { FieldReportTable } from './FieldReportTable';
 export { Dropdown } from './Dropdown';
 export { CompetitionProperties } from './CompetitionProperties';
 export { ScheduleProperties } from './ScheduleProperties';

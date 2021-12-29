@@ -70,6 +70,37 @@ export class Results {
 		}, this.Footers.errorHandler("Kan inte hämta deltagare för tävlingen"));
 	}
 
+	getScores(squad) {
+		return squad ? this.scores.filter(s => s.squad === squad) : this.scores;
+	}
+
+	validateScores(stage, squad) {
+		let stageDef = this.stageDefs[stage];
+		let scores = this.getScores(squad);
+		let error = false;
+		scores.forEach(p => {
+			p.error = undefined;
+			let length = stageDef.targets + (stageDef.values ? 1 : 0);
+			let targets = p.score[stage] || [];
+			if (targets.length < length) {
+				p.error = "Värde saknas"
+			} else for (let t = 0; t < length; t++) {
+				if (targets[t] === undefined) {
+					p.error = "Värde saknas"
+				}
+			}
+			targets = targets.slice(0, stageDef.targets);
+			if (targets.some(t => t > stageDef.max) || targets.reduce((a, b) => a + b, 0) > stageDef.shots) {
+				p.error = "För många träffar";
+			}
+			// ToDo: Add validation rules here
+			error = error || p.error !== undefined;
+		});
+		return !error;
+	}
+
+	/** Old code vv */
+
 	calculate(participant) {
 		let total = [];
 		participant.score.forEach(s => {

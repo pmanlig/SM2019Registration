@@ -58,30 +58,54 @@ export class ReportView extends React.Component {
 		this.setState({ squad: this.state.schedule.squads.find(s => s.id === squadId) });
 	}
 
+	next = e => {
+		let error = this.Results.validateScores(this.state.stage, this.state.squad ? this.state.squad.id : undefined);
+		this.setState({});
+		console.log("Next clicked", error, this.Results.scores);
+	}
+
+	NextButton = props => {
+		return <p type="button" id="next-button" className="button" onClick={this.next}>Nästa &gt;</p>;
+	}
+
 	render() {
 		let { eventList, event, schedule, squad, stage } = this.state;
 		let stageDefs = this.Results.stageDefs;
+		let stageDef = stageDefs[stage];
+		console.log("StageDefs", stageDefs, stage);
 		return <div id="results" className="content">
 			<div id="selections">
 				{eventList.length > 1 &&
-					<div id="eventSelector">Resultat för deltävling
+					<div id="event-selector">Resultat för deltävling:
 						<select value={event ? event.id : "none"} onChange={e => this.changeEvent(e.target.value)}>
 							<option value="none">Välj deltävling</option>
 							{eventList.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
 						</select></div>}
 				{schedule &&
-					<div id="squadSelector">Skjutlag/patrull
+					<div id="squad-selector">Skjutlag/patrull:
 						<select value={squad.id} onChange={e => this.changeSquad(e.target.value)}>
 							{schedule.squads.map(s => <option key={s.id} value={s.id}>{s.startTime}</option>)}
 						</select>
 					</div>}
-				{stageDefs && <div id="stageSelector">Serie/station
+				{stageDefs.length > 0 && <div id="stage-selector">Serie/station:
 					<select value={stage} onChange={e => this.setState({ stage: e.target.value })}>
 						{stageDefs.map(s => <option key={s.num} value={stageDefs.indexOf(s)}>{s.num}</option>)}
 					</select>
 				</div>}
+				{stageDef && <div>Figurer: {stageDef.targets}</div>}
+				{stageDef && <div>Maxträff: {stageDef.max}</div>}
+				{stageDef && stageDef.min > 0 && <div>Min: {stageDef.min}</div>}
+				{stageDef && stageDef.values && <div>Poängräkning</div>}
+				<div id="spacer" style={{ flexGrow: 1 }} />
+				{/*<div id="mode-selector" >Inmatningsläge:
+					<select value="computer" onChange={e => this.changeMode(e.target.value)}>
+						<option value="computer">Dator</option>
+						<option value="mobile">Platta/Mobil</option>
+					</select>
+				</div>*/}
 			</div>
 			<this.ReportTable results={this.Results} squad={squad} stage={stage} />
+			<this.NextButton />
 			{/*<button className={this.Results.isDirty() ? "button" : "button disabled"} onClick={() => this.Results.store()}>Spara</button>*/}
 			{/*<button className="button" onClick={() => this.Results.sort()}>Sortera</button>*/}
 		</div>;

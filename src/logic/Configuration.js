@@ -4,6 +4,12 @@ export class Configuration {
 	loaded = false;
 	baseUrl = '';
 	site = '';
+	mode = "computer";
+
+	setMode(mode) {
+		this.mode = mode;
+		this.fire(this.Events.modeChanged, mode);
+	}
 
 	initialize() {
 		fetch("/config.json")

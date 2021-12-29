@@ -1,37 +1,3 @@
-#results table {
-	margin: 0px;
-	margin-top: 10px;
-}
-
-#results table > thead > tr {
-	background-color: brown;
-	color: white;
-}
-
-#results table > thead > tr > th {
-	padding: 5px;
-}
-
-#results table > thead > tr > th.round {
-	text-align: center;
-}
-
-#results table > tbody > tr > td {
-	padding: 3px 5px 3px 5px;
-}
-
-#results .score {
-	text-align: center;
-}
-
-#results input.score {
-	width: 20px;
-}
-
-#results tr.dirty {
-	background-color: lightgreen;
-}
-
 #results button.disabled {
 	background-color: lightgray;
 }
@@ -50,4 +16,22 @@
 
 #selections select {
 	margin-left: 10px;
+}
+
+#stage-information {
+	background-color: lightseagreen;
+	display: flex;
+	flex-direction: row;
+	margin-bottom: 5px;
+}
+
+#stage-information div {
+	display: inline;
+	margin-right: 15px;
+}
+
+#next-button {
+	position: fixed;
+	bottom: 10px;
+	right: 10px;
 }

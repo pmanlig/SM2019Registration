@@ -5,7 +5,7 @@ import { Permissions, Operations } from '../models';
 
 export class CompetitionView extends React.Component {
 	static register = { name: "CompetitionView" };
-	static wire = ["Competition", "Events", "EventBus", "RegistrationView", "ReportView", "ResultView", "CompetitionAdmin", "RosterView", "RegistrationsView"];
+	static wire = ["Competition", "Events", "EventBus", "RegistrationView", "ReportView", "ResultView", "CompetitionAdmin", "RosterView", "RegistrationsView", "Configuration"];
 
 	tabs = {
 		register: this.RegistrationView,
@@ -20,6 +20,7 @@ export class CompetitionView extends React.Component {
 		super(props);
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.competitionUpdated, () => this.setState({}));
+		this.subscribe(this.Events.modeChanged, () => this.setState({}));
 		this.subscribe(this.Events.serverChanged, () => this.Competition.load(props.match.params.id));
 		this.Competition.load(props.match.params.id);
 	}
@@ -56,12 +57,12 @@ export class CompetitionView extends React.Component {
 		if (Content === null) { return <Redirect to="/" />; }
 
 		return <div>
-			<div className="tabs">
+			{this.Configuration.mode === "computer" && <div className="tabs">
 				{tabs.length > 1 && tabs.map(t => {
 					if (this.props.match.params.operation === t.path) { return <p key={t.path} className="tab">{t.name}</p> }
 					return <Link key={t.path} className="tab" to={`/competition/${this.Competition.id}/${t.path}`}>{t.name}</Link>;
 				})}
-			</div>
+			</div>}
 			<Content {...this.props} />
 		</div>;
 	}
