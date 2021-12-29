@@ -72,7 +72,6 @@ export class ReportView extends React.Component {
 		let { eventList, event, schedule, squad, stage } = this.state;
 		let stageDefs = this.Results.stageDefs;
 		let stageDef = stageDefs[stage];
-		console.log("StageDefs", stageDefs, stage);
 		return <div id="results" className="content">
 			<div id="selections">
 				{eventList.length > 1 &&
