@@ -35,3 +35,19 @@
 #results button.disabled {
 	background-color: lightgray;
 }
+
+#selections {
+	background-color: aquamarine;
+	display: flex;
+	flex-direction: row;
+	margin-bottom: 5px;
+}
+
+#selections div {
+	display: inline;
+	margin-right: 15px;
+}
+
+#selections select {
+	margin-left: 10px;
+}

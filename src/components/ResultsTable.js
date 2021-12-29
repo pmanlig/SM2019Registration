@@ -1,5 +1,6 @@
 import React from 'react';
 
+/*
 function Round({ participant, round, change }) {
 	let rounds = [];
 	for (let j = 0; j < participant.score[round].length; j++) {
@@ -24,38 +25,37 @@ function Scores({ participant, change }) {
 function Sum({ participant }) {
 	return <td className="score">{participant.total.join("/")}</td>;
 }
+//*/
 
-function series(event) {
-	if (null === event) {
-		return null;
-	}
-	let s = [];
-	for (let i = 1; i <= event.series; i++) {
-		s.push(<th key={i} className="round">{i}</th>);
-	}
-	return s;
+function series(stages) {
+	console.log(stages);
+	return stages.map(s => <th key={s.num} className="stage">{s.num}</th>);
 }
 
 export class ResultsTable extends React.Component {
 	static register = { name: "ResultsTable" };
 
 	render() {
-		let { results, event } = this.props;
+		let { results, squad } = this.props;
+		console.log("Displaying results", results);
+		let scores = results.scores;
+		if (squad) {
+			scores = scores.filter(s => s.squad === squad);
+		}
 		return <table>
 			<thead>
 				<tr>
 					<th>Namn</th>
-					<th style={{ paddingRight: "40px" }}>Förening</th>
-					{series(event)}
+					{/*<th style={{ paddingRight: "40px" }}>Förening</th>*/}
+					{series(results.stages)}
 					<th>Summa</th>
 				</tr>
 			</thead>
 			<tbody>
-				{results.scores.map(p => <tr key={p.id} className={p.dirty && "dirty"}>
+				{scores.map(p => <tr key={p.id} className={p.dirty && "dirty"}>
 					<td>{p.name}</td>
-					<td>{p.organization}</td>
-					<Scores participant={p} change={(i, j, value) => results.update(p, i, j, value)} />
-					<Sum participant={p} />
+					{/*<Scores participant={p} change={(i, j, value) => results.update(p, i, j, value)} />
+					<Sum participant={p} />*/}
 				</tr>)}
 			</tbody>
 		</table>;

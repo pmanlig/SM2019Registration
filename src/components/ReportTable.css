@@ -1,0 +1,53 @@
+.score-sheet {
+	display: grid;
+	align-items: center;
+	text-align: center;
+	grid-template-columns:  [name-start] auto repeat(6, [target-start] auto) [total-start] auto auto 1fr;
+	font-size: large;
+}
+
+.score-sheet .field {
+	grid-template-columns:  [name-start] auto repeat(6, [target-start] auto) [total-start] auto auto 1fr;
+}
+
+.score-sheet .header {
+	background-color: brown;
+	color: white;
+	font-weight: bold;
+	padding: 3px;
+}
+
+.score-sheet .name {
+	text-align: left;
+}
+
+.score-sheet .participant {
+	padding: 3px;
+	background-color: coral;
+}
+
+.score-sheet .input {
+	background-color: cadetblue;
+}
+
+.score-sheet .score-button {
+	margin: 0px 2px;
+	padding: 0px 4px;
+	border-radius: 50%;
+	border: none;
+}
+
+.score-sheet .selected {
+	background-color: #3f3f3f;
+	color: white;
+}
+
+.score-sheet .score-text {
+	size: 3;
+	margin: 0px 2px;
+	padding: 3px 4px;
+	border: none;
+	border-radius: 3px;
+	text-align: center;
+	width: 25px;
+}

@@ -111,7 +111,7 @@ export class Server {
 
 	remoteResultService() {
 		return {
-			loadResults: (c, e, callback, error) => { this.load(isNaN(parseInt(c, 10)) ? this.jsonFile(`${c}_result`) : `result/${c}/${e}`, callback, error); }
+			loadResults: (competitionId, eventId, callback, error) => { this.load(`competition/${competitionId}/scores/${eventId}`, callback, error); }
 		};
 	}
 
@@ -132,10 +132,16 @@ export class Server {
 		}
 	}
 
-	remoteCategoryServive() {
+	remoteCategoryService() {
 		return {
 			loadClassGroups: (callback, error) => { this.load(`classes`, callback, error); },
 			loadDivisionGroups: (callback, error) => { this.load(`divisions`, callback, error); }
+		}
+	}
+
+	remoteStagesService() {
+		return {
+			loadStageDefs: (competitionId, eventId, callback, error) => { this.load(`competition/${competitionId}/stages/${eventId}`, callback, error); }
 		}
 	}
 	//#endregion
@@ -163,8 +169,9 @@ export class Server {
 			this.scheduleService = this.remoteScheduleService();
 			this.resultService = this.remoteResultService();
 			this.registrationService = this.remoteRegistrationService();
-			this.categoryService = this.remoteCategoryServive();
+			this.categoryService = this.remoteCategoryService();
 		}
+		this.stagesService = this.remoteStagesService();
 		this.Storage.set(this.Storage.keys.serverMode, this.local);
 		this.fire(this.Events.serverChanged);
 	}
@@ -268,6 +275,12 @@ export class Server {
 
 	deleteSchedule(scheduleId, callback, error) {
 		this.scheduleService.deleteSchedule(scheduleId, logFetchCallback(callback, `Deleting schedule ${scheduleId}`), logErrorHandler(error));
+	}
+	//#endregion
+
+	//#region Stages
+	loadStageDefs(competitionId, eventId, callback, error) {
+		this.stagesService.loadStageDefs(competitionId, eventId, logFetchCallback(callback, `Loading stage definitions for ${competitionId}/${eventId}`), logErrorHandler(error));
 	}
 	//#endregion
 

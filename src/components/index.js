@@ -12,6 +12,7 @@ export { StoreQuestion } from './StoreQuestion';
 export { Footer, Footers } from './Footer';
 export { EventProperties } from './EventProperties';
 export { ResultsTable } from './ResultsTable';
+export { ReportTable } from './ReportTable';
 export { Dropdown } from './Dropdown';
 export { CompetitionProperties } from './CompetitionProperties';
 export { ScheduleProperties } from './ScheduleProperties';
