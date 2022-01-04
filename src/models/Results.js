@@ -89,6 +89,12 @@ export class Results {
 					p.error = "Värde saknas"
 				}
 			}
+			if (stageDef.min > 0) {
+				let max = stageDef.shots + targets.filter(t => t < stageDef.min).map(t => t - stageDef.min).reduce((a, b) => a + b, 0);
+				if (targets.reduce((a, b) => a + b, 0) > max) {
+					p.error = "Träffarna inte fördelade korrekt";
+				}
+			}
 			targets = targets.slice(0, stageDef.targets);
 			if (targets.some(t => t > stageDef.max) || targets.reduce((a, b) => a + b, 0) > stageDef.shots) {
 				p.error = "För många träffar";

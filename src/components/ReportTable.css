@@ -35,6 +35,7 @@
 	padding: 0px 4px;
 	border-radius: 50%;
 	border: none;
+	cursor: pointer;
 }
 
 .score-sheet .selected {

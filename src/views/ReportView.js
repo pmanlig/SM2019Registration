@@ -59,9 +59,8 @@ export class ReportView extends React.Component {
 	}
 
 	next = e => {
-		let error = this.Results.validateScores(this.state.stage, this.state.squad ? this.state.squad.id : undefined);
-		this.setState({});
-		console.log("Next clicked", error, this.Results.scores);
+		let valid = this.Results.validateScores(this.state.stage, this.state.squad ? this.state.squad.id : undefined);
+		this.setState({ validation: valid });
 	}
 
 	NextButton = props => {
@@ -96,12 +95,6 @@ export class ReportView extends React.Component {
 				{stageDef && stageDef.min > 0 && <div>Min: {stageDef.min}</div>}
 				{stageDef && stageDef.values && <div>Poängräkning</div>}
 				<div id="spacer" style={{ flexGrow: 1 }} />
-				{/*<div id="mode-selector" >Inmatningsläge:
-					<select value="computer" onChange={e => this.changeMode(e.target.value)}>
-						<option value="computer">Dator</option>
-						<option value="mobile">Platta/Mobil</option>
-					</select>
-				</div>*/}
 			</div>
 			<this.ReportTable results={this.Results} squad={squad} stage={stage} />
 			<this.NextButton />
