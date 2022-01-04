@@ -28,7 +28,6 @@ function Sum({ participant }) {
 //*/
 
 function series(stages) {
-	console.log(stages);
 	return stages.map(s => <th key={s.num} className="stage">{s.num}</th>);
 }
 
@@ -37,7 +36,6 @@ export class ResultsTable extends React.Component {
 
 	render() {
 		let { results, squad } = this.props;
-		console.log("Displaying results", results);
 		let scores = results.scores;
 		if (squad) {
 			scores = scores.filter(s => s.squad === squad);

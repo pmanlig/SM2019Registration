@@ -226,7 +226,7 @@ export class Competition {
 				if (prop) {
 					e[prop] = value;
 				} else {
-					Object.keys(e).forEach((k, i) => e[k] = event[k]);
+					Object.keys(e).forEach((k, i) => e[k] = event[k]); // WTF?
 				}
 			}
 		});

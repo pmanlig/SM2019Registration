@@ -26,8 +26,7 @@ export class LocalRegistrationService {
 
 	sendRegistration(data, callback, error) {
 		if (window._debug) {
-			console.log("receiving registration data");
-			console.log(data);
+			console.log("Receiving registration data", data);
 		}
 		let competitionId = data.competition;
 		if (competitionId === undefined) {

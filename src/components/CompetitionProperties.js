@@ -9,8 +9,7 @@ let default_division_group = [{ id: -1, description: "Inget val av vapengrupp" }
 export class CompetitionProperties extends React.Component {
 	static register = { name: "CompetitionProperties" };
 	static wire = ["Server", "Competition", "EventProperties", "ScheduleProperties", "EventBus", "Events", "DivisionGroups", "ClassGroups"]
-
-	status = [{ id: Status.Hidden, description: "Gömd" }, { id: Status.Open, description: "Öppen" }, { id: Status.Closed, description: "Stängd" }];
+	static status = [{ id: Status.Hidden, description: "Gömd" }, { id: Status.Open, description: "Öppen" }, { id: Status.Closed, description: "Stängd" }];
 
 	constructor(props) {
 		super(props);
@@ -57,7 +56,7 @@ export class CompetitionProperties extends React.Component {
 				<div style={{ gridArea: "competition-desc-label" }} className="property-label">Beskrivning</div>
 				<div style={{ gridArea: "competition-desc-input" }}><textarea rows="8" cols="50" placeholder="Beskrivning" onChange={e => this.Competition.setProperty("description", e.target.value)} value={this.Competition.description} /></div>
 				<div style={{ gridArea: "competition-status-label" }} className="property-label">Status</div>
-				<div style={{ gridArea: "competition-status-input" }}><Dropdown className="eventProperty" value={this.Competition.status} list={this.status} onChange={e => this.Competition.setProperty("status", parseInt(e.target.value, 10))} /></div>
+				<div style={{ gridArea: "competition-status-input" }}><Dropdown className="eventProperty" value={this.Competition.status} list={CompetitionProperties.status} onChange={e => this.Competition.setProperty("status", parseInt(e.target.value, 10))} /></div>
 				<div style={{ gridArea: "competition-50pct-label" }} className="property-label">Max 50% skyttar från samma förening</div>
 				<div style={{ gridArea: "competition-50pct-input" }}><input type="checkbox" checked={this.Competition.rules.includes("50pct")} onChange={this.toggle50pct} /></div>
 				<div style={{ gridArea: "competition-show-acct-label" }} className="property-label">Visa fält för konto</div>

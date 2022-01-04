@@ -2,7 +2,7 @@ export function logFetchCallback(c, msg) {
 	if (!window._debug) { return c; }
 	console.log(msg);
 	return json => {
-		console.log(json);
+		console.log(`Fetch data:`, json);
 		c(json);
 	}
 }
@@ -11,10 +11,9 @@ export function logSendCallback(c, data, msg) {
 	if (c === undefined) c = () => { };
 	if (!window._debug) { return c; }
 	console.log(msg);
-	console.log(data);
+	console.log(`Sent data:`, data);
 	return json => {
-		console.log(`Reply:`);
-		console.log(json);
+		console.log(`Reply:`, json);
 		c(json);
 	}
 }
@@ -23,7 +22,7 @@ export function logSendCallback2(c, data, msg) {
 	if (c === undefined) c = () => { };
 	if (!window._debug) { return c; }
 	console.log(msg);
-	console.log(data);
+	console.log(`Sent data:`, data);
 	return json => {
 		console.log(`Reply (${msg}):`);
 		console.log(json);
@@ -35,7 +34,7 @@ export function logUpdateCallback(c, data, msg) {
 	if (c === undefined) c = () => { };
 	if (!window._debug) { return c; }
 	console.log(msg);
-	console.log(data);
+	console.log(`Update data:`, data);
 	return c;
 }
 

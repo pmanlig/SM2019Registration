@@ -45,8 +45,7 @@ export class Storage {
 
 	delete() {
 		if (window._debug) {
-			console.log("Deleting storage");
-			console.log(this.keys);
+			console.log("Deleting storage", this.keys);
 		}
 		for (var k in this.keys) {
 			window.localStorage.removeItem(k);

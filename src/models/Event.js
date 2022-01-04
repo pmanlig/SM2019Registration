@@ -3,6 +3,7 @@ export class Event {
 		this.id = id;
 		this.name = name;
 		this.date = date;
+		this.discipline = 0;
 		this.maxRegistrations = 1;
 		this.scores = 8;
 		this.cost = 100;

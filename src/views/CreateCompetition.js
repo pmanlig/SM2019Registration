@@ -41,7 +41,8 @@ export class CreateCompetition extends React.Component {
 			if (this.state.redirect === undefined) {
 				this.Storage.set(this.Storage.keys.newCompetition, this.Competition.toJson());
 			} else {
-				console.log("Suppressing store due to redirect");
+				if (window._debug)
+					console.log("Suppressing store due to redirect");
 			}
 		});
 		this.Competition.initialize();

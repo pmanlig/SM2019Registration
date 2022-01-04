@@ -3,17 +3,19 @@ import { Subject } from 'rxjs';
 export class Events {
 	static register = { name: "Events" };
 	static eventId = 1;
+
 	static addFooter = Events.eventId++;
 	static footersChanged = Events.eventId++;
 	static changeTitle = Events.eventId++;
 	static busyChanged = Events.eventId++;
+	static competitionUpdated = Events.eventId++;
 	static deleteParticipant = Events.eventId++;
 	static showParticipantPicker = Events.eventId++;
 	static showSchedule = Events.eventId++;
 	static editSchedule = Events.eventId++;
+	static editStages = Events.eventId++;
 	static registryUpdated = Events.eventId++;
 	static setRegistrationInfo = Events.eventId++;
-	static competitionUpdated = Events.eventId++;
 	static registrationUpdated = Events.eventId++;
 	static resultsUpdated = Events.eventId++;
 	static registerForCompetition = Events.eventId++;
