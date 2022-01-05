@@ -1,15 +1,17 @@
 import './ReportTable.css';
 import React from 'react';
 import { FieldReportTable } from '.';
-import { ScoreTypes } from '../models';
+import { Disciplines } from '../models';
 
 export class ReportTable extends React.Component {
 	static register = { name: "ReportTable" };
-	static wire = ["Configuration"];
 
 	render() {
-		let { results } = this.props;
-		if (results.scoreType === ScoreTypes.Field) { return <FieldReportTable mode={this.Configuration.mode} {...this.props} />; }
+		let { event } = this.props;
+		// For debugging
+		return <FieldReportTable {...this.props} />;
+		// eslint-disable-next-line
+		if (event.discipline === Disciplines.Field) { return <FieldReportTable {...this.props} />; }
 		return null;
 	}
 }

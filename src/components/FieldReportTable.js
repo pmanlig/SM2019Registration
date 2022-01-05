@@ -15,12 +15,8 @@ export class FieldReportTable extends React.Component {
 		);
 	}
 
-	setScore = (participant, target, value) => {
-		if (typeof (value) === "string") { value = parseInt(value, 10); }
-		if (isNaN(value)) { value = 0; }
-		let stage = this.props.stage;
-		if (participant.score[stage] === undefined) { participant.score[stage] = []; }
-		participant.score[stage][target] = value;
+	setScore = (stageDef, participant, target, value) => {
+		participant.setScore(stageDef.num, target, value);
 		this.setState({});
 	}
 
@@ -38,17 +34,17 @@ export class FieldReportTable extends React.Component {
 
 	MobileTarget = (props) => {
 		let { stageDef, participant, tgt } = props;
-		let scores = participant.score[this.props.stage] || [];
+		let score = participant.getScore(stageDef.num, tgt);
 		return FieldReportTable.targetValues.filter(v => v <= stageDef.max).map(v =>
-			<input key={"tgt" + tgt + v} className={"score-button" + (scores !== undefined && scores[tgt] === v ? " selected" : "")}
-				type="button" value={v} onClick={e => this.setScore(participant, tgt, v)} />);
+			<input key={"tgt" + tgt + v} className={"score-button" + (score !== undefined && score === v ? " selected" : "")}
+				type="button" value={v} onClick={e => this.setScore(stageDef, participant, tgt, v)} />);
 	}
 
 	ComputerTarget = (props) => {
-		let { participant, tgt } = props;
-		let scores = participant.score[this.props.stage] || [];
-		return <input type="text" className="score-edit" value={scores[tgt] === undefined ? "" : scores[tgt]}
-			onChange={e => this.setScore(participant, tgt, e.target.value)} />;
+		let { stageDef, participant, tgt } = props;
+		let score = participant.getScore(stageDef.num, tgt);
+		return <input type="text" className="score-edit" value={score === undefined ? "" : score}
+			onChange={e => this.setScore(stageDef, participant, tgt, parseInt(e.target.value, 10))} />;
 	}
 
 	targets(stageDef, participant, id) {
@@ -56,7 +52,7 @@ export class FieldReportTable extends React.Component {
 			i < stageDef.targets ?
 				<div key={"tgt" + id + i} className={this.participantClass("input", participant)}>
 					{this.props.mode === "computer" ?
-						<this.ComputerTarget participant={participant} tgt={i} /> :
+						<this.ComputerTarget stageDef={stageDef} participant={participant} tgt={i} /> :
 						<this.MobileTarget stageDef={stageDef} participant={participant} tgt={i} />}
 				</div> : <div key={"tgt" + id + i} />);
 	}
@@ -71,11 +67,7 @@ export class FieldReportTable extends React.Component {
 	}
 
 	total(stageDef, participant, id) {
-		let score = participant.score[this.props.stage] || [];
-		score = score.slice(0, stageDef.targets)
-		return <div className={this.participantClass("", participant)} key={"tot" + id}>
-			{score.reduce((a, b) => a + b, 0)}/{score.filter(s => s > 0).length}
-		</div>;
+		return <div className={this.participantClass("", participant)} key={"tot" + id}>{participant.getTotal(stageDef)}</div>;
 	}
 
 	participantRow(stageDef, p, id) {
@@ -89,12 +81,7 @@ export class FieldReportTable extends React.Component {
 	}
 
 	render() {
-		let { results, squad, stage } = this.props;
-		if (results.stageDefs === undefined) return null;
-		if (results.stageDefs[stage] === undefined) return null;
-		if (results.scores === undefined) return null;
-		let stageDef = results.stageDefs[stage];
-		let scores = results.getScores(squad ? squad.id : undefined);
+		let { stageDef, scores } = this.props;
 		let id = 0;
 		return <div className={"score-sheet field"}>
 			<div className="header align-left">Namn</div>
