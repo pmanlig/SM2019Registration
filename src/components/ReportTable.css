@@ -4,6 +4,7 @@
 	text-align: center;
 	grid-template-columns:  [name-start] auto repeat(6, [target-start] auto) [total-start] auto auto 1fr;
 	font-size: large;
+	border-left: 1px solid black;
 }
 
 .score-sheet .field {
@@ -15,6 +16,7 @@
 	color: white;
 	font-weight: bold;
 	padding: 3px;
+	border-top: 1px solid black;
 }
 
 .score-sheet .align-left {
@@ -23,11 +25,17 @@
 
 .score-sheet .participant {
 	padding: 3px;
-	background-color: coral;
+	background-color: white;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
 }
 
-.score-sheet .input {
+.score-sheet .even {
 	background-color: cadetblue;
+}
+
+.score-sheet .input input {
+	border: 1px solid black;
 }
 
 .score-sheet .score-button {

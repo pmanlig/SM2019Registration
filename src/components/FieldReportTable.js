@@ -21,15 +21,12 @@ export class FieldReportTable extends React.Component {
 	}
 
 	setValue = (participant, stageDef, value) => {
-		let stage = this.props.stage;
-		if (participant.score[stage] === undefined) { participant.score[stage] = []; }
-		participant.score[stage][stageDef.targets] = value;
+		participant.setScore(stageDef.num, stageDef.targets, value);
 		this.setState({});
 	}
 
-	participantClass(className, participant) {
-		className += " participant";
-		return participant.error ? className + " error" : className;
+	participantClass(className, participant, position) {
+		return className + " participant" + (participant.error ? " error" : "") + ((position != null && (position % 2 === 0)) ? " even" : "");
 	}
 
 	MobileTarget = (props) => {
@@ -50,7 +47,7 @@ export class FieldReportTable extends React.Component {
 	targets(stageDef, participant, id) {
 		return FieldReportTable.fieldTargetIds.map(i =>
 			i < stageDef.targets ?
-				<div key={"tgt" + id + i} className={this.participantClass("input", participant)}>
+				<div key={"tgt" + id + i} className={this.participantClass("input", participant, i)}>
 					{this.props.mode === "computer" ?
 						<this.ComputerTarget stageDef={stageDef} participant={participant} tgt={i} /> :
 						<this.MobileTarget stageDef={stageDef} participant={participant} tgt={i} />}
@@ -58,10 +55,10 @@ export class FieldReportTable extends React.Component {
 	}
 
 	value(stageDef, participant, id) {
-		if (!stageDef.values) return <div key={"val" + id} />;
-		let scores = participant.score[this.props.stage] || [];
-		return <div className={this.participantClass("", participant)} key={"val" + id}>
-			<input className="score-text" type="text" size="2" value={scores[stageDef.targets] || ""}
+		if (!stageDef.value) return <div key={"val" + id} />;
+		let score = participant.getScore(stageDef.num, stageDef.targets);
+		return <div className={this.participantClass("input", participant, stageDef.targets)} key={"val" + id}>
+			<input className="score-text" type="text" size="2" value={score || ""}
 				onChange={e => this.setValue(participant, stageDef, e.target.value)} />
 		</div>;
 	}
@@ -87,7 +84,7 @@ export class FieldReportTable extends React.Component {
 			<div className="header align-left">Namn</div>
 			{this.headers(stageDef)}
 			<div className="header">Total</div>
-			{stageDef.values ? <div className="header">Poäng</div> : <div />}
+			{stageDef.value ? <div className="header">Poäng</div> : <div />}
 			<div>{/* Spacer - empty space to let the interface resize */}</div>
 			{scores.map(p => this.participantRow(stageDef, p, id++)).flat()}
 		</div>;
