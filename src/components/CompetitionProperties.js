@@ -8,7 +8,7 @@ let default_division_group = [{ id: -1, description: "Inget val av vapengrupp" }
 
 export class CompetitionProperties extends React.Component {
 	static register = { name: "CompetitionProperties" };
-	static wire = ["Server", "Competition", "EventProperties", "ScheduleProperties", "EventBus", "Events", "DivisionGroups", "ClassGroups"]
+	static wire = ["Server", "CompetitionGroups", "Competition", "EventProperties", "ScheduleProperties", "EventBus", "Events", "DivisionGroups", "ClassGroups"]
 	static status = [{ id: Status.Hidden, description: "Gömd" }, { id: Status.Open, description: "Öppen" }, { id: Status.Closed, description: "Stängd" }];
 
 	constructor(props) {
@@ -48,7 +48,12 @@ export class CompetitionProperties extends React.Component {
 			<this.ScheduleProperties divisionGroups={divisionGroups} />
 			<div id="competition-properties">
 				<div style={{ gridArea: "competition-group-label" }} className="property-label">Grupp</div>
-				<div style={{ gridArea: "competition-group-input" }}><input type="text" value={this.Competition.group} size="50" placeholder="Grupp" onChange={e => this.Competition.setProperty("group", e.target.value)} /></div>
+				<div style={{ gridArea: "competition-group-input" }}>
+					<select value={this.Competition.group} onChange={e => this.Competition.setProperty("group", e.target.value)}>
+						<option value="">Ingen grupp</option>
+						{this.CompetitionGroups.groups.map(g => <option key={g.id} value={g.label}>{g.name}</option>)}
+					</select>
+				</div>
 				<div style={{ gridArea: "competition-name-label" }} className="property-label">Namn</div>
 				<div style={{ gridArea: "competition-name-input" }}><input type="text" value={this.Competition.name} size="50" placeholder="Namn" onChange={e => this.Competition.setProperty("name", e.target.value)} /></div>
 				<div style={{ gridArea: "competition-short-label" }} className="property-label">Underrubrik</div>

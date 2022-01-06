@@ -99,6 +99,11 @@ export class Registration {
 		let newParticipant = new Participant(p);
 		if (p === undefined) {
 			newParticipant.organization = this.contact.organization;
+			if (!this.participants.some(p => p.name === this.contact.name)) {
+				newParticipant.name = this.contact.name;
+				let me = this.Registry.competitors.find(c => c.name === this.contact.name);
+				if (me) { newParticipant.competitionId = me.competitionId; }
+			}
 		}
 		this.Competition.events.forEach(e => newParticipant.addEvent(e.id));
 		this.participants.push(newParticipant);

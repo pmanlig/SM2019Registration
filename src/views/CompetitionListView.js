@@ -7,7 +7,8 @@ import { Permissions, Status, Operations } from '../models';
 
 export class CompetitionList extends React.Component {
 	static register = { name: "CompetitionList" };
-	static wire = ["Server", "Session", "Storage", "EventBus", "Events", "Footers", "YesNoDialog"];
+	static wire = ["Server", "Session", "Storage", "EventBus", "Events", "Footers", "YesNoDialog", "CompetitionGroups"];
+	static E_CANNOT_LOAD = "Kan inte hämta tävlingar";
 
 	constructor(props) {
 		super(props);
@@ -15,35 +16,34 @@ export class CompetitionList extends React.Component {
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.userChanged, this.loadCompetitions);
 		this.subscribe(this.Events.serverChanged, this.loadCompetitions);
+		this.subscribe(this.Events.competitionGroupsUpdated, () => this.setState({ groups: this.CompetitionGroups.groups }));
 		this.icons = { GPK: gpk, XKRETSEN: xkretsen }
 	}
 
 	loadCompetitions = () => {
-		this.Server.loadCompetitionGroups(groups => {
-			this.Server.loadCompetitionList(json => this.setState({
-				competitions: json.map(c => {
-					if (c.name.includes("$")) {
-						let parts = c.name.split("$");
-						if (parts.length > 2) {
-							c.group = parts[0];
-							c.name = parts[1];
-							c.subtitle = parts[2];
-						} else {
-							c.group = c.group || "";
-							c.name = parts[0];
-							c.subtitle = parts[1];
-						}
+		this.Server.loadCompetitionList(json => this.setState({
+			competitions: json.map(c => {
+				if (c.name.includes("$")) {
+					let parts = c.name.split("$");
+					if (parts.length > 2) {
+						c.group = parts[0];
+						c.name = parts[1];
+						c.subtitle = parts[2];
+					} else {
+						c.group = c.group || "";
+						c.name = parts[0];
+						c.subtitle = parts[1];
 					}
-					return {
-						...c,
-						status: c.status ? parseInt(c.status.toString(), 10) : Status.Open,
-						permissions: c.permissions ? parseInt(c.permissions.toString(), 10) :
-							(this.Session.user === "" ? Permissions.Any : Permissions.Own)
-					}
-				}),
-				groups: groups
-			}), this.Footers.errorHandler("Kan inte hämta tävlingar"));
-		}, this.Footers.errorHandler("Kan inte hämta grupper"));
+				}
+				return {
+					...c,
+					status: c.status ? parseInt(c.status.toString(), 10) : Status.Open,
+					permissions: c.permissions ? parseInt(c.permissions.toString(), 10) :
+						(this.Session.user === "" ? Permissions.Any : Permissions.Own)
+				}
+			}),
+			groups: this.CompetitionGroups.groups
+		}), this.Footers.errorHandler(CompetitionList.E_CANNOT_LOAD));
 	}
 
 	deleteCompetition = (act) => {

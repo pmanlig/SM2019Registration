@@ -5,6 +5,8 @@ import { Schedule } from '../models';
 export class RosterView extends React.Component {
 	static register = { name: "RosterView" };
 	static wire = ["Competition", "Server", "Footers", "Session", "EventBus", "Events"];
+	static E_CANNOT_LOAD_SCHEDULE = "Kan inte hämta starttider";
+	static E_CANNOT_LOAD_PARTICIPANTS = "Kan inte hämta deltagare";
 
 	constructor(props) {
 		super(props);
@@ -43,14 +45,23 @@ export class RosterView extends React.Component {
 						]
 					};
 					this.setState({});
-				}, this.Footers.errorHandler("Kan inte hämta deltagare"));
+				}, this.Footers.errorHandler(RosterView.E_CANNOT_LOAD_PARTICIPANTS));
 			} else {
 				this.Server.loadSchedule(e.scheduleId, json => {
 					this.Server.loadParticipants(e.scheduleId, pJson => {
-						e.schedule = Schedule.fromJson(json, pJson);
+						let schedule = {};
+						Schedule.fromJson(json, pJson).squads.forEach(s => {
+							if (schedule[s.startTime] == null) {
+								schedule[s.startTime] = s;
+							} else {
+								schedule[s.startTime].participants = schedule[s.startTime].participants.concat(s.participants);
+								schedule[s.startTime].slots += s.slots;
+							}
+						});
+						e.schedule = { squads: Object.values(schedule) };
 						this.setState({});
-					}, this.Footers.errorHandler("Kan inte hämta deltagare"));
-				}, this.Footers.errorHandler("Kan inte hämta schema"));
+					}, this.Footers.errorHandler(RosterView.E_CANNOT_LOAD_PARTICIPANTS));
+				}, this.Footers.errorHandler(RosterView.E_CANNOT_LOAD_SCHEDULE));
 			}
 		});
 	}

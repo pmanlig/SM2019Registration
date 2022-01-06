@@ -19,7 +19,7 @@ export class Registry {
 	storeCompetitors(participants) {
 		let competitors = participants.filter(p => p.name !== "").map(p => new Person(p));
 		this.competitors.forEach(p => {
-			if (competitors.find(e => e.competitionId === p.competitionId) === undefined)
+			if (!competitors.some(e => e.competitionId === p.competitionId))
 				competitors.push(p);
 		});
 		this.competitors = competitors;

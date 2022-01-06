@@ -1,5 +1,15 @@
 import { ValueList } from './ValueList';
 
+/**
+ * A "class" is a ranking/rating tied to a participant. Example: in PPC, a participant can be a "High Master",
+ * which is a higher rank than "Master". This is used to separate participants into groups where participants
+ * compete against others of similar skill or with a similar handicap.
+ * 
+ * A "class group" is a set of classes that are valid for a given event. This can vary depending on the event 
+ * and the discipline. Example: in a national competition you may be rated as class 1, 2 or 3 whereas in a PPC 
+ * competition you are rated as "Master" or "High Master" (and a few others).
+ */
+
 export class ClassGroup extends ValueList {
 	constructor(id, description) {
 		super("classes", id, description);

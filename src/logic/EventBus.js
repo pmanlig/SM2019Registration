@@ -8,6 +8,7 @@ export class Events {
 	static footersChanged = Events.eventId++;
 	static changeTitle = Events.eventId++;
 	static busyChanged = Events.eventId++;
+	static competitionGroupsUpdated = Events.eventId++;
 	static competitionUpdated = Events.eventId++;
 	static deleteParticipant = Events.eventId++;
 	static showParticipantPicker = Events.eventId++;
