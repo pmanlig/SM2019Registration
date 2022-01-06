@@ -15,6 +15,12 @@
 	user-select: none;
 }
 
+.white {
+	background-color: white;
+	color: black;
+	border: 1px solid black;
+}
+
 .disabled {
 	opacity: 0.7;
 }

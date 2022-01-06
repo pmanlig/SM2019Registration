@@ -6,10 +6,14 @@ export class RegistrationView extends React.Component {
 	static register = { name: "RegistrationView" };
 	static wire = ["Competition", "EventBus", "Events", "Registration", "ParticipantPicker", "RegistrationToolbar",
 		"RegistrationContact", "RegistrationForm", "Summary", "SquadPicker", "Server", "YesNoDialog", "ParticipantToolbar"];
+	static dateFormat = new Intl.DateTimeFormat('sv-SV');
 
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			dates: [...new Set(this.Competition.events.map(e => RegistrationView.dateFormat.format(e.date)))],
+			selected: RegistrationView.dateFormat.format(this.Competition.events[0].date)
+		};
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.registrationUpdated, () => this.setState({}));
 		this.subscribe(this.Events.deleteParticipant, (id) => this.showDeleteDialog(id));
@@ -41,9 +45,17 @@ export class RegistrationView extends React.Component {
 		return <span key={c}>{t}<br /></span>;
 	}
 
-	Description = props => {
+	Description = ({ value }) => {
+		if (value == null || value === "") { return null; }
 		let c = 1;
-		return <div className="content">{props.value.split("\n").map(t => this.linkify(t, c++))}</div>;
+		return <div className="content">{value.split("\n").map(t => this.linkify(t, c++))}</div>;
+	}
+
+	EventFilter = ({ dates, selected }) => {
+		if (dates == null || dates.length < 2) { return null; }
+		return <div className="content">
+			{[...dates].map(d => <button key={d} className={"button" + (selected === d ? "" : " white")} onClick={() => this.setState({ selected: d })}>{d}</button>)}
+		</div>;
 	}
 
 	render() {
@@ -55,11 +67,14 @@ export class RegistrationView extends React.Component {
 			return <Redirect to={`/competition/${this.props.match.params.id}/register/${this.Registration.token}`} />
 		}
 
+		let events = this.Competition.events.filter(e => RegistrationView.dateFormat.format(e.date) === this.state.selected);
+
 		return <div>
 			<this.SquadPicker />
 			<this.Description value={this.Competition.description} />
 			<this.RegistrationContact />
-			<this.RegistrationForm />
+			<this.EventFilter dates={this.state.dates} selected={this.state.selected} />
+			<this.RegistrationForm events={events} />
 			<this.ParticipantToolbar />
 			<this.Summary />
 			<this.RegistrationToolbar />

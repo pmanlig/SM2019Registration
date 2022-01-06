@@ -57,7 +57,7 @@ export class RegistrationForm extends React.Component {
 		if (this.Competition.eventGroups.length > 0) {
 			this.Competition.eventGroups.forEach(group => { this.addHeadersFor(this.Competition.eventList(group.id), group.name, majorHeaders, minorHeaders); });
 		} else {
-			this.addEventHeadersFor(this.Competition.events, majorHeaders, minorHeaders);
+			this.addEventHeadersFor(this.props.events, majorHeaders, minorHeaders);
 		}
 
 		return (
@@ -70,7 +70,7 @@ export class RegistrationForm extends React.Component {
 
 	RegistrationRows = props => {
 		return <tbody>{this.Registration.participants.map(
-			p => <RegistrationRow key={p.id} participant={p} {...props} />
+			p => <RegistrationRow key={p.id} participant={p} events={this.props.events} {...props} />
 		)}</tbody>;
 	}
 

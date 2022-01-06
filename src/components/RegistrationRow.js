@@ -74,7 +74,7 @@ export class RegistrationRow extends React.Component {
 	}
 
 	RegistrationControls = ({ row, num_rows, participant }) => {
-		return this.Competition.eventList().map(e => this.EventControls({ key: `ev${e.id}${row}`, row: row, num_rows: num_rows, participant: participant, event: e }));
+		return this.props.events.map(e => this.EventControls({ key: `ev${e.id}${row}`, row: row, num_rows: num_rows, participant: participant, event: e }));
 	}
 
 	RegistrationField = props => {
@@ -120,7 +120,7 @@ export class RegistrationRow extends React.Component {
 		let p = this.props.participant;
 		let numRows = this.numRounds(p);
 		for (let i = 0; i < numRows; i++) {
-			rows.push(<this.ParticipantRow key={`${p.id}+${i}`} row={i} num_rows={numRows} participant={p} />);
+			rows.push(<this.ParticipantRow key={`${p.id}+${i}`} row={i} num_rows={numRows} participant={p} events={this.props.events} />);
 		}
 		return rows;
 	}
