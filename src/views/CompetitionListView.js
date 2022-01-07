@@ -130,11 +130,11 @@ export class CompetitionList extends React.Component {
 	render() {
 		let group_id = this.props.match.params.group_id;
 		// ToDo: fix filtering of hidden competitions in server
-		let competitions = this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own));
+		let competitions = this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own || this.Session.user === "patrik"));
 		if (group_id) {
 			competitions = competitions.filter(c => c.group === group_id);
 		} else {
-			competitions = competitions.filter(c => c.group === undefined || c.group === "");
+			competitions = competitions.filter(c => c.group === undefined || !this.state.groups.some(g => g.label === c.group));
 		}
 		return <div id='competitions' className='content'>
 			<this.DeleteCompetitionDialog />

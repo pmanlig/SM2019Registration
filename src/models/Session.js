@@ -14,6 +14,7 @@ export class Session {
 	}
 
 	keepAlive = () => {
+		let errorHandler = error => { console.log("Error contacting server", error); }
 		fetch(`${this.Configuration.baseUrl}/competition`, {
 			crossDomain: true,
 			credentials: 'include',
@@ -25,8 +26,9 @@ export class Session {
 							// Keep alive
 							console.log("Keep alive", json);
 						})
-						.catch(error => { console.log("Error contacting server", error); });
-			});
+						.catch(errorHandler);
+			})
+			.catch(errorHandler);
 	}
 
 	login(user, password) {
