@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 
 export class EventResult extends React.Component {
 	static register = { name: "EventResult" };
-	static wire = ["fire", "subscribe", "EventBus", "Events", "Competition", "Results"];
+	static wire = ["EventBus", "Events", "Competition", "Results"];
 
 	constructor(props) {
 		super(props);
@@ -70,7 +70,7 @@ export class EventResult extends React.Component {
 
 export class ResultView extends React.Component {
 	static register = { name: "ResultView" };
-	static wire = ["fire", "subscribe", "EventBus", "Events", "EventResult", "Competition"];
+	static wire = ["EventBus", "Events", "EventResult", "Competition"];
 
 	constructor(props) {
 		super(props);

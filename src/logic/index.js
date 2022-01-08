@@ -10,4 +10,4 @@ export { LocalCompetitionService } from './LocalCompetitionService';
 export { LocalResultService } from './LocalResultService';
 export { LocalRegistrationService } from './LocalRegistrationService';
 export { Configuration } from './Configuration';
-export {CompetitionGroups} from './CompetitionGroups';
+export { CompetitionGroups } from './CompetitionGroups';

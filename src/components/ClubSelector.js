@@ -2,7 +2,7 @@ import React from 'react';
 
 export class ClubSelector extends React.Component {
 	static register = { name: "ClubSelector" };
-	static wire = ["subscribe", "Events", "EventBus", "Clubs"];
+	static wire = ["Events", "EventBus", "Clubs"];
 
 	constructor(props) {
 		super(props);

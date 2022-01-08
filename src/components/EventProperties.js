@@ -6,10 +6,11 @@ import { Spinner, Dropdown, Label } from '.';
 
 export class EventProperties extends React.Component {
 	static register = { name: "EventProperties" };
-	static wire = ["fire", "subscribe", "Events", "Competition", "Server"];
+	static wire = ["EventBus", "Events", "Competition", "Server"];
 
 	constructor(props) {
 		super(props);
+		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.competitionUpdated, () => this.setState({}));
 	}
 

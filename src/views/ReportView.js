@@ -28,7 +28,9 @@ export class ReportView extends React.Component {
 			let event = events[0];
 			this.state.eventList = events;
 			this.state.event = event;
-			this.state.schedule = event.schedule;
+			if (event.schedule !== 0 && event.schedule !== undefined) {
+				this.Server.loadSchedule(event.schedule, this.updateSchedule, this.Footers.errorHandler("Kan inte hämta startlista för tävlingen"));
+			}
 			this.state.stageDef = (event.stages && event.stages[0]);
 			this.state.stageDef = this.state.stageDef || ReportView.testStages[0]; // Debugging
 			this.Results.load(this.Competition.id, event.id);
@@ -55,8 +57,8 @@ export class ReportView extends React.Component {
 	setEvent(event) {
 		this.setState({
 			event: event,
-			schedule: undefined,
-			squad: 0,
+			schedule: null,
+			squad: null,
 			participants: null,
 		});
 		if (event !== null) {
@@ -79,10 +81,11 @@ export class ReportView extends React.Component {
 	}
 
 	updateResults = () => {
-		this.setState({participants: this.Results.scores});
+		this.setState({ participants: this.Results.scores });
 	}
 
 	updateSchedule = schedule => {
+		console.log("Updating schedule", schedule);
 		this.setState({ schedule: schedule, squad: schedule.squads[0] });
 		this.Server.loadParticipants(schedule.id, this.updateParticipants, this.Footers.errorHandler("Kan inte hämta deltagare för tävlingen"));
 	}
@@ -120,16 +123,7 @@ export class ReportView extends React.Component {
 		let { eventList, event, schedule, squad, stageDef } = this.state;
 		let stageDefs = this.getStageDefs(event);
 		let scores = this.Results.getScores(squad && squad.id);
-		/*
-		console.log("Rendering ReportView");
-		console.log("Eventlist", eventList);
-		console.log("Event",event);
-		console.log("Schedule",schedule);
-		console.log("Squad",squad);
-		console.log("stageDefs", stageDefs);
-		console.log("StageDef", stageDef);
-		console.log("Scores", scores);
-		//*/
+		console.log("ReportView", schedule);
 		return <div id="results" className="content">
 			<div id="selections">
 				{eventList.length > 1 &&
@@ -140,7 +134,7 @@ export class ReportView extends React.Component {
 				{schedule &&
 					<div id="squad-selector">Skjutlag/patrull:
 						<select value={squad.id} onChange={e => this.changeSquad(e.target.value)}>
-							{schedule.squads.map(s => <option key={s.id} value={s.id}>{s.startTime}</option>)}
+							{schedule.squads.map(s => <option key={s.id} value={s.id}>{s.startTime.split(':').slice(0, 2).join(':')}</option>)}
 						</select>
 					</div>}
 				{stageDefs.length > 0 && <div id="stage-selector">Serie/station:

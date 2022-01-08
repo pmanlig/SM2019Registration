@@ -35,6 +35,13 @@ export class EventBus {
 		this.bus = new Subject();
 	}
 
+	/**
+	 * Manages event subscriptions for a React.Component by setting up a list of handlers and masking componentDidMount
+	 * and componentWillUnmount to make sure the component subscribes to events at the correct times. This simplified
+	 * avoiding problems with messages being sent to unmounted components and triggering a setState().
+	 * 
+	 * @param {React.Component} target 
+	 */
 	manageEvents(target) {
 		// Handlers
 		target._handlers = [];
@@ -85,7 +92,7 @@ export class EventBus {
 			if (ev === event) {
 				action.apply(null, params);
 			}
-		}, undefined, undefined);
+		});
 	}
 
 	fire(event, ...params) {
