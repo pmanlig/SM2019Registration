@@ -9,7 +9,7 @@ export { Session } from './Session';
 export { Schedule } from './Schedule';
 export { Squad } from './Squad';
 export { Event } from './Event';
-export { Disciplines } from './Disciplines';
+export { Discipline } from './Discipline';
 export { ClassGroups } from './ClassGroups';
 export { DivisionGroups } from './DivisionGroups';
 export { Tokens } from './Tokens';

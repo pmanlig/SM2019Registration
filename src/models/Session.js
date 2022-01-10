@@ -5,15 +5,18 @@ export class Session {
 	static wire = ["fire", "Server", "Configuration", "Storage", "Footers"];
 	static E_LOGIN_ERROR = "Kan inte logga in";
 	static E_LOGOUT_ERROR = "Kan inte logga ut";
+	static KEEPALIVE_INTERVAL = 1000 * 60 * 60 * 4;
 
 	initialize() {
 		this.user = getCookie("user", "");
 		if (this.user && this.user !== "") {
-			this.keepAliveTimer = setInterval(this.keepAlive, 1000 * 60 * 60);
+			this.keepAliveTimer = setInterval(this.keepAlive, Session.KEEPALIVE_INTERVAL);
 		}
 	}
 
 	keepAlive = () => {
+		// Unfortunately, not working
+		/*
 		let errorHandler = error => { console.log("Error contacting server", error); }
 		fetch(`${this.Configuration.baseUrl}/competition`, {
 			crossDomain: true,
@@ -29,6 +32,7 @@ export class Session {
 						.catch(errorHandler);
 			})
 			.catch(errorHandler);
+		*/
 	}
 
 	login(user, password) {
@@ -36,7 +40,7 @@ export class Session {
 			this.user = user;
 			setCookie("user", this.user);
 			if (user === "patrik") this.Storage.set(this.Storage.keys.toggleServerMode, true);
-			this.keepAliveTimer = setInterval(this.keepAlive, 1000 * 60 * 60);
+			this.keepAliveTimer = setInterval(this.keepAlive, Session.KEEPALIVE_INTERVAL);
 			this.fire(Events.userChanged);
 		}, this.Footers.errorHandler(Session.E_LOGIN_ERROR));
 	}

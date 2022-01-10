@@ -1,0 +1,19 @@
+export class Discipline {
+	static none = -1;
+	static target = 1;
+	static fieldP = 2;
+	static fieldK = 3;
+	static PPC = 4;
+
+	static list = [
+		{ id: Discipline.none, description: "Ingen gren vald" },
+		{ id: Discipline.target, description: "Precision/Bana" },
+		{ id: Discipline.fieldP, description: "Fält (Pistol)" },
+		{ id: Discipline.fieldK, description: "Fält (K-pist & Karbin)" },
+		{ id: Discipline.PPC, description: "PPC" }
+	];
+
+	static hasStages(d) {
+		return d === Discipline.fieldP || d === Discipline.fieldK;
+	}
+}

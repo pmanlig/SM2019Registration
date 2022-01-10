@@ -1,11 +1,14 @@
+import { Discipline } from '.';
+
 export class Event {
 	constructor(id, name, date) {
 		this.id = id;
 		this.name = name;
 		this.date = date;
-		this.discipline = 0;
+		this.discipline = Discipline.none;
 		this.maxRegistrations = 1;
 		this.scores = 8;
+		this.stages = [];
 		this.cost = 100;
 	}
 
@@ -13,6 +16,12 @@ export class Event {
 		if (x === undefined) { return undefined; }
 		x = parseInt(x.toString(), 10);
 		return isNaN(x) ? undefined : x;
+	}
+
+	pad(num) {
+		let s = num.toString();
+		while (s.length < 2) s = "0" + s;
+		return s;
 	}
 
 	static fromJson(e) {
@@ -25,12 +34,6 @@ export class Event {
 		nE.scores = e.scores !== undefined ? parseInt(e.scores.toString(), 10) : 8;
 		nE.cost = e.cost !== undefined ? parseInt(e.cost.toString(), 10) : 100;
 		return nE;
-	}
-
-	pad(num) {
-		let s = num.toString();
-		while (s.length < 2) s = "0" + s;
-		return s;
 	}
 
 	// Necessary to avoid storing objects

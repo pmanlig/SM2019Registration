@@ -1,7 +1,7 @@
 import './EventProperties.css';
 import React from 'react';
 import DatePicker from 'react-date-picker';
-import { Disciplines } from '../models';
+import { Discipline } from '../models';
 import { Spinner, Dropdown, Label } from '.';
 
 export class EventProperties extends React.Component {
@@ -33,12 +33,12 @@ export class EventProperties extends React.Component {
 		this.fire(this.Events.editSchedule, this.props.event);
 	}
 
-	deleteSchedule = () => {
+	deleteSchedule = e => {
 		this.props.event.schedule = undefined;
 		this.Competition.updateEvent(this.props.event, "schedule", undefined);
 	}
 
-	showStages = () => {
+	showStages = e => {
 		this.fire(this.Events.editStages, this.props.event);
 	}
 
@@ -52,9 +52,9 @@ export class EventProperties extends React.Component {
 			</div>
 			<div className="eventProperties">
 				<Label text="Datum"><DatePicker value={event.date} onChange={d => this.Competition.updateEvent(event, "date", d)} /></Label>
-				<Label text="Gren"><Dropdown className="eventProperty" value={event.discipline || -1} list={Disciplines.list} onChange={e => this.setDiscipline(event, e.target.value)} /> </Label>
+				<Label text="Gren"><Dropdown className="eventProperty" value={event.discipline || Discipline.none} list={Discipline.list} onChange={e => this.setDiscipline(event, e.target.value)} /> </Label>
 				<Label text="Antal serier/stationer" align="center"><Spinner className="eventProperty" value={event.scores || 8} onChange={value => this.Competition.updateEvent(event, "scores", Math.max(1, value))} /></Label>
-				{(event.discipline === Disciplines.field) &&
+				{(Discipline.hasStages(event.discipline)) &&
 					<Label text="Förutsättningar" align="center">
 						<button className="eventProperty button" onClick={this.showStages}>Redigera</button>
 					</Label>}

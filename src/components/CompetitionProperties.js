@@ -8,7 +8,11 @@ let default_division_group = [{ id: -1, description: "Inget val av vapengrupp" }
 
 export class CompetitionProperties extends React.Component {
 	static register = { name: "CompetitionProperties" };
-	static wire = ["Server", "CompetitionGroups", "Competition", "EventProperties", "ScheduleProperties", "EventBus", "Events", "DivisionGroups", "ClassGroups"]
+	static wire = [
+		"EventBus", "Events", "Server",
+		"CompetitionGroups", "Competition",
+		"EventProperties", "ScheduleProperties", "StageProperties",
+		"DivisionGroups", "ClassGroups"]
 	static status = [{ id: Status.Hidden, description: "Gömd" }, { id: Status.Open, description: "Öppen" }, { id: Status.Closed, description: "Stängd" }];
 
 	constructor(props) {
@@ -46,6 +50,7 @@ export class CompetitionProperties extends React.Component {
 		let { classGroups, divisionGroups } = this.state;
 		return <div>
 			<this.ScheduleProperties divisionGroups={divisionGroups} />
+			<this.StageProperties />
 			<div id="competition-properties">
 				<div style={{ gridArea: "competition-group-label" }} className="property-label">Grupp</div>
 				<div style={{ gridArea: "competition-group-input" }}>
