@@ -7,8 +7,8 @@
 	border-left: 1px solid black;
 }
 
-.score-sheet .field {
-	grid-template-columns:  [name-start] auto repeat(6, [target-start] auto) [total-start] auto auto 1fr;
+.score-sheet.field {
+	grid-template-columns:  [name-start] auto [support-start] auto repeat(6, [target-start] auto) [total-start] auto [value-start] auto [redo-start] auto [note-start] auto [spacer-start] 1fr;
 }
 
 .score-sheet .header {

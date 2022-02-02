@@ -38,18 +38,18 @@ export class FieldReportTable extends React.Component {
 	}
 
 	ComputerTarget = (props) => {
-		let { stageDef, participant, tgt } = props;
+		let { stageDef, participant, tgt, autoFocus } = props;
 		let score = participant.getScore(stageDef.num, tgt);
-		return <input type="text" className="score-edit" value={score === undefined ? "" : score}
+		return <input autoFocus={autoFocus} type="text" className="score-edit" value={score === undefined ? "" : score}
 			onChange={e => this.setScore(stageDef, participant, tgt, parseInt(e.target.value, 10))} />;
 	}
 
-	targets(stageDef, participant, id) {
+	targets(stageDef, participant, id, first) {
 		return FieldReportTable.fieldTargetIds.map(i =>
 			i < stageDef.targets ?
 				<div key={"tgt" + id + i} className={this.participantClass("input", participant, i)}>
 					{this.props.mode === "computer" ?
-						<this.ComputerTarget stageDef={stageDef} participant={participant} tgt={i} /> :
+						<this.ComputerTarget stageDef={stageDef} participant={participant} tgt={i} autoFocus={first && i === 0} /> :
 						<this.MobileTarget stageDef={stageDef} participant={participant} tgt={i} />}
 				</div> : <div key={"tgt" + id + i} />);
 	}
@@ -57,7 +57,7 @@ export class FieldReportTable extends React.Component {
 	value(stageDef, participant, id) {
 		if (!stageDef.value) return <div key={"val" + id} />;
 		let score = participant.getScore(stageDef.num, stageDef.targets);
-		return <div className={this.participantClass("input", participant, stageDef.targets)} key={"val" + id}>
+		return <div className={this.participantClass("input", participant, 1)} key={"val" + id}>
 			<input className="score-text" type="text" size="2" value={score || ""}
 				onChange={e => this.setValue(participant, stageDef, e.target.value)} />
 		</div>;
@@ -67,12 +67,23 @@ export class FieldReportTable extends React.Component {
 		return <div className={this.participantClass("", participant)} key={"tot" + id}>{participant.getTotal(stageDef)}</div>;
 	}
 
-	participantRow(stageDef, p, id) {
+	redo(stageDef, participant, id) {
+		return <div className={this.participantClass("", participant)} key={"redo" + id}><input type="checkbox" /></div>;
+	}
+
+	note(stageDef, participant, id) {
+		return <div className={this.participantClass("", participant)} key={"note" + id}><input type="text" /></div>;
+	}
+
+	participantRow(stageDef, p, id, first) {
 		return [
 			<div key={"name" + id} className={this.participantClass("align-left", p)}>{p.name}</div>,
-			[...this.targets(stageDef, p, id)],
+			<div key={"sup" + id} className={this.participantClass("", p)}><input type="checkbox" tabIndex="-1" onClick={e => e.target.checked = !e.target.checked} /></div>,
+			[...this.targets(stageDef, p, id, first)],
 			this.total(stageDef, p, id),
 			this.value(stageDef, p, id),
+			this.redo(stageDef, p, id),
+			this.note(stageDef, p, id),
 			<div className="align-left" key={"spc" + id}>{p.error}</div>
 		];
 	}
@@ -82,11 +93,14 @@ export class FieldReportTable extends React.Component {
 		let id = 0;
 		return <div className={"score-sheet field"}>
 			<div className="header align-left">Namn</div>
+			<div className="header">Stödhand</div>
 			{this.headers(stageDef)}
 			<div className="header">Total</div>
 			{stageDef.value ? <div className="header">Poäng</div> : <div />}
+			<div className="header">Omskj.</div>
+			<div className="header align-left">Anteckning</div>
 			<div>{/* Spacer - empty space to let the interface resize */}</div>
-			{scores.map(p => this.participantRow(stageDef, p, id++)).flat()}
+			{scores.map((p, i) => this.participantRow(stageDef, p, id++, i === 0)).flat()}
 		</div>;
 	}
 }

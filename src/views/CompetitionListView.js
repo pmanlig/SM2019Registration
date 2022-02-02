@@ -64,15 +64,23 @@ export class CompetitionList extends React.Component {
 		return tokens[c.id];
 	}
 
+	getState(competition) {
+		return competition.status === Status.Hidden ? "hidden" : (competition.status === Status.Closed ? "closed" : "open");
+	}
+
+	canDelete(competition) {
+		return competition.permissions === Permissions.Own || Permissions.Admin;
+	}
+
 	Competition = ({ competition }) => {
 		let links = Operations.filter(o => (
 			competition.permissions !== Permissions.Any ||
 			(o.permission === Permissions.Any && (o.status === undefined || o.status === competition.status))
 		));
-		return <div key={competition.id} className={"competition-tile " + (competition.status === Status.Hidden ? "hidden" : (competition.status === Status.Closed ? "closed" : "open"))}>
+		return <div key={competition.id} className={"competition-tile " + this.getState(competition)}>
 			<div className="event-title">
 				<Link className="competition-link" to={`/competition/${competition.id}`}>{competition.name.split("$")[0]}</Link>
-				{competition.permissions === Permissions.Own && <button className="button-close small red"
+				{this.canDelete(competition) && <button className="button-close small red"
 					onClick={e => this.setState({ deleteCompetition: competition })} />}
 			</div>
 			{competition.subtitle !== "" && <div className="subtitle">{competition.subtitle}</div>}

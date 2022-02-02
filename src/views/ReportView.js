@@ -71,8 +71,7 @@ export class ReportView extends React.Component {
 	}
 
 	getStageDefs(event) {
-		// console.log("StageDefs", (event != null && event.stages != null && event.stages) || ReportView.testStages);
-		return (event != null && event.stages != null && event.stages) || ReportView.testStages; // For debugging
+		return (event != null && event.stages != null && event.stages.length > 0 && event.stages) || ReportView.testStages; // For debugging
 	}
 
 	setStage = stage => {
@@ -123,7 +122,7 @@ export class ReportView extends React.Component {
 		let { eventList, event, schedule, squad, stageDef } = this.state;
 		let stageDefs = this.getStageDefs(event);
 		let scores = this.Results.getScores(squad && squad.id);
-		console.log("ReportView", schedule);
+		stageDef = stageDef || stageDefs[0];
 		return <div id="results" className="content">
 			<div id="selections">
 				{eventList.length > 1 &&
