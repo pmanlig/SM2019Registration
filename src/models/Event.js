@@ -33,7 +33,7 @@ export class Event {
 		nE.maxRegistrations = parseInt(e.maxRegistrations.toString(), 10);
 		nE.scores = e.scores !== undefined ? parseInt(e.scores.toString(), 10) : 8;
 		nE.cost = e.cost !== undefined ? parseInt(e.cost.toString(), 10) : 100;
-		nE.discipline = e.discipline || Discipline.none;
+		nE.discipline = e.discipline !== undefined ? parseInt(e.discipline, 10) : Discipline.none;
 		nE.stages = e.stages || [];
 		return nE;
 	}

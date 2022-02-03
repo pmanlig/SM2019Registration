@@ -44,6 +44,7 @@ export class EventProperties extends React.Component {
 
 	render() {
 		let { event } = this.props;
+		console.log("Event", event);
 		let onDelete = this.Competition.events.length > 1 ? e => this.Competition.removeEvent(e) : undefined;
 		return <div className="event">
 			<div className="eventTitle">
