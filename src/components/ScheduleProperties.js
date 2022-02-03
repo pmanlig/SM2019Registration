@@ -26,16 +26,16 @@ export class ScheduleProperties extends React.Component {
 
 	newScheduleInformation(event, schedule) {
 		this.schedules[schedule.id] =
-			{
-				slots: 8,
-				startTime: "8:00",
-				interval: 10,
-				duration: schedule.duration,
-				mixDivisions: true,
-				selectedDivisions: this.allDivisions(event) || [],
-				event: event,
-				schedule: schedule
-			};
+		{
+			slots: 8,
+			startTime: "8:00",
+			interval: 10,
+			duration: schedule.duration,
+			mixDivisions: true,
+			selectedDivisions: this.allDivisions(event) || [],
+			event: event,
+			schedule: schedule
+		};
 		return this.schedules[schedule.id];
 	}
 
@@ -81,9 +81,11 @@ export class ScheduleProperties extends React.Component {
 	}
 
 	updateSlots = (v) => {
-		if (v === "" || !v.match(/^\d*$/)) { return; }
-		let newVal = parseInt(v, 10);
-		if (isNaN(newVal) || newVal < 0) { return }
+		let newVal = v;
+		if (typeof v === 'string') {
+			let newVal = parseInt(v, 10);
+			if (isNaN(newVal) || newVal < 0) { return }
+		}
 		this.setState({ slots: newVal });
 	}
 

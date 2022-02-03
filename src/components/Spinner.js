@@ -4,7 +4,7 @@ import React from 'react';
 export function Spinner({ className, value, onChange, size }) {
 	return <div className="spinner">
 		<button className="spinner button-previous" tabIndex="-1" style={{ backgroundColor: "inherit" }} onClick={e => onChange(value - 1)} />
-		<input className={"spinner " + className} value={value} size={size || 1} onChange={e => onChange(e.target.value)} />
+		<input className={"spinner " + className} value={value} size={size || 1} onChange={e => onChange(e.target.value, 10)} />
 		<button className="spinner button-next" tabIndex="-1" style={{ backgroundColor: "inherit" }} onClick={e => onChange(value + 1)} />
 	</div>;
 }
