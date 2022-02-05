@@ -16,8 +16,9 @@ export class StageProperties extends React.Component {
 	}
 
 	editStages = event => {
-		event.stages = [];
-		for (let i = 0; i < event.scores; i++) { event.stages.push(new StageDef(i + 1)); }
+		if (event.stages === undefined) event.stages = [];
+		while (event.stages.length < event.scores) { event.stages.push(new StageDef(event.stages.length)); }
+		while (event.stages.length > event.scores) { event.stages.pop(); }
 		this.setState({ visible: true, event: event });
 	}
 

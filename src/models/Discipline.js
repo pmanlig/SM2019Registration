@@ -17,7 +17,10 @@ export class Discipline {
 		{ id: Discipline.PPC, description: "PPC" }
 	];
 
-	static hasStages(d) {
-		return d === Discipline.fieldP || d === Discipline.fieldK || d === Discipline.scoredP || d === Discipline.scoredK;
-	}
+	static hasStages = [
+		Discipline.fieldP,
+		Discipline.fieldK,
+		Discipline.scoredP,
+		Discipline.scoredK
+	];
 }

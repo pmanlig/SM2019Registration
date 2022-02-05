@@ -1,4 +1,4 @@
-import { Discipline } from '.';
+import { Discipline, StageDef } from '.';
 
 export class Event {
 	constructor(id, name, date) {
@@ -34,7 +34,12 @@ export class Event {
 		nE.scores = e.scores !== undefined ? parseInt(e.scores.toString(), 10) : 8;
 		nE.cost = e.cost !== undefined ? parseInt(e.cost.toString(), 10) : 100;
 		nE.discipline = e.discipline !== undefined ? parseInt(e.discipline, 10) : Discipline.none;
-		nE.stages = e.stages || [];
+		nE.stages = e.stages !== undefined ? e.stages.map(s => StageDef.fromJson(s)) : [];
+
+		if (nE.id === 1247) {
+			console.log("Loading event", e);
+		}
+
 		return nE;
 	}
 
@@ -52,7 +57,7 @@ export class Event {
 			scores: this.scores,
 			cost: this.cost,
 			discipline: this.discipline,
-			// stages: this.stages
+			stages: this.stages.map(s => s.toJson())
 		};
 	}
 }

@@ -44,7 +44,6 @@ export class EventProperties extends React.Component {
 
 	render() {
 		let { event } = this.props;
-		console.log("Event", event);
 		let onDelete = this.Competition.events.length > 1 ? e => this.Competition.removeEvent(e) : undefined;
 		return <div className="event">
 			<div className="eventTitle">
@@ -55,7 +54,7 @@ export class EventProperties extends React.Component {
 				<Label text="Datum"><DatePicker value={event.date} onChange={d => this.Competition.updateEvent(event, "date", d)} /></Label>
 				<Label text="Gren"><Dropdown className="eventProperty" value={event.discipline || Discipline.none} list={Discipline.list} onChange={e => this.setDiscipline(event, e.target.value)} /> </Label>
 				<Label text="Antal serier/stationer" align="center"><Spinner className="eventProperty" value={event.scores || 8} onChange={value => this.Competition.updateEvent(event, "scores", Math.max(1, value))} /></Label>
-				{(Discipline.hasStages(event.discipline)) &&
+				{(Discipline.hasStages.includes(event.discipline)) &&
 					<Label text="Förutsättningar" align="center">
 						<button className="eventProperty button" onClick={this.showStages}>Redigera</button>
 					</Label>}

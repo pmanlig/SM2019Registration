@@ -9,11 +9,23 @@ export class StageDef {
 	}
 
 	static fromJson(json) {
-		return new StageDef(json.num, json.shots, json.targets, json.value, json.max, json.min);
-
+		return new StageDef(
+			parseInt(json.num, 10),
+			parseInt(json.targets, 10),
+			json.value === "1",
+			parseInt(json.max, 10),
+			parseInt(json.min, 10),
+			parseInt(json.shots, 10));
 	}
 
 	toJson() {
-		return { ...this };
+		return {
+			num: this.num,
+			targets: this.targets,
+			value: this.value ? 1 : 0,
+			max: this.max,
+			min: this.min,
+			shots: this.shots
+		};
 	}
 }
