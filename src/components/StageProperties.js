@@ -10,7 +10,7 @@ export class StageProperties extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = { visible: false };
+		this.state = { visible: false, dirty: false };
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.editStages, this.editStages);
 	}
@@ -24,18 +24,20 @@ export class StageProperties extends React.Component {
 
 	onClose = e => {
 		this.setState({ visible: false });
-		this.fire(this.Events.competitionUpdated);
+		if (this.state.dirty) { this.fire(this.Events.updateCompetition); }
 	}
 
 	setVal = (stage, property, min, max, val) => {
 		val = parseInt(val, 10);
-		if (val >= min && val <= max) { stage[property] = val; }
-		this.setState({});
+		if (val >= min && val <= max) {
+			stage[property] = val;
+			this.setState({ dirty: true });
+		}
 	}
 
 	toggleValue = stage => {
 		stage.value = !stage.value;
-		this.setState({});
+		this.setState({ dirty: true });
 	}
 
 	Header = props => {

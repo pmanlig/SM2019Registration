@@ -39,11 +39,13 @@ export class Competition {
 		this.rules = [];
 		this.nextNewEvent = 2;
 		this.dirty = false;
-		if (!this.subscription) {
-			this.subscription = this.subscribe(this.Events.serverChanged, () => this.changeServer());
-		}
-		if (!this.userSub) {
-			this.userSub = this.subscribe(this.Events.userChanged, () => this.refresh());
+		if (!this.serverSub) { this.serverSub = this.subscribe(this.Events.serverChanged, () => this.changeServer()); }
+		if (!this.userSub) { this.userSub = this.subscribe(this.Events.userChanged, () => this.refresh()); }
+		if (!this.dirtySub) {
+			this.dirtySub = this.subscribe(this.Events.updateCompetition, () => {
+				this.dirty = true;
+				this.fire(this.Events.competitionUpdated);
+			});
 		}
 	}
 
@@ -122,15 +124,15 @@ export class Competition {
 					this.rules = rules[1].split(',');
 				}
 			} else if (obj.description.includes("#desc#")) {
-					this.description = obj.description.match(/#desc#(.*?)##/)[1];
-					this.group = obj.description.match(/#group#(.*?)##/)[1];
-					this.shortDesc = obj.description.match(/#sub#(.*?)##/)[1];
-					let rules = obj.description.match(/#rules#(.*?)##/);
-					if (null !== rules) {
-						this.rules = rules[1].split(',');
-					}
-				} else {
-					this.description = obj.description || this.description;
+				this.description = obj.description.match(/#desc#(.*?)##/)[1];
+				this.group = obj.description.match(/#group#(.*?)##/)[1];
+				this.shortDesc = obj.description.match(/#sub#(.*?)##/)[1];
+				let rules = obj.description.match(/#rules#(.*?)##/);
+				if (null !== rules) {
+					this.rules = rules[1].split(',');
+				}
+			} else {
+				this.description = obj.description || this.description;
 			}
 			this.eventGroups = obj.eventGroups ? obj.eventGroups.map(eg => EventGroup.fromJson(eg)) : this.eventGroups;
 			this.events = obj.events ? obj.events.map(e => Event.fromJson(e)) : this.events;

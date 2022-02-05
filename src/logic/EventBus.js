@@ -10,6 +10,7 @@ export class Events {
 	static busyChanged = Events.eventId++;
 	static competitionGroupsUpdated = Events.eventId++;
 	static competitionUpdated = Events.eventId++;
+	static updateCompetition = Events.eventId++;
 	static deleteParticipant = Events.eventId++;
 	static showParticipantPicker = Events.eventId++;
 	static showSchedule = Events.eventId++;
