@@ -227,6 +227,7 @@ export class Competition {
 			if (e.id === event.id) {
 				if (prop) {
 					e[prop] = value;
+					e.adjustStages();
 				} else {
 					Object.keys(e).forEach((k, i) => e[k] = event[k]); // WTF?
 				}

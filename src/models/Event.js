@@ -12,23 +12,24 @@ export class Event {
 		this.cost = 100;
 	}
 
-	static toNumber(x) {
-		if (x === undefined) { return undefined; }
-		x = parseInt(x.toString(), 10);
-		return isNaN(x) ? undefined : x;
-	}
-
-	pad(num) {
-		let s = num.toString();
-		while (s.length < 2) s = "0" + s;
-		return s;
+	adjustStages() {
+		if (Discipline.hasStages.includes(this.discipline)) {
+			while (this.stages.length < this.scores) { this.stages.push(new StageDef(this.stages.length + 1)) }
+			while (this.stages.length > this.scores) { this.stages.pop(); }
+		}
 	}
 
 	static fromJson(e) {
-		let nE = new Event(Event.toNumber(e.id), e.name, new Date(e.date || Date.now()));
-		nE.classes = Event.toNumber(e.classes);
-		nE.divisions = Event.toNumber(e.divisions);
-		nE.schedule = ((typeof e.schedule === "object") ? e.schedule.id : Event.toNumber(e.schedule));
+		function toNumber(x) {
+			if (x === undefined) { return undefined; }
+			x = parseInt(x.toString(), 10);
+			return isNaN(x) ? undefined : x;
+		}
+
+		let nE = new Event(toNumber(e.id), e.name, new Date(e.date || Date.now()));
+		nE.classes = toNumber(e.classes);
+		nE.divisions = toNumber(e.divisions);
+		nE.schedule = ((typeof e.schedule === "object") ? e.schedule.id : toNumber(e.schedule));
 		nE.schedule = nE.schedule === 0 ? undefined : nE.schedule;
 		nE.maxRegistrations = parseInt(e.maxRegistrations.toString(), 10);
 		nE.scores = e.scores !== undefined ? parseInt(e.scores.toString(), 10) : 8;
@@ -40,10 +41,16 @@ export class Event {
 
 	// Necessary to avoid storing objects
 	toJson() {
+		function pad(num) {
+			let s = num.toString();
+			while (s.length < 2) s = "0" + s;
+			return s;
+		}
+
 		return {
 			name: this.name,
 			// date: this.date,
-			date: `${this.date.getFullYear()}-${this.pad(this.date.getMonth() + 1)}-${this.pad(this.date.getDate())}`,
+			date: `${this.date.getFullYear()}-${pad(this.date.getMonth() + 1)}-${pad(this.date.getDate())}`,
 			id: this.id,
 			classes: this.classes,
 			divisions: this.divisions,
@@ -52,7 +59,7 @@ export class Event {
 			scores: this.scores,
 			cost: this.cost,
 			discipline: this.discipline,
-			stages: this.stages.map(s => s.toJson())
+			stages: Discipline.hasStages.includes(this.discipline) ? this.stages.map(s => s.toJson()) : []
 		};
 	}
 }

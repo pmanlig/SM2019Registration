@@ -1,20 +1,9 @@
 import './ReportView.css';
 import React from 'react';
-import { StageDef } from '../models';
 
 export class ReportView extends React.Component {
 	static register = { name: "ReportView" };
 	static wire = ["fire", "Competition", "Registration", "Results", "Server", "ReportTable", "EventBus", "Events", "Footers", "Configuration"];
-	static testStages = [
-		new StageDef(1, 6, 6, false, 6),
-		new StageDef(2, 6, 4, false, 2, 1),
-		new StageDef(3, 6, 1, true, 6),
-		new StageDef(4, 6, 4, false, 3),
-		new StageDef(5, 6, 5, false, 2, 1),
-		new StageDef(6, 6, 2, false, 4),
-		new StageDef(7, 6, 2, true, 3),
-		new StageDef(8, 6, 1, false, 6)
-	];
 
 	constructor(props) {
 		super(props);
@@ -32,7 +21,6 @@ export class ReportView extends React.Component {
 				this.Server.loadSchedule(event.schedule, this.updateSchedule, this.Footers.errorHandler("Kan inte hämta startlista för tävlingen"));
 			}
 			this.state.stageDef = (event.stages && event.stages[0]);
-			this.state.stageDef = this.state.stageDef || ReportView.testStages[0]; // Debugging
 			this.Results.load(this.Competition.id, event.id);
 		}
 		else {
@@ -71,11 +59,10 @@ export class ReportView extends React.Component {
 	}
 
 	getStageDefs(event) {
-		return (event != null && event.stages != null && event.stages.length > 0 && event.stages) || ReportView.testStages; // For debugging
+		return event != null && event.stages != null && event.stages.length > 0 && event.stages;
 	}
 
 	setStage = stage => {
-		// console.log("Setting stageDef", this.getStageDefs(this.state.event), stage, this.getStageDefs(this.state.event).find(s => s.num === stage));
 		this.setState({ stageDef: this.getStageDefs(this.state.event).find(s => s.num === stage) });
 	}
 
@@ -84,7 +71,6 @@ export class ReportView extends React.Component {
 	}
 
 	updateSchedule = schedule => {
-		console.log("Updating schedule", schedule);
 		this.setState({ schedule: schedule, squad: schedule.squads[0] });
 		this.Server.loadParticipants(schedule.id, this.updateParticipants, this.Footers.errorHandler("Kan inte hämta deltagare för tävlingen"));
 	}
@@ -94,10 +80,8 @@ export class ReportView extends React.Component {
 	}
 
 	changeEvent(newEvent) {
-		this.setState({ event: this.state.eventList.find(e => e.id === newEvent) });
-		this.Server.loadResults(this.Competition.id, newEvent,
-			r => this.setState({ results: r }),
-			this.Footers.errorHandler("Kan inte hämta resultat"));
+		newEvent = parseInt(newEvent, 10);
+		this.setEvent(this.state.eventList.find(e => e.id === newEvent));
 	}
 
 	changeSquad = squadId => {
@@ -127,7 +111,7 @@ export class ReportView extends React.Component {
 			<div id="selections">
 				{eventList.length > 1 &&
 					<div id="event-selector">Resultat för deltävling:
-						<select value={event.id} onChange={e => this.changeEvent(parseInt(e.target.value, 10))}>
+						<select value={event.id} onChange={e => this.changeEvent(e.target.value)}>
 							{eventList.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
 						</select></div>}
 				{schedule &&
