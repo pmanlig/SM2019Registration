@@ -35,11 +35,6 @@ export class Event {
 		nE.cost = e.cost !== undefined ? parseInt(e.cost.toString(), 10) : 100;
 		nE.discipline = e.discipline !== undefined ? parseInt(e.discipline, 10) : Discipline.none;
 		nE.stages = e.stages !== undefined ? e.stages.map(s => StageDef.fromJson(s)) : [];
-
-		if (nE.id === 1247) {
-			console.log("Loading event", e);
-		}
-
 		return nE;
 	}
 
