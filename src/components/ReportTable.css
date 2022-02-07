@@ -74,3 +74,7 @@
 .score-sheet .error {
 	background-color: red;
 }
+
+.score-sheet .participant.input:focus-within {
+	background-color: lightgreen;
+}

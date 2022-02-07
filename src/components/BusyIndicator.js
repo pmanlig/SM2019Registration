@@ -14,6 +14,20 @@ export class Busy {
 		}
 		this.fire(this.Events.busyChanged);
 	}
+
+	wrap(id, callback) {
+		this.setBusy(id, true);
+		return function (...args) {
+			callback(...args);
+			this.setBusy(id, false);
+		}
+	}
+
+	do(id, op, ...args) {
+		this.setBusy(id, true);
+		op(...args);
+		this.setBusy(id, false);
+	}
 }
 
 // ToDo: apply withEvents

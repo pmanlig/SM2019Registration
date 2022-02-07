@@ -6,24 +6,14 @@ export class Results {
 
 	scores = [];
 
+	initialize() {
+		this.queue = this.Storage.get(this.Storage.keys.resultsQueue) || [];
+	}
+
 	load(competitionId, eventId) {
-		// ToDo: don't load this unnecessarily
+		// ToDo: don't load this unnecessarily?
 		this.Server.loadResults(competitionId, eventId, json => { // Endpoint doesn't exist yet
-			// ToDo: old code
-			this.scores = json;
-			let localScores = this.Storage.get(this.Storage.keys.results);
-			if (localScores) {
-				localScores.forEach(ls => {
-					this.scores.forEach(s => {
-						if (s.id === ls.id) {
-							s.score = ls.score;
-							s.dirty = true;
-						}
-					});
-				});
-			}
-			this.scores.forEach(p => this.calculate(p));
-			this.sort();
+			// ToDo: implement
 			this.fire(this.Events.resultsUpdated);
 		}, () => this.createScores(competitionId, eventId));
 	}
@@ -38,6 +28,25 @@ export class Results {
 	getScores(squad) {
 		return squad ? this.scores.filter(s => s.squad === squad) : this.scores;
 	}
+
+	report(event, squad, stage) {
+		// ToDo: implement
+		console.log("Storing results", event, squad, stage, this.scores);
+
+		this.queue.push({
+			event: event.id,
+			squad: squad.id,
+			scores: this.scores.filter(p => p.squad === squad.id).map(p => {
+				return {
+					id: p.id,
+					scores: p.scores.filter(n => n.num === stage)
+				}
+			})
+		});
+		console.log(this.queue);
+	}
+
+
 
 	/** Old code vv */
 
@@ -63,18 +72,6 @@ export class Results {
 				this.fire(this.Events.resultsUpdated);
 			}
 		});
-	}
-
-	store() {
-		this.Storage.set(this.Storage.keys.results, this.scores.filter(p => p.dirty));
-		// ToDo: implement sending results to server
-		// this.scores.forEach(p => { p.dirty = undefined; });
-		this.dirty = false;
-		this.fire(this.Events.resultsUpdated);
-	}
-
-	isDirty() {
-		return this.dirty || this.scores.some(p => p.dirty);
 	}
 
 	sort() {

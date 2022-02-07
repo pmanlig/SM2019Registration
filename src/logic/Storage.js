@@ -15,7 +15,8 @@ export class Storage {
 		competitionService: "competitionService",
 		resultService: "resultService",
 		registrationService: "registrationService",
-		registrationContact: "registrationContact"
+		registrationContact: "registrationContact",
+		resultsQueue: "resultsQueue"
 	};
 
 	set(key, value) {

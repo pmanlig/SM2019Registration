@@ -16,12 +16,14 @@ export class FieldReportTable extends React.Component {
 	}
 
 	setScore = (stageDef, participant, target, value) => {
-		participant.setScore(stageDef.num, target, value);
+		value = parseInt(value, 10);
+		participant.setScore(stageDef.num, target, isNaN(value) ? undefined : value);
 		this.setState({});
 	}
 
 	setValue = (participant, stageDef, value) => {
-		participant.setScore(stageDef.num, stageDef.targets, value);
+		value = parseInt(value, 10);
+		participant.setScore(stageDef.num, stageDef.targets, isNaN(value) ? undefined : value);
 		this.setState({});
 	}
 
@@ -41,7 +43,7 @@ export class FieldReportTable extends React.Component {
 		let { stageDef, participant, tgt, autoFocus } = props;
 		let score = participant.getScore(stageDef.num, tgt);
 		return <input autoFocus={autoFocus} type="text" className="score-edit" value={score === undefined ? "" : score}
-			onChange={e => this.setScore(stageDef, participant, tgt, parseInt(e.target.value, 10))} />;
+			onChange={e => this.setScore(stageDef, participant, tgt, e.target.value)} />;
 	}
 
 	targets(stageDef, participant, id, first) {
@@ -93,7 +95,7 @@ export class FieldReportTable extends React.Component {
 		let id = 0;
 		return <div className={"score-sheet field"}>
 			<div className="header align-left">Namn</div>
-			<div className="header">Stödhand</div>
+			<div className="header">Stöd</div>
 			{this.headers(stageDef)}
 			<div className="header">Total</div>
 			{stageDef.value ? <div className="header">Poäng</div> : <div />}

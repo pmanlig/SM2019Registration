@@ -1,5 +1,6 @@
 import './ReportView.css';
 import React from 'react';
+import { Schedule } from '../models';
 
 export class ReportView extends React.Component {
 	static register = { name: "ReportView" };
@@ -71,6 +72,7 @@ export class ReportView extends React.Component {
 	}
 
 	updateSchedule = schedule => {
+		schedule = Schedule.fromJson(schedule);
 		this.setState({ schedule: schedule, squad: schedule.squads[0] });
 		this.Server.loadParticipants(schedule.id, this.updateParticipants, this.Footers.errorHandler("Kan inte hämta deltagare för tävlingen"));
 	}
@@ -85,6 +87,7 @@ export class ReportView extends React.Component {
 	}
 
 	changeSquad = squadId => {
+		squadId = parseInt(squadId, 10);
 		this.setState({ squad: this.state.schedule.squads.find(s => s.id === squadId) });
 	}
 
@@ -95,6 +98,8 @@ export class ReportView extends React.Component {
 	}
 
 	next = e => {
+		let { event, squad, stageDef } = this.state;
+		this.Results.report(event, squad, stageDef.num);
 		this.setState({ validation: this.validateScores() });
 	}
 

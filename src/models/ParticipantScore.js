@@ -32,7 +32,7 @@ export class ParticipantScore {
 		let score = this.getScores(stageDef.num);
 		if (score == null) return "0/0";
 		let values = score.values.slice(0, stageDef.targets);
-		return `${values.reduce((a, b) => a + b, 0)}/${values.filter(s => s > 0).length}`;
+		return `${values.filter(v => v !== undefined).reduce((a, b) => a + b, 0)}/${values.filter(s => s > 0).length}`;
 	}
 
 	validateScore(stageDef) {
@@ -69,6 +69,6 @@ export class ParticipantScore {
 	}
 
 	static fromJson(json) {
-		return new ParticipantScore(0, json.name, json.squad);
+		return new ParticipantScore(0, json.name, parseInt(json.squad, 10));
 	}
 }
