@@ -9,16 +9,14 @@ export class Server {
 	}
 
 	//#region Main fetch/send methods and helpers
-	load(url, callback, error) {
+	load = (url, callback, error) => {
 		url = `${this.Configuration.baseUrl}/${url}`;
 		logUrl(url);
-		this.Busy.setBusy(this, true);
 		fetch(url, {
 			crossDomain: true,
 			credentials: 'include',
 		})
 			.then(res => {
-				this.Busy.setBusy(this, false);
 				if (!res.ok) { this.handleSafely(res, error); } else
 					res.json()
 						.then(callback)
@@ -28,10 +26,9 @@ export class Server {
 		// .finally(() => this.Busy.setBusy(Server.id, false));
 	}
 
-	send(url, data, callback, error) {
+	send = (url, data, callback, error) => {
 		url = `${this.Configuration.baseUrl}/${url}`;
 		logUrl(url);
-		this.Busy.setBusy(this, true);
 		return fetch(url, {
 			crossDomain: true,
 			credentials: 'include',
@@ -40,7 +37,6 @@ export class Server {
 			headers: new Headers({ 'Content-Type': 'application/json' })
 		})
 			.then(res => {
-				this.Busy.setBusy(this, false);
 				if (!res.ok) { this.handleSafely(res, error); } else
 					res.json()
 						.then(callback)
@@ -48,10 +44,13 @@ export class Server {
 			});
 	}
 
-	update(url, data, callback, error) {
+	send2(url, data, callback, error) {
+		this.Busy.wrap(this.send, url, data, callback, error);
+	}
+
+	update = (url, data, callback, error) => {
 		url = `${this.Configuration.baseUrl}/${url}`;
 		logUrl(url);
-		this.Busy.setBusy(this, true);
 		return fetch(url, {
 			crossDomain: true,
 			credentials: 'include',
@@ -60,26 +59,31 @@ export class Server {
 			headers: new Headers({ 'Content-Type': 'application/json' })
 		})
 			.then(res => {
-				this.Busy.setBusy(this, false);
 				if (!res.ok) { this.handleSafely(res, error); } else
 					callback(true);
 			});
 	}
 
-	delete(url, callback, error) {
+	update2(url, data, callback, error) {
+		this.Busy.wrap(this.update, url, data, callback, error);
+	}
+
+	delete = (url, callback, error) => {
 		url = `${this.Configuration.baseUrl}/${url}`;
 		logUrl(url);
-		this.Busy.setBusy(this, true);
 		return fetch(url, {
 			crossDomain: true,
 			credentials: 'include',
 			method: 'DELETE',
 		})
 			.then(res => {
-				this.Busy.setBusy(this, false);
 				if (!res.ok) { this.handleSafely(res, error); } else
 					callback(true);
 			});
+	}
+
+	delete2(url, callback, error) {
+		this.Busy.wrap(this.delete, url, callback, error);
 	}
 
 	jsonFile(name) {
@@ -101,47 +105,47 @@ export class Server {
 	//#region Remote Services
 	remoteCompetitionService() {
 		return {
-			loadCompetitionList: (callback, error) => { this.load("competition", callback, error); },
-			loadCompetition: (id, callback, error) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(id) : `competition/${id}`, callback, error); },
-			createCompetition: (competition, callback, error) => { this.send("competition", competition, callback, error); },
-			updateCompetition: (competition, callback, error) => { this.update(`competition/${competition.id}`, competition, callback, error); },
-			deleteCompetition: (id, callback, error) => { this.delete(`competition/${id}`, callback, error); }
+			loadCompetitionList: (callback, error) => { this.Busy.wrap(this.load, "competition", callback, error); },
+			loadCompetition: (id, callback, error) => { this.Busy.wrap(this.load, isNaN(parseInt(id, 10)) ? this.jsonFile(id) : `competition/${id}`, callback, error); },
+			createCompetition: (competition, callback, error) => { this.Busy.wrap(this.send, "competition", competition, callback, error); },
+			updateCompetition: (competition, callback, error) => { this.Busy.wrap(this.update, `competition/${competition.id}`, competition, callback, error); },
+			deleteCompetition: (id, callback, error) => { this.Busy.wrap(this.delete, `competition/${id}`, callback, error); }
 		};
 	}
 
 	remoteResultService() {
 		return {
-			loadResults: (competitionId, eventId, callback, error) => { this.load(`competition/${competitionId}/scores/${eventId}`, callback, error); }
+			loadResults: (competitionId, eventId, callback, error) => { this.Busy.wrap(this.load, `competition/${competitionId}/scores/${eventId}`, callback, error); }
 		};
 	}
 
 	remoteScheduleService() {
 		return {
-			createSchedule: (schedule, callback, error) => { this.send(`schedules`, schedule, callback, error); },
-			getSchedule: (scheduleId, callback, error) => { this.load(`schedules/${scheduleId}`, callback, error); },
-			getParticipants: (scheduleId, callback, error) => { this.load(`schedules/${scheduleId}/squad`, callback, error) },
-			updateSchedule: (schedule, callback, error) => { this.update(`schedules/${schedule.id}`, schedule, callback, error); },
-			deleteSchedule: (scheduleId, callback, error) => { this.delete(`schedules/${scheduleId}`, callback, error); }
+			createSchedule: (schedule, callback, error) => { this.send2(`schedules`, schedule, callback, error); },
+			getSchedule: (scheduleId, callback, error) => { this.Busy.wrap(this.load, `schedules/${scheduleId}`, callback, error); },
+			getParticipants: (scheduleId, callback, error) => { this.Busy.wrap(this.load, `schedules/${scheduleId}/squad`, callback, error) },
+			updateSchedule: (schedule, callback, error) => { this.update2(`schedules/${schedule.id}`, schedule, callback, error); },
+			deleteSchedule: (scheduleId, callback, error) => { this.delete2(`schedules/${scheduleId}`, callback, error); }
 		};
 	}
 
 	remoteRegistrationService() {
 		return {
-			loadRegistration: (id, token, callback, error) => { this.load(isNaN(parseInt(id, 10)) ? this.jsonFile(`${id}_token`) : `competition/${id}/${token}`, callback, error); },
-			sendRegistration: (data, callback, error) => { this.send(`register`, data, callback, error) }
+			loadRegistration: (id, token, callback, error) => { this.Busy.wrap(this.load, isNaN(parseInt(id, 10)) ? this.jsonFile(`${id}_token`) : `competition/${id}/${token}`, callback, error); },
+			sendRegistration: (data, callback, error) => { this.send2(`register`, data, callback, error) }
 		}
 	}
 
 	remoteCategoryService() {
 		return {
-			loadClassGroups: (callback, error) => { this.load(`classes`, callback, error); },
-			loadDivisionGroups: (callback, error) => { this.load(`divisions`, callback, error); }
+			loadClassGroups: (callback, error) => { this.Busy.wrap(this.load, `classes`, callback, error); },
+			loadDivisionGroups: (callback, error) => { this.Busy.wrap(this.load, `divisions`, callback, error); }
 		}
 	}
 
 	remoteStagesService() {
 		return {
-			loadStageDefs: (competitionId, eventId, callback, error) => { this.load(`competition/${competitionId}/stages/${eventId}`, callback, error); }
+			loadStageDefs: (competitionId, eventId, callback, error) => { this.Busy.wrap(this.load, `competition/${competitionId}/stages/${eventId}`, callback, error); }
 		}
 	}
 	//#endregion
@@ -149,8 +153,8 @@ export class Server {
 	//#region Local Services
 	localCategoryServive() {
 		return {
-			loadClassGroups: (callback, error) => { this.load(this.jsonFile("classes"), callback); },
-			loadDivisionGroups: (callback, error) => { this.load(this.jsonFile("divisions"), callback); }
+			loadClassGroups: (callback, error) => { this.Busy.wrap(this.load, this.jsonFile("classes"), callback); },
+			loadDivisionGroups: (callback, error) => { this.Busy.wrap(this.load, this.jsonFile("divisions"), callback); }
 		}
 	}
 	//#endregion
@@ -244,15 +248,15 @@ export class Server {
 	}
 
 	sendNewToken(registration, callback, error) {
-		this.send(`competition/send_token`, registration, logSendCallback(callback, registration, `Begär nytt mail`), logErrorHandler(error))
+		this.send2(`competition/send_token`, registration, logSendCallback(callback, registration, `Begär nytt mail`), logErrorHandler(error))
 	}
 
 	deleteRegistration(competitionId, token, callback, error) {
-		this.delete(`competition/${competitionId}/${token}`, logFetchCallback(callback, `Raderar anmälan ${token} i tävling ${competitionId}`), logErrorHandler(error));
+		this.delete2(`competition/${competitionId}/${token}`, logFetchCallback(callback, `Raderar anmälan ${token} i tävling ${competitionId}`), logErrorHandler(error));
 	}
 
 	loadRoster(competitionId, callback, error) {
-		this.load(`competition/${competitionId}/list`, logFetchCallback(callback, `Hämtar deltagare för tävling ${competitionId}`), logErrorHandler(error));
+		this.Busy.wrap(this.load, `competition/${competitionId}/list`, logFetchCallback(callback, `Hämtar deltagare för tävling ${competitionId}`), logErrorHandler(error));
 	}
 	//#endregion
 
@@ -294,27 +298,27 @@ export class Server {
 	}
 
 	createClassGroup(classGroup, callback, error) {
-		this.send(`classes`, classGroup, logUpdateCallback(callback, classGroup, "Creating ClassGroup"), logErrorHandler(error));
+		this.send2(`classes`, classGroup, logUpdateCallback(callback, classGroup, "Creating ClassGroup"), logErrorHandler(error));
 	}
 
 	createDivisionGroup(divisionGroup, callback, error) {
-		this.send(`divisions`, divisionGroup, logUpdateCallback(callback, divisionGroup, "Creating DivisionGroup"), logErrorHandler(error));
+		this.send2(`divisions`, divisionGroup, logUpdateCallback(callback, divisionGroup, "Creating DivisionGroup"), logErrorHandler(error));
 	}
 
 	updateClassGroup(classGroup, callback, error) {
-		this.update(`classes/${classGroup.id}`, classGroup, logUpdateCallback(callback, classGroup, "Updating ClassGroup"), logErrorHandler(error));
+		this.update2(`classes/${classGroup.id}`, classGroup, logUpdateCallback(callback, classGroup, "Updating ClassGroup"), logErrorHandler(error));
 	}
 
 	updateDivisionGroup(divisionGroup, callback, error) {
-		this.update(`divisions/${divisionGroup.id}`, divisionGroup, logUpdateCallback(callback, divisionGroup, "Updating DivisionGroup"), logErrorHandler(error));
+		this.update2(`divisions/${divisionGroup.id}`, divisionGroup, logUpdateCallback(callback, divisionGroup, "Updating DivisionGroup"), logErrorHandler(error));
 	}
 
 	deleteClassGroup(classGroupId, callback, error) {
-		this.delete(`classes/${classGroupId}`, logFetchCallback(callback, `Deleting ClassGroup ${classGroupId}`), logErrorHandler(error));
+		this.delete2(`classes/${classGroupId}`, logFetchCallback(callback, `Deleting ClassGroup ${classGroupId}`), logErrorHandler(error));
 	}
 
 	deleteDivisionGroup(divisionGroupId, callback, error) {
-		this.delete(`divisions/${divisionGroupId}`, logFetchCallback(callback, `Deleting DivisionGroup ${divisionGroupId}`), logErrorHandler(error));
+		this.delete2(`divisions/${divisionGroupId}`, logFetchCallback(callback, `Deleting DivisionGroup ${divisionGroupId}`), logErrorHandler(error));
 	}
 	//#endregion
 
@@ -323,7 +327,7 @@ export class Server {
 		if (this.local) {
 			callback({});
 		} else {
-			this.send(`login`, { user: user, password: password }, logSendCallback(callback, user, "Login"), logErrorHandler(error));
+			this.send2(`login`, { user: user, password: password }, logSendCallback(callback, user, "Login"), logErrorHandler(error));
 		}
 	}
 
@@ -331,14 +335,14 @@ export class Server {
 		if (this.local) {
 			callback({});
 		} else {
-			this.load(`logout`, logFetchCallback(callback, "Logout"), logErrorHandler(error));
+			this.Busy.wrap(this.load, `logout`, logFetchCallback(callback, "Logout"), logErrorHandler(error));
 		}
 	}
 	//#endregion
 
 	//#region Admin
 	getRegistrations(competitionId, callback, error) {
-		this.load(`admin/competition/${competitionId}/list_token`, logFetchCallback(callback, "Getting registrations"), logErrorHandler(error));
+		this.Busy.wrap(this.load, `admin/competition/${competitionId}/list_token`, logFetchCallback(callback, "Getting registrations"), logErrorHandler(error));
 	}
 	//#endregion
 }

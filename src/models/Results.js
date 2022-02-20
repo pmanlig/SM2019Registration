@@ -2,7 +2,7 @@ import { ParticipantScore } from './ParticipantScore';
 
 export class Results {
 	static register = { name: "Results", createInstance: true };
-	static wire = ["fire", "Competition", "Storage", "Server", "Events", "Footers"];
+	static wire = ["fire", "Competition", "Storage", "Server", "Events", "Footers", "Busy"];
 
 	scores = [];
 
@@ -12,10 +12,14 @@ export class Results {
 
 	load(competitionId, eventId) {
 		// ToDo: don't load this unnecessarily?
-		this.Server.loadResults(competitionId, eventId, json => { // Endpoint doesn't exist yet
-			// ToDo: implement
-			this.fire(this.Events.resultsUpdated);
-		}, () => this.createScores(competitionId, eventId));
+		this.Busy.wrap(
+			this.Server.load,
+			`competition/${competitionId}/event/${eventId}/participant`,
+			json => {
+				this.scores = json.map(p => ParticipantScore.fromJson(p));
+				this.fire(this.Events.resultsUpdated);
+			},
+			() => this.createScores(competitionId, eventId));
 	}
 
 	createScores(competitionId, eventId) {

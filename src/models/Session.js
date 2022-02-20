@@ -5,7 +5,7 @@ export class Session {
 	static wire = ["fire", "Server", "Configuration", "Storage", "Footers"];
 	static E_LOGIN_ERROR = "Kan inte logga in";
 	static E_LOGOUT_ERROR = "Kan inte logga ut";
-	static KEEPALIVE_INTERVAL = 1000 * 60 * 60 * 4;
+	static KEEPALIVE_INTERVAL = 1000 * 60 * 15;
 
 	initialize() {
 		this.user = getCookie("user", "");
@@ -16,9 +16,8 @@ export class Session {
 
 	keepAlive = () => {
 		// Unfortunately, not working
-		/*
 		let errorHandler = error => { console.log("Error contacting server", error); }
-		fetch(`${this.Configuration.baseUrl}/competition`, {
+		fetch(`${this.Configuration.baseUrl}/keepalive`, {
 			crossDomain: true,
 			credentials: 'include',
 		})
@@ -32,7 +31,6 @@ export class Session {
 						.catch(errorHandler);
 			})
 			.catch(errorHandler);
-		*/
 	}
 
 	login(user, password) {

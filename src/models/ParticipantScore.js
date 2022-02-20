@@ -3,11 +3,11 @@ export class ParticipantScore {
 	static E_INCORRECT_SPREAD = "Träffarna inte fördelade korrekt";
 	static E_TOO_MANY_HITS = "För många träffar";
 
-	constructor(id, name, squad) {
+	constructor(id, name, squad, scores) {
 		this.id = id;
 		this.name = name;
 		this.squad = squad;
-		this.scores = [];
+		this.scores = scores || [];
 	}
 
 	getScores(stage) {
@@ -69,6 +69,6 @@ export class ParticipantScore {
 	}
 
 	static fromJson(json) {
-		return new ParticipantScore(0, json.name, parseInt(json.squad, 10));
+		return new ParticipantScore(parseInt(json.id, 10), json.name, parseInt(json.squad, 10), json.score);
 	}
 }

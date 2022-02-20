@@ -23,4 +23,13 @@ export class Discipline {
 		Discipline.scoredP,
 		Discipline.scoredK
 	];
+
+	static fromJson(json) {
+		json = parseInt(json, 10);
+		return (isNaN(json) || json === 0) ? Discipline.none : json;
+	}
+
+	static toJson(d) {
+		return d === Discipline.none ? 0 : d;
+	}
 }

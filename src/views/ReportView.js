@@ -64,7 +64,10 @@ export class ReportView extends React.Component {
 	}
 
 	setStage = stage => {
-		this.setState({ stageDef: this.getStageDefs(this.state.event).find(s => s.num === stage) });
+		let stageDefs = this.getStageDefs(this.state.event);
+		if (stageDefs) {
+			this.setState({ stageDef: stageDefs.find(s => s.num === stage) });
+		}
 	}
 
 	updateResults = () => {
@@ -73,8 +76,8 @@ export class ReportView extends React.Component {
 
 	updateSchedule = schedule => {
 		schedule = Schedule.fromJson(schedule);
-		this.setState({ schedule: schedule, squad: schedule.squads[0] });
-		this.Server.loadParticipants(schedule.id, this.updateParticipants, this.Footers.errorHandler("Kan inte hämta deltagare för tävlingen"));
+		this.setState({ schedule: schedule, squad: schedule.squads[0], participants: this.Results.scores.filter(s => s.squad === schedule.squads[0].id) });
+		// this.Server.loadParticipants(schedule.id, this.updateParticipants, this.Footers.errorHandler("Kan inte hämta deltagare för tävlingen"));
 	}
 
 	updateParticipants = participants => {
