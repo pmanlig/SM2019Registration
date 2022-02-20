@@ -4,7 +4,8 @@ import { Schedule } from '../models';
 
 export class ReportView extends React.Component {
 	static register = { name: "ReportView" };
-	static wire = ["fire", "Competition", "Registration", "Results", "Server", "ReportTable", "EventBus", "Events", "Footers", "Configuration"];
+	static wire = ["fire", "Competition", "Registration", "Results", "Server", "ReportTable",
+		"EventBus", "Events", "Footers", "Configuration", "ResultIndicator"];
 
 	constructor(props) {
 		super(props);
@@ -94,7 +95,7 @@ export class ReportView extends React.Component {
 		this.setState({ squad: this.state.schedule.squads.find(s => s.id === squadId) });
 	}
 
-	validateScores() {
+	hasErrors() {
 		let { stageDef, participants } = this.state;
 		let errors = participants.filter(p => !p.validateScore(stageDef));
 		return errors.length > 0;
@@ -102,12 +103,18 @@ export class ReportView extends React.Component {
 
 	next = e => {
 		let { event, squad, stageDef } = this.state;
-		this.Results.report(event, squad, stageDef.num);
-		this.setState({ validation: this.validateScores() });
+		if (!this.hasErrors()) {
+			this.Results.report(event, squad, stageDef.num);
+		}
+		this.setState({});
 	}
 
 	NextButton = props => {
 		return <p type="button" id="next-button" className="button" onClick={this.next}>Nästa &gt;</p>;
+	}
+
+	QueueButton = props => {
+		return <div id="queue-button"><this.ResultIndicator /></div>;
 	}
 
 	render() {
@@ -141,6 +148,7 @@ export class ReportView extends React.Component {
 			</div>
 			{stageDef && <this.ReportTable mode={this.Configuration.mode} event={event} stageDef={stageDef} scores={scores} />}
 			<this.NextButton />
+			<this.QueueButton />
 		</div>;
 	}
 }

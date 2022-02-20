@@ -8,6 +8,8 @@ export class Results {
 
 	initialize() {
 		this.queue = this.Storage.get(this.Storage.keys.resultsQueue) || [];
+		console.log("Queue", this.queue);
+		setInterval(this.trySendResults, 1000 * 60);
 	}
 
 	load(competitionId, eventId) {
@@ -16,17 +18,12 @@ export class Results {
 			this.Server.load,
 			`competition/${competitionId}/event/${eventId}/participant`,
 			json => {
+				this.competition = competitionId;
+				this.event = eventId;
 				this.scores = json.map(p => ParticipantScore.fromJson(p));
 				this.fire(this.Events.resultsUpdated);
 			},
-			() => this.createScores(competitionId, eventId));
-	}
-
-	createScores(competitionId, eventId) {
-		this.Server.loadRoster(competitionId, json => {
-			this.scores = json.filter(p => parseInt(p.event_id, 10) === eventId).map(p => ParticipantScore.fromJson(p));
-			this.fire(this.Events.resultsUpdated);
-		}, this.Footers.errorHandler("Kan inte hämta deltagare för tävlingen"));
+			this.Footers.errorHandler("Kan inte hämta deltagare för tävlingen"));
 	}
 
 	getScores(squad) {
@@ -34,10 +31,8 @@ export class Results {
 	}
 
 	report(event, squad, stage) {
-		// ToDo: implement
-		console.log("Storing results", event, squad, stage, this.scores);
-
 		this.queue.push({
+			competition: this.competition,
 			event: event.id,
 			squad: squad.id,
 			scores: this.scores.filter(p => p.squad === squad.id).map(p => {
@@ -47,10 +42,33 @@ export class Results {
 				}
 			})
 		});
-		console.log(this.queue);
+		this.Storage.set(this.Storage.keys.resultsQueue, this.queue);
+		this.fire(this.Events.resultsUpdated);
+		this.trySendResults();
 	}
 
+	trySendResults = () => {
+		console.log("Queue", this.queue);
+		if (this.queue.length > 0) {
+			let res = this.queue[0];
+			this.Server.send(`competition/${res.competition}/event/${res.event}/participant`, res.scores,
+				json => {
+					this.queue = this.queue.filter(r => r !== res);
+					console.log("Successfully sent results");
+					this.Storage.set(this.Storage.keys.resultsQueue, this.queue);
+					this.fire(this.Events.resultsUpdated);
+					this.trySendResults();
+				},
+				error => { console.log("Error sending results", error); }
+			);
+		}
+	}
 
+	clearQueue() {
+		this.queue = [];
+		this.Storage.set(this.Storage.keys.resultsQueue, this.queue);
+		this.fire(this.Events.resultsUpdated);
+	}
 
 	/** Old code vv */
 

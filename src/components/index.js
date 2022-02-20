@@ -23,3 +23,4 @@ export { SquadPicker } from './SquadPicker';
 export { YesNoDialog } from './YesNoDialog';
 export { ClubSelector } from './ClubSelector';
 export { StageProperties } from './StageProperties';
+export { ResultIndicator } from './ResultIndicator';
