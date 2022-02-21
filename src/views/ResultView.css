@@ -1,0 +1,19 @@
+#result thead {
+	background-color: brown;
+	color: white;
+}
+
+#result th,td {
+	padding: 3px;
+	text-align: center;
+}
+
+#result .left {
+	text-align: left;
+}
+
+#result tbody tr:nth-child(even) {
+	background-color: bisque;
+}
+
+

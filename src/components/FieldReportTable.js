@@ -66,7 +66,7 @@ export class FieldReportTable extends React.Component {
 	}
 
 	total(stageDef, participant, id) {
-		return <div className={this.participantClass("", participant)} key={"tot" + id}>{participant.getTotal(stageDef)}</div>;
+		return <div className={this.participantClass("", participant)} key={"tot" + id}>{participant.getStageTotal(stageDef)}</div>;
 	}
 
 	redo(stageDef, participant, id) {

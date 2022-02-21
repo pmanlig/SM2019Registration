@@ -1,3 +1,4 @@
+import './ResultView.css';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
@@ -27,41 +28,48 @@ export class EventResult extends React.Component {
 		return event;
 	}
 
-	series(event) {
-		if (null === event) {
-			return null;
-		}
-		let s = [];
-		for (let i = 1; i <= event.series; i++) {
-			s.push(<th key={i} className="round">{i}</th>);
-		}
-		return s;
+	Header = props => {
+		let scores = [], s = 0;
+		while (s++ < props.event.scores) { scores.push(<th key={s}>{s}</th>); }
+		return <thead>
+			<tr>
+				<th>Plac</th>
+				<th className="left">Namn</th>
+				<th className="left">Förening</th>
+				{scores}
+				<th>Summa</th>
+			</tr>
+		</thead>;
 	}
 
-	participant(p) {
-		let score = 1;
-		return <tr key={p.id}>
-			<td>{p.name}</td>
-			<td>{p.organization}</td>
-			{p.score.map(s => <td key={score++} className="score">{s.join("/")}</td>)}
-			<td className="score">{p.total.join("/")}</td>
-		</tr>;
+	Participant = props => {
+		let { data, event, pos } = props;
+		let { name, organization } = data;
+		let scores = [], s = 0;
+		while (s++ < event.scores) { scores.push(<td key={s}></td>); }
+		data.scores.forEach(sc => {
+			scores[sc.stage - 1] = <td key={sc.stage}>{sc.values}</td>
+		});
+		return <tr>
+			<td>{pos}</td>
+			<td className="left">{name}</td>
+			<td className="left">{organization}</td>
+			{scores}
+			<td>Summa</td>
+		</tr>
 	}
 
 	render() {
 		let event = this.getEvent(this.Competition);
-		return <div id="results" className="content">
+		let participants = this.Results.scores;
+		// Calculate sums & sort participants
+		let pos = 1;
+		console.log("Displaying", event, participants);
+		return <div id="result" className="content">
 			<table>
-				<thead>
-					<tr>
-						<th>Namn</th>
-						<th style={{ paddingRight: "40px" }}>Förening</th>
-						{this.series(event)}
-						<th>Summa</th>
-					</tr>
-				</thead>
+				<this.Header event={event} />
 				<tbody>
-					{this.Results.scores.map(s => this.participant(s))}
+					{participants.map(p => <this.Participant key={p.id} pos={pos++} data={p} event={event} />)}
 				</tbody>
 			</table>
 		</div>;

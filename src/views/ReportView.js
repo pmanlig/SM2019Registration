@@ -5,7 +5,7 @@ import { Schedule } from '../models';
 export class ReportView extends React.Component {
 	static register = { name: "ReportView" };
 	static wire = ["fire", "Competition", "Registration", "Results", "Server", "ReportTable",
-		"EventBus", "Events", "Footers", "Configuration", "ResultIndicator"];
+		"EventBus", "Events", "Footers", "Configuration", "ReportIndicator"];
 
 	constructor(props) {
 		super(props);
@@ -114,7 +114,7 @@ export class ReportView extends React.Component {
 	}
 
 	QueueButton = props => {
-		return <div id="queue-button"><this.ResultIndicator /></div>;
+		return <div id="queue-button"><this.ReportIndicator /></div>;
 	}
 
 	render() {

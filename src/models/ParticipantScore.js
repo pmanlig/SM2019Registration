@@ -3,9 +3,10 @@ export class ParticipantScore {
 	static E_INCORRECT_SPREAD = "Träffarna inte fördelade korrekt";
 	static E_TOO_MANY_HITS = "För många träffar";
 
-	constructor(id, name, squad, scores) {
+	constructor(id, name, org, squad, scores) {
 		this.id = id;
 		this.name = name;
+		this.organization = org;
 		this.squad = squad;
 		this.scores = scores || [];
 	}
@@ -28,11 +29,15 @@ export class ParticipantScore {
 		score.values[target] = value;
 	}
 
-	getTotal(stageDef) {
+	getStageTotal(stageDef) {
 		let score = this.getScores(stageDef.num);
 		if (score == null) return "0/0";
 		let values = score.values.slice(0, stageDef.targets);
 		return `${values.filter(v => v !== undefined).reduce((a, b) => a + b, 0)}/${values.filter(s => s > 0).length}`;
+	}
+
+	getTotal() {
+		return "0";
 	}
 
 	validateScore(stageDef) {
@@ -69,6 +74,6 @@ export class ParticipantScore {
 	}
 
 	static fromJson(json) {
-		return new ParticipantScore(parseInt(json.id, 10), json.name, parseInt(json.squad, 10), json.score);
+		return new ParticipantScore(parseInt(json.id, 10), json.name, json.organization, parseInt(json.squad, 10), json.score);
 	}
 }
