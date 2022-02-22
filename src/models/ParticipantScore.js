@@ -12,7 +12,7 @@ export class ParticipantScore {
 	}
 
 	getScores(stage) {
-		return this.scores.find(s => s.num === stage);
+		return this.scores.find(s => s.stage === stage);
 	}
 
 	getScore(stage, target) {
@@ -23,7 +23,7 @@ export class ParticipantScore {
 	setScore(stage, target, value) {
 		let score = this.getScores(stage);
 		if (score == null) {
-			score = { num: stage, values: [] }
+			score = { stage: stage, values: [] }
 			this.scores.push(score);
 		}
 		score.values[target] = value;
@@ -42,7 +42,7 @@ export class ParticipantScore {
 
 	validateScore(stageDef) {
 		this.error = null;
-		let score = this.scores.find(s => s.num === stageDef.num);
+		let score = this.getScores(stageDef.num);
 		if (score == null) {
 			this.error = ParticipantScore.E_MISSING_VALUE;
 			return false;
@@ -74,6 +74,16 @@ export class ParticipantScore {
 	}
 
 	static fromJson(json) {
-		return new ParticipantScore(parseInt(json.id, 10), json.name, json.organization, parseInt(json.squad, 10), json.score);
+		return new ParticipantScore(
+			parseInt(json.id, 10),
+			json.name,
+			json.organization,
+			parseInt(json.squad, 10),
+			json.score.map(s => {
+				return {
+					stage: parseInt(s.stage, 10),
+					values: s.values.map(n => parseInt(n, 10))
+				}
+			}));
 	}
 }

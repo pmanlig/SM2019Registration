@@ -20,6 +20,7 @@ export class Results {
 				this.competition = competitionId;
 				this.event = eventId;
 				this.scores = json.map(p => ParticipantScore.fromJson(p));
+				console.log("Loaded scores", this.scores);
 				this.fire(this.Events.resultsUpdated);
 			},
 			this.Footers.errorHandler("Kan inte hämta deltagare för tävlingen"));
@@ -37,7 +38,7 @@ export class Results {
 			scores: this.scores.filter(p => p.squad === squad.id).map(p => {
 				return {
 					id: p.id,
-					scores: p.scores.filter(n => n.num === stage)
+					score: p.scores.filter(n => n.stage === stage)
 				}
 			})
 		});

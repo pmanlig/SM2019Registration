@@ -19,6 +19,10 @@ export class Event {
 		}
 	}
 
+	getStage(num) {
+		return this.stages.find(s => s.num === num);
+	}
+
 	static fromJson(e) {
 		function toNumber(x) {
 			if (x === undefined) { return undefined; }

@@ -2,6 +2,17 @@ import './ResultView.css';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
+let sum = (a, b) => a + b;
+let tgt = x => x > 0;
+let sort = (a, b) => {
+	let pos = 0;
+	while (pos < a.length && pos < b.length) {
+		if (a[pos] === b[pos]) { pos++; }
+		else { return a[pos] - b[pos]; }
+	}
+	return 0;
+}
+
 export class EventResult extends React.Component {
 	static register = { name: "EventResult" };
 	static wire = ["EventBus", "Events", "Competition", "Results"];
@@ -38,38 +49,62 @@ export class EventResult extends React.Component {
 				<th className="left">Förening</th>
 				{scores}
 				<th>Summa</th>
+				{props.showValues && <th>Poäng</th>}
 			</tr>
 		</thead>;
 	}
 
 	Participant = props => {
-		let { data, event, pos } = props;
-		let { name, organization } = data;
-		let scores = [], s = 0;
-		while (s++ < event.scores) { scores.push(<td key={s}></td>); }
-		data.scores.forEach(sc => {
-			scores[sc.stage - 1] = <td key={sc.stage}>{sc.values}</td>
-		});
+		let { data, pos } = props;
+		let { name, organization, scores, targets, total } = data;
+		let txts = [];
+		for (let i = 0; i < scores.length; i++) {
+			txts[i] = <td key={i}>{`${scores[i]}/${targets[i]}`}</td>;
+		}
+
 		return <tr>
 			<td>{pos}</td>
 			<td className="left">{name}</td>
 			<td className="left">{organization}</td>
-			{scores}
-			<td>Summa</td>
+			{txts}
+			<td>{total[0]}/{total[1]}</td>
+			{props.showValues && <td>{total[2]}p</td>}
 		</tr>
 	}
 
 	render() {
 		let event = this.getEvent(this.Competition);
-		let participants = this.Results.scores;
-		// Calculate sums & sort participants
+		let showValues = event.stages.some(s => s.value);
+		let stages = [];
+		event.stages.forEach(s => stages[s.num] = s);
+		let participants = this.Results.scores.map(p => {
+			let scores = [], targets = [], value = 0;
+			for (let i = 0; i < event.scores; i++) {
+				scores[i] = 0;
+				targets[i] = 0;
+			}
+			p.scores.forEach(s => {
+				let score = [...s.values];
+				if (stages[s.stage].value) { value += score.pop(); }
+				scores[s.stage - 1] = score.reduce(sum);
+				targets[s.stage - 1] = score.filter(tgt).length;
+			});
+			return {
+				name: p.name,
+				organization: p.organization,
+				scores: scores,
+				targets: targets,
+				total: [scores.reduce(sum), targets.reduce(sum), value]
+			}
+		});
+		participants.sort((a, b) => sort(a.total, b.total));
 		let pos = 1;
 		console.log("Displaying", event, participants);
 		return <div id="result" className="content">
 			<table>
-				<this.Header event={event} />
+				<this.Header event={event} showValues={showValues} />
 				<tbody>
-					{participants.map(p => <this.Participant key={p.id} pos={pos++} data={p} event={event} />)}
+					{participants.map(p => <this.Participant key={p.id} pos={pos++} data={p} showValues={showValues} />)}
 				</tbody>
 			</table>
 		</div>;
