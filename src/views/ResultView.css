@@ -1,3 +1,7 @@
+#event-selector {
+	margin-bottom: 5px;
+}
+
 #result thead {
 	background-color: brown;
 	color: white;
@@ -15,5 +19,3 @@
 #result tbody tr:nth-child(even) {
 	background-color: bisque;
 }
-
-

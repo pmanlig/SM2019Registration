@@ -57,10 +57,12 @@ export class FieldResult extends React.Component {
 				targets[i] = 0;
 			}
 			p.scores.forEach(s => {
-				let score = [...s.values];
-				if (stages[s.stage].value) { value += score.pop(); }
-				scores[s.stage - 1] = score.reduce(sum);
-				targets[s.stage - 1] = score.filter(tgt).length;
+				if (s.stage <= event.scores) {
+					let score = [...s.values];
+					if (stages[s.stage].value) { value += score.pop(); }
+					scores[s.stage - 1] = score.reduce(sum);
+					targets[s.stage - 1] = score.filter(tgt).length;
+				}
 			});
 			return {
 				id: p.id,
@@ -73,7 +75,7 @@ export class FieldResult extends React.Component {
 		});
 		participants.sort((a, b) => sort(a.total, b.total));
 		let pos = 1;
-		return <div id="result" className="content">
+		return <div id="result">
 			<table>
 				<this.Header event={event} showValues={showValues} />
 				<tbody>
