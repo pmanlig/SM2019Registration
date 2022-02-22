@@ -16,9 +16,9 @@ export class Status {
 export const Operations = [
 	{ name: "Anmälan", path: "register", permission: Permissions.Any, status: Status.Open },
 	{ name: "Startlista", path: "roster", permission: Permissions.Any },
-	{ name: "Administrera anmälningar", path: "registrations", permission: Permissions.Admin, status: Status.Open },
-	{ name: "Rapportera", path: "report", permission: Permissions.Admin },
 	{ name: "Resultat", path: "results", permission: Permissions.Any, status: Status.Closed },
+	{ name: "Rapportera", path: "report", permission: Permissions.Admin },
+	{ name: "Administrera anmälningar", path: "registrations", permission: Permissions.Admin, status: Status.Open },
 	{ name: "Inställningar", path: "admin", permission: Permissions.Own }
 ];
 

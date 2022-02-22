@@ -10,9 +10,9 @@ export class CompetitionView extends React.Component {
 	tabs = {
 		register: this.RegistrationView,
 		registrations: this.RegistrationsView,
-		roster: this.RosterView,
-		report: this.ReportView,
 		results: this.ResultView,
+		report: this.ReportView,
+		roster: this.RosterView,
 		admin: this.CompetitionAdmin
 	}
 

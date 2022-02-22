@@ -24,3 +24,4 @@ export { YesNoDialog } from './YesNoDialog';
 export { ClubSelector } from './ClubSelector';
 export { StageProperties } from './StageProperties';
 export { ReportIndicator } from './ReportIndicator';
+export { EventResult } from './EventResult';
