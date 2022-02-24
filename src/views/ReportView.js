@@ -102,9 +102,15 @@ export class ReportView extends React.Component {
 	}
 
 	next = e => {
-		let { event, squad, stageDef } = this.state;
+		let { event, squad, stageDef, schedule } = this.state;
 		if (!this.hasErrors()) {
 			this.Results.report(event, squad, stageDef.num);
+			for (let i = 0; i < schedule.squads.length - 1; i++) {
+				if (squad === schedule.squads[i]) {
+					this.setState({ squad: schedule.squads[i + 1] });
+					return;
+				}
+			}
 		}
 		this.setState({});
 	}

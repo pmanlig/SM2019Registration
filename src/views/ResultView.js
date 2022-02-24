@@ -10,7 +10,9 @@ export class ResultView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.EventBus.manageEvents(this);
-		this.Results.load(props.match.params.id, this.props.match.params.token);
+		if (this.props.match.params.token !== undefined) {
+			this.Results.load(props.match.params.id, this.props.match.params.token);
+		}
 		this.subscribe(this.Events.competitionUpdated, () => {
 			this.updateTitle();
 			this.setState({})
