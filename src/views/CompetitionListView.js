@@ -1,6 +1,4 @@
 import "./CompetitionList.css";
-import gpk from './../gpk_logo_wht.png';
-import xkretsen from './../gavleborg.png';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Permissions, Status, Operations } from '../models';
@@ -17,7 +15,6 @@ export class CompetitionList extends React.Component {
 		this.subscribe(this.Events.userChanged, this.loadCompetitions);
 		this.subscribe(this.Events.serverChanged, this.loadCompetitions);
 		this.subscribe(this.Events.competitionGroupsUpdated, () => this.setState({ groups: this.CompetitionGroups.groups }));
-		this.icons = { GPK: gpk, XKRETSEN: xkretsen }
 	}
 
 	loadCompetitions = () => {
@@ -92,7 +89,7 @@ export class CompetitionList extends React.Component {
 	Group = ({ group }) => {
 		return <div className="competition-tile open competition-group">
 			<div style={{ width: "40px" }}>
-				{group.icon && <img src={this.icons[group.icon]} className="group-icon" alt={group.icon} />}
+				{group.icon && <img src={group.icon} className="group-icon" alt={group.icon} />}
 			</div>
 			<div className="group-text">
 				<div className="event-title">
@@ -132,7 +129,17 @@ export class CompetitionList extends React.Component {
 		if (!this.state.deleteCompetition) return null;
 		return <this.YesNoDialog title="Bekräfta borttagning"
 			text={`Är du säker på att du vill ta bort ${this.state.deleteCompetition.name}?`} action={act => this.deleteCompetition(act)} />;
+	}
 
+	componentDidUpdate() {
+		let group_id = this.props.match.params.group_id;
+		let active = this.CompetitionGroups.active;
+		let group = this.CompetitionGroups.groups.find(g => g.label === group_id);
+		if (group === undefined) {
+			if (active !== null) { this.CompetitionGroups.setGroup(null); }
+		} else if (group !== active) {
+			this.CompetitionGroups.setGroup(group);
+		}
 	}
 
 	render() {

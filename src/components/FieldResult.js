@@ -6,7 +6,7 @@ let sort = (a, b) => {
 	let pos = 0;
 	while (pos < a.length && pos < b.length) {
 		if (a[pos] === b[pos]) { pos++; }
-		else { return a[pos] - b[pos]; }
+		else { return b[pos] - a[pos]; }
 	}
 	return 0;
 }

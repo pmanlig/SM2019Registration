@@ -16,5 +16,14 @@
 		"icon": "XKRETSEN",
 		"background": "#CFCFFF",
 		"color": "#000000"
+	},
+	{
+		"id": 3,
+		"label": "sm_2022",
+		"name": "SM Fält 2022",
+		"description": "SM Fält i Dalarna",
+		"icon": "SM2022",
+		"background": "#000000",
+		"color": "#FFFFFF"
 	}
 ]

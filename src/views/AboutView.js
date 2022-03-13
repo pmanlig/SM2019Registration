@@ -28,8 +28,11 @@ export class AboutView extends React.Component {
 				<li>Vara modernt och smidigt att använda. Systemet ska inte kräva att användare skapar någon inloggning
 					och håller rätt på ett lösenord.</li>
 			</ul>
-			<p>Just nu hanterar systemet tävlingsanmälningar, men vi hoppas kunna lägga till resultatredovisning innan
-				SM 2019.</p>
+			<p>Funktionalitet som vi håller på att lägga till inför SM Fält 2022:</p>
+			<ul>
+				<li>Resultathantering</li>
+				<li>Mobilanpassning</li>
+			</ul>
 			<p>Systemet är skrivet i <a href='https://reactjs.org/'>React</a> och <a href='http://www.php.net/'>PHP</a>.
 				Vi som har utvecklat systemet heter <a href='mailto:ordforande@gavlepistol.se'>Patrik Manlig</a> (användargränssnitt)
 				och Johan Söderberg (tjänster och databas).</p>

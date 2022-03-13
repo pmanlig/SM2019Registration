@@ -5,20 +5,21 @@ import { Link } from 'react-router-dom';
 
 export class AppHeader extends React.Component {
 	static register = { name: "AppHeader" };
-	static wire = ["LoginLogout", "LocalToggle", "DeleteCookies", "ModeSelector", "Events", "EventBus", "Session", "Configuration"];
+	static wire = ["LoginLogout", "LocalToggle", "DeleteCookies", "ModeSelector", "Events", "EventBus", "Session", "Configuration", "CompetitionGroups"];
 
 	constructor(props) {
 		super(props);
 		this.state = { title: props.title };
 		document.title = props.title;
 		this.EventBus.manageEvents(this);
-		this.subscribe(this.Events.changeTitle, this.updateTitle.bind(this));
+		this.subscribe(this.Events.changeTitle, this.updateTitle);
 		this.subscribe(this.Events.userChanged, () => this.setState({}));
 		this.subscribe(this.Events.configurationLoaded, () => this.setState({}));
-		this.subscribe(this.Events.modeChanged, mode => this.setMode(mode));
+		this.subscribe(this.Events.modeChanged, this.setMode);
+		this.subscribe(this.Events.competitionGroupsUpdated, () => this.setState({}));
 	}
 
-	updateTitle(t) {
+	updateTitle = (t) => {
 		this.setState({ title: t });
 		document.title = t;
 	}
@@ -45,10 +46,18 @@ export class AppHeader extends React.Component {
 		</header>
 	}
 
+	Icon = (props) => {
+		let group = this.CompetitionGroups.active;
+		if (group === null) {
+			return <Link to="/"><img src={logo} className="Gpk-logo" alt="logo" /></Link>
+		}
+		return <Link to={`/group/${group.label}`}><img src={group.icon} className="Gpk-logo" alt="logo" /></Link>
+	}
+
 	normalHeader() {
 		return <header className="App-header">
 			<h1 className="App-title">
-				<Link to="/"><img src={logo} className="Gpk-logo" alt="logo" /></Link>
+				<this.Icon />
 				{this.state.title}
 			</h1>
 			<div id="App-header-tools">
