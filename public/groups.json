@@ -21,9 +21,9 @@
 		"id": 3,
 		"label": "sm_2022",
 		"name": "SM Fält 2022",
-		"description": "SM Fält i Dalarna",
+		"description": "Anmälan SM Fält 2022",
 		"icon": "SM2022",
-		"background": "#000000",
-		"color": "#FFFFFF"
+		"background": "#206196",
+		"color": "#000000"
 	}
 ]

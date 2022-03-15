@@ -54,8 +54,18 @@ export class AppHeader extends React.Component {
 		return <Link to={`/group/${group.label}`}><img src={group.icon} className="Gpk-logo" alt="logo" /></Link>
 	}
 
+	background() {
+		if (this.CompetitionGroups.active) { return this.CompetitionGroups.active.background; }
+		return "#222";
+	}
+
+	color() {
+		if (this.CompetitionGroups.active) { return this.CompetitionGroups.active.color; }
+		return "white";
+	}
+
 	normalHeader() {
-		return <header className="App-header">
+		return <header className="App-header" style={{ color: this.color(), backgroundColor: this.background() }}>
 			<h1 className="App-title">
 				<this.Icon />
 				{this.state.title}

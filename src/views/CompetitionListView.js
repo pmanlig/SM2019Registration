@@ -137,8 +137,12 @@ export class CompetitionList extends React.Component {
 		let group = this.CompetitionGroups.groups.find(g => g.label === group_id);
 		if (group === undefined) {
 			if (active !== null) { this.CompetitionGroups.setGroup(null); }
-		} else if (group !== active) {
-			this.CompetitionGroups.setGroup(group);
+			this.EventBus.fire(this.Events.changeTitle, "Anmälningssystem Gävle PK");
+		} else {
+			if (group !== active) {
+				this.CompetitionGroups.setGroup(group);
+			}
+			this.EventBus.fire(this.Events.changeTitle, group.description);
 		}
 	}
 
@@ -148,8 +152,10 @@ export class CompetitionList extends React.Component {
 		let competitions = this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own || this.Session.user === "patrik"));
 		if (group_id) {
 			competitions = competitions.filter(c => c.group === group_id);
-		} else {
+		} else if (this.Session.user === "patrik") {
 			competitions = competitions.filter(c => c.group === undefined || !this.state.groups.some(g => g.label === c.group));
+		} else {
+			competitions = competitions.filter(c => c.group === undefined);
 		}
 		return <div id='competitions' className='content'>
 			<this.DeleteCompetitionDialog />
