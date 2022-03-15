@@ -155,7 +155,7 @@ export class CompetitionList extends React.Component {
 		} else if (this.Session.user === "patrik") {
 			competitions = competitions.filter(c => c.group === undefined || !this.state.groups.some(g => g.label === c.group));
 		} else {
-			competitions = competitions.filter(c => c.group === undefined);
+			competitions = competitions.filter(c => c.group === undefined || c.group === "");
 		}
 		return <div id='competitions' className='content'>
 			<this.DeleteCompetitionDialog />
