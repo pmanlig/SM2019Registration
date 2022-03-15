@@ -66,7 +66,7 @@ export class CompetitionList extends React.Component {
 	}
 
 	canDelete(competition) {
-		return competition.permissions === Permissions.Own || Permissions.Admin;
+		return competition.permissions === Permissions.Own || competition.permissions === Permissions.Admin;
 	}
 
 	Competition = ({ competition }) => {
