@@ -1,3 +1,7 @@
+import gpk from './../gpk_logo_wht.png';
+// import xkretsen from './../gavleborg.png';
+// import sm2022 from './../sm_2022.png';
+
 export class Configuration {
 	static register = { name: "Configuration", createInstance: true };
 	static wire = ["fire", "Events"];
@@ -5,6 +9,9 @@ export class Configuration {
 	baseUrl = '';
 	site = '';
 	mode = "computer";
+	color = "white";
+	background = "#222";
+	icon = gpk;
 
 	setMode(mode) {
 		this.mode = mode;
