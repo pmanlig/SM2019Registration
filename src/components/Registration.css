@@ -86,8 +86,17 @@ tr.registration td.vcenter {
 	margin: 3px 5px 0 0;
 }
 
+.participant-header {
+	display: none;
+}
+
 @media only screen and (max-width:600px) {
 	#registrationContact p {
 		width: 80px;
+	}
+
+	.participant-header {
+		display: block;
+		font-size: xx-small;
 	}
 }

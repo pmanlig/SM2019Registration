@@ -133,20 +133,13 @@ export class CompetitionList extends React.Component {
 
 	componentDidUpdate() {
 		let group_id = this.props.match.params.group_id;
-		let active = this.CompetitionGroups.active;
-		let group = this.CompetitionGroups.groups.find(g => g.label === group_id);
-		if (group === undefined) {
-			if (active !== null) { this.CompetitionGroups.setGroup(null); }
-			this.EventBus.fire(this.Events.changeTitle, "Anmälningssystem Gävle PK");
-		} else {
-			if (group !== active) {
-				this.CompetitionGroups.setGroup(group);
-			}
-			this.EventBus.fire(this.Events.changeTitle, group.description);
-		}
+		let group = this.CompetitionGroups.findGroup(group_id);
+		this.CompetitionGroups.setGroup(group);
+		this.EventBus.fire(this.Events.changeTitle, group.description);
 	}
 
 	render() {
+		let i = 1;
 		let group_id = this.props.match.params.group_id;
 		// ToDo: fix filtering of hidden competitions in server
 		let competitions = this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own || this.Session.user === "patrik"));

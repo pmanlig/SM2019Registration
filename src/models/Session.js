@@ -10,7 +10,7 @@ export class Session {
 	initialize() {
 		this.user = getCookie("user", "");
 		if (this.user && this.user !== "") {
-			this.keepAliveTimer = setInterval(this.keepAlive, Session.KEEPALIVE_INTERVAL);
+			// this.keepAliveTimer = setInterval(this.keepAlive, Session.KEEPALIVE_INTERVAL);
 		}
 	}
 

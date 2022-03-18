@@ -5,7 +5,8 @@ import { Permissions, Operations } from '../models';
 
 export class CompetitionView extends React.Component {
 	static register = { name: "CompetitionView" };
-	static wire = ["Competition", "Events", "EventBus", "RegistrationView", "ReportView", "ResultView", "CompetitionAdmin", "RosterView", "RegistrationsView", "Configuration"];
+	static wire = ["Competition", "Events", "EventBus", "RegistrationView", "ReportView", "ResultView",
+		"CompetitionAdmin", "RosterView", "RegistrationsView", "Configuration", "CompetitionGroups"];
 
 	tabs = {
 		register: this.RegistrationView,
@@ -35,9 +36,15 @@ export class CompetitionView extends React.Component {
 		return content;
 	}
 
+	componentDidUpdate() {
+		this.CompetitionGroups.setGroup(this.CompetitionGroups.findGroup(this.Competition.group));
+	}
+
 	render() {
 		// Wait; competition is loading
 		if (this.Competition.id !== this.props.match.params.id) { return <div className="content"><p>Hämtar tävling...</p></div>; }
+
+		let group = this.CompetitionGroups.findGroup(this.Competition.group);
 
 		let tabs = Operations.filter(t =>
 			this.Competition.permissions === Permissions.Own ||
@@ -57,7 +64,7 @@ export class CompetitionView extends React.Component {
 		if (Content === null) { return <Redirect to="/" />; }
 
 		return <div>
-			{this.Configuration.mode === "computer" && <div className="tabs">
+			{this.Configuration.mode === "computer" && <div className="tabs" style={{ backgroundColor: group.background }}>
 				{tabs.length > 1 && tabs.map(t => {
 					if (this.props.match.params.operation === t.path) { return <p key={t.path} className="tab">{t.name}</p> }
 					return <Link key={t.path} className="tab" to={`/competition/${this.Competition.id}/${t.path}`}>{t.name}</Link>;

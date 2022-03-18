@@ -68,6 +68,24 @@ export class RegistrationForm extends React.Component {
 		);
 	}
 
+	NewRegistrationHeader = props => {
+		const majorHeaders = [<th key="-1" className="major" colSpan="3">Skytt&nbsp;<span style={{ fontSize: "x-small", verticalAlign: "top" }}>(* = obligatoriskt fält)</span></th>];
+		const minorHeaders = this.Competition.participantHeaders().map(h => this.MinorHeader({ key: h.name, width: h.width, name: h.name }));
+
+		if (this.Competition.eventGroups.length > 0) {
+			this.Competition.eventGroups.forEach(group => { this.addHeadersFor(this.Competition.eventList(group.id), group.name, majorHeaders, minorHeaders); });
+		} else {
+			this.addEventHeadersFor(this.props.events, majorHeaders, minorHeaders);
+		}
+
+		return (
+			<thead>
+				<tr>{majorHeaders}</tr>
+				<tr>{minorHeaders}</tr>
+			</thead>
+		);
+	}
+
 	RegistrationRows = props => {
 		return <tbody>{this.Registration.participants.map(
 			p => <RegistrationRow key={p.id} participant={p} events={this.props.events} {...props} />
@@ -80,6 +98,9 @@ export class RegistrationForm extends React.Component {
 				<this.RegistrationHeader />
 				<this.RegistrationRows />
 			</table>
+			<div id="new-registration">
+				<div className="major">Skytt&nbsp;<span style={{ fontSize: "x-small", verticalAlign: "top" }}>(* = obligatoriskt fält)</span></div>
+			</div>
 		</div>;
 	}
 }

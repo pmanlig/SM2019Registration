@@ -82,10 +82,8 @@ export class ScheduleProperties extends React.Component {
 
 	updateSlots = (v) => {
 		let newVal = v;
-		if (typeof v === 'string') {
-			let newVal = parseInt(v, 10);
-			if (isNaN(newVal) || newVal < 0) { return }
-		}
+		if (typeof v === 'string') { newVal = parseInt(v, 10); }
+		if (isNaN(newVal) || newVal < 0) { return }
 		this.setState({ slots: newVal });
 	}
 

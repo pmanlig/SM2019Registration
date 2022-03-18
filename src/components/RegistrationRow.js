@@ -79,9 +79,12 @@ export class RegistrationRow extends React.Component {
 
 	RegistrationField = props => {
 		return <td className="left" rowSpan={props.numRows}>
-			{props.club_selector === "clubs" ?
-				<this.ClubSelector {...props} /> :
-				<input type="text" {...props} />}
+			<div>
+				<div className="participant-header">{props.header_name}</div>
+				{props.club_selector === "clubs" ?
+					<this.ClubSelector {...props} /> :
+					<input type="text" {...props} />}
+			</div>
 		</td>;
 	}
 
@@ -90,7 +93,7 @@ export class RegistrationRow extends React.Component {
 			<this.RegistrationField key={h.field} value={participant[h.field]} placeholder={h.placeholder || h.name}
 				style={{ width: h.width }} num_rows={num_rows} size={h.size}
 				onChange={e => this.Registration.setParticipantField(participant.id, h.field, e.target.value)}
-				club_selector={h.type}
+				club_selector={h.type} header_name={h.name}
 			/>);
 	}
 

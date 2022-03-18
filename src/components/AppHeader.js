@@ -48,7 +48,7 @@ export class AppHeader extends React.Component {
 
 	Icon = (props) => {
 		let group = this.CompetitionGroups.active;
-		if (group === null) {
+		if (group.label === undefined) {
 			return <Link to="/"><img src={logo} className="Gpk-logo" alt="logo" /></Link>
 		}
 		return <Link to={`/group/${group.label}`}><img src={group.icon} className="Gpk-logo" alt="logo" /></Link>
