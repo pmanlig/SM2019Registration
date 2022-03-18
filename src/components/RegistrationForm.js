@@ -98,9 +98,11 @@ export class RegistrationForm extends React.Component {
 				<this.RegistrationHeader />
 				<this.RegistrationRows />
 			</table>
+			{/*
 			<div id="new-registration">
 				<div className="major">Skytt&nbsp;<span style={{ fontSize: "x-small", verticalAlign: "top" }}>(* = obligatoriskt fält)</span></div>
 			</div>
+			*/}
 		</div>;
 	}
 }
