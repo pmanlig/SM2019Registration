@@ -77,7 +77,7 @@ export class RegistrationRow extends React.Component {
 		return this.props.events.map(e => this.EventControls({ key: `ev${e.id}${row}`, row: row, num_rows: num_rows, participant: participant, event: e }));
 	}
 
-	RegistrationField = props => {
+	NewRegistrationField = props => {
 		return <td className="left" rowSpan={props.numRows}>
 			<div>
 				<div className="participant-header">{props.header_name}</div>
@@ -88,7 +88,15 @@ export class RegistrationRow extends React.Component {
 		</td>;
 	}
 
-	ParticipantFields = ({ num_rows, participant }) => {
+	RegistrationField = props => {
+		return <td className="left" rowSpan={props.numRows}>
+			{props.club_selector === "clubs" ?
+				<this.ClubSelector {...props} /> :
+				<input type="text" {...props} />}
+		</td>;
+	}
+
+	NewParticipantFields = ({ num_rows, participant }) => {
 		return this.Competition.participantHeaders().map(h =>
 			<this.RegistrationField key={h.field} value={participant[h.field]} placeholder={h.placeholder || h.name}
 				style={{ width: h.width }} num_rows={num_rows} size={h.size}
@@ -97,11 +105,21 @@ export class RegistrationRow extends React.Component {
 			/>);
 	}
 
+	ParticipantFields = ({ num_rows, participant }) => {
+		return this.Competition.participantHeaders().map(h =>
+			<this.RegistrationField key={h.field} value={participant[h.field]} placeholder={h.placeholder || h.name}
+				style={{ width: h.width }} num_rows={num_rows} size={h.size}
+				onChange={e => this.Registration.setParticipantField(participant.id, h.field, e.target.value)}
+				club_selector={h.type}
+			/>);
+	}
+
 	ParticipantRow = ({ row, num_rows, participant }) => {
 		let p = participant;
 		if (!p.uniqueId) p.uniqueId = RegistrationRow.pId++;
 		return <tr className={p.errors.length > 0 ? "error registration" : "registration"} key={p.uniqueId}>
 			{row === 0 && this.ParticipantFields({ num_rows: num_rows, participant: p })}
+			{row > 0 && <td colSpan={this.Competition.participantHeaders().length+1}></td>}
 			{this.RegistrationControls({ row: row, num_rows: num_rows, participant: p })}
 			{row === 0 && <td className="vcenter tooltip" style={{ position: "relative" }} tooltip="Ta bort deltagare" tooltip-position="top">
 				<button className="button-close small red" onClick={e => this.fire(this.Events.deleteParticipant, p.id)} /></td>}
