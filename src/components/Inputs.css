@@ -1,0 +1,27 @@
+.input-wrapper {
+  margin: 3px 5px 0 0;
+}
+
+.input-wrapper label {
+	display: none;
+}
+
+@media only screen and (max-width:600px) {
+	.input-wrapper {
+		display: flex;
+		flex-direction: column;
+	}
+	
+	.input-wrapper label {
+		display: inline-block;
+		font-size: xx-small;
+		margin: 5px 5px 0 0;
+	}
+
+	.input-wrapper input {
+		border: none;
+		border-bottom: 1px solid #3F3F3F;
+		width: 75vw;
+		margin: 3px 5px 0 0;
+	}
+}

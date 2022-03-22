@@ -86,6 +86,36 @@ tr.registration td.vcenter {
 	margin: 3px 5px 0 0;
 }
 
+#team-registration-form {
+	display: inline-grid;
+}
+
+.team-name-header {
+	padding: 2px;
+}
+
+.team-member-header {
+	background-color: #7f0000;
+	color: white;
+	padding: 2px;
+}
+
+.team-input label {
+	display: none;
+}
+
+.team-input input {
+	margin: 3px 5px 0 0;
+}
+
+.major-header {
+	grid-row: 1;
+}
+
+.minor-header {
+	grid-row: 2;
+}
+
 .participant-header {
 	display: none;
 }
@@ -95,6 +125,53 @@ tr.registration td.vcenter {
 		width: 80px;
 	}
 
+	.registration-header {
+		font-weight: bold;
+		border: none;
+	}
+	
+	.registration-contact-input {
+		display: flex;
+		flex-direction: column;
+	}
+	
+	.registration-contact-input label {
+		font-size: xx-small;
+	}
+	
+	.registration-contact-input input {
+		border: none;
+		border-bottom: 1px solid #3f3f3f;
+	}
+
+	#team-registration-form {
+		display: inline-flex;
+		flex-direction: column;
+	}
+
+	#team-registration-form div {
+		margin: 3px 5px 0 0;
+	}
+	
+	.minor-header {
+		display: none;
+	}
+
+	.team-input {
+		display: inline-flex;
+		flex-direction: column;
+	}
+	
+	.team-input label {
+		display: inline-block;
+		font-size: xx-small;
+	}
+
+	.team-input input {
+		border: none;
+		border-bottom: 1px solid #3f3f3f;
+	}
+	
 	.participant-header {
 		display: block;
 		font-size: xx-small;

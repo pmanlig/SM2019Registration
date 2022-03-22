@@ -52,8 +52,10 @@ export class RegistrationRow extends React.Component {
 	EventControls = ({ row, numRows, participant, event }) => {
 		const eventInfo = participant.event(event.id) || { event: event.id, rounds: [{}] };
 		let controls = [];
-		if (row === 0 && event.classes && this.Competition.classes(event.classes)) {
-			controls.push(this.classDropdown(numRows, participant.id, event, eventInfo.class, this.Competition.classes(event.classes)));
+		if (event.classes && this.Competition.classes(event.classes)) {
+			controls.push(row === 0 ? 
+				this.classDropdown(numRows, participant.id, event, eventInfo.class, this.Competition.classes(event.classes)) :
+				<td></td>);
 		}
 		if (event.divisions && this.Competition.divisions(event.divisions)) {
 			controls.push(this.divisionDropdown(row, participant.id, event.id, eventInfo.rounds, this.Competition.divisions(event.divisions)));
@@ -118,8 +120,8 @@ export class RegistrationRow extends React.Component {
 		let p = participant;
 		if (!p.uniqueId) p.uniqueId = RegistrationRow.pId++;
 		return <tr className={p.errors.length > 0 ? "error registration" : "registration"} key={p.uniqueId}>
-			{row === 0 && this.ParticipantFields({ num_rows: num_rows, participant: p })}
-			{row > 0 && <td colSpan={this.Competition.participantHeaders().length+1}></td>}
+			{row === 0 ? this.ParticipantFields({ num_rows: num_rows, participant: p }) :
+				<td colSpan={this.Competition.participantHeaders().length} />}
 			{this.RegistrationControls({ row: row, num_rows: num_rows, participant: p })}
 			{row === 0 && <td className="vcenter tooltip" style={{ position: "relative" }} tooltip="Ta bort deltagare" tooltip-position="top">
 				<button className="button-close small red" onClick={e => this.fire(this.Events.deleteParticipant, p.id)} /></td>}

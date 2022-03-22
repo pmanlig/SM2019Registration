@@ -139,7 +139,6 @@ export class CompetitionList extends React.Component {
 	}
 
 	render() {
-		let i = 1;
 		let group_id = this.props.match.params.group_id;
 		// ToDo: fix filtering of hidden competitions in server
 		let competitions = this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own || this.Session.user === "patrik"));

@@ -1,0 +1,16 @@
+#team-registration-form .major-header {
+	border: 1px solid black;
+	padding: 2px;
+}
+
+#team-registration-form .team-name {
+	display: none;
+	font-weight: bold;
+	margin: 20px 0 0 0;
+}
+
+@media only screen and (max-width:600px) {
+	#team-registration-form .team-name {
+		display: inline;
+	}
+}

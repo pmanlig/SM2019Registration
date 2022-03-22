@@ -25,3 +25,5 @@ export { ClubSelector } from './ClubSelector';
 export { StageProperties } from './StageProperties';
 export { ReportIndicator } from './ReportIndicator';
 export { EventResult } from './EventResult';
+export { NewRegistrationContact } from './NewRegistrationContact';
+export { TextInput, ClubSelectorInput } from './Inputs';
