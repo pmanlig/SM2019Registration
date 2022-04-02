@@ -75,6 +75,11 @@
 	opacity: 1.0;
 }
 
+.super {
+	vertical-align: top;
+	font-size: xx-small;
+}
+
 /* Main form */
 
 .content {

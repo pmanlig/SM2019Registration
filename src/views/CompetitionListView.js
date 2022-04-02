@@ -102,7 +102,7 @@ export class CompetitionList extends React.Component {
 
 	Groups = ({ group_id }) => {
 		if (group_id === undefined || group_id === "")
-			return this.state.groups.map(g => <this.Group key={g.label} group={g} />);
+			return this.state.groups.filter(g => this.Session.user === "patrik" || g.status !== Status.Hidden).map(g => <this.Group key={g.label} group={g} />);
 		return null;
 	}
 

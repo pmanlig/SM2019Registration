@@ -1,5 +1,6 @@
 #registration-contact .registration-header {
 	display: block;
+	font-weight: bold;
 	padding: 2px;
 	border: 1px solid black;
 }
@@ -18,8 +19,9 @@
 
 #registration-contact .input-wrapper label {
 	display: inline;
-	width: 75px;
 	margin: 3px 0 0 0;
+	padding: 2px;
+	width: 75px;
 }
 
 #registration-contact .input-wrapper input {

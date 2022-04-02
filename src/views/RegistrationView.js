@@ -1,6 +1,7 @@
 import './RegistrationView.css';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import { Description, NewRegistrationContact } from '../components';
 
 export class RegistrationView extends React.Component {
 	static register = { name: "RegistrationView" };
@@ -33,24 +34,6 @@ export class RegistrationView extends React.Component {
 		this.setState({ deleteParticipant: undefined });
 	}
 
-	link = a => {
-		return a && <a href={a}>{a}</a>;
-	}
-
-	linkify = (t, c) => {
-		let p = 1;
-		if (t.includes("[") && t.includes("]")) {
-			return t.split("]").map(s => <span key={p++}>{s.split("[")[0]}{this.link(s.split("[")[1])}</span>).concat([<br key={p++} />]);
-		}
-		return <span key={c}>{t}<br /></span>;
-	}
-
-	Description = ({ value }) => {
-		if (value == null || value === "") { return null; }
-		let c = 1;
-		return <div className="content">{value.split("\n").map(t => this.linkify(t, c++))}</div>;
-	}
-
 	EventFilter = ({ dates, selected }) => {
 		if (dates == null || dates.length < 2) { return null; }
 		return <div className="content">
@@ -58,7 +41,13 @@ export class RegistrationView extends React.Component {
 		</div>;
 	}
 
+	onChangeContact = (prop, value) => {
+		this.fire(this.Events.setRegistrationInfo, prop, value);
+	}
+
 	render() {
+		let { name, organization, email, account } = this.Registration.contact;
+
 		if (this.Registration.token === undefined && this.props.match.params.token !== undefined) {
 			return <Redirect to={`/competition/${this.props.match.params.id}/register`} />
 		}
@@ -71,8 +60,8 @@ export class RegistrationView extends React.Component {
 
 		return <div>
 			<this.SquadPicker />
-			<this.Description value={this.Competition.description} />
-			<this.RegistrationContact />
+			<Description value={this.Competition.description} />
+			<NewRegistrationContact name={name} organization={organization} email={email} account={account} showAccount={this.Competition.rules.includes("show-acct")} onChange={this.onChangeContact} />
 			<this.EventFilter dates={this.state.dates} selected={this.state.selected} />
 			<this.RegistrationForm events={events} />
 			<this.ParticipantToolbar />

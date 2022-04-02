@@ -1,6 +1,6 @@
 import './TeamView.css';
 import React from 'react';
-import { TextInput } from '../components';
+import { Description, TextInput, NewRegistrationContact } from '../components';
 
 export class TeamView extends React.Component {
 	static register = { name: "TeamView" };
@@ -8,21 +8,32 @@ export class TeamView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = { name: "", organization: "", email: "" };
+		this.state = { name: "", organization: "", email: "", state: "" };
 	}
 
-	onChange = (name, organization, email) => {
-		this.setState({
-			name: name || this.state.name,
-			organization: organization || this.state.organization,
-			email: email || this.state.email
-		});
+	onChange = (prop, value) => {
+		switch (prop) {
+			case "name":
+				this.setState({ name: value });
+				break;
+			case "organization":
+				this.setState({ organization: value });
+				break;
+			case "email":
+				this.setState({ email: value });
+				break;
+			case "account":
+				this.setState({ account: value });
+				break;
+			default:
+				break;
+		}
 	}
 
 	TeamForm = props => {
 		let teams = [1, 2, 3];
-		return <div id='team-registration-form' className='content' style={{ gridTemplateColumns: `repeat(7, auto)` }}>
-			<div className='registration-header major-header'>Lag&nbsp;<span style={{ fontSize: "x-small", verticalAlign: "top" }}>(* = obligatoriskt fält)</span></div>
+		return <div id='team-registration-form' className="content">
+			<div className='registration-header major-header'>Lag&nbsp;<span className="super">(* = obligatoriskt fält)</span></div>
 			<div className='registration-header major-header' style={{ gridColumnEnd: "span 6" }}></div>
 			<div className='team-name-header minor-header'>Lagnamn*</div>
 			<div className='team-member-header minor-header'>Skytt 1*</div>
@@ -45,9 +56,10 @@ export class TeamView extends React.Component {
 	}
 
 	render() {
-		let { name, organization, email } = this.state;
-		return <div className="content">
-			<this.NewRegistrationContact name={name} organization={organization} email={email} onChange={this.onChange} />
+		let { name, organization, email, account } = this.state;
+		return <div>
+			<Description value={this.Competition.description} />
+			<NewRegistrationContact name={name} organization={organization} email={email} account={account} showAccount="true" onChange={this.onChange} />
 			<this.TeamForm />
 		</div>;
 	}

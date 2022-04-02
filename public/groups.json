@@ -6,7 +6,8 @@
 		"description": "Träningar och interna tävlingar Gävle PK",
 		"icon": "GPK",
 		"background": "#000000",
-		"color": "#FFFFFF"
+		"color": "#FFFFFF",
+		"status": 1
 	},
 	{
 		"id": 2,
@@ -15,7 +16,8 @@
 		"description": "Kretstävlingar Gävleborg",
 		"icon": "XKRETSEN",
 		"background": "#CFCFFF",
-		"color": "#000000"
+		"color": "#000000",
+		"status": 1
 	},
 	{
 		"id": 3,
@@ -24,6 +26,7 @@
 		"description": "Anmälan SM Fält 2022",
 		"icon": "SM2022",
 		"background": "#206196",
-		"color": "#000000"
+		"color": "#000000",
+		"status": 0
 	}
 ]
