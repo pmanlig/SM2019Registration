@@ -16,3 +16,4 @@ export { Tokens } from './Tokens';
 export { Clubs } from './Clubs';
 export { StageDef } from './StageDef';
 export { ParticipantScore } from './ParticipantScore';
+export { CompetitionGroup } from './CompetitionGroup';
