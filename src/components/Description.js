@@ -1,7 +1,14 @@
 import React from 'react';
 
 function link(a) {
-	return a && <a href={a}>{a}</a>;
+	if (a) {
+		if (a.includes("|")) {
+			return <a href={a.split("|")[1]}>{a.split("|")[0]}</a>
+		} else {
+			return <a href={a}>{a}</a>
+		}
+	}
+	return a;
 }
 
 function linkify(t, c) {
