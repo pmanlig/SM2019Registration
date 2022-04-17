@@ -17,8 +17,8 @@ export class Results {
 			`competition/${competitionId}/event/${eventId}/participant`,
 			json => {
 				if (window._debug) { console.log("Loaded results", json); }
-				this.competition = competitionId;
-				this.event = eventId;
+				this.competition = parseInt(competitionId, 10);
+				this.event = parseInt(eventId, 10);
 				this.scores = json.map(p => ParticipantScore.fromJson(p));
 				console.log("Loaded scores", this.scores);
 				this.fire(this.Events.resultsUpdated);

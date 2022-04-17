@@ -45,12 +45,11 @@ export class FieldResult extends React.Component {
 		</tr>
 	}
 
-	render() {
+	createScores() {
 		let { event, results } = this.props;
-		let showValues = event.stages.some(s => s.value);
 		let stages = [];
 		event.stages.forEach(s => stages[s.num] = s);
-		let participants = results.scores.map(p => {
+		let participants = results.map(p => {
 			let scores = [], targets = [], value = 0;
 			for (let i = 0; i < event.scores; i++) {
 				scores[i] = 0;
@@ -74,14 +73,18 @@ export class FieldResult extends React.Component {
 			}
 		});
 		participants.sort((a, b) => sort(a.total, b.total));
+		return participants;
+	}
+
+	render() {
+		let { event } = this.props;
+		let showValues = event.stages.some(s => s.value);
 		let pos = 1;
-		return <div id="result">
-			<table>
-				<this.Header event={event} showValues={showValues} />
-				<tbody>
-					{participants.map(p => <this.Participant key={p.id} pos={pos++} data={p} showValues={showValues} />)}
-				</tbody>
-			</table>
-		</div>;
+		return <table>
+			<this.Header event={event} showValues={showValues} />
+			<tbody>
+				{this.createScores().map(p => <this.Participant key={p.id} pos={pos++} data={p} showValues={showValues} />)}
+			</tbody>
+		</table>;
 	}
 }

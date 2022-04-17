@@ -19,3 +19,7 @@
 #result tbody tr:nth-child(even) {
 	background-color: bisque;
 }
+
+#result .toolbar {
+	margin-bottom: 5px;
+}

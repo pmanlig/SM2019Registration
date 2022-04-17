@@ -9,15 +9,26 @@ export class ResultView extends React.Component {
 
 	constructor(props) {
 		super(props);
+		let { params } = this.props.match;
+		this.state = { division: params.extra };
 		this.EventBus.manageEvents(this);
-		if (this.props.match.params.token !== undefined) {
-			this.Results.load(props.match.params.id, this.props.match.params.token);
-		}
 		this.subscribe(this.Events.competitionUpdated, () => {
 			this.updateTitle();
-			this.setState({})
+			this.setState({});
 		});
-		this.subscribe(this.Events.resultsUpdated, () => this.setState({}));
+		this.subscribe(this.Events.resultsUpdated, this.updateResults);
+		if (params.token !== undefined) {
+			this.Results.load(params.id, params.token);
+		}
+	}
+
+	updateResults = () => {
+		let x = {};
+		this.Results.scores.forEach(s => {
+			if (x[s.division] === undefined) { x[s.division] = []; }
+			x[s.division].push(s);
+		});
+		this.setState({ scores: x, division: this.state.division || Object.keys(x).sort()[0] });
 	}
 
 	updateTitle() {
@@ -33,27 +44,55 @@ export class ResultView extends React.Component {
 
 	componentDidUpdate() {
 		this.updateTitle();
-		if (this.props.match.params.token !== this.Results.event) {
+		let { token } = this.props.match.params, { event } = this.Results;
+		if ((token !== undefined && event === undefined) || token !== event.toString()) {
 			this.Results.load(this.props.match.params.id, this.props.match.params.token);
 		}
 	}
 
+	eventClass(e) {
+		return e.id === parseInt(this.props.match.params.token, 10) ? "button" : "button white";
+	}
+
+	updateEvent(event) {
+		this.Results.load(this.Competition.id, event);
+		this.setState({ scores: undefined, division: undefined });
+	}
+
 	EventSelector = props => {
-		let cls = e => e.id === parseInt(this.props.match.params.token, 10) ? "button" : "button white";
 		if (this.Competition.events.length < 2) { return null; }
 		return <div id="event-selector">
-			{this.Competition.events.map(e => <Link key={e.id} to={`/competition/${this.Competition.id}/results/${e.id}`} className={cls(e)}>{e.name}</Link>)}
+			{this.Competition.events.map(e =>
+				<Link key={e.id} className={this.eventClass(e)} onClick={() => this.updateEvent(e.id)} to={`/competition/${this.Competition.id}/results/${e.id}`}>{e.name}</Link>)}
+		</div>;
+	}
+
+	divisionClass(d) {
+		return d === this.state.division ? "button" : "button white";
+	}
+
+	DivisionSelector = props => {
+		let { scores } = this.state;
+		if (scores == null || Object.keys(scores).length < 2) { return null; }
+		return <div className="toolbar">
+			{Object.keys(scores).sort().map(s =>
+				<Link key={s} className={this.divisionClass(s)} onClick={() => this.setState({ division: s })} to={`/competition/${this.Competition.id}/results/${this.props.match.params.token}/${s}`}>{s}</Link>)}
 		</div>;
 	}
 
 	render() {
-		if (this.props.match.params.token === undefined) {
+		let { token } = this.props.match.params;
+		if (token === undefined) {
 			return <Redirect to={`/competition/${this.Competition.id}/results/${this.Competition.events[0].id}`} />;
 		}
 
-		return <div className="content">
+		if (this.state.scores === undefined) { return null; }
+		let scores = this.state.scores[this.state.division];
+
+		return <div id="result" className="content">
 			<this.EventSelector />
-			<EventResult competition={this.Competition} event={this.Competition.event(parseInt(this.props.match.params.token, 10))} results={this.Results} />
+			<this.DivisionSelector />
+			<EventResult competition={this.Competition} event={this.Competition.event(parseInt(token, 10))} results={scores} />
 		</div>;
 	}
 }
