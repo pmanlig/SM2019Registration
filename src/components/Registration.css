@@ -86,10 +86,6 @@ tr.registration td.vcenter {
 	margin: 3px 5px 0 0;
 }
 
-#team-registration-form {
-	display: inline-grid;
-}
-
 .team-name-header {
 	padding: 2px;
 }
@@ -144,15 +140,6 @@ tr.registration td.vcenter {
 		border-bottom: 1px solid #3f3f3f;
 	}
 
-	#team-registration-form {
-		display: inline-flex;
-		flex-direction: column;
-	}
-
-	#team-registration-form div {
-		margin: 3px 5px 0 0;
-	}
-	
 	.minor-header {
 		display: none;
 	}

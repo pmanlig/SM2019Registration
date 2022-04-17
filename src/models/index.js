@@ -17,3 +17,4 @@ export { Clubs } from './Clubs';
 export { StageDef } from './StageDef';
 export { ParticipantScore } from './ParticipantScore';
 export { CompetitionGroup } from './CompetitionGroup';
+export { TeamRegistration } from './TeamRegistration';

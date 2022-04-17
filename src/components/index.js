@@ -27,3 +27,5 @@ export { ReportIndicator } from './ReportIndicator';
 export { EventResult } from './EventResult';
 export { TextInput, ClubSelectorInput, NewRegistrationContact } from './Inputs';
 export { Description } from './Description';
+export { TeamForm } from './TeamForm';
+export { TeamProperties } from './TeamProperties';

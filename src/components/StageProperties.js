@@ -74,7 +74,7 @@ export class StageProperties extends React.Component {
 					<this.Header showShots={showShots} />
 					{event.stages.map(s => <this.Stage key={s.num} stage={s} showShots={showShots} />)}
 				</div>
-				<div className="tools"><button id="ok" className="button" onClick={this.onClose}>OK</button></div>
+				<div className="modal-buttons"><button id="ok" className="button" onClick={this.onClose}>OK</button></div>
 			</div>
 		</ModalDialog>
 	}

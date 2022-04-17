@@ -1,23 +1,35 @@
-#team-registration-form .major-header {
+.team-registration-form {
+	display: inline-grid;
+}
+
+.team-registration-form .major-header {
 	font-weight: bold;
 	border: 1px solid black;
 	padding: 2px;
 }
 
-#team-registration-form .team-name {
+.team-registration-form .team-name {
 	display: none;
 	font-weight: bold;
 	margin: 15px 0 0 0;
 }
 
 @media only screen and (max-width:600px) {
-	#team-registration-form .major-header {
+	.team-registration-form {
+		display: inline-flex;
+		flex-direction: column;
+	}
+	
+	.team-registration-form div {
+		margin: 3px 5px 0 0;
+	}
+		.team-registration-form .major-header {
 		background-color: lightblue;
 		border: 1px solid #3F3F3F;
 		border: none;
 	}
 
-	#team-registration-form .team-name {
+	.team-registration-form .team-name {
 		display: inline;
 	}
 }

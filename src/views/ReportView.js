@@ -96,8 +96,9 @@ export class ReportView extends React.Component {
 	}
 
 	hasErrors() {
-		let { stageDef, participants } = this.state;
-		let errors = participants.filter(p => !p.validateScore(stageDef));
+		let { stageDef, participants, squad } = this.state;
+		let errors = participants.filter(p => p.squad === squad.id).filter(p => !p.validateScore(stageDef));
+		if (errors.length > 0) { console.log(errors); }
 		return errors.length > 0;
 	}
 

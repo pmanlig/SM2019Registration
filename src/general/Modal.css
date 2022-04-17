@@ -23,7 +23,7 @@
 	border-radius: 10px;
 }
 
-.modal-box-title {
+.modal-box .modal-box-title {
 	padding: 10px;
 	color: white;
 	background: black;
@@ -31,24 +31,31 @@
 	display: flex;
 }
 
-.modal-box-title button {
+.modal-box .modal-box-title button {
 	flex-grow: 0;
 	box-sizing: content-box;
 	border: 1.5px solid #9f9f9f;
 	background-color: black;
 }
 
-.modal-box-title button:hover {
+.modal-box .modal-box-title button:hover {
 	background-color: #3f3f3f;
 }
 
-.modal-box-title h1 {
+.modal-box .modal-box-title h1 {
 	margin: 0 20px 0 0;
 	font-size: 1.2em;
 	flex-grow: 1;
 }
 
-.modal-box-content {
+.modal-box .modal-box-content {
 	padding: 10px;
 	border-radius: 0 0 10px 10px;
+}
+
+.modal-box .modal-buttons {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: end;
 }

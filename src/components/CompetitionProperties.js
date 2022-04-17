@@ -12,7 +12,7 @@ export class CompetitionProperties extends React.Component {
 		"EventBus", "Events", "Server",
 		"CompetitionGroups", "Competition",
 		"EventProperties", "ScheduleProperties", "StageProperties",
-		"DivisionGroups", "ClassGroups"]
+		"DivisionGroups", "ClassGroups", "TeamProperties"]
 	static status = [{ id: Status.Hidden, description: "Gömd" }, { id: Status.Open, description: "Öppen" }, { id: Status.Closed, description: "Stängd" }];
 
 	constructor(props) {
@@ -49,8 +49,9 @@ export class CompetitionProperties extends React.Component {
 	render() {
 		let { classGroups, divisionGroups } = this.state;
 		return <div>
-			<this.ScheduleProperties divisionGroups={divisionGroups} />
 			<this.StageProperties />
+			<this.ScheduleProperties divisionGroups={divisionGroups} onDelete={this.deleteSchedule} />
+			<this.TeamProperties />
 			<div id="competition-properties">
 				<div style={{ gridArea: "competition-group-label" }} className="property-label">Grupp</div>
 				<div style={{ gridArea: "competition-group-input" }}>

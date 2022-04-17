@@ -22,12 +22,6 @@
 	border: none;
 }
 
-#stages .tools {
-	display: flex;
-	width: 100%;
-	flex-direction: row-reverse;
-}
-
 @media screen and (max-width: 600px) {
 	#stages {
 		grid-template-areas: 

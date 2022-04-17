@@ -130,6 +130,13 @@ export class ScheduleProperties extends React.Component {
 		this.setState({ schedule: undefined });
 	}
 
+	onDelete = () => {
+		this.Server.deleteSchedule(this.state.schedule.id, () => {
+			this.Competition.updateEvent(this.state.event, "schedule", undefined);
+			this.setState({ schedule: undefined });
+		},this.Footers.errorHandler("Kan inte ta bort schema"));
+	}
+
 	render() {
 		if (this.state.schedule === undefined) { return null; }
 
@@ -178,6 +185,10 @@ export class ScheduleProperties extends React.Component {
 						{this.state.schedule.squads.map(s => <SquadProperties key={s.id} squad={s} divisions={allDivisions} onUpdate={this.updateSquadProperty} onDelete={this.deleteSquad} />)}
 					</tbody>
 				</table>
+			</div>
+			<div className="modal-buttons">
+				<button className="button white" onClick={this.onDelete}>Radera</button>
+				<button className="button" onClick={this.onClose}>OK</button>
 			</div>
 		</ModalDialog>;
 	}

@@ -33,13 +33,12 @@ export class EventProperties extends React.Component {
 		this.fire(this.Events.editSchedule, this.props.event);
 	}
 
-	deleteSchedule = e => {
-		this.props.event.schedule = undefined;
-		this.Competition.updateEvent(this.props.event, "schedule", undefined);
-	}
-
 	showStages = e => {
 		this.fire(this.Events.editStages, this.props.event);
+	}
+
+	editTeams = e => {
+		this.fire(this.Events.editTeams, this.props.event);
 	}
 
 	render() {
@@ -62,12 +61,10 @@ export class EventProperties extends React.Component {
 				<Label text="Klasser"><Dropdown className="eventProperty" value={event.classes || -1} list={this.props.classGroups} onChange={e => this.setGroup(event, "classes", e.target.value)} /></Label>
 				<Label text="Vapengrupper"><Dropdown className="eventProperty" value={event.divisions || -1} list={this.props.divisionGroups} onChange={e => this.setGroup(event, "divisions", e.target.value)} /></Label>
 				<Label text="Max starter" align="center"><Spinner className="eventProperty" value={event.maxRegistrations || 1} onChange={value => this.Competition.updateEvent(event, "maxRegistrations", Math.max(1, value))} /></Label>
-				<Label text="Skjutlag/patruller" align="center">
-					<div>
-						<button className="eventProperty button" onClick={this.showSchedule}>{event.schedule ? "Redigera" : "Skapa"}</button>
-						{event.schedule && <button className="button-close small red event-props-delete" onClick={this.deleteSchedule} />}
-					</div>
+				<Label text="Skjutlag/patruller">
+					<button className="eventProperty button" onClick={this.showSchedule}>{event.schedule ? "Redigera" : "Skapa"}</button>
 				</Label>
+				<Label text="Lag"><button className="eventProperty button" onClick={this.editTeams}>Redigera</button></Label>
 			</div>
 		</div>;
 	}
