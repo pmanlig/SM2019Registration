@@ -45,7 +45,7 @@ export class ResultView extends React.Component {
 	componentDidUpdate() {
 		this.updateTitle();
 		let { token } = this.props.match.params, { event } = this.Results;
-		if ((token !== undefined && event === undefined) || token !== event.toString()) {
+		if ((token !== undefined && event === undefined) || token !== event.toString() || this.state.scores === undefined) {
 			this.Results.load(this.props.match.params.id, this.props.match.params.token);
 		}
 	}
@@ -56,7 +56,7 @@ export class ResultView extends React.Component {
 
 	updateEvent(event) {
 		this.Results.load(this.Competition.id, event);
-		this.setState({ scores: undefined, division: undefined });
+		// this.setState({ scores: undefined, division: undefined });
 	}
 
 	EventSelector = props => {
