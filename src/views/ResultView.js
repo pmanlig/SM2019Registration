@@ -5,7 +5,7 @@ import { EventResult } from '../components';
 
 export class ResultView extends React.Component {
 	static register = { name: "ResultView" };
-	static wire = ["EventBus", "Events", "Competition", "Results"];
+	static wire = ["EventBus", "Events", "Competition", "Results", "DivisionGroups"];
 
 	constructor(props) {
 		super(props);
@@ -22,6 +22,7 @@ export class ResultView extends React.Component {
 	}
 
 	loadResults = () => {
+		console.log("Refreshing results");
 		let { params } = this.props.match;
 		if (params.token !== undefined) {
 			this.Results.load(params.id, params.token);
@@ -29,13 +30,7 @@ export class ResultView extends React.Component {
 	}
 
 	updateResults = () => {
-		let x = {};
-		this.Results.scores.forEach(s => {
-			if (x[s.division] === undefined) { x[s.division] = {}; }
-			if (x[s.division][s.class] === undefined) { x[s.division][s.class] = []; }
-			x[s.division][s.class].push(s);
-		});
-		this.setState({ scores: x, division: this.state.division || Object.keys(x).sort()[0] });
+		this.setState({});
 	}
 
 	updateTitle() {
@@ -67,6 +62,7 @@ export class ResultView extends React.Component {
 	}
 
 	EventSelector = props => {
+		console.log(this.Competition.events[0]);
 		if (this.Competition.events.length < 2) { return null; }
 		return <div id="event-selector">
 			{this.Competition.events.map(e =>
@@ -74,32 +70,49 @@ export class ResultView extends React.Component {
 		</div>;
 	}
 
-	divisionClass(d) {
-		return d === this.state.division ? "button" : "button white";
-	}
-
 	DivisionSelector = props => {
-		let { scores } = this.state;
-		if (scores == null || Object.keys(scores).length < 2) { return null; }
+		let { event, active } = props;
+		if (active === undefined) { return null; }
+		let divisions = this.DivisionGroups.find(g => g.id === event.divisions).divisions.filter(d => !d.includes('+'));
 		return <div className="toolbar">
-			{Object.keys(scores).sort().map(s =>
-				<Link key={s} className={this.divisionClass(s)} onClick={() => this.setState({ division: s })} to={`/competition/${this.Competition.id}/results/${this.props.match.params.token}/${s}`}>{s}</Link>)}
+			{divisions.sort().map(d =>
+				<Link key={d} className={d === active ? "button" : "button white"} to={`/competition/${this.Competition.id}/results/${event.id}/${d}`}>{d}</Link>)}
 		</div>;
 	}
 
+	separateScores(event, scores) {
+		if (event.classes === undefined) { return [scores]; }
+		let result = {};
+		scores.forEach(s => {
+			if (result[s.class] === undefined) { result[s.class] = []; }
+			result[s.class].push(s);
+		});
+		return Object.keys(result).map(k => result[k]);
+	}
+
+	filterScores(event, division) {
+		if (event.divisions === undefined || division === undefined) { return this.separateScores(event, this.Results.scores); }
+		return this.separateScores(event, this.Results.scores.filter(s => s.division === division));
+	}
+
 	render() {
-		let { token } = this.props.match.params;
+		let { token, extra } = this.props.match.params;
 		if (token === undefined) {
 			return <Redirect to={`/competition/${this.Competition.id}/results/${this.Competition.events[0].id}`} />;
 		}
-
-		if (this.state.scores === undefined) { return null; }
-		let scores = Object.keys(this.state.scores[this.state.division]).map(k => this.state.scores[this.state.division][k]);
+		let event = this.Competition.events.find(e => e.id === parseInt(token, 10));
+		if (extra === undefined) {
+			if (event.divisions) {
+				let divisions = this.DivisionGroups.find(g => g.id === event.divisions).divisions;
+				return <Redirect to={`/competition/${this.Competition.id}/results/${token}/${divisions[0]}`} />;
+			}
+		}
+		if (this.Results.scores === undefined) { return null; }
 
 		return <div id="result" className="content">
 			<this.EventSelector />
-			<this.DivisionSelector />
-			<EventResult competition={this.Competition} event={this.Competition.event(parseInt(token, 10))} results={scores} />
+			<this.DivisionSelector event={event} active={extra} />
+			<EventResult competition={this.Competition} event={this.Competition.event(parseInt(token, 10))} results={this.filterScores(event, extra)} />
 		</div>;
 	}
 }

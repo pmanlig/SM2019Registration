@@ -9,7 +9,7 @@ export class ParticipantScore {
 		this.organization = org;
 		this.squad = squad;
 		this.scores = scores || [];
-		this.class = division === "C" ? cls.split('/')[0] : cls.slice(cls.indexOf('/') + 1);
+		this.class = cls == null ? cls : ((division === "C") ? cls.split('/')[0] : cls.slice(cls.indexOf('/') + 1));
 		this.division = division;
 	}
 

@@ -4,7 +4,7 @@ import { Description, NewRegistrationContact, TeamForm } from '../components';
 
 export class TeamView extends React.Component {
 	static register = { name: "TeamView" };
-	static wire = ["EventBus", "Events", "Server", "Competition", "Footers", "NewRegistrationContact", "TeamRegistration"];
+	static wire = ["EventBus", "Events", "Server", "Competition", "Footers", "TeamRegistration"];
 
 	constructor(props) {
 		super(props);

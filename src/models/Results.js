@@ -12,17 +12,21 @@ export class Results {
 	}
 
 	load(competitionId, eventId) {
-		this.Busy.wrap(
-			this.Server.load,
-			`competition/${competitionId}/event/${eventId}/participant`,
-			json => {
-				if (window._debug) { console.log("Loaded results", json); }
-				this.competition = parseInt(competitionId, 10);
-				this.event = parseInt(eventId, 10);
-				this.scores = json.map(p => ParticipantScore.fromJson(p));
-				this.fire(this.Events.resultsUpdated);
-			},
-			this.Footers.errorHandler("Kan inte hämta deltagare för tävlingen"));
+		if (eventId !== this.lastEvent || this.lastTime === undefined || Date.now() - this.last > 10 * 1000) {
+			this.lastEvent = eventId;
+			this.lastTime = Date.now();
+			this.Busy.wrap(
+				this.Server.load,
+				`competition/${competitionId}/event/${eventId}/participant`,
+				json => {
+					if (window._debug) { console.log("Loaded results", json); }
+					this.competition = parseInt(competitionId, 10);
+					this.event = parseInt(eventId, 10);
+					this.scores = json.map(p => ParticipantScore.fromJson(p));
+					this.fire(this.Events.resultsUpdated);
+				},
+				this.Footers.errorHandler("Kan inte hämta deltagare för tävlingen"));
+		}
 	}
 
 	getScores(squad) {

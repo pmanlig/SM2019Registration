@@ -92,7 +92,6 @@ export class FieldResult extends React.Component {
 	render() {
 		let { event } = this.props;
 		let showValues = event.stages.some(s => s.value);
-		console.log(this.props);
 		return <table>
 			<this.Header event={event} showValues={showValues} />
 			<tbody>
