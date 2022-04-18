@@ -18,7 +18,7 @@ export class ResultView extends React.Component {
 		});
 		this.loadResults();
 		this.subscribe(this.Events.resultsUpdated, this.updateResults);
-		setInterval(this.loadResults, 60 * 1000);
+		setInterval(this.loadResults, 5 * 60 * 1000);
 	}
 
 	loadResults = () => {
