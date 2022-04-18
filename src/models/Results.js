@@ -20,7 +20,6 @@ export class Results {
 				this.competition = parseInt(competitionId, 10);
 				this.event = parseInt(eventId, 10);
 				this.scores = json.map(p => ParticipantScore.fromJson(p));
-				console.log("Loaded scores", this.scores);
 				this.fire(this.Events.resultsUpdated);
 			},
 			this.Footers.errorHandler("Kan inte hämta deltagare för tävlingen"));

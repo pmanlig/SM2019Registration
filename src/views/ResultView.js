@@ -16,7 +16,13 @@ export class ResultView extends React.Component {
 			this.updateTitle();
 			this.setState({});
 		});
+		this.loadResults();
 		this.subscribe(this.Events.resultsUpdated, this.updateResults);
+		setInterval(this.loadResults, 60 * 1000);
+	}
+
+	loadResults = () => {
+		let { params } = this.props.match;
 		if (params.token !== undefined) {
 			this.Results.load(params.id, params.token);
 		}
@@ -25,8 +31,9 @@ export class ResultView extends React.Component {
 	updateResults = () => {
 		let x = {};
 		this.Results.scores.forEach(s => {
-			if (x[s.division] === undefined) { x[s.division] = []; }
-			x[s.division].push(s);
+			if (x[s.division] === undefined) { x[s.division] = {}; }
+			if (x[s.division][s.class] === undefined) { x[s.division][s.class] = []; }
+			x[s.division][s.class].push(s);
 		});
 		this.setState({ scores: x, division: this.state.division || Object.keys(x).sort()[0] });
 	}
@@ -87,7 +94,7 @@ export class ResultView extends React.Component {
 		}
 
 		if (this.state.scores === undefined) { return null; }
-		let scores = this.state.scores[this.state.division];
+		let scores = Object.keys(this.state.scores[this.state.division]).map(k => this.state.scores[this.state.division][k]);
 
 		return <div id="result" className="content">
 			<this.EventSelector />

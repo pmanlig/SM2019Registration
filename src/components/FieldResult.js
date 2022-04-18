@@ -20,6 +20,7 @@ export class FieldResult extends React.Component {
 				<th>Plac</th>
 				<th className="left">Namn</th>
 				<th className="left">Förening</th>
+				{props.event.classes > 0 && <th className="left">Klass</th>}
 				{scores}
 				<th>Summa</th>
 				{props.showValues && <th>Poäng</th>}
@@ -39,14 +40,15 @@ export class FieldResult extends React.Component {
 			<td>{pos}</td>
 			<td className="left">{name}</td>
 			<td className="left">{organization}</td>
+			{props.event.classes > 0 && <td>{data.class}</td>}
 			{txts}
 			<td>{total[0]}/{total[1]}</td>
 			{props.showValues && <td>{total[2]}p</td>}
 		</tr>
 	}
 
-	createScores() {
-		let { event, results } = this.props;
+	calculateScores(results) {
+		let { event } = this.props;
 		let stages = [];
 		event.stages.forEach(s => stages[s.num] = s);
 		let participants = results.map(p => {
@@ -69,6 +71,7 @@ export class FieldResult extends React.Component {
 				organization: p.organization,
 				scores: scores,
 				targets: targets,
+				class: p.class,
 				total: [scores.reduce(sum), targets.reduce(sum), value]
 			}
 		});
@@ -76,14 +79,24 @@ export class FieldResult extends React.Component {
 		return participants;
 	}
 
-	render() {
+	scores(results) {
 		let { event } = this.props;
 		let showValues = event.stages.some(s => s.value);
 		let pos = 1;
+		return this
+			.calculateScores(results)
+			.map(p => <this.Participant key={p.id} pos={pos++} event={event} data={p} showValues={showValues} />);
+			// .concat([<tr key={results[0].class}><td>&nbsp;</td></tr>]);
+	}
+
+	render() {
+		let { event } = this.props;
+		let showValues = event.stages.some(s => s.value);
+		console.log(this.props);
 		return <table>
 			<this.Header event={event} showValues={showValues} />
 			<tbody>
-				{this.createScores().map(p => <this.Participant key={p.id} pos={pos++} data={p} showValues={showValues} />)}
+				{this.props.results.flatMap(r => this.scores(r))}
 			</tbody>
 		</table>;
 	}
