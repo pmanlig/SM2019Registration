@@ -7,6 +7,10 @@
 	color: white;
 }
 
+#result tr.first td {
+	padding-top: 20px;
+}
+
 #result th,td {
 	padding: 3px;
 	text-align: center;
@@ -16,7 +20,7 @@
 	text-align: left;
 }
 
-#result tbody tr:nth-child(even) {
+#result tbody tr.even {
 	background-color: bisque;
 }
 

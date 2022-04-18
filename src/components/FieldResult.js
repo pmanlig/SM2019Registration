@@ -36,7 +36,7 @@ export class FieldResult extends React.Component {
 			txts[i] = <td key={i}>{`${scores[i]}/${targets[i]}`}</td>;
 		}
 
-		return <tr>
+		return <tr className={pos === 1 ? "first" : (pos%2 === 0 ? "even" : undefined)}>
 			<td>{pos}</td>
 			<td className="left">{name}</td>
 			<td className="left">{organization}</td>
