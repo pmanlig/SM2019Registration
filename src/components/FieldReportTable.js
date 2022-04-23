@@ -60,7 +60,7 @@ export class FieldReportTable extends React.Component {
 		if (!stageDef.value) return <div key={"val" + id} />;
 		let score = participant.getScore(stageDef.num, stageDef.targets);
 		return <div className={this.participantClass("input", participant, 1)} key={"val" + id}>
-			<input className="score-text" type="text" size="2" value={score || ""}
+			<input className="score-text" type="text" size="2" value={score === undefined ? "" : score}
 				onChange={e => this.setValue(participant, stageDef, e.target.value)} />
 		</div>;
 	}
