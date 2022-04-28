@@ -40,20 +40,25 @@ export function NewRegistrationContact(props) {
 }
 
 export function Dropdown({ placeholder, className, value, onChange, list }) {
-	let def = list.find(v => v.id.charAt(0) === '!');
-	if (def !== undefined) {
-		placeholder = def.description;
-	}
-	list = list.filter(v => v.id.charAt(0) !== '!');
+	try {
+		let def = list.find(v => v.description.charAt(0) === '!');
+		if (def !== undefined) {
+			placeholder = def.description.replace(/^!/, "");
+		}
+		list = list.filter(v => v.description.charAt(0) !== '!');
 
-	if (value === undefined) {
-		return <select className={className + " default"} value={"default"} onChange={onChange}>
-			<option className="default" value="default" disabled>{placeholder}</option>
+		if (value === undefined) {
+			return <select className={className + " default"} value={"default"} onChange={onChange}>
+				<option className="default" value="default" disabled>{placeholder}</option>
+				{list && list.map(i => <option key={i.id} value={i.id}>{i.description}</option>)}
+			</select>;
+		}
+
+		return <select className={className} value={value} onChange={onChange}>
 			{list && list.map(i => <option key={i.id} value={i.id}>{i.description}</option>)}
 		</select>;
+	} catch (e) {
+		console.log("ERROR", list);
+		return null;
 	}
-
-	return <select className={className} value={value} onChange={onChange}>
-		{list && list.map(i => <option key={i.id} value={i.id}>{i.description}</option>)}
-	</select>;
 }

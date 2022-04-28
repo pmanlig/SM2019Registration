@@ -8,7 +8,7 @@ export class RegistrationRow extends React.Component {
 
 	classDropdown(numRows, participantId, event, value, values) {
 		return <td key={`c${event.id}`} rowSpan={numRows}>
-			<Dropdown placeholder="Välj klass..." value={value} list={values.map(v => { return { id: v, description: v.replace(/^!/, '') } })}
+			<Dropdown placeholder="Välj klass..." value={value} list={values.map(v => { return { id: v, description: v } })}
 				onChange={e => this.Registration.setParticipantClass(participantId, event, e.target.value)} />
 		</td>;
 	}
@@ -16,7 +16,7 @@ export class RegistrationRow extends React.Component {
 	divisionDropdown(row, participantId, eventId, rounds, values) {
 		console.log("Displaying division", rounds[row], values);
 		return <td key={`d${eventId}${row}`} className="division vcenter">
-			{row < rounds.length && <Dropdown placeholder="Välj vapengrupp..." value={rounds[row].division} list={values.filter(v => !v.includes('+')).map(v => { return { id: v, description: v.replace(/^!/, '') } })}
+			{row < rounds.length && <Dropdown placeholder="Välj vapengrupp..." value={rounds[row].division} list={values.filter(v => !v.includes('+')).map(v => { return { id: v, description: v } })}
 				onChange={e => this.Registration.setParticipantDivision(participantId, eventId, row, e.target.value)} />}
 		</td>;
 	}
