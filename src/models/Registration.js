@@ -215,7 +215,6 @@ export class Registration {
 		this.setParticipantDefaults();  // ToDo: missing values should result in errors instead?
 		let errors = new Validation(this.Competition).validate(this.participants);
 		if (errors.length === 0) {
-			console.log("Registration", this);
 			this.Server.sendRegistration(this.toJson(), res => {
 				this.token = res.token;
 				this.Tokens.setToken(this.Competition.id, res.token);

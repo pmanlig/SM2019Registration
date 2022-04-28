@@ -58,7 +58,7 @@ export function Dropdown({ placeholder, className, value, onChange, list }) {
 			{list && list.map(i => <option key={i.id} value={i.id}>{i.description}</option>)}
 		</select>;
 	} catch (e) {
-		console.log("ERROR", list);
+		console.log("ERROR", e);
 		return null;
 	}
 }
