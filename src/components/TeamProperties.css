@@ -2,3 +2,10 @@
 	display: grid;
 	grid-template-columns: repeat(5, auto);
 }
+
+.team-definitions .header {
+	grid-row: 1;
+	background-color: brown;
+	color: white;
+	padding: 2px;
+}

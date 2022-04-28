@@ -20,8 +20,9 @@ export class ScheduleProperties extends React.Component {
 	}
 
 	allDivisions(event) {
-		return (event && event.divisions) ?
-			this.props.divisionGroups.filter(dg => dg.id === event.divisions).map(dg => dg.divisions).find(d => { return true; }) : undefined;
+		return (event && event.divisions)
+			? this.Competition.divisions(event.divisions).filter(d => d.charAt(0) !== '!')
+			: undefined;
 	}
 
 	newScheduleInformation(event, schedule) {
@@ -134,7 +135,7 @@ export class ScheduleProperties extends React.Component {
 		this.Server.deleteSchedule(this.state.schedule.id, () => {
 			this.Competition.updateEvent(this.state.event, "schedule", undefined);
 			this.setState({ schedule: undefined });
-		},this.Footers.errorHandler("Kan inte ta bort schema"));
+		}, this.Footers.errorHandler("Kan inte ta bort schema"));
 	}
 
 	render() {

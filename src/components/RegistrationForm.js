@@ -50,7 +50,7 @@ export class RegistrationForm extends React.Component {
 	}
 
 
-	RegistrationHeader = props => {
+	OldRegistrationHeader = props => {
 		const majorHeaders = [<th key="-1" className="major" colSpan="3">Skytt&nbsp;<span style={{ fontSize: "x-small", verticalAlign: "top" }}>(* = obligatoriskt fält)</span></th>];
 		const minorHeaders = this.Competition.participantHeaders().map(h => this.MinorHeader({ key: h.name, width: h.width, name: h.name }));
 
@@ -68,7 +68,7 @@ export class RegistrationForm extends React.Component {
 		);
 	}
 
-	NewRegistrationHeader = props => {
+	RegistrationHeader = props => {
 		const majorHeaders = [<th key="-1" className="major" colSpan="3">Skytt&nbsp;<span style={{ fontSize: "x-small", verticalAlign: "top" }}>(* = obligatoriskt fält)</span></th>];
 		const minorHeaders = this.Competition.participantHeaders().map(h => this.MinorHeader({ key: h.name, width: h.width, name: h.name }));
 

@@ -21,11 +21,11 @@ export class TeamProperties extends React.Component {
 		if (this.state.event === undefined) { return null; }
 		return <ModalDialog title="Lag" onClose={this.onClose} showClose="true">
 			<div className="team-definitions">
-				<div>Deltagare</div>
-				<div>Reserver</div>
-				<div>Vapengrupp</div>
-				<div>Klass</div>
-				<div>Lägg till</div>
+				<div className="header">Deltagare</div>
+				<div className="header">Reserver</div>
+				<div className="header">Vapengrupp</div>
+				<div className="header">Klass</div>
+				<div className="header">Lägg till</div>
 			</div>
 			<div className="modal-buttons">
 				<button className="button" onClick={this.onClose}>OK</button>
