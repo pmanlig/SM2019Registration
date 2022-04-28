@@ -1,5 +1,4 @@
 import './Inputs.css';
-import './RegistrationContact.css';
 import React from "react";
 
 function maskOK(mask, value) {
@@ -38,4 +37,23 @@ export function NewRegistrationContact(props) {
 			{props.showAccount && <TextInput name="Konto" id="account" placeholder="Kontonummer" value={props.account} mask="0123456789-" onChange={e => props.onChange("account", e.target.value)} />}
 		</div>
 	</div>;
+}
+
+export function Dropdown({ placeholder, className, value, onChange, list }) {
+	let def = list.find(v => v.id.charAt(0) === '!');
+	if (def !== undefined) {
+		placeholder = def.description;
+	}
+	list = list.filter(v => v.id.charAt(0) !== '!');
+
+	if (value === undefined) {
+		return <select className={className + " default"} value={"default"} onChange={onChange}>
+			<option className="default" value="default" disabled>{placeholder}</option>
+			{list && list.map(i => <option key={i.id} value={i.id}>{i.description}</option>)}
+		</select>;
+	}
+
+	return <select className={className} value={value} onChange={onChange}>
+		{list && list.map(i => <option key={i.id} value={i.id}>{i.description}</option>)}
+	</select>;
 }

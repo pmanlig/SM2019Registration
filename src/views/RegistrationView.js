@@ -6,7 +6,7 @@ import { Description, NewRegistrationContact } from '../components';
 export class RegistrationView extends React.Component {
 	static register = { name: "RegistrationView" };
 	static wire = ["Competition", "EventBus", "Events", "Registration", "ParticipantPicker", "RegistrationToolbar",
-		"RegistrationContact", "RegistrationForm", "Summary", "SquadPicker", "Server", "YesNoDialog", "ParticipantToolbar"];
+		"RegistrationForm", "Summary", "SquadPicker", "Server", "YesNoDialog", "ParticipantToolbar"];
 	static dateFormat = new Intl.DateTimeFormat('sv-SV');
 
 	constructor(props) {

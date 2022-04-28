@@ -12,6 +12,6 @@ export { CompetitionAdmin } from './CompetitionAdmin';
 export { Diagnostics } from './Diagnostics';
 export { HelpView } from './HelpView';
 export { RosterView } from './RosterView';
-export { RegistrationsView } from './RegistrationsView';
+export { RegAdminView } from './RegAdminView';
 export { AdminView } from './AdminView';
 export { TeamView } from './TeamView';

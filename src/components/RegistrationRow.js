@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dropdown } from './Dropdown';
+import { Dropdown } from '.';
 
 export class RegistrationRow extends React.Component {
 	static register = { name: "RegistrationRow" };
@@ -14,6 +14,7 @@ export class RegistrationRow extends React.Component {
 	}
 
 	divisionDropdown(row, participantId, eventId, rounds, values) {
+		console.log("Displaying division", rounds[row], values);
 		return <td key={`d${eventId}${row}`} className="division vcenter">
 			{row < rounds.length && <Dropdown placeholder="Välj vapengrupp..." value={rounds[row].division} list={values.filter(v => !v.includes('+')).map(v => { return { id: v, description: v.replace(/^!/, '') } })}
 				onChange={e => this.Registration.setParticipantDivision(participantId, eventId, row, e.target.value)} />}
@@ -53,7 +54,7 @@ export class RegistrationRow extends React.Component {
 		const eventInfo = participant.event(event.id) || { event: event.id, rounds: [{}] };
 		let controls = [];
 		if (event.classes && this.Competition.classes(event.classes)) {
-			controls.push(row === 0 ? 
+			controls.push(row === 0 ?
 				this.classDropdown(numRows, participant.id, event, eventInfo.class, this.Competition.classes(event.classes)) :
 				<td></td>);
 		}

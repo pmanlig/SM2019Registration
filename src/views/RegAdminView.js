@@ -1,9 +1,9 @@
-import './RegistrationsView.css';
+import './RegAdminView.css';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 /** List of registrations (one registration may contain several entries) */
-export class RegistrationsView extends React.Component {
+export class RegAdminView extends React.Component {
 	static register = { name: "RegistrationsView" };
 	static wire = ["Server", "Competition", "Configuration", "Events", "EventBus", "Footers"];
 
