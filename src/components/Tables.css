@@ -1,0 +1,15 @@
+.table-light {
+	box-sizing: border-box;
+	border: 1px solid grey;
+	margin-bottom: 5px;
+}
+
+.table-light th, .table-light td {
+	text-align: center;
+	padding: 3px 5px;
+	border-bottom: 1px solid #7f7f7f;
+}
+
+.table-light tbody tr:nth-child(odd) {
+	background: #cfcff5;
+}

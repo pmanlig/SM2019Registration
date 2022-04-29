@@ -1,4 +1,5 @@
 import './StageProperties.css';
+import './Tables.css';
 import React from 'react';
 import { ModalDialog } from '../general';
 import { Discipline, StageDef } from '../models';
@@ -42,26 +43,28 @@ export class StageProperties extends React.Component {
 
 	Header = props => {
 		let { showShots } = props;
-		return [
-			<div key="hStn" className="header">Station</div>,
-			showShots ? <div key="hSh" className="header">Skott</div> : <div key="hSh" className="hidden" />,
-			<div key="hTgt" className="header">Figurer</div>,
-			<div key="hVal" className="header">Poäng</div>,
-			<div key="hMax" className="header">Max</div>,
-			<div key="hMin" className="header">Min</div>
-		];
+		return <thead>
+			<tr>
+				<th key="hStn" className="header">Station</th>
+				{showShots && <th key="hSh" className="header">Skott</th>}
+				<th key="hTgt" className="header">Figurer</th>
+				<th key="hVal" className="header">Poäng</th>
+				<th key="hMax" className="header">Max</th>
+				<th key="hMin" className="header">Min</th>
+			</tr>
+		</thead>;
 	}
 
 	Stage = props => {
 		let { stage, showShots } = props;
-		return [
-			<div key={stage.num + "Stn"}>{stage.num}</div>,
-			showShots ? <Spinner key={stage.num + "Sh"} value={stage.shots} onChange={v => this.setVal(stage, "shots", 3, 18, v)} /> : <div key={stage.num + "Sh"} className="hidden" />,
-			<Spinner key={stage.num + "Tgt"} value={stage.targets} onChange={v => this.setVal(stage, "targets", 1, 9, v)} />,
-			<div key={stage.num + "Val"}><button className={"button small" + (stage.value ? " green" : "")} onClick={e => this.toggleValue(stage)}>{stage.value ? "Ja" : "Nej"}</button></div>,
-			<Spinner key={stage.num + "Max"} value={stage.max} onChange={v => this.setVal(stage, "max", 1, 6, v)} />,
-			<Spinner key={stage.num + "Min"} value={stage.min} onChange={v => this.setVal(stage, "min", 0, 3, v)} />
-		];
+		return <tr>
+			<td key={stage.num + "Stn"}>{stage.num}</td>
+			{showShots && <td><Spinner key={stage.num + "Sh"} value={stage.shots} onChange={v => this.setVal(stage, "shots", 3, 18, v)} /></td>}
+			<td><Spinner key={stage.num + "Tgt"} value={stage.targets} onChange={v => this.setVal(stage, "targets", 1, 9, v)} /></td>
+			<td key={stage.num + "Val"}><button className={"button small" + (stage.value ? " green" : "")} onClick={e => this.toggleValue(stage)}>{stage.value ? "Ja" : "Nej"}</button></td>
+			<td><Spinner key={stage.num + "Max"} value={stage.max} onChange={v => this.setVal(stage, "max", 1, 6, v)} /></td>
+			<td><Spinner key={stage.num + "Min"} value={stage.min} onChange={v => this.setVal(stage, "min", 0, 3, v)} /></td>
+		</tr>;
 	}
 
 	render() {
@@ -70,10 +73,12 @@ export class StageProperties extends React.Component {
 		let showShots = (event.discipline === Discipline.fieldK);
 		return <ModalDialog title="Stationer" onClose={this.onClose} showClose="true">
 			<div id="stages">
-				<div id="stage-properties">
+				<table id="stage-properties" className="table-light">
 					<this.Header showShots={showShots} />
-					{event.stages.map(s => <this.Stage key={s.num} stage={s} showShots={showShots} />)}
-				</div>
+					<tbody>
+						{event.stages.map(s => <this.Stage key={s.num} stage={s} showShots={showShots} />)}
+					</tbody>
+				</table>
 				<div className="modal-buttons"><button id="ok" className="button" onClick={this.onClose}>OK</button></div>
 			</div>
 		</ModalDialog>

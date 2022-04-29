@@ -1,4 +1,4 @@
-import { Discipline, StageDef } from '.';
+import { Discipline, StageDef, TeamDef } from '.';
 
 export class Event {
 	constructor(id, name, date) {
@@ -9,6 +9,7 @@ export class Event {
 		this.maxRegistrations = 1;
 		this.scores = 8;
 		this.stages = [];
+		this.teams = [];
 		this.cost = 100;
 	}
 
@@ -40,6 +41,7 @@ export class Event {
 		nE.cost = e.cost !== undefined ? parseInt(e.cost.toString(), 10) : 100;
 		nE.discipline = Discipline.fromJson(e.discipline);
 		nE.stages = e.stages !== undefined ? e.stages.map(s => StageDef.fromJson(s)) : [];
+		nE.teams = e.teamDef !== undefined ? e.teamDef.map(t => TeamDef.fromJson(t)) : [];
 		return nE;
 	}
 
@@ -63,7 +65,8 @@ export class Event {
 			scores: this.scores,
 			cost: this.cost,
 			discipline: Discipline.toJson(this.discipline),
-			stages: Discipline.hasStages.includes(this.discipline) ? this.stages.map(s => s.toJson()) : []
+			stages: Discipline.hasStages.includes(this.discipline) ? this.stages.map(s => s.toJson()) : [],
+			teamDef: this.teams.map(t => t.toJson())
 		};
 	}
 }

@@ -1,4 +1,5 @@
 import './Inputs.css';
+import './Spinner.css';
 import React from "react";
 
 function maskOK(mask, value) {
@@ -14,6 +15,14 @@ export function TextInput(props) {
 		<label htmlFor={props.id}>{props.name}</label>
 		<input type="text" {...props} onChange={e => maskOK(props.mask, e.target.value) && props.onChange(e)} />
 	</div>
+}
+
+export function Spinner({ className, value, onChange, size }) {
+	return <div className="spinner">
+		<button className="spinner button-previous" tabIndex="-1" style={{ backgroundColor: "inherit" }} onClick={e => onChange(value - 1)} />
+		<input className={"spinner " + className} value={value} size={size || 1} onChange={e => onChange(e.target.value, 10)} />
+		<button className="spinner button-next" tabIndex="-1" style={{ backgroundColor: "inherit" }} onClick={e => onChange(value + 1)} />
+	</div>;
 }
 
 export class ClubSelectorInput extends React.Component {
@@ -41,6 +50,7 @@ export function NewRegistrationContact(props) {
 
 export function Dropdown({ placeholder, className, value, onChange, list }) {
 	try {
+		list = list.map(li => typeof (li) === "string" ? { id: li, description: li } : li);
 		let def = list.find(v => v.description.charAt(0) === '!');
 		if (def !== undefined) {
 			placeholder = def.description.replace(/^!/, "");
@@ -59,6 +69,7 @@ export function Dropdown({ placeholder, className, value, onChange, list }) {
 		</select>;
 	} catch (e) {
 		console.log("ERROR", e);
+		console.log("Properties", placeholder, className, value, onChange, list);
 		return null;
 	}
 }

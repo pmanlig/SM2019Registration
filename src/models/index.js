@@ -15,6 +15,7 @@ export { DivisionGroups } from './DivisionGroups';
 export { Tokens } from './Tokens';
 export { Clubs } from './Clubs';
 export { StageDef } from './StageDef';
+export { TeamDef } from './TeamDef';
 export { ParticipantScore } from './ParticipantScore';
 export { CompetitionGroup } from './CompetitionGroup';
 export { TeamRegistration } from './TeamRegistration';

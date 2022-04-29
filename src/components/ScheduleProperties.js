@@ -1,11 +1,10 @@
 import './ScheduleProperties.css';
+import './Tables.css';
 import React from 'react';
 import { Time } from '../logic';
 import { Schedule } from '../models';
 import { ModalDialog } from '../general';
-import { ButtonToolbar as Toolbar, Label } from './RegistrationToolbar';
-import { Spinner } from './Spinner';
-import { SquadProperties } from './SquadProperties';
+import {  ButtonToolbar as Toolbar, Label, Spinner, SquadProperties } from '.';
 
 export class ScheduleProperties extends React.Component {
 	static register = { name: "ScheduleProperties" };
@@ -168,7 +167,7 @@ export class ScheduleProperties extends React.Component {
 				<Label text="Lägg till" align="center"><button className="button-add green schedule-property" onClick={this.addSquad} /></Label>
 			</Toolbar>
 			<div className="schedule-table">
-				<table style={{ minWidth: rowWidth, maxWidth: rowWidth, width: rowWidth }}>
+				<table className="table-light" style={{ minWidth: rowWidth, maxWidth: rowWidth, width: rowWidth }}>
 					<thead>
 						<tr>
 							<th className="schedule-start-time">Tid</th>
@@ -178,7 +177,7 @@ export class ScheduleProperties extends React.Component {
 								return <th key={d} className="schedule-division" style={{ minWidth: w, maxWidth: w, width: w }}>{d}</th>
 							})}
 							{allDivisions && <th className="schedule-mix">Blanda</th>}
-							<th className="schedule-delete"></th>
+							<th className="schedule-delete">Radera</th>
 							<th className="schedule-pad"></th>
 						</tr>
 					</thead>
