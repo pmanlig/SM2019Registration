@@ -11,7 +11,7 @@ function maskOK(mask, value) {
 }
 
 export function TextInput(props) {
-	return <div id={`input-${props.id}`} className="input-wrapper">
+	return <div className="input-wrapper">
 		<label htmlFor={props.id}>{props.name}</label>
 		<input type="text" {...props} onChange={e => maskOK(props.mask, e.target.value) && props.onChange(e)} />
 	</div>
@@ -29,7 +29,7 @@ export class ClubSelectorInput extends React.Component {
 	static wire = ["ClubSelector"];
 
 	render() {
-		return <div id={`input-${this.props.id}`} className="input-wrapper">
+		return <div className="input-wrapper">
 			<label htmlFor={this.props.id}>{this.props.name}</label>
 			<this.ClubSelector {...this.props} />
 		</div>
@@ -48,28 +48,35 @@ export function NewRegistrationContact(props) {
 	</div>;
 }
 
-export function Dropdown({ placeholder, className, value, onChange, list }) {
+export function Dropdown(props) {
+	let { placeholder, value, list } = props;
 	try {
 		list = list.map(li => typeof (li) === "string" ? { id: li, description: li } : li);
-		let def = list.find(v => v.description.charAt(0) === '!');
-		if (def !== undefined) {
-			placeholder = def.description.replace(/^!/, "");
+		if (placeholder === undefined) {
+			let def = list.find(v => v.description.charAt(0) === '!');
+			if (def !== undefined) {
+				placeholder = def.description.replace(/^!/, "");
+			}
 		}
 		list = list.filter(v => v.description.charAt(0) !== '!');
 
 		if (value === undefined) {
-			return <select className={className + " default"} value={"default"} onChange={onChange}>
-				<option className="default" value="default" disabled>{placeholder}</option>
-				{list && list.map(i => <option key={i.id} value={i.id}>{i.description}</option>)}
-			</select>;
+			return <div className="input-wrapper">
+				<label htmlFor={props.id}>{props.name}</label>
+				<select {...props} className={props.className + " default"} value={"default"} >
+					<option className="default" value="default" disabled>{placeholder}</option>
+					{list && list.filter(i => !i.empty).map(i => <option key={i.id} value={i.id}>{i.description}</option>)}
+				</select></div>;
 		}
 
-		return <select className={className} value={value} onChange={onChange}>
-			{list && list.map(i => <option key={i.id} value={i.id}>{i.description}</option>)}
-		</select>;
+		return <div className="input-wrapper">
+			<label htmlFor={props.id}>{props.name}</label>
+			<select {...props}>
+				{list && list.map(i => <option key={i.id} value={i.id}>{i.description}</option>)}
+			</select></div>;
 	} catch (e) {
 		console.log("ERROR", e);
-		console.log("Properties", placeholder, className, value, onChange, list);
+		console.log("Properties", props);
 		return null;
 	}
 }

@@ -86,21 +86,21 @@ tr.registration td.vcenter {
 	margin: 3px 5px 0 0;
 }
 
-.team-name-header {
+.team-name-header, .team-selection-header {
 	padding: 2px;
 }
 
 .team-member-header {
 	background-color: #7f0000;
 	color: white;
-	padding: 2px;
+	padding: 2px  5px 2px 2px;
 }
 
 .team-input label {
 	display: none;
 }
 
-.team-input input {
+.team-input input, .team-input div {
 	margin: 3px 5px 0 0;
 }
 

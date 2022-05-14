@@ -109,7 +109,8 @@ export class Server {
 			loadCompetition: (id, callback, error) => { this.Busy.wrap(this.load, isNaN(parseInt(id, 10)) ? this.jsonFile(id) : `competition/${id}`, callback, error); },
 			createCompetition: (competition, callback, error) => { this.Busy.wrap(this.send, "competition", competition, callback, error); },
 			updateCompetition: (competition, callback, error) => { this.Busy.wrap(this.update, `competition/${competition.id}`, competition, callback, error); },
-			deleteCompetition: (id, callback, error) => { this.Busy.wrap(this.delete, `competition/${id}`, callback, error); }
+			deleteCompetition: (id, callback, error) => { this.Busy.wrap(this.delete, `competition/${id}`, callback, error); },
+			getParticipants: (id, callback, error) => { this.load(`competition/${id}/list`, callback, error); }
 		};
 	}
 
@@ -229,6 +230,10 @@ export class Server {
 
 	deleteCompetition(competitionId, callback, error) {
 		this.competitionService.deleteCompetition(competitionId, logFetchCallback(callback, `Deleting competition ${competitionId}`), logErrorHandler(error));
+	}
+
+	getCompetitionParticipants(competitionId, callback, error) {
+		this.competitionService.getParticipants(competitionId, logFetchCallback(callback, `Getting participants for competition ${competitionId}`), logErrorHandler(error));
 	}
 	//#endregion
 

@@ -3,7 +3,7 @@ export class ParticipantScore {
 	static E_INCORRECT_SPREAD = "Träffarna inte fördelade korrekt";
 	static E_TOO_MANY_HITS = "För många träffar";
 
-	constructor(id, name, org, squad, division, cls, scores) {
+	constructor(id, name, org, squad, division, cls, scores, eventId, eventName) {
 		this.id = id;
 		this.name = name;
 		this.organization = org;
@@ -11,6 +11,8 @@ export class ParticipantScore {
 		this.scores = scores || [];
 		this.class = cls == null ? cls : ((division === "C") ? cls.split('/')[0] : cls.slice(cls.indexOf('/') + 1));
 		this.division = division;
+		this.eventId = eventId;
+		this.eventName = eventName;
 	}
 
 	getScores(stage) {
@@ -88,6 +90,8 @@ export class ParticipantScore {
 					stage: parseInt(s.stage, 10),
 					values: s.values.map(n => parseInt(n, 10))
 				}
-			}));
+			}),
+			parseInt(json.event_id, 10),
+			json.event_name);
 	}
 }

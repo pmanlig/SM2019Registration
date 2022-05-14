@@ -8,10 +8,19 @@
 	padding: 2px;
 }
 
-.team-registration-form .team-name {
+.team-registration-form .team-header {
 	display: none;
 	font-weight: bold;
 	margin: 15px 0 0 0;
+}
+
+.team-registration-form input {
+	min-width: 50px;
+	width: 8em;
+}
+
+.team-registration-form select {
+	margin: 2px 5px 0 0;
 }
 
 @media only screen and (max-width:600px) {
@@ -23,13 +32,14 @@
 	.team-registration-form div {
 		margin: 3px 5px 0 0;
 	}
-		.team-registration-form .major-header {
+	
+	.team-registration-form .major-header {
 		background-color: lightblue;
 		border: 1px solid #3F3F3F;
 		border: none;
 	}
 
-	.team-registration-form .team-name {
+	.team-registration-form .team-header {
 		display: inline;
 	}
 }

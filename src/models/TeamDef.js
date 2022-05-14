@@ -17,6 +17,10 @@ export class TeamDef {
 	}
 
 	static fromJson(json) {
-		return new TeamDef(json.division, json.class, parseInt(json.members.toString(), 10), parseInt(json.alternates.toString(), 10));
+		return new TeamDef(
+			json.division !== "" ? json.division : undefined,
+			json.class !== "" ? json.class : undefined,
+			parseInt(json.members.toString(), 10),
+			parseInt(json.alternates.toString(), 10));
 	}
 }
