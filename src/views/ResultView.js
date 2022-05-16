@@ -58,7 +58,11 @@ export class ResultView extends React.Component {
 
 	updateEvent(event) {
 		this.Results.load(this.Competition.id, event);
-		// this.setState({ scores: undefined, division: undefined });
+	}
+
+	divisionList(event) {
+		if (event === undefined) { return []; }
+		return this.DivisionGroups.find(g => g.id === event.divisions).divisions.filter(d => !d.includes('+')).filter(d => !d.match(/^!/));
 	}
 
 	EventSelector = props => {
@@ -73,9 +77,8 @@ export class ResultView extends React.Component {
 	DivisionSelector = props => {
 		let { event, active } = props;
 		if (active === undefined) { return null; }
-		let divisions = this.DivisionGroups.find(g => g.id === event.divisions).divisions.filter(d => !d.includes('+'));
 		return <div className="toolbar">
-			{divisions.sort().map(d =>
+			{this.divisionList(event).sort().map(d =>
 				<Link key={d} className={d === active ? "button" : "button white"} to={`/competition/${this.Competition.id}/results/${event.id}/${d}`}>{d}</Link>)}
 		</div>;
 	}
@@ -103,8 +106,7 @@ export class ResultView extends React.Component {
 		let event = this.Competition.events.find(e => e.id === parseInt(token, 10));
 		if (extra === undefined) {
 			if (event.divisions) {
-				let divisions = this.DivisionGroups.find(g => g.id === event.divisions).divisions;
-				return <Redirect to={`/competition/${this.Competition.id}/results/${token}/${divisions[0]}`} />;
+				return <Redirect to={`/competition/${this.Competition.id}/results/${token}/${this.divisionList(event)[0]}`} />;
 			}
 		}
 		if (this.Results.scores === undefined) { return null; }

@@ -7,12 +7,13 @@ import { ParticipantScore, Team } from '../models';
 
 export class TeamView extends React.Component {
 	static register = { name: "TeamView" };
-	static wire = ["EventBus", "Events", "Server", "Busy", "Competition", "Footers", "TeamRegistration"];
+	static wire = ["EventBus", "Events", "Server", "Busy", "Competition", "Footers", "Registration", "TeamRegistration"];
 
 	constructor(props) {
 		super(props);
 		this.state = { name: "", organization: "", email: "", state: "", teams: [] };
 		this.EventBus.manageEvents(this);
+		this.subscribe(this.Events.registrationUpdated, () => this.setState({}));
 		if (props.match.params.id) {
 			this.Competition.load(parseInt(props.match.params.id, 10));
 			this.Server.getCompetitionParticipants(props.match.params.id,
@@ -21,23 +22,8 @@ export class TeamView extends React.Component {
 		}
 	}
 
-	onChange = (prop, value) => {
-		switch (prop) {
-			case "name":
-				this.setState({ name: value });
-				break;
-			case "organization":
-				this.setState({ organization: value });
-				break;
-			case "email":
-				this.setState({ email: value });
-				break;
-			case "account":
-				this.setState({ account: value });
-				break;
-			default:
-				break;
-		}
+	onChangeContact = (prop, value) => {
+		this.fire(this.Events.setRegistrationInfo, prop, value);
 	}
 
 	addTeam = () => {
@@ -50,13 +36,14 @@ export class TeamView extends React.Component {
 	}
 
 	render() {
+		let { teams, participants } = this.state;
+		let { name, organization, email, account } = this.Registration.contact;
 		let teamDefs = this.teamDefs();
 		// let events = teamDefs.map(t => t.event).filter((v, i, a) => a.indexOf(v) === i);
-		let { name, organization, email, account, teams, participants } = this.state;
 		if (participants !== undefined) { participants = participants.filter(p => p.organization === organization); }
 		return <div>
 			<Description value={this.Competition.description} />
-			<NewRegistrationContact name={name} organization={organization} email={email} account={account} showAccount="true" onChange={this.onChange} />
+			<NewRegistrationContact name={name} organization={organization} email={email} account={account} showAccount="true" onChange={this.onChangeContact} />
 			<TeamForm competition={this.Competition} teamDefs={teamDefs} teams={teams} participants={participants} onDelete={idx => this.setState({ teams: this.state.teams.filter((v, i) => i !== idx) })} />
 			<div className="content">
 				<button className="button" onClick={e => this.addTeam()}><div className="button small green button-add" /> Lägg till lag</button>
