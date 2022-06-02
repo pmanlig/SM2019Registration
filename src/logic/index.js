@@ -2,6 +2,7 @@ export { Time } from './Time';
 export { AutoInjector } from './Injector';
 export { Events, EventBus } from './EventBus';
 export { Validation } from './Validation';
+export { TeamValidation } from './TeamValidation';
 export { Server } from './Server';
 export { Storage } from './Storage';
 export { setCookie, getCookie, deleteCookie } from './Cookies';

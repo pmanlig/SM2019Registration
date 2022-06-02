@@ -59,10 +59,9 @@ export class Competition {
 	load = (id) => {
 		if (id === 0) return;
 		if (this.id !== id) {
-			if (this.ClassGroups.classGroups.length === 0)
-				this.ClassGroups.load(() => this.fire(this.Events.competitionUpdated));
-			if (this.DivisionGroups.divisionGroups.length === 0)
-				this.DivisionGroups.load(() => this.fire(this.Events.competitionUpdated));
+			if (this.ClassGroups.classGroups.length === 0) { this.ClassGroups.load(() => this.fire(this.Events.competitionUpdated)); }
+			if (this.DivisionGroups.divisionGroups.length === 0) { this.DivisionGroups.load(() => this.fire(this.Events.competitionUpdated)); }
+			
 			this.Server.loadCompetition(id, obj => {
 				// Prevent multiple requests from screwing up the state
 				if (obj !== undefined && obj.id !== this.id) {

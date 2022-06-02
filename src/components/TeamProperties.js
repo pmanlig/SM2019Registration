@@ -42,7 +42,7 @@ export class TeamProperties extends React.Component {
 
 	setDivision = (team, value) => {
 		value = value.target.value;
-		if (value === -1) { value = undefined; }
+		if (value === "-1") { value = undefined; }
 		if (value !== team.division) {
 			team.division = value;
 			this.setState({ dirty: true });
@@ -51,7 +51,7 @@ export class TeamProperties extends React.Component {
 
 	setClass = (team, value) => {
 		value = value.target.value;
-		if (value === -1) { value = undefined; }
+		if (value === "-1") { value = undefined; }
 		if (value !== team.class) {
 			team.class = value;
 			this.setState({ dirty: true });
@@ -69,7 +69,7 @@ export class TeamProperties extends React.Component {
 		if (divisions === undefined) return null;
 		let divList = this.DivisionGroups.find(dg => dg.id === divisions);
 		let list = [{ id: -1, description: "Alla" }].concat(divList.divisions.filter(d => !d.includes('+')).map(d => { return { id: d, description: d } }));
-		return <td><Dropdown value={team.division} list={list} onChange={d => this.setDivision(team, d)} /></td>
+		return <td><Dropdown value={team.division || "Alla"} list={list} onChange={d => this.setDivision(team, d)} /></td>
 	}
 
 	Classes = ({ team }) => {
@@ -77,7 +77,7 @@ export class TeamProperties extends React.Component {
 		if (classes === undefined) return null;
 		let clsList = this.ClassGroups.find(cg => cg.id === classes);
 		let list = [{ id: -1, description: "Alla" }].concat(clsList.classes.map(c => { return { id: c, description: c } }));
-		return <td><Dropdown value={team.class} list={list} onChange={c => this.setClass(team, c)} /></td>
+		return <td><Dropdown value={team.class || "Alla"} list={list} onChange={c => this.setClass(team, c)} /></td>
 	}
 
 	TeamRow = ({ team }) => {

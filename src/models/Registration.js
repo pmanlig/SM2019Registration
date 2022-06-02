@@ -1,5 +1,6 @@
-import { Validation } from '../logic';
+import { Validation, TeamValidation } from '../logic';
 import { Person, Participant } from '.';
+import { Team } from './Team';
 
 export class Registration {
 	static register = { name: "Registration", createInstance: true };
@@ -8,6 +9,7 @@ export class Registration {
 	token = undefined;
 	contact = new Person();
 	participants = [];
+	teams = [];
 
 	// ToDo: Rewrite to not use event handlers
 	initialize() {
@@ -27,22 +29,23 @@ export class Registration {
 				this.token = token;
 
 				// Hack to compensate for server not storing organization
-				// this.contact = new Person(json.contact);
-				let nC = Person.fromJson(json.contact);
-				if ((nC.name && nC.name !== "") ||
-					(nC.competitionId && nC.competitionId !== "") ||
-					(nC.organization && nC.organization !== "") ||
-					(nC.email && nC.email !== "") ||
-					(nC.account && nC.account !== "")) {
-					if (!nC.organization) {
-						nC.organization = this.contact.organization;
-					}
+				// this.contact = Person.fromJson(json.contact);
+				if (json.contact) {
+					let nC = Person.fromJson(json.contact);
+					nC.setDefaultOrganization(this.contact.organization);
 					this.contact = nC;
 				}
 
 				// Loading participants from json
-				this.participants = json.registration.map(p => Participant.fromJson(p));
-				this.setParticipantDefaults();
+				if (json.registration) {
+					this.participants = json.registration.map(p => Participant.fromJson(p));
+					this.setParticipantDefaults();
+				} else { this.participants = []; }
+
+				if (json.teams) {
+					this.teams = json.teams.map(t => Team.fromJson(t));
+				} else { this.teams = []; }
+
 				this.fire(this.Events.registrationUpdated, this);
 			}, this.Footers.errorHandler("Kan inte hämta anmälan"));
 		} else {
@@ -63,6 +66,7 @@ export class Registration {
 	newRegistration = () => {
 		this.token = undefined;
 		this.participants = [];
+		this.teams = [];
 		this.loadContact();
 		this.Tokens.setToken(this.Competition.id, undefined);
 		this.fire(this.Events.registrationUpdated, this);
@@ -200,12 +204,14 @@ export class Registration {
 	}
 
 	toJson() {
-		return {
+		let registration = {
 			competition: this.Competition.id,
 			token: this.token,
 			contact: this.contact.toJson(),
-			registration: this.participants.map(p => p.toJson())
-		}
+		};
+		if (this.participants.length > 0) { registration.registration = this.participants.map(p => p.toJson()); }
+		if (this.teams.length > 0) { registration.teams = this.teams.map(t => t.toJson()); }
+		return registration;
 	}
 
 	register() {
@@ -226,6 +232,25 @@ export class Registration {
 		} else {
 			this.Footers.addFooter(errors.length === 1 ? errors[0].error : errors.length + " fel hindrar registrering!");
 			this.fire(this.Events.registrationUpdated, this);
+		}
+	}
+
+	registerTeams() {
+		this.Storage.set(this.Storage.keys.registrationContact, this.contact);
+		let errors = new TeamValidation(this.Competition).validate(this.teams);
+		if (errors.length === 0) {
+			this.Server.updateRegistration(this.token, this.toJson(), res => {
+				// this.token = res.token;
+				// this.Tokens.setToken(this.Competition.id, res.token);
+				// this.Footers.addFooter(this.countEvents() + " starter registrerade", "info");
+				this.Footers.addFooter("Lagstarter registrerade", "info")
+				// this.fire(this.Events.registrationUpdated, this);
+			}, error => {
+				this.Footers.addFooter(`Registreringen misslyckades! (${error.message || error})`);
+			});
+		} else {
+			this.Footers.addFooter(errors.length === 1 ? errors[0].error : errors.length + " fel hindrar registrering!");
+			// this.fire(this.Events.registrationUpdated, this);
 		}
 	}
 

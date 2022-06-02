@@ -3,7 +3,8 @@ export class Tokens {
 	static wire = ["Storage", "Server"];
 
 	findTokens() {
-		return (this.Server.local ? this.Storage.get(this.Storage.keys.localTokens) : this.Storage.get(this.Storage.keys.tokens) || this.Storage.get("Tokens")) || [];
+		if (this.Server.local) { return this.Storage.get(this.Storage.keys.localTokens) || []; }
+		return this.Storage.get(this.Storage.keys.tokens) || this.Storage.get("Tokens") || [];
 	}
 
 	getToken(competitionId) {

@@ -7,6 +7,15 @@ export function logFetchCallback(c, msg) {
 	}
 }
 
+export function logDeleteCallback(c, msg) {
+	if (!window._debug) { return c; }
+	console.log(msg);
+	return json => {
+		console.log(`Delete result:`, json);
+		c(json);
+	}
+}
+
 export function logSendCallback(c, data, msg) {
 	if (c === undefined) c = () => { };
 	if (!window._debug) { return c; }

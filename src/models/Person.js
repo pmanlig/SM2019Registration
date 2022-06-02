@@ -20,13 +20,12 @@ export class Person {
 		this.email = this.email.trim();
 	}
 
-	static fromJson(json) {
-		return new Person(
-			json.name || "",
-			json.competitionId || "",
-			json.organization || "",
-			json.email ? json.email.trim() : "",
-			json.account || "");
+	setDefaultOrganization(organization) {
+		if ([this.name, this.competitionId, this.organization, this.email, this.account].some(v => v && v !== "")) {
+			if (!this.organization) {
+				this.organization = organization;
+			}
+		}
 	}
 
 	toJson() {
@@ -36,5 +35,14 @@ export class Person {
 			organization: this.organization,
 			account: this.account
 		}
+	}
+
+	static fromJson(json) {
+		return new Person(
+			json.name || "",
+			json.competitionId || "",
+			json.organization || "",
+			json.email ? json.email.trim() : "",
+			json.account || "");
 	}
 }

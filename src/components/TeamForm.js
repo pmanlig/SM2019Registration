@@ -7,21 +7,20 @@ export class TeamForm extends React.Component {
 		let { teamDefs } = props;
 		let members = 0, alternates = 0;
 		teamDefs.forEach((t, i) => {
-			t.description = this.teamDescription(t);
+			t.description = [t.event, t.division, t.class].filter(x => x !== undefined && x !== "").join(" - ");
 			t.id = i;
 			if (t.members > members) { members = t.members; }
 			if (t.alternates > alternates) { alternates = t.alternates; }
 		});
-		this.state = { members: members, alternates: alternates, teamDefs: teamDefs }
-	}
-
-	teamDescription(def) {
-		return [def.event, def.division, def.class].filter(x => x !== undefined).join(" - ");
+		this.state = { members: members, alternates: alternates }
 	}
 
 	updateTeamDef = (team, val) => {
-		let { teams } = this.props;
+		let { teams, teamDefs } = this.props;
+		let def = teamDefs[parseInt(val, 10)];
 		teams[team].teamDef = val;
+		teams[team].event = def.eventId;
+		teams[team].index = def.index;
 		this.setState({});
 	}
 
@@ -67,7 +66,8 @@ export class TeamForm extends React.Component {
 	}
 
 	TeamRow = props => {
-		let { members, alternates, teamDefs } = this.state;
+		let { members, alternates } = this.state;
+		let { teamDefs } = this.props;
 		let participants = this.props.participants || [];
 		let { team, index } = props;
 		let teamDef = teamDefs[team.teamDef || 0];

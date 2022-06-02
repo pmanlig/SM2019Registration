@@ -1,4 +1,7 @@
-import { logFetchCallback, logSendCallback, logSendCallback2, logUpdateCallback, logErrorHandler, logUrl } from './Log';
+import {
+	logFetchCallback, logSendCallback, logSendCallback2,
+	logUpdateCallback, logDeleteCallback, logErrorHandler, logUrl
+} from './Log';
 
 export class Server {
 	static register = { name: "Server", createInstance: true };
@@ -133,7 +136,9 @@ export class Server {
 	remoteRegistrationService() {
 		return {
 			loadRegistration: (id, token, callback, error) => { this.Busy.wrap(this.load, isNaN(parseInt(id, 10)) ? this.jsonFile(`${id}_token`) : `competition/${id}/${token}`, callback, error); },
-			sendRegistration: (data, callback, error) => { this.send2(`register`, data, callback, error) }
+			sendRegistration: (data, callback, error) => { this.send2(`register`, data, callback, error) },
+			updateRegistration: (token, data, callback, error) => { this.send2(`register/${token}`, data, callback, error) },
+			deleteRegistration: (id, token, callback, error) => { this.delete2(`competition/${id}/${token}`, callback, error); },
 		}
 	}
 
@@ -252,12 +257,16 @@ export class Server {
 		this.registrationService.sendRegistration(data, logSendCallback(callback, data, `Sending registration`), logErrorHandler(error));
 	}
 
+	updateRegistration(token, data, callback, error) {
+		this.registrationService.updateRegistration(token, data, logSendCallback(callback, data, `Updating registration`), logErrorHandler(error));
+	}
+
 	sendNewToken(registration, callback, error) {
 		this.send2(`competition/send_token`, registration, logSendCallback(callback, registration, `Begär nytt mail`), logErrorHandler(error))
 	}
 
 	deleteRegistration(competitionId, token, callback, error) {
-		this.delete2(`competition/${competitionId}/${token}`, logFetchCallback(callback, `Raderar anmälan ${token} i tävling ${competitionId}`), logErrorHandler(error));
+		this.registrationService.deleteRegistration(competitionId, token, logDeleteCallback(callback, `Raderar anmälan ${token} i tävling ${competitionId}`), logErrorHandler(error));
 	}
 
 	loadRoster(competitionId, callback, error) {
