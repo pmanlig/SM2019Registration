@@ -12,6 +12,5 @@ export class CompetitionTabs {
 			}
 		}
 		this.tabs = this.tabs.sort((a, b) => a.tabInfo.order - b.tabInfo.order);
-		console.log("Tabs", this.tabs);
 	}
 }

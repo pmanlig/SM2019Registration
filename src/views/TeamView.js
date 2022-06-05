@@ -45,6 +45,11 @@ export class TeamView extends React.Component {
 		this.setState({});
 	}
 
+	deleteTeam = idx => {
+		this.Registration.teams = this.Registration.teams.filter((v, i) => i !== idx);
+		this.setState({})
+	}
+
 	teamDefs() {
 		return this.Competition.events.flatMap(e => e.teams.map((t, i) => { return { ...t, event: e.name, eventId: e.id, index: i } }));
 	}
@@ -56,7 +61,7 @@ export class TeamView extends React.Component {
 		return <div>
 			<Description value={this.Competition.description} />
 			<NewRegistrationContact name={name} organization={organization} email={email} account={account} showAccount="true" onChange={this.onChangeContact} />
-			<TeamForm competition={this.Competition} teamDefs={teamDefs} teams={this.Registration.teams} participants={participants} onDelete={idx => this.setState({ teams: this.state.teams.filter((v, i) => i !== idx) })} />
+			<TeamForm competition={this.Competition} teamDefs={teamDefs} teams={this.Registration.teams} participants={participants} onDelete={idx => this.deleteTeam(idx)} />
 			<div className="content">
 				<button className="button" onClick={this.addTeam}><div className="button small green button-add" /> Lägg till lag</button>
 				<input type="button" className="button" value="Anmäl lag" onClick={() => this.Registration.registerTeams()} />
