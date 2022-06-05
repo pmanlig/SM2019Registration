@@ -71,8 +71,8 @@ export class CompetitionList extends React.Component {
 
 	Competition = ({ competition }) => {
 		let links = this.CompetitionTabs.tabs.map(t => t.tabInfo).filter(o => (
-			competition.permissions !== Permissions.Any ||
-			(o.permission === Permissions.Any && (o.status === undefined || o.status === competition.status))
+			(competition.permissions !== Permissions.Any) ||
+			(o.permissions === Permissions.Any && (o.status === undefined || o.status === competition.status))
 		));
 		return <div key={competition.id} className={"competition-tile " + this.getState(competition)}>
 			<div className="event-title">
