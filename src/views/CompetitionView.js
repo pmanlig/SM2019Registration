@@ -30,7 +30,7 @@ export class CompetitionView extends React.Component {
 		let tabs = this.CompetitionTabs.tabs.map(t => t.tabInfo).filter(t =>
 			this.Competition.permissions === Permissions.Own ||
 			(
-				t.permission <= this.Competition.permissions &&
+				t.permissions <= this.Competition.permissions &&
 				(
 					t.status === undefined ||
 					t.status === this.Competition.status
