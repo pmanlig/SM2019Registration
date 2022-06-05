@@ -95,6 +95,22 @@ export class Registration {
 		});
 	}
 
+	addMe() {
+		if (this.participants.some(p => p.name === this.contact.name)) {
+			this.fire(this.Events.addFooter, "Deltagaren finns redan!");
+			return;
+		}
+		let newParticipant = new Participant();
+		newParticipant.name = this.contact.name;
+		newParticipant.organization = this.contact.organization;
+		let me = this.Registry.competitors.find(c => c.name === this.contact.name);
+		if (me) { newParticipant.competitionId = me.competitionId; }
+		this.Competition.events.forEach(e => newParticipant.addEvent(e.id));
+		this.participants.push(newParticipant);
+		this.setParticipantDefaults();
+		this.fire(this.Events.registrationUpdated, this);
+	}
+
 	addParticipant(p) {
 		if (p !== undefined && this.participants.find(f => f.competitionId === p.competitionId) !== undefined) {
 			this.fire(this.Events.addFooter, "Deltagaren finns redan!");
@@ -103,11 +119,6 @@ export class Registration {
 		let newParticipant = new Participant(p);
 		if (p === undefined) {
 			newParticipant.organization = this.contact.organization;
-			if (!this.participants.some(p => p.name === this.contact.name)) {
-				newParticipant.name = this.contact.name;
-				let me = this.Registry.competitors.find(c => c.name === this.contact.name);
-				if (me) { newParticipant.competitionId = me.competitionId; }
-			}
 		}
 		this.Competition.events.forEach(e => newParticipant.addEvent(e.id));
 		this.participants.push(newParticipant);

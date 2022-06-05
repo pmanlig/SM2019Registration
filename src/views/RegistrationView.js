@@ -1,6 +1,7 @@
 import './RegistrationView.css';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import { Permissions, Status, TabInfo } from '../models';
 import { Description, NewRegistrationContact } from '../components';
 
 export class RegistrationView extends React.Component {
@@ -8,6 +9,7 @@ export class RegistrationView extends React.Component {
 	static wire = ["Competition", "EventBus", "Events", "Registration", "ParticipantPicker", "RegistrationToolbar",
 		"RegistrationForm", "Summary", "SquadPicker", "Server", "YesNoDialog", "ParticipantToolbar"];
 	static dateFormat = new Intl.DateTimeFormat('sv-SV');
+	static tabInfo = new TabInfo("Anmälan", "register", 1, Permissions.Any, Status.Open);
 
 	constructor(props) {
 		super(props);

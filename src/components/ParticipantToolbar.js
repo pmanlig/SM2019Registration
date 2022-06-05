@@ -16,9 +16,9 @@ export class ParticipantToolbar extends React.Component {
 
 	render() {
 		return <div className="buttons center content" style={{ position: "relative", overflow: "visible" }}>
-			{this.Registry.competitors.length > 0 &&
-				<input type='button' className="button" id="getButton" onClick={e => this.fire(this.Events.showParticipantPicker)} value='Hämta deltagare' />}
 			<button className="button" id="addButton" onClick={e => this.Registration.addParticipant()}><div className="button button-add small green" /> Lägg till deltagare</button>
+			<button className="button" id="meButton" onClick={e => this.Registration.addMe()}><div className="button button-add small green" /> Lägg till mig</button>
+			<button className={this.Registry.competitors.length > 0 ? "button" : "button diabled"} id="getButton" onClick={e => this.fire(this.Events.showParticipantPicker)}><div className="button button-recycle small green" /> Hämta deltagare</button>
 		</div>;
 	}
 }

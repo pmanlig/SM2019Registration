@@ -1,10 +1,12 @@
 import './RosterView.css';
 import React from 'react';
-import { Schedule } from '../models';
+import { Permissions, Schedule, TabInfo } from '../models';
 
 export class RosterView extends React.Component {
 	static register = { name: "RosterView" };
 	static wire = ["Competition", "Server", "Footers", "Session", "EventBus", "Events"];
+	static tabInfo = new TabInfo("Startlista", "roster", 3, Permissions.Any);
+
 	static E_CANNOT_LOAD_SCHEDULE = "Kan inte hämta starttider";
 	static E_CANNOT_LOAD_PARTICIPANTS = "Kan inte hämta deltagare";
 

@@ -1,8 +1,10 @@
 import React from 'react';
+import { Permissions, TabInfo } from '../models';
 
-export class CompetitionAdmin extends React.Component {
-	static register = { name: "CompetitionAdmin" };
+export class CompetitionAdminView extends React.Component {
+	static register = { name: "CompetitionAdminView" };
 	static wire = ["fire", "Events", "EventBus", "Server", "CompetitionProperties", "Competition", "Footers"];
+	static tabInfo = new TabInfo("Inställningar", "admin", 203, Permissions.Own);
 
 	constructor(props) {
 		super(props);

@@ -1,17 +1,18 @@
 import './TeamView.css';
 import React from 'react';
 import { Description, NewRegistrationContact, TeamForm } from '../components';
-import { ParticipantScore, Team } from '../models';
+import { Permissions, Status, ParticipantScore, Team, TabInfo } from '../models';
 
 export class TeamView extends React.Component {
 	static register = { name: "TeamView" };
 	static wire = ["EventBus", "Events", "Server", "Busy", "Competition", "Footers", "Registration", "TeamRegistration"];
+	static tabInfo = new TabInfo("Laganmälan", "teams", 2, Permissions.Admin, Status.Open);
 
 	constructor(props) {
 		super(props);
 		this.state = { teams: [], teamDefs: this.teamDefs() };
 		this.EventBus.manageEvents(this);
-		this.subscribe(this.Events.registrationUpdated, () => this.setState({}));
+		this.subscribe(this.Events.registrationUpdated, this.onRegistrationUpdated);
 		let { id, token } = props.match.params;
 		if (id) {
 			this.Competition.load(parseInt(id, 10));
@@ -20,6 +21,18 @@ export class TeamView extends React.Component {
 				this.Footers.errorHandler("Kan inte hämta deltagare!"));
 			if (token) { this.Registration.load(id, token); }
 		}
+	}
+
+	onRegistrationUpdated = () => {
+		let { teamDefs } = this.state;
+		this.Registration.teams.forEach(team => {
+			teamDefs.forEach((def, index) => {
+				if (def.eventId === team.event && def.index === team.index) {
+					team.teamDef = index.toString();
+				}
+			});
+		});
+		this.setState({});
 	}
 
 	onChangeContact = (prop, value) => {

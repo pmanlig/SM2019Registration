@@ -20,3 +20,4 @@ export { ParticipantScore } from './ParticipantScore';
 export { CompetitionGroup } from './CompetitionGroup';
 export { TeamRegistration } from './TeamRegistration';
 export { Team } from './Team';
+export { TabInfo } from './TabInfo';

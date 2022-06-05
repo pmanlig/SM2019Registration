@@ -358,5 +358,9 @@ export class Server {
 	getRegistrations(competitionId, callback, error) {
 		this.Busy.wrap(this.load, `admin/competition/${competitionId}/list_token`, logFetchCallback(callback, "Getting registrations"), logErrorHandler(error));
 	}
+
+	getTeamRegistrations(competitionId, callback, error) {
+		this.Busy.wrap(this.load, `admin/competition/${competitionId}/list_token_team`, logFetchCallback(callback, "Getting team registrations"), logErrorHandler(error));
+	}
 	//#endregion
 }

@@ -1,11 +1,12 @@
 import './ReportView.css';
 import React from 'react';
-import { Schedule } from '../models';
+import { Permissions, Schedule, TabInfo } from '../models';
 
 export class ReportView extends React.Component {
 	static register = { name: "ReportView" };
 	static wire = ["fire", "Competition", "Registration", "Results", "Server", "ReportTable",
 		"EventBus", "Events", "Footers", "Configuration", "ReportIndicator"];
+	static tabInfo = new TabInfo("Rapportera", "report", 200, Permissions.Admin);
 
 	constructor(props) {
 		super(props);
