@@ -12,6 +12,10 @@ export class TeamView extends React.Component {
 		super(props);
 		this.state = { teams: [], teamDefs: this.teamDefs() };
 		this.EventBus.manageEvents(this);
+		this.subscribe(this.Events.competitionUpdated, () => {
+			this.setState({});
+			this.fire(this.Events.changeTitle, `Laganmälan för ${this.Competition.name}`);
+		});
 		this.subscribe(this.Events.registrationUpdated, this.onRegistrationUpdated);
 		let { id, token } = props.match.params;
 		if (id) {
@@ -21,6 +25,10 @@ export class TeamView extends React.Component {
 				this.Footers.errorHandler("Kan inte hämta deltagare!"));
 			if (token) { this.Registration.load(id, token); }
 		}
+	}
+
+	componentDidMount() {
+		this.fire(this.Events.changeTitle, `Laganmälan för ${this.Competition.name}`);
 	}
 
 	onRegistrationUpdated = () => {

@@ -1,9 +1,10 @@
 export class TeamDef {
-	constructor(division, cls, members, alternates) {
+	constructor(division, cls, members, alternates, cost) {
 		this.division = division;
 		this.class = cls;
-		this.members = members;
-		this.alternates = alternates;
+		this.members = members || 2;
+		this.alternates = alternates || 1;
+		this.cost = cost || 0;
 	}
 
 	toJson() {
@@ -13,6 +14,7 @@ export class TeamDef {
 		}
 		if (this.division) { json.division = this.division; }
 		if (this.class) { json.class = this.class; }
+		json.cost = this.cost;
 		return json;
 	}
 
@@ -21,6 +23,7 @@ export class TeamDef {
 			json.division !== "" ? json.division : undefined,
 			json.class !== "" ? json.class : undefined,
 			parseInt(json.members.toString(), 10),
-			parseInt(json.alternates.toString(), 10));
+			parseInt(json.alternates.toString(), 10),
+			parseInt(json.cost, 10));
 	}
 }

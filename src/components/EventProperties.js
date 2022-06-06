@@ -57,7 +57,7 @@ export class EventProperties extends React.Component {
 					<Label text="Förutsättningar" align="center">
 						<button className="eventProperty button" onClick={this.showStages}>Redigera</button>
 					</Label>}
-				<Label text="Startavgift"><input className="eventProperty" style={{ width: "50px" }} value={event.cost || 100} onChange={e => this.setCost(event, e.target.value)} /></Label>
+				<Label text="Startavgift"><input className="eventProperty fee" maxLength="5" value={event.cost || 100} onChange={e => this.setCost(event, e.target.value)} /></Label>
 				<Label text="Vapengrupper"><Dropdown className="eventProperty" value={event.divisions || -1} list={this.props.divisionGroups} onChange={e => this.setGroup(event, "divisions", e.target.value)} /></Label>
 				<Label text="Klasser"><Dropdown className="eventProperty" value={event.classes || -1} list={this.props.classGroups} onChange={e => this.setGroup(event, "classes", e.target.value)} /></Label>
 				<Label text="Max starter" align="center"><Spinner className="eventProperty" value={event.maxRegistrations || 1} onChange={value => this.Competition.updateEvent(event, "maxRegistrations", Math.max(1, value))} /></Label>

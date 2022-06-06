@@ -1,9 +1,9 @@
-import './TeamProperties.css';
+import './EventProperties.css';
 import './Tables.css';
 import React from 'react';
 import { ModalDialog } from '../general';
 import { TeamDef } from '../models';
-import { Spinner, Dropdown } from '.';
+import { Spinner, Dropdown, TextInput } from '.';
 
 export class TeamProperties extends React.Component {
 	static register = { name: "TeamProperties" };
@@ -58,6 +58,13 @@ export class TeamProperties extends React.Component {
 		}
 	}
 
+	setCost = (team, cost) => {
+		if (cost !== team.cost) {
+			team.cost = cost;
+			this.setState({ dirty: true });
+		}
+	}
+
 	deleteTeam = team => {
 		let { event } = this.state;
 		event.teams = event.teams.filter(t => t !== team);
@@ -86,6 +93,7 @@ export class TeamProperties extends React.Component {
 			<this.Classes team={team} />
 			<td><Spinner value={team.members} onChange={m => this.setMembers(team, m)} /></td>
 			<td><Spinner value={team.alternates} onChange={a => this.setAlternates(team, a)} /></td>
+			<td><TextInput name="Startavgift" className="fee" id="fee" placeholder="Avgift" mask="1234567890" maxLength="5" value={team.cost || 0} onChange={c => this.setCost(team, parseInt(c.target.value, 10))}/></td>
 			<td><button className="small red button-close" onClick={e => this.deleteTeam(team)} /></td>
 		</tr>;
 	}
@@ -111,6 +119,7 @@ export class TeamProperties extends React.Component {
 				<this.ClsHeader />
 				<th>Deltagare</th>
 				<th>Reserver</th>
+				<th>Avgift</th>
 				<th>Radera</th>
 			</tr>
 		</thead>;
