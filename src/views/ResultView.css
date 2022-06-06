@@ -27,3 +27,28 @@
 #result .toolbar {
 	margin-bottom: 5px;
 }
+
+#result {
+	position: relative;
+}
+
+#result-filter {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	background-color: gray;
+	border: 1px solid lightgray;
+	padding: 5px;
+	border-radius: 5px;
+	color: white;
+	opacity: 0.5;
+}
+
+#filter-label {
+	font-size: small;
+	margin: 2px 0;
+}
+
+#roster-filter:hover {
+	opacity: 1;
+}

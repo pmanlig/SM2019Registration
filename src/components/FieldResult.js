@@ -36,7 +36,7 @@ export class FieldResult extends React.Component {
 			txts[i] = <td key={i}>{`${scores[i]}/${targets[i]}`}</td>;
 		}
 
-		return <tr className={pos === 1 ? "first" : (pos%2 === 0 ? "even" : undefined)}>
+		return <tr className={pos === 1 ? "first" : (pos % 2 === 0 ? "even" : undefined)}>
 			<td>{pos}</td>
 			<td className="left">{name}</td>
 			<td className="left">{organization}</td>
@@ -79,23 +79,24 @@ export class FieldResult extends React.Component {
 		return participants;
 	}
 
-	scores(results) {
+	scores(results, filter) {
 		let { event } = this.props;
 		let showValues = event.stages.some(s => s.value);
-		let pos = 1;
 		return this
 			.calculateScores(results)
-			.map(p => <this.Participant key={p.id} pos={pos++} event={event} data={p} showValues={showValues} />);
-			// .concat([<tr key={results[0].class}><td>&nbsp;</td></tr>]);
+			.map((p, i) => { return { ...p, pos: i + 1 } })
+			.filter(p => p.name.includes(filter) || p.organization.includes(filter))
+			.map(p => <this.Participant key={p.id} pos={p.pos} event={event} data={p} showValues={showValues} />);
+		// .concat([<tr key={results[0].class}><td>&nbsp;</td></tr>]);
 	}
 
 	render() {
-		let { event } = this.props;
+		let { event, filter } = this.props;
 		let showValues = event.stages.some(s => s.value);
 		return <table>
 			<this.Header event={event} showValues={showValues} />
 			<tbody>
-				{this.props.results.flatMap(r => this.scores(r))}
+				{this.props.results.flatMap(r => this.scores(r, filter))}
 			</tbody>
 		</table>;
 	}

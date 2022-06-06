@@ -12,7 +12,7 @@ export class ResultView extends React.Component {
 	constructor(props) {
 		super(props);
 		let { params } = this.props.match;
-		this.state = { division: params.extra };
+		this.state = { division: params.extra, filter: "" };
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.competitionUpdated, () => {
 			this.updateTitle();
@@ -24,7 +24,6 @@ export class ResultView extends React.Component {
 	}
 
 	loadResults = () => {
-		console.log("Refreshing results");
 		let { params } = this.props.match;
 		if (params.token !== undefined) {
 			this.Results.load(params.id, params.token);
@@ -63,12 +62,13 @@ export class ResultView extends React.Component {
 	}
 
 	divisionList(event) {
-		if (event === undefined) { return []; }
-		return this.DivisionGroups.find(g => g.id === event.divisions).divisions.filter(d => !d.includes('+')).filter(d => !d.match(/^!/));
+		if (event === undefined || event.divisions === undefined) { return []; }
+		let divs = this.DivisionGroups.find(g => g.id === event.divisions);
+		if (divs == null) return [];
+		return divs.divisions.filter(d => !d.includes('+')).filter(d => !d.match(/^!/));
 	}
 
 	EventSelector = props => {
-		console.log(this.Competition.events[0]);
 		if (this.Competition.events.length < 2) { return null; }
 		return <div id="event-selector">
 			{this.Competition.events.map(e =>
@@ -95,9 +95,10 @@ export class ResultView extends React.Component {
 		return Object.keys(result).map(k => result[k]);
 	}
 
-	filterScores(event, division) {
-		if (event.divisions === undefined || division === undefined) { return this.separateScores(event, this.Results.scores); }
-		return this.separateScores(event, this.Results.scores.filter(s => s.division === division));
+	filterScores(event, division, filter) {
+		return (event.divisions === undefined || division === undefined) ?
+			this.separateScores(event, this.Results.scores) :
+			this.separateScores(event, this.Results.scores.filter(s => s.division === division));
 	}
 
 	render() {
@@ -114,9 +115,13 @@ export class ResultView extends React.Component {
 		if (this.Results.scores === undefined) { return null; }
 
 		return <div id="result" className="content">
+			<div id="result-filter">
+				<p id="filter-label">Söktext</p>
+				<input id="filter-input" value={this.state.filter} onChange={e => this.setState({ filter: e.target.value })} />
+			</div>
 			<this.EventSelector />
 			<this.DivisionSelector event={event} active={extra} />
-			<EventResult competition={this.Competition} event={this.Competition.event(parseInt(token, 10))} results={this.filterScores(event, extra)} />
+			<EventResult competition={this.Competition} event={this.Competition.event(parseInt(token, 10))} results={this.filterScores(event, extra)} filter={this.state.filter} />
 		</div>;
 	}
 }
