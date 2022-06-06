@@ -8,8 +8,8 @@
 }
 
 .rv-event {
-	min-width:400px;
 	width: 400px;
+	max-width: 100%;
 	margin: 3px;
 }
 
@@ -29,11 +29,18 @@
 	justify-content: space-between;
 }
 
+.rv-squad-list {
+	display: grid;
+	grid-auto-flow: row;
+	padding: 2px;
+}
+
 .rv-participant {
 	margin: 0 5px 0 5px;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
+}
+
+.rv-class {
+	text-align: right;
 }
 
 .drop-target {

@@ -92,14 +92,19 @@ export class RosterView extends React.Component {
 		return s.toUpperCase().includes(this.state.filter.toUpperCase());
 	}
 
+	Header = props => {
+		let style = { gridRow: 1 };
+		return [<div key="h1" style={style} />, <div key="h2" style={style} />, <div key="h3" style={style} />];
+	}
+
 	Participant = ({ participant, key }) => {
-		return <div className="rv-participant" key={key} draggable="true" onDragStart={e => {
-			if (this.Session.user !== "")
-				e.dataTransfer.setData("text/json", JSON.stringify(participant));
-		}}>
-			<span>{participant.name}, {participant.organization}</span>
-			<span>{participant.division ? participant.division.replace(/^!/gm, '') : null}</span>
-		</div >;
+		return [
+			<div className="rv-participant" key={key} draggable="true"
+				onDragStart={e => {
+					if (this.Session.user !== "") { e.dataTransfer.setData("text/json", JSON.stringify(participant)); }
+				}}>{participant.name}</div>,
+			<div className="rv-participant">{participant.organization}</div>,
+			<div className="rv-participant rv-class">{participant.division ? participant.division.replace(/^!/gm, '') : null}</div >];
 	}
 
 	Squad = ({ squad, key }) => {
@@ -116,7 +121,11 @@ export class RosterView extends React.Component {
 				{squad.startTime ? <span>{squad.startTime}</span> : <span>{squad.name}</span>}
 				{squad.slots && <span>{squad.participants.length}/{squad.slots}</span>}
 			</div>
-			{squad.participants.filter(p => this.match(p.name) || this.match(p.organization)).map(p => this.Participant({ key: p.id || i++, participant: p }))}
+			<div className="rv-squad-list">
+				<this.Header />
+				{squad.participants.filter(p => this.match(p.name) || this.match(p.organization))
+					.map(p => this.Participant({ key: p.id || i++, participant: p }))}
+			</div>
 		</div>;
 	}
 
@@ -124,7 +133,7 @@ export class RosterView extends React.Component {
 		return <div className="rv-event" key={key}>
 			<h3>{event.name}</h3>
 			<p className="subtitle">{event.schedule === undefined ? 0 : event.schedule.squads.map(c => c.participants.length).reduce((a, c) => a + c)} starter</p>
-			{event.schedule && event.schedule.squads.map(s => this.Squad({ key: s.id, squad: s }))}
+			{event.schedule && event.schedule.squads.map(s => <this.Squad key={s.id} squad={s} />)}
 		</div>;
 	}
 
@@ -134,7 +143,7 @@ export class RosterView extends React.Component {
 				<p id="filter-label">Söktext</p>
 				<input id="filter-input" value={this.state.filter} onChange={e => this.setState({ filter: e.target.value })} />
 			</div>
-			{this.state.events.map(e => this.Event({ event: e, key: e.name }))}
+			{this.state.events.map(e => <this.Event event={e} key={e.name} />)}
 		</div>
 	}
 }
