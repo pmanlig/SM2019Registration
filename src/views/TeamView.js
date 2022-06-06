@@ -5,8 +5,11 @@ import { Permissions, Status, ParticipantScore, Team, TabInfo } from '../models'
 
 export class TeamView extends React.Component {
 	static register = { name: "TeamView" };
-	static wire = ["EventBus", "Events", "Server", "Busy", "Competition", "Footers", "Registration", "TeamRegistration"];
+	static wire = ["EventBus", "Events", "Server", "Busy", "Competition", "Footers", "Registration", "TeamRegistration", "Busy"];
 	static tabInfo = new TabInfo("Laganmälan", "teams", 2, Permissions.Admin, Status.Open);
+
+	static BUSY_LOAD_PARTICIPANTS = "loadTeamParticipants";
+	static BUSY_LOAD_REGISTRATION = "loadTeamRegistration";
 
 	constructor(props) {
 		super(props);
@@ -20,10 +23,17 @@ export class TeamView extends React.Component {
 		let { id, token } = props.match.params;
 		if (id) {
 			this.Competition.load(parseInt(id, 10));
+			this.Busy.setBusy(TeamView.BUSY_LOAD_PARTICIPANTS, true);
 			this.Server.getCompetitionParticipants(id,
-				json => this.setState({ participants: json.map(j => ParticipantScore.fromJson(j)) }),
+				json => {
+					this.setState({ participants: json.map(j => ParticipantScore.fromJson(j)) });
+					this.Busy.setBusy(TeamView.BUSY_LOAD_PARTICIPANTS, false);
+				},
 				this.Footers.errorHandler("Kan inte hämta deltagare!"));
-			if (token) { this.Registration.load(id, token); }
+			if (token) {
+				this.Busy.setBusy(TeamView.BUSY_LOAD_REGISTRATION);
+				this.Registration.load(id, token);
+			}
 		}
 	}
 
@@ -41,6 +51,7 @@ export class TeamView extends React.Component {
 			});
 		});
 		this.setState({});
+		this.Busy.setBusy(TeamView.BUSY_LOAD_REGISTRATION, false);
 	}
 
 	onChangeContact = (prop, value) => {
