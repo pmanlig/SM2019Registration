@@ -1,5 +1,5 @@
 export class TeamDef {
-	constructor(division, cls, members, alternates, cost) {
+	constructor(id, division, cls, members, alternates, cost) {
 		this.division = division;
 		this.class = cls;
 		this.members = members || 2;
@@ -20,6 +20,7 @@ export class TeamDef {
 
 	static fromJson(json) {
 		return new TeamDef(
+			parseInt(json.team_definition_id, 10),
 			json.division !== "" ? json.division : undefined,
 			json.class !== "" ? json.class : undefined,
 			parseInt(json.members.toString(), 10),

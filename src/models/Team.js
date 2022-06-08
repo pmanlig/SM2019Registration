@@ -1,10 +1,11 @@
 export class Team {
-	constructor(name, event, index) {
+	constructor(name, event, index, teamDefID) {
 		this.name = name;
 		this.event = event;
 		this.index = index;
 		this.members = [];
 		this.alternates = [];
+		this.team_definition_id = teamDefID;
 		this.checkInitialized("name", "event", "index");
 	}
 
@@ -20,7 +21,8 @@ export class Team {
 			event: this.event,
 			index: this.index,
 			members: this.members,
-			alternates: this.alternates
+			alternates: this.alternates,
+			team_definition_id: this.team_definition_id
 		};
 	}
 
@@ -28,6 +30,7 @@ export class Team {
 		let nt = new Team(json.name, parseInt(json.event, 10), parseInt(json.index, 10));
 		nt.members = json.members.map(m => parseInt(m, 10));
 		nt.alternates = json.alternates.map(a => parseInt(a, 10));
+		if (json.team_definition_id) nt.id = parseInt(json.team_definition_id, 10);
 		return nt;
 	}
 }

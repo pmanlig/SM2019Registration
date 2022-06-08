@@ -253,8 +253,7 @@ export class Registration {
 			this.Server.updateRegistration(this.token, this.toJson(), res => {
 				// this.token = res.token;
 				// this.Tokens.setToken(this.Competition.id, res.token);
-				// this.Footers.addFooter(this.countEvents() + " starter registrerade", "info");
-				this.Footers.addFooter("Lagstarter registrerade", "info")
+				this.Footers.addFooter(`${this.teams.length} lag registrerade`, "info")
 				// this.fire(this.Events.registrationUpdated, this);
 			}, error => {
 				this.Footers.addFooter(`Registreringen misslyckades! (${error.message || error})`);

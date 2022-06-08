@@ -60,7 +60,7 @@ export class TeamView extends React.Component {
 
 	addTeam = () => {
 		let { teamDefs } = this.state;
-		this.Registration.teams.push(new Team(`Lag ${this.Registration.teams.length + 1}`, teamDefs[0].eventId, teamDefs[0].index));
+		this.Registration.teams.push(new Team(`Lag ${this.Registration.teams.length + 1}`, teamDefs[0].eventId, teamDefs[0].index, teamDefs[0].id));
 		this.setState({});
 	}
 

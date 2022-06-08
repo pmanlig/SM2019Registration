@@ -21,6 +21,7 @@ export class TeamForm extends React.Component {
 		teams[team].teamDef = val;
 		teams[team].event = def.eventId;
 		teams[team].index = def.index;
+		teams[team].team_definition_id = def.id;
 		this.setState({});
 	}
 
