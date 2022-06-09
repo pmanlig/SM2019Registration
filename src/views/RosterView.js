@@ -132,7 +132,7 @@ export class RosterView extends React.Component {
 	Event = ({ event, key }) => {
 		return <div className="rv-event" key={key}>
 			<h3>{event.name}</h3>
-			<p className="subtitle">{event.schedule === undefined ? 0 : event.schedule.squads.map(c => c.participants.length).reduce((a, c) => a + c)} starter</p>
+			<p className="subtitle">{event.schedule === undefined ? 0 : event.schedule.squads.map(c => c.participants.length).reduce((a, c) => a + c, 0)} starter</p>
 			{event.schedule && event.schedule.squads.map(s => <this.Squad key={s.id} squad={s} />)}
 		</div>;
 	}
