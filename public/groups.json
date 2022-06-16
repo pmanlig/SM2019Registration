@@ -5,6 +5,7 @@
 		"name": "Gävle PK",
 		"description": "Träningar och interna tävlingar Gävle PK",
 		"icon": "GPK",
+		"url": "/group/traning_gpk",
 		"background": "#000000",
 		"color": "#FFFFFF",
 		"status": 1
@@ -15,6 +16,7 @@
 		"name": "X-kretsen",
 		"description": "Kretstävlingar Gävleborg",
 		"icon": "XKRETSEN",
+		"url": "/group/xkretsen",
 		"background": "#CFCFFF",
 		"color": "#000000",
 		"status": 1
@@ -25,6 +27,7 @@
 		"name": "SM Fält 2022",
 		"description": "Anmälan SM Fält 2022",
 		"icon": "SM2022",
+		"url": "http://www.pistolsm2022falt.se/",
 		"background": "#206196",
 		"color": "#000000",
 		"status": 0

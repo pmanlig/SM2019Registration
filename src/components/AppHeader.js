@@ -51,6 +51,9 @@ export class AppHeader extends React.Component {
 		if (group.label === undefined) {
 			return <Link to="/"><img src={logo} className="Gpk-logo" alt="logo" /></Link>
 		}
+		if (group.url !== undefined) {
+			return <a href={`${group.url}`}><img src={group.icon} className="Gpk-logo" alt="logo" /></a>
+		}
 		return <Link to={`/group/${group.label}`}><img src={group.icon} className="Gpk-logo" alt="logo" /></Link>
 	}
 
