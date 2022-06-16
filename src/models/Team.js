@@ -20,8 +20,8 @@ export class Team {
 			name: this.name,
 			event: this.event,
 			index: this.index,
-			members: this.members,
-			alternates: this.alternates,
+			members: this.members.filter(x => x !== undefined),
+			alternates: this.alternates.filter(x => x !== undefined),
 			team_definition_id: this.team_definition_id
 		};
 	}
