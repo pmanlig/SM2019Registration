@@ -1,3 +1,4 @@
+import './Global.css';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -70,6 +71,15 @@ export class ModeSelector extends React.Component {
 	}
 
 	render() {
-		return <Link to='' className='globaltool' onClick={this.toggleMode}>{this.Configuration.mode === "computer" ? "Dator" : "Platta/Mobil"}</Link>
+
+		return this.Configuration.mode === "computer" ?
+			<div className="slider globaltool">
+				<div className="globaltool disabled right">Mobil</div>
+				<Link to='' className='globaltool' onClick={this.toggleMode}>Dator</Link>
+			</div> :
+			<div className="slider globaltool">
+				<Link to='' className='globaltool' onClick={this.toggleMode}>Mobil</Link>
+				<div className="globaltool disabled left">Dator</div>
+			</div>;
 	}
 }

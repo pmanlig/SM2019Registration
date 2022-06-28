@@ -1,17 +1,20 @@
 import './ReportTable.css';
 import React from 'react';
 
-function Mulligan({ participant }) {
-	return <div className="participant"><input type="checkbox" /></div>;
+function Redo({ stage, participant, onChange }) {
+	return <div className="participant">
+		<input type="checkbox" checked={participant.redo > 0} disabled={participant.redo > 0 && participant.redo !== stage}
+			onChange={onChange} />
+	</div>;
 }
 
 function Note({ participant, onChange }) {
-	return <div className="participant"><input type="text" value={participant.note || ""} onChange={onChange}/></div>;
+	return <div className="participant"><input type="text" value={participant.note || ""} onChange={onChange} /></div>;
 }
 
 export class FieldReportTable extends React.Component {
 	static register = { name: "FieldReportTable" };
-	static fieldTargets = ["A", "B", "C", "D", "E", "F"];
+	static fieldTargets = ["1", "2", "3", "4", "5", "6"];
 	static fieldTargetIds = [0, 1, 2, 3, 4, 5];
 	static targetValues = [0, 1, 2, 3, 4, 5, 6];
 
@@ -73,12 +76,18 @@ export class FieldReportTable extends React.Component {
 		</div>;
 	}
 
-	setNote = (p,v) => {
+	setNote = (p, v) => {
 		p.note = v;
 		this.setState({});
 	}
-	
+
+	setRedo = (p, v) => {
+		p.redo = v;
+		this.setState({});
+	}
+
 	participantRow(stageDef, p, id, first) {
+		if (p.id === 9157) { console.log("participantRow", p, stageDef); }
 		return [
 			<div key={"pos" + id} className={this.participantClass("", p)}>{p.position}</div>,
 			<div key={"name" + id} className={this.participantClass("align-left", p)}>{p.name}</div>,
@@ -86,8 +95,8 @@ export class FieldReportTable extends React.Component {
 			[...this.targets(stageDef, p, id, first)],
 			<div className="participant" key={"t" + id}>{p.getStageTotal(stageDef)}</div>,
 			<this.Value stageDef={stageDef} participant={p} key={"v" + id} />,
-			<Mulligan participant={p} key={"m" + id} />,
-			<Note participant={p} key={"n" + id} onChange={e => this.setNote(p,e.target.value)} />,
+			<Redo stage={stageDef.num} participant={p} key={"m" + id} onChange={e => this.setRedo(p, e.target.value ? stageDef.num : 0)} />,
+			<Note participant={p} key={"n" + id} onChange={e => this.setNote(p, e.target.value)} />,
 			<div className="align-left" key={"spc" + id}>{p.error}</div>
 		];
 	}

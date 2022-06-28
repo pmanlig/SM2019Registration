@@ -37,10 +37,11 @@ export class AppHeader extends React.Component {
 			<h1 className="App-title">{this.state.title}</h1>
 			<div id="App-header-tools">
 				<div id="global-tools">
-					{/*<this.ModeSelector />*/}
 					<Link to="/" className='globaltool'>Hem</Link>
+					<this.LoginLogout />
 					<Link to="/help" className='globaltool'>Hjälp?</Link>
 					<Link to="/about" className='globaltool'>Om...</Link>
+					<this.ModeSelector />
 				</div>
 			</div>
 		</header>
@@ -75,14 +76,14 @@ export class AppHeader extends React.Component {
 			</h1>
 			<div id="App-header-tools">
 				<div id="global-tools">
-					{/*<this.ModeSelector />*/}
+					<Link to="/" className='globaltool'>Hem</Link>
 					{/*<this.LocalToggle />*/}
 					{/*<this.DeleteCookies />*/}
 					<this.AdminButton />
 					<this.LoginLogout />
-					<Link to="/" className='globaltool'>Hem</Link>
 					<Link to="/help" className='globaltool'>Hjälp?</Link>
 					<Link to="/about" className='globaltool'>Om...</Link>
+					<this.ModeSelector />
 				</div>
 				<p className="version">version {process.env.REACT_APP_VERSION}{this.Configuration.loaded && this.Configuration.site === "utveckling" && " (utveckling)"}</p>
 			</div>

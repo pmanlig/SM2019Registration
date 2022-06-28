@@ -1,0 +1,25 @@
+.slider.globaltool {
+	display: inline-flex;
+	background-color: lightgray;
+	border-radius: 15px;
+	padding: 0;
+}
+
+.slider.globaltool .globaltool {
+	margin: 0;
+	z-index: 99;
+}
+
+.slider .globaltool.disabled {
+	background-color: lightgray;
+	color: darkslategray;
+	z-index: 1;
+}
+
+.slider .globaltool.disabled.left {
+	margin-left: -10px;
+}
+
+.slider .globaltool.disabled.right {
+	margin-right: -10px;
+}
