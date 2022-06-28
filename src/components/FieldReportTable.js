@@ -1,6 +1,14 @@
 import './ReportTable.css';
 import React from 'react';
 
+function Mulligan({ participant }) {
+	return <div className="participant"><input type="checkbox" /></div>;
+}
+
+function Note({ participant, onChange }) {
+	return <div className="participant"><input type="text" value={participant.note || ""} onChange={onChange}/></div>;
+}
+
 export class FieldReportTable extends React.Component {
 	static register = { name: "FieldReportTable" };
 	static fieldTargets = ["A", "B", "C", "D", "E", "F"];
@@ -11,7 +19,7 @@ export class FieldReportTable extends React.Component {
 		return FieldReportTable.fieldTargetIds.map(i =>
 			(stageDef !== undefined && i < stageDef.targets) ?
 				<div key={"hdr" + i} className="header">{FieldReportTable.fieldTargets[i]}</div> :
-				<div key={"hdr" + i} />
+				<div key={"hdr" + i} className="null" />
 		);
 	}
 
@@ -56,36 +64,30 @@ export class FieldReportTable extends React.Component {
 				</div> : <div key={"tgt" + id + i} />);
 	}
 
-	value(stageDef, participant, id) {
-		if (!stageDef.value) return <div key={"val" + id} />;
+	Value(stageDef, participant) {
+		if (!stageDef.value) return <div />;
 		let score = participant.getScore(stageDef.num, stageDef.targets);
-		return <div className={this.participantClass("input", participant, 1)} key={"val" + id}>
+		return <div className={this.participantClass("input", participant, 1)}>
 			<input className="score-text" type="text" size="2" value={score === undefined ? "" : score}
 				onChange={e => this.setValue(participant, stageDef, e.target.value)} />
 		</div>;
 	}
 
-	total(stageDef, participant, id) {
-		return <div className={this.participantClass("", participant)} key={"tot" + id}>{participant.getStageTotal(stageDef)}</div>;
+	setNote = (p,v) => {
+		p.note = v;
+		this.setState({});
 	}
-
-	redo(stageDef, participant, id) {
-		return <div className={this.participantClass("", participant)} key={"redo" + id}><input type="checkbox" /></div>;
-	}
-
-	note(stageDef, participant, id) {
-		return <div className={this.participantClass("", participant)} key={"note" + id}><input type="text" /></div>;
-	}
-
+	
 	participantRow(stageDef, p, id, first) {
 		return [
+			<div key={"pos" + id} className={this.participantClass("", p)}>{p.position}</div>,
 			<div key={"name" + id} className={this.participantClass("align-left", p)}>{p.name}</div>,
 			<div key={"sup" + id} className={this.participantClass("", p)}><input type="checkbox" tabIndex="-1" onClick={e => e.target.checked = !e.target.checked} /></div>,
 			[...this.targets(stageDef, p, id, first)],
-			this.total(stageDef, p, id),
-			this.value(stageDef, p, id),
-			this.redo(stageDef, p, id),
-			this.note(stageDef, p, id),
+			<div className="participant" key={"t" + id}>{p.getStageTotal(stageDef)}</div>,
+			<this.Value stageDef={stageDef} participant={p} key={"v" + id} />,
+			<Mulligan participant={p} key={"m" + id} />,
+			<Note participant={p} key={"n" + id} onChange={e => this.setNote(p,e.target.value)} />,
 			<div className="align-left" key={"spc" + id}>{p.error}</div>
 		];
 	}
@@ -94,14 +96,15 @@ export class FieldReportTable extends React.Component {
 		let { stageDef, scores } = this.props;
 		let id = 0;
 		return <div className={"score-sheet field"}>
+			<div className="header">Pos</div>
 			<div className="header align-left">Namn</div>
 			<div className="header">Stöd</div>
 			{this.headers(stageDef)}
 			<div className="header">Total</div>
-			{stageDef.value ? <div className="header">Poäng</div> : <div />}
+			{stageDef.value ? <div className="header">Poäng</div> : <div className="null" />}
 			<div className="header">Omskj.</div>
 			<div className="header align-left">Anteckning</div>
-			<div>{/* Spacer - empty space to let the interface resize */}</div>
+			<div className="null align-left">{/* Error */}</div>
 			{scores.map((p, i) => this.participantRow(stageDef, p, id++, i === 0)).flat()}
 		</div>;
 	}

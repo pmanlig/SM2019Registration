@@ -38,12 +38,7 @@ export class Results {
 			competition: this.competition,
 			event: event.id,
 			squad: squad.id,
-			scores: this.scores.filter(p => p.squad === squad.id).map(p => {
-				return {
-					id: p.id,
-					score: p.scores.filter(n => n.stage === stage)
-				}
-			})
+			scores: this.scores.filter(p => p.squad === squad.id).map(p => p.toJson(stage))
 		});
 		if (window._debug) { console.log("Adding score to queue", this.queue); }
 		this.Storage.set(this.Storage.keys.resultsQueue, this.queue);
@@ -62,7 +57,7 @@ export class Results {
 					this.fire(this.Events.resultsUpdated);
 					this.trySendResults();
 				},
-				error => { console.log("Error sending results", error); }
+				error => { console.log("Error sending results", error, error.message, JSON.stringify(error)); }
 			);
 		}
 	}

@@ -20,10 +20,10 @@ export class ReportView extends React.Component {
 			let event = events[0];
 			this.state.eventList = events;
 			this.state.event = event;
+			this.state.stageDef = (event.stages && event.stages[0]);
 			if (event.schedule !== 0 && event.schedule !== undefined) {
 				this.Server.loadSchedule(event.schedule, this.updateSchedule, this.Footers.errorHandler("Kan inte hämta startlista för tävlingen"));
 			}
-			this.state.stageDef = (event.stages && event.stages[0]);
 			this.Results.load(this.Competition.id, event.id);
 		}
 		else {
@@ -129,6 +129,10 @@ export class ReportView extends React.Component {
 		let { eventList, event, schedule, squad, stageDef } = this.state;
 		let stageDefs = this.getStageDefs(event);
 		let scores = this.Results.getScores(squad && squad.id);
+		if (squad) {
+			scores = scores.sort((a, b) => a.position - b.position);
+			scores.forEach((s, i) => s.position = i + 1);
+		}
 		stageDef = stageDef || stageDefs[0];
 		return <div id="results" className="content">
 			<div id="selections">

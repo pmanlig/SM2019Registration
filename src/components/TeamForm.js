@@ -72,7 +72,7 @@ export class TeamForm extends React.Component {
 		let participants = this.props.participants || [];
 		let { team, index } = props;
 		let teamDef = teamDefs[team.teamDef || 0];
-		participants = participants.filter(p => p.eventName === teamDef.event);
+		participants = participants.filter(p => p.eventName === teamDef.event); // ToDo: use ID instead
 		if (teamDef.division !== undefined) { participants = participants.filter(p => p.division === teamDef.division); }
 		if (teamDef.class !== undefined) { participants = participants.filter(p => p.class === teamDef.class); }
 		participants = participants.map(p => { return { id: p.id, description: p.name } });

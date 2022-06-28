@@ -97,26 +97,25 @@ export class RosterView extends React.Component {
 		return [<div key="h1" style={style} />, <div key="h2" style={style} />, <div key="h3" style={style} />];
 	}
 
-	Participant = ({ participant, key }) => {
+	Participant = ({ participant }) => {
 		return [
-			<div className="rv-participant" key={key} draggable="true"
+			<div className="rv-participant" key="n" draggable="true"
 				onDragStart={e => {
 					if (this.Session.user !== "") { e.dataTransfer.setData("text/json", JSON.stringify(participant)); }
 				}}>{participant.name}</div>,
-			<div className="rv-participant">{participant.organization}</div>,
-			<div className="rv-participant rv-class">{participant.division ? participant.division.replace(/^!/gm, '') : null}</div >];
+			<div className="rv-participant" key="o">{participant.organization}</div>,
+			<div className="rv-participant rv-class" key="d">{participant.division ? participant.division.replace(/^!/gm, '') : null}</div >];
 	}
 
-	Squad = ({ squad, key }) => {
+	Squad = ({ squad }) => {
 		if (!squad.participants.some(p => this.match(p.name) || this.match(p.organization))) { return null; }
 		let header_class = "rv-squad-header";
-		let i = 0;
 		if (squad.slots !== undefined) {
 			if (squad.participants.length > squad.slots) header_class = "rv-squad-header over-capacity";
 			if (squad.participants.length === squad.slots) header_class = "rv-squad-header full";
 		}
 		if (squad === this.state.dropTarget) header_class = "rv-squad-header drop-target";
-		return <div className="rv-squad" key={key} onDragOver={e => this.dragOver(e, squad)} onDrop={e => this.moveTo(e.dataTransfer.getData("text/json"), squad.id)}>
+		return <div className="rv-squad" onDragOver={e => this.dragOver(e, squad)} onDrop={e => this.moveTo(e.dataTransfer.getData("text/json"), squad.id)}>
 			<div className={header_class}>
 				{squad.startTime ? <span>{squad.startTime}</span> : <span>{squad.name}</span>}
 				{squad.slots && <span>{squad.participants.length}/{squad.slots}</span>}
@@ -124,13 +123,14 @@ export class RosterView extends React.Component {
 			<div className="rv-squad-list">
 				<this.Header />
 				{squad.participants.filter(p => this.match(p.name) || this.match(p.organization))
-					.map(p => this.Participant({ key: p.id || i++, participant: p }))}
+					.sort((a, b) => a.position - b.position)
+					.map((p, i) => <this.Participant participant={p} key={p.id || i} index={p.id || i} />)}
 			</div>
 		</div>;
 	}
 
-	Event = ({ event, key }) => {
-		return <div className="rv-event" key={key}>
+	Event = ({ event }) => {
+		return <div className="rv-event">
 			<h3>{event.name}</h3>
 			<p className="subtitle">{event.schedule === undefined ? 0 : event.schedule.squads.map(c => c.participants.length).reduce((a, c) => a + c, 0)} starter</p>
 			{event.schedule && event.schedule.squads.map(s => <this.Squad key={s.id} squad={s} />)}

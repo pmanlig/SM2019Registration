@@ -37,7 +37,7 @@ export class AppHeader extends React.Component {
 			<h1 className="App-title">{this.state.title}</h1>
 			<div id="App-header-tools">
 				<div id="global-tools">
-					<this.ModeSelector />
+					{/*<this.ModeSelector />*/}
 					<Link to="/" className='globaltool'>Hem</Link>
 					<Link to="/help" className='globaltool'>Hjälp?</Link>
 					<Link to="/about" className='globaltool'>Om...</Link>
@@ -75,9 +75,9 @@ export class AppHeader extends React.Component {
 			</h1>
 			<div id="App-header-tools">
 				<div id="global-tools">
-					<this.ModeSelector />
-					<this.LocalToggle />
-					<this.DeleteCookies />
+					{/*<this.ModeSelector />*/}
+					{/*<this.LocalToggle />*/}
+					{/*<this.DeleteCookies />*/}
 					<this.AdminButton />
 					<this.LoginLogout />
 					<Link to="/" className='globaltool'>Hem</Link>
