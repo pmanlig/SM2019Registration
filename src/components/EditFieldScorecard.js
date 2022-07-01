@@ -36,7 +36,7 @@ export class EditFieldScorecard extends React.Component {
 
 	Value = ({ stage, score }) => {
 		return stage.value ?
-			<div style={{ padding: "2px" }}><TextInput mask="0123456789" value={score.values[stage.targets] || 0}
+			<div style={{ padding: "2px" }}><TextInput mask="0123456789" value={score.values[stage.targets] === undefined ? "" : score.values[stage.targets]}
 				onChange={e => this.updateValue(stage, stage.targets, parseInt(e.target.value, 10))} size="2" /></div> :
 			<div className="unused"></div>;
 	}

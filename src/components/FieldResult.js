@@ -13,12 +13,6 @@ let sort = (a, b) => {
 }
 
 export class FieldResult extends React.Component {
-	constructor(props) {
-		super(props);
-		console.log(props);
-		// this.scorecard = props.match.params.extra ? `${props.match.params.extra}/scorecard` : "scorecard";
-	}
-
 	Header = props => {
 		let scores = [], s = 0;
 		while (s++ < props.event.scores) { scores.push(<th key={s}>{s}</th>); }

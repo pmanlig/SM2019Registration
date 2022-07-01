@@ -22,13 +22,13 @@ export class FieldScorecard extends React.Component {
 
 	Target = ({ stage, score, tgt }) => {
 		return tgt <= stage.targets ?
-			<div>{score}</div> :
+			<div>{score || ""}</div> :
 			<div className="unused"></div>;
 	}
 
 	Value = ({ stage, score }) => {
 		return stage.value ?
-			<div>{score.values[stage.targets] || 0}</div> :
+			<div>{score.values[stage.targets] !== undefined ? score.values[stage.targets] : ""}</div> :
 			<div className="unused"></div>;
 	}
 
@@ -46,7 +46,6 @@ export class FieldScorecard extends React.Component {
 
 	render() {
 		let { event, participant } = this.props;
-		console.log("Field scorecard", event, participant);
 		let stages = event.stages.sort((a, b) => a.num - b.num);
 		return <div className="scorecard">
 			<this.Header />
