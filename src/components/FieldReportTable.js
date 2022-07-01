@@ -87,7 +87,6 @@ export class FieldReportTable extends React.Component {
 	}
 
 	participantRow(stageDef, p, id, first) {
-		if (p.id === 9157) { console.log("participantRow", p, stageDef); }
 		return [
 			<div key={"pos" + id} className={this.participantClass("", p)}>{p.position}</div>,
 			<div key={"name" + id} className={this.participantClass("align-left", p)}>{p.name}</div>,
@@ -95,7 +94,7 @@ export class FieldReportTable extends React.Component {
 			[...this.targets(stageDef, p, id, first)],
 			<div className="participant" key={"t" + id}>{p.getStageTotal(stageDef)}</div>,
 			<this.Value stageDef={stageDef} participant={p} key={"v" + id} />,
-			<Redo stage={stageDef.num} participant={p} key={"m" + id} onChange={e => this.setRedo(p, e.target.value ? stageDef.num : 0)} />,
+			<Redo stage={stageDef.num} participant={p} key={"m" + id} onChange={e => this.setRedo(p, e.target.checked ? stageDef.num : 0)} />,
 			<Note participant={p} key={"n" + id} onChange={e => this.setNote(p, e.target.value)} />,
 			<div className="align-left" key={"spc" + id}>{p.error}</div>
 		];

@@ -2,7 +2,7 @@ import './ResultView.css';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Permissions, Status, TabInfo } from '../models';
-import { EventResult } from '../components';
+import { EventResult, Scorecard } from '../components';
 
 export class ResultView extends React.Component {
 	static register = { name: "ResultView" };
@@ -12,7 +12,7 @@ export class ResultView extends React.Component {
 	constructor(props) {
 		super(props);
 		let { params } = this.props.match;
-		this.state = { division: params.extra, filter: "" };
+		this.state = { division: params.p2, filter: "" };
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.competitionUpdated, () => {
 			this.updateTitle();
@@ -20,7 +20,6 @@ export class ResultView extends React.Component {
 		});
 		this.loadResults();
 		this.subscribe(this.Events.resultsUpdated, this.updateResults);
-		setInterval(this.loadResults, 5 * 60 * 1000);
 	}
 
 	loadResults = () => {
@@ -36,21 +35,22 @@ export class ResultView extends React.Component {
 
 	updateTitle() {
 		let title = `Resultat för ${this.Competition.name}`;
-		let event = this.Competition.event(parseInt(this.props.match.params.token, 10));
+		let event = this.Competition.event(parseInt(this.props.match.params.p1, 10));
 		if (event != null && event.name !== '') { title += ` / ${event.name}` }
 		this.fire(this.Events.changeTitle, title);
 	}
 
 	componentDidMount() {
 		this.updateTitle();
+		this.interval = setInterval(this.loadResults, 5 * 60 * 1000);
 	}
 
 	componentDidUpdate() {
 		this.updateTitle();
-		let { token } = this.props.match.params, { event } = this.Results;
-		if ((token !== undefined && event === undefined) || token !== event.toString() || this.state.scores === undefined) {
-			this.Results.load(this.props.match.params.id, this.props.match.params.token);
-		}
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.interval);
 	}
 
 	eventClass(e) {
@@ -95,24 +95,67 @@ export class ResultView extends React.Component {
 		return Object.keys(result).map(k => result[k]);
 	}
 
-	filterScores(event, division, filter) {
+	filterScores(event, division) {
 		return (event.divisions === undefined || division === undefined) ?
 			this.separateScores(event, this.Results.scores) :
 			this.separateScores(event, this.Results.scores.filter(s => s.division === division));
 	}
 
+	updateScorecard = () => {
+		let { p1, p2, p3 } = this.props.match.params;
+		let scorecard = parseInt(p2, 10) || parseInt(p3, 10);
+		if (!isNaN(scorecard)) {
+			let event = this.Competition.events.find(e => e.id === parseInt(p1, 10));
+			let participant = this.Results.scores.find(s => s.id === scorecard);
+			for (const score of participant.scores) {
+				let stageDef = event.stages.find(s => s.num === score.stage);
+				if (!participant.validateScore(stageDef)) {
+					alert(`Station ${score.stage} - ${participant.error}`);
+					participant.error = undefined;
+					return;
+				}
+			}
+			this.Results.updateScore(parseInt(p1, 10), scorecard);
+		}
+	}
+
 	render() {
-		let { token, extra } = this.props.match.params;
-		if (token === undefined) {
+		let { id, p1, p2, p3 } = this.props.match.params;
+
+		if (id === undefined) { return <div>Fel - ingen tävling angiven!</div>; }
+		if (this.Competition.id !== id) {
+			this.Competition.load(id);
+			return null;
+		}
+
+		if (p1 === undefined) {
 			return <Redirect to={`/competition/${this.Competition.id}/results/${this.Competition.events[0].id}`} />;
 		}
-		let event = this.Competition.events.find(e => e.id === parseInt(token, 10));
-		if (extra === undefined) {
+
+		p1 = parseInt(p1, 10);
+		let event = this.Competition.events.find(e => e.id === p1);
+		if (this.Results.event !== event.id) {
+			this.Results.load(id, p1);
+			return null;
+		}
+
+		if (p2 === undefined) {
 			if (event.divisions) {
-				return <Redirect to={`/competition/${this.Competition.id}/results/${token}/${this.divisionList(event)[0]}`} />;
+				return <Redirect to={`/competition/${this.Competition.id}/results/${p1}/${this.divisionList(event)[0]}`} />;
 			}
 		}
+
 		if (this.Results.scores === undefined) { return null; }
+
+		let results = this.filterScores(event, p2);
+		let scorecard = parseInt(p2, 10) || parseInt(p3, 10);
+		if (!isNaN(scorecard)) {
+			return <div id="result" className="content">
+				<Scorecard competition={this.Competition} event={event} show={scorecard} results={results} />
+				<button className="globaltool" onClick={() => this.props.history.replace(`/competition/${id}/results/${p1}${p2 && isNaN(p2) ? `/${p2}` : ""}`)}>&lt; Tillbaka</button>
+				{this.Competition.permissions >= Permissions.Admin && <button className="globaltool" onClick={this.updateScorecard}>Spara</button>}
+			</div>
+		}
 
 		return <div id="result" className="content">
 			<div id="result-filter">
@@ -120,8 +163,8 @@ export class ResultView extends React.Component {
 				<input id="filter-input" value={this.state.filter} onChange={e => this.setState({ filter: e.target.value })} />
 			</div>
 			<this.EventSelector />
-			<this.DivisionSelector event={event} active={extra} />
-			<EventResult competition={this.Competition} event={this.Competition.event(parseInt(token, 10))} results={this.filterScores(event, extra)} filter={this.state.filter} />
+			<this.DivisionSelector event={event} active={p2} />
+			<EventResult competition={this.Competition} event={this.Competition.event(parseInt(p1, 10))} results={results} division={p2} filter={this.state.filter} />
 		</div>;
 	}
 }

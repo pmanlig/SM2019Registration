@@ -1,0 +1,43 @@
+.scorecard-header {
+	font-style: italic;
+	font-weight: bold;
+	font-size: large;
+	margin: 0.5em 0 0.5em 0;
+}
+
+.scorecard {
+	display: inline-grid;
+	grid-auto-flow: row;
+	border-left: 1px solid black;
+	margin-bottom: 5px;
+}
+
+.scorecard>div {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+}
+
+.scorecard .header {
+	padding: 2px 5px 2px 5px;
+	background-color: brown;
+	color: white;
+	font-weight: bold;
+	border-top: 1px solid black;
+	grid-row: 1;
+}
+
+.scorecard .unused {
+	background-color: slategray;
+}
+
+.scorecard .input-wrapper {
+	margin: 0;
+}
+
+.scorecard input {
+	text-align: center;
+}

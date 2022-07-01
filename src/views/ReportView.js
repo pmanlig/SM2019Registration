@@ -1,5 +1,6 @@
 import './ReportView.css';
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { Permissions, Schedule, TabInfo } from '../models';
 
 export class ReportView extends React.Component {
@@ -10,34 +11,22 @@ export class ReportView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = { eventList: [], event: null, schedule: null, squad: null, participants: null };
+		this.state = { eventList: [], schedule: null, squad: null, participants: null };
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.competitionUpdated, this.updateCompetition);
 		this.subscribe(this.Events.resultsUpdated, this.updateResults);
-		if (this.Competition.id === props.match.params.id) {
-			this.setTitle();
-			let { events } = this.Competition;
-			let event = events[0];
-			this.state.eventList = events;
-			this.state.event = event;
-			this.state.stageDef = (event.stages && event.stages[0]);
-			if (event.schedule !== 0 && event.schedule !== undefined) {
-				this.Server.loadSchedule(event.schedule, this.updateSchedule, this.Footers.errorHandler("Kan inte hämta startlista för tävlingen"));
-			}
-			this.Results.load(this.Competition.id, event.id);
-		}
-		else {
-			this.Competition.load(props.match.params.id);
-		}
+		if (this.Competition.id === props.match.params.id) { this.setTitle(); }
 	}
 
 	setTitle() {
-		this.fire(this.Events.changeTitle, "Registrera resultat för " + this.Competition.name);
+		this.fire(this.Events.changeTitle, `Registrera resultat för ${this.Competition.name}`);
 	}
 
 	updateCompetition = () => {
 		this.setTitle();
-		this.setEventList(this.Competition.events);
+		this.setState({
+			schedule: null
+		});
 	}
 
 	setEventList(eventList) {
@@ -46,40 +35,18 @@ export class ReportView extends React.Component {
 	}
 
 	setEvent(event) {
-		this.setState({
-			event: event,
-			schedule: null,
-			squad: null,
-			participants: null,
-		});
-		if (event !== null) {
-			this.setStage(1);
-			this.Results.load(this.Competition.id, event.id);
-			if (event.schedule !== 0 && event.schedule !== undefined) {
-				this.Server.loadSchedule(event.schedule, this.updateSchedule, this.Footers.errorHandler("Kan inte hämta startlista för tävlingen"));
-			}
-		}
-	}
-
-	getStageDefs(event) {
-		return event != null && event.stages != null && event.stages.length > 0 && event.stages;
-	}
-
-	setStage = stage => {
-		let stageDefs = this.getStageDefs(this.state.event);
-		if (stageDefs) {
-			this.setState({ stageDef: stageDefs.find(s => s.num === stage) });
-		}
+		this.setState({ schedule: null });
+		if (event !== null) { this.Results.load(this.Competition.id, event.id); }
+		this.props.history.push(`/competition/${this.Competition.id}/report/${event.id}`)
 	}
 
 	updateResults = () => {
-		this.setState({ participants: this.Results.scores });
+		this.setState({});
 	}
 
 	updateSchedule = schedule => {
 		schedule = Schedule.fromJson(schedule);
-		this.setState({ schedule: schedule, squad: schedule.squads[0], participants: this.Results.scores.filter(s => s.squad === schedule.squads[0].id) });
-		// this.Server.loadParticipants(schedule.id, this.updateParticipants, this.Footers.errorHandler("Kan inte hämta deltagare för tävlingen"));
+		this.setState({ schedule: schedule });
 	}
 
 	updateParticipants = participants => {
@@ -97,24 +64,34 @@ export class ReportView extends React.Component {
 	}
 
 	hasErrors() {
-		let { stageDef, participants, squad } = this.state;
+		let { p1, p2, p3 } = this.props.match.params;
+		p1 = parseInt(p1, 10);
+		p2 = parseInt(p2, 10);
+		p3 = parseInt(p3, 10)
+		let event = this.Competition.events.find(e => e.id === p1);
+		let stageDef = event.stages.find(s => s.num === p3);
+		let participants = this.Results.getScores(p2);
+		let squad = this.state.schedule.squads.find(s => s.id === p2);
 		let errors = participants.filter(p => p.squad === squad.id).filter(p => !p.validateScore(stageDef));
 		if (errors.length > 0) { console.log(errors); }
 		return errors.length > 0;
 	}
 
-	next = e => {
-		let { event, squad, stageDef, schedule } = this.state;
+	next = () => {
+		let { id, p1, p2, p3 } = this.props.match.params;
+		p1 = parseInt(p1, 10);
+		p2 = parseInt(p2, 10);
+		p3 = parseInt(p3, 10);
+		let { schedule } = this.state;
+		let event = this.Competition.events.find(e => e.id === p1);
+		let squad = schedule.squads.find(s => s.id === p2);
 		if (!this.hasErrors()) {
-			this.Results.report(event, squad, stageDef.num);
-			for (let i = 0; i < schedule.squads.length - 1; i++) {
-				if (squad === schedule.squads[i]) {
-					this.setState({ squad: schedule.squads[i + 1] });
-					return;
-				}
-			}
+			this.Results.report(event, squad, p3);
+			let i = (schedule.squads.findIndex(s => s === squad) + 1) % schedule.squads.length;
+			this.props.history.replace(`/competition/${id}/report/${p1}/${schedule.squads[i].id}/${p3}`);
+		} else {
+			this.setState({});
 		}
-		this.setState({});
 	}
 
 	NextButton = props => {
@@ -125,33 +102,90 @@ export class ReportView extends React.Component {
 		return <div id="queue-button"><this.ReportIndicator /></div>;
 	}
 
+	EventSelector = ({ events, event }) => {
+		if (events.length < 2) { return null; }
+		return <div id="event-selector">Resultat för deltävling:
+			<select value={event.id} onChange={e => this.setEvent(e.target.value)}>
+				{events.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
+			</select></div>
+	}
+
+	setSquad(squadId) {
+		let { id, p1, p3 } = this.props.match.params;
+		this.props.history.replace(`/competition/${id}/report/${p1}/${squadId}/${p3}`);
+	}
+
+	SquadSelector = ({ schedule, squad }) => {
+		if (schedule === undefined) { return null; }
+		return <div id="squad-selector">Skjutlag/patrull:
+			<select value={squad.id} onChange={e => this.setSquad(e.target.value)}>
+				{schedule.squads.map(s => <option key={s.id} value={s.id}>{s.startTime.split(':').slice(0, 2).join(':')}</option>)}
+			</select>
+		</div>
+	}
+
+	setStage = stage => {
+		let { id, p1, p2 } = this.props.match.params;
+		this.props.history.replace(`/competition/${id}/report/${p1}/${p2}/${stage}`);
+	}
+
+	StageSelector = ({ stages, stage }) => {
+		if (stages.length === 0) { return null; }
+		return <div id="stage-selector">Serie/station:
+			<select value={stage.num} onChange={e => this.setStage(parseInt(e.target.value, 10))}>
+				{stages.map(s => <option key={s.num} value={s.num}>{s.num}</option>)}
+			</select>
+		</div>
+	}
+
 	render() {
-		let { eventList, event, schedule, squad, stageDef } = this.state;
-		let stageDefs = this.getStageDefs(event);
-		let scores = this.Results.getScores(squad && squad.id);
-		if (squad) {
-			scores = scores.sort((a, b) => a.position - b.position);
-			scores.forEach((s, i) => s.position = i + 1);
+		let { id, p1, p2, p3 } = this.props.match.params;
+		let { schedule } = this.state;
+
+		if (id === undefined) { return <div>Fel! Ingen tävling angiven!</div>; }
+		if (this.Competition.id !== id) {
+			this.Competition.load(this.props.match.params.id);
+			return null;
 		}
-		stageDef = stageDef || stageDefs[0];
+
+		let { events } = this.Competition;
+		if (p1 === undefined) {
+			return <Redirect to={`/competition/${id}/report/${events[0].id}`} />
+		}
+		p1 = parseInt(p1, 10);
+		if (this.Results.event !== p1) {
+			this.Results.load(id, p1);
+			return null;
+		}
+
+		let event = events.find(e => e.id === p1);
+		if (event === undefined) { return <div>Fel! Hittar inte deltävling {p1}!</div>; }
+		if (schedule === null || schedule.id !== event.schedule) {
+			if (event.schedule !== 0 && event.schedule !== undefined) {
+				this.Server.loadSchedule(event.schedule, this.updateSchedule, this.Footers.errorHandler("Kan inte hämta startlista för tävlingen"));
+				return null;
+			} else {
+				return <div>Fel! Inget schema för deltävlingen!</div>;
+			}
+		}
+
+		if (p2 === undefined || p3 === undefined) { return <Redirect to={`/competition/${id}/report/${p1}/${schedule.squads[0].id}/1`} /> }
+		p2 = parseInt(p2, 10);
+		p3 = parseInt(p3, 10);
+		let squad = schedule.squads.find(s => s.id === p2);
+
+		if (event.stages == null || event.stages.length === 0) { return <div>Fel! Inga serier/stationer!</div> }
+		let stageDefs = event.stages;
+		let stageDef = event.stages.find(s => s.num === p3);
+		let scores = this.Results.getScores(squad.id);
+		scores = scores.sort((a, b) => a.position - b.position);
+		scores.forEach((s, i) => s.position = i + 1);
+
 		return <div id="results" className="content">
 			<div id="selections">
-				{eventList.length > 1 &&
-					<div id="event-selector">Resultat för deltävling:
-						<select value={event.id} onChange={e => this.changeEvent(e.target.value)}>
-							{eventList.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
-						</select></div>}
-				{schedule &&
-					<div id="squad-selector">Skjutlag/patrull:
-						<select value={squad.id} onChange={e => this.changeSquad(e.target.value)}>
-							{schedule.squads.map(s => <option key={s.id} value={s.id}>{s.startTime.split(':').slice(0, 2).join(':')}</option>)}
-						</select>
-					</div>}
-				{stageDefs.length > 0 && <div id="stage-selector">Serie/station:
-					<select value={stageDef.num} onChange={e => this.setStage(parseInt(e.target.value, 10))}>
-						{stageDefs.map(s => <option key={s.num} value={s.num}>{s.num}</option>)}
-					</select>
-				</div>}
+				<this.EventSelector events={events} event={event} />
+				<this.SquadSelector schedule={schedule} squad={squad} />
+				<this.StageSelector stages={stageDefs} stage={stageDef} />
 				{stageDef && <div>Figurer: {stageDef.targets}</div>}
 				{stageDef && <div>Maxträff: {stageDef.max}</div>}
 				{stageDef && stageDef.min > 0 && <div>Min: {stageDef.min}</div>}

@@ -20,7 +20,7 @@ export class RegistrationView extends React.Component {
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.registrationUpdated, () => this.setState({}));
 		this.subscribe(this.Events.deleteParticipant, (id) => this.showDeleteDialog(id));
-		this.Registration.load(props.match.params.id, props.match.params.token);
+		this.Registration.load(props.match.params.id, props.match.params.p1);
 	}
 
 	componentDidMount() {
@@ -50,11 +50,11 @@ export class RegistrationView extends React.Component {
 	render() {
 		let { name, organization, email, account } = this.Registration.contact;
 
-		if (this.Registration.token === undefined && this.props.match.params.token !== undefined) {
+		if (this.Registration.token === undefined && this.props.match.params.p1 !== undefined) {
 			return <Redirect to={`/competition/${this.props.match.params.id}/register`} />
 		}
 
-		if (this.Registration.token !== undefined && this.props.match.params.token === undefined) {
+		if (this.Registration.token !== undefined && this.props.match.params.p1 === undefined) {
 			return <Redirect to={`/competition/${this.props.match.params.id}/register/${this.Registration.token}`} />
 		}
 

@@ -4,6 +4,8 @@ export class Results {
 	static register = { name: "Results", createInstance: true };
 	static wire = ["fire", "Competition", "Storage", "Server", "Events", "Footers", "Busy"];
 
+	competition = null;
+	event = null;
 	scores = [];
 
 	initialize() {
@@ -15,8 +17,7 @@ export class Results {
 		if (eventId !== this.lastEvent || this.lastTime === undefined || Date.now() - this.last > 10 * 1000) {
 			this.lastEvent = eventId;
 			this.lastTime = Date.now();
-			this.Busy.wrap(
-				this.Server.load,
+			this.Server.load(
 				`competition/${competitionId}/event/${eventId}/participant`,
 				json => {
 					if (window._debug) { console.log("Loaded results", json); }
@@ -33,16 +34,34 @@ export class Results {
 		return squad ? this.scores.filter(s => s.squad === squad) : this.scores;
 	}
 
-	report(event, squad, stage) {
+	updateScore(event, scorecard) {
+		let score = this.scores.find(p => p.id === scorecard);
+		score = { ...score, score: score.scores };
 		this.queue.push({
 			competition: this.competition,
-			event: event.id,
-			squad: squad.id,
-			scores: this.scores.filter(p => p.squad === squad.id).map(p => p.toJson(stage))
+			event: event,
+			squad: score.squad,
+			scores: [score]
 		});
-		if (window._debug) { console.log("Adding score to queue", this.queue); }
+		if (window._debug) { console.log("Queueing score update", this.queue); }
 		this.Storage.set(this.Storage.keys.resultsQueue, this.queue);
 		this.fire(this.Events.resultsUpdated);
+		this.trySendResults();
+	}
+
+	report(event, squad, stage) {
+		let scores = this.scores.filter(p => p.squad === squad.id).map(p => p.toJson(stage));
+		if (scores.length > 0) {
+			this.queue.push({
+				competition: this.competition,
+				event: event.id,
+				squad: squad.id,
+				scores: scores
+			});
+			if (window._debug) { console.log("Adding score to queue", this.queue); }
+			this.Storage.set(this.Storage.keys.resultsQueue, this.queue);
+			this.fire(this.Events.resultsUpdated);
+		}
 		this.trySendResults();
 	}
 

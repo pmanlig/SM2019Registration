@@ -34,8 +34,9 @@ export class App extends React.Component {
 					<Switch>
 						<Route path="/login" component={this.LoginView} />
 						<Route path="/group/:group_id" component={this.CompetitionList} />
-						<Route path="/competition/:id/:operation/:token/:extra" component={this.CompetitionView} />
-						<Route path="/competition/:id/:operation/:token" component={this.CompetitionView} />
+						<Route path="/competition/:id/:operation/:p1/:p2/:p3" component={this.CompetitionView} />
+						<Route path="/competition/:id/:operation/:p1/:p2" component={this.CompetitionView} />
+						<Route path="/competition/:id/:operation/:p1" component={this.CompetitionView} />
 						<Route path="/competition/:id/:operation" component={this.CompetitionView} />
 						<Route path="/competition/:id" component={this.CompetitionView} />
 						<Route path="/report/:id" component={this.ReportView} />

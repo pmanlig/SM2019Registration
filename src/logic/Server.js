@@ -126,7 +126,7 @@ export class Server {
 	remoteScheduleService() {
 		return {
 			createSchedule: (schedule, callback, error) => { this.send2(`schedules`, schedule, callback, error); },
-			getSchedule: (scheduleId, callback, error) => { this.Busy.wrap(this.load, `schedules/${scheduleId}`, callback, error); },
+			getSchedule: (scheduleId, callback, error) => { this.load(`schedules/${scheduleId}`, callback, error); },
 			getParticipants: (scheduleId, callback, error) => { this.Busy.wrap(this.load, `schedules/${scheduleId}/squad`, callback, error) },
 			updateSchedule: (schedule, callback, error) => { this.update2(`schedules/${schedule.id}`, schedule, callback, error); },
 			deleteSchedule: (scheduleId, callback, error) => { this.delete2(`schedules/${scheduleId}`, callback, error); }

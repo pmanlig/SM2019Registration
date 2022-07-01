@@ -37,11 +37,9 @@ export class TeamAdminView extends React.Component {
 	Lists = props => {
 		return <div>
 			<h2>Listor</h2>
-			{/*
-			<a href={`${this.Configuration.baseUrl}/excel/${this.Competition.id}/division`} download="true">Alla deltagare (vapenkontroll)</a><br />
-			{this.Competition.events.map(e => <a key={`d${e.id}`} href={`${this.Configuration.baseUrl}/excel/${e.id}/list`} download="true">{`Deltagare i ${e.name}`}<br /></a>)}
-			{this.Competition.events.map(e => <a key={`s${e.id}`} href={`${this.Configuration.baseUrl}/excel/${e.id}/squad`} download="true">{`Starttider i ${e.name}`}<br /></a>)}
-			*/}
+			<a href={`${this.Configuration.baseUrl}/excel/${this.Competition.id}/team`} download="true">Alla lag</a><br />
+			{this.Competition.events.map(e => <a key={`d${e.id}`} href={`${this.Configuration.baseUrl}/excel/result/${e.id}`} download="true">{`Resultat för ${e.name}`}<br /></a>)}
+			{this.Competition.events.map(e => <a key={`s${e.id}`} href={`${this.Configuration.baseUrl}/excel/result/team/${e.id}`} download="true">{`Lagresultat för ${e.name}`}<br /></a>)}
 		</div>;
 	}
 

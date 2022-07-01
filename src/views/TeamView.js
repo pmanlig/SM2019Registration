@@ -20,7 +20,7 @@ export class TeamView extends React.Component {
 			this.fire(this.Events.changeTitle, `Laganmälan för ${this.Competition.name}`);
 		});
 		this.subscribe(this.Events.registrationUpdated, this.onRegistrationUpdated);
-		let { id, token } = props.match.params;
+		let { id, p1 } = props.match.params;
 		if (id) {
 			this.Competition.load(parseInt(id, 10));
 			this.Busy.setBusy(TeamView.BUSY_LOAD_PARTICIPANTS, true);
@@ -30,9 +30,9 @@ export class TeamView extends React.Component {
 					this.Busy.setBusy(TeamView.BUSY_LOAD_PARTICIPANTS, false);
 				},
 				this.Footers.errorHandler("Kan inte hämta deltagare!"));
-			if (token) {
+			if (p1) {
 				this.Busy.setBusy(TeamView.BUSY_LOAD_REGISTRATION);
-				this.Registration.load(id, token);
+				this.Registration.load(id, p1);
 			}
 		}
 	}
