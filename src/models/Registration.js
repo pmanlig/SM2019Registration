@@ -38,7 +38,7 @@ export class Registration {
 
 				// Loading participants from json
 				if (json.registration) {
-					this.participants = json.registration.map(p => Participant.fromJson(p));
+					this.participants = json.registration.map(p => Participant.fromServer(p));
 					this.setParticipantDefaults();
 				} else { this.participants = []; }
 

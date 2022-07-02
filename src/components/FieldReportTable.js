@@ -67,7 +67,7 @@ export class FieldReportTable extends React.Component {
 				</div> : <div key={"tgt" + id + i} />);
 	}
 
-	Value(stageDef, participant) {
+	Value = ({ stageDef, participant }) => {
 		if (!stageDef.value) return <div />;
 		let score = participant.getScore(stageDef.num, stageDef.targets);
 		return <div className={this.participantClass("input", participant, 1)}>

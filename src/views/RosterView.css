@@ -77,6 +77,12 @@
 	opacity: 1;
 }
 
+#roster-view button {
+	position: fixed;
+	bottom: 5px;
+	right: 5px;
+}
+
 #roster-view h3 {
 	margin: 2px 0 2px 0;
 }

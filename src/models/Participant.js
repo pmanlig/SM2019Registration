@@ -10,7 +10,7 @@ export class Participant extends Person {
 		this.registrationInfo = registrationInfo || [];
 	}
 
-	static fromJson({ participant, entries }) {
+	static fromServer({ participant, entries }) {
 		return new Participant({
 			name: participant.name,
 			competitionId: participant.id,

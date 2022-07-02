@@ -68,6 +68,10 @@ export class RosterView extends React.Component {
 		});
 	}
 
+	dragStart = (e, participant) => {
+		e.dataTransfer.setData("text/json", JSON.stringify(participant));
+	}
+
 	dragOver = (ev, squad) => {
 		ev.preventDefault();
 		this.setState({ dropTarget: squad });
@@ -75,56 +79,75 @@ export class RosterView extends React.Component {
 
 	moveTo = (json, squadId) => {
 		let participant = JSON.parse(json);
+		// participant = Participant.fromJson({ participant: participant });  Gah!!!  FIX!!!
+		participant.dirty = true;
 		this.state.events.forEach(e => {
 			if (e.schedule) {
-				e.schedule.squads.forEach(s => {
-					s.participants = s.participants.filter(p => p.id !== participant.id);
-					if (s.id === squadId) {
-						s.participants.push(participant);
-					}
-				});
+				let from = e.schedule.squads.find(s => s.participants.some(p => p.id === participant.id));
+				let to = e.schedule.squads.find(s => s.id === squadId);
+				if (from && to) {
+					from.participants = from.participants.filter(p => p.id !== participant.id);
+					to.participants.push(participant);
+					from.dirty = true;
+					to.dirty = true;
+				}
 			}
 		});
 		this.setState({ dropTarget: null });
+	}
+
+	saveChanges = () => {
+		let changed = [];
+		this.state.events.forEach(e => {
+			if (e.schedule) {
+				e.schedule.squads.forEach(s => {
+					if (s.dirty) { changed.push(s) }
+				});
+			}
+		});
+		alert(`${changed.length} squads updated`);
+		console.log(changed);
 	}
 
 	match = s => {
 		return s.toUpperCase().includes(this.state.filter.toUpperCase());
 	}
 
-	Header = props => {
+	Spacer = props => {
 		let style = { gridRow: 1 };
 		return [<div key="h1" style={style} />, <div key="h2" style={style} />, <div key="h3" style={style} />];
 	}
 
 	Participant = ({ participant }) => {
 		return [
-			<div className="rv-participant" key="n" draggable="true"
-				onDragStart={e => {
-					if (this.Session.user !== "") { e.dataTransfer.setData("text/json", JSON.stringify(participant)); }
-				}}>{participant.name}</div>,
+			<div className="rv-participant" key="n" draggable={this.Session.user !== "" ? "true" : "false"}
+				onDragStart={e => this.dragStart(e, participant)}>{participant.name}</div>,
 			<div className="rv-participant" key="o">{participant.organization}</div>,
 			<div className="rv-participant rv-class" key="d">{participant.division ? participant.division.replace(/^!/gm, '') : null}</div >];
 	}
 
-	Squad = ({ squad }) => {
-		if (!squad.participants.some(p => this.match(p.name) || this.match(p.organization))) { return null; }
-		let header_class = "rv-squad-header";
+	SquadHeader = ({ squad }) => {
+		let headerClass = "rv-squad-header";
 		if (squad.slots !== undefined) {
-			if (squad.participants.length > squad.slots) header_class = "rv-squad-header over-capacity";
-			if (squad.participants.length === squad.slots) header_class = "rv-squad-header full";
+			if (squad.participants.length > squad.slots) headerClass = "rv-squad-header over-capacity";
+			if (squad.participants.length === squad.slots) headerClass = "rv-squad-header full";
 		}
-		if (squad === this.state.dropTarget) header_class = "rv-squad-header drop-target";
+		if (squad === this.state.dropTarget) headerClass = "rv-squad-header drop-target";
+		return <div className={headerClass}>
+			{squad.startTime ? <span>{squad.startTime}</span> : <span>{squad.name}</span>}
+			{squad.slots && <span>{squad.participants.length}/{squad.slots}</span>}
+		</div>
+	}
+
+	Squad = ({ squad }) => {
+		let members = squad.participants.filter(p => this.match(p.name) || this.match(p.organization));
+		if (members.length === 0) { return null; }
 		return <div className="rv-squad" onDragOver={e => this.dragOver(e, squad)} onDrop={e => this.moveTo(e.dataTransfer.getData("text/json"), squad.id)}>
-			<div className={header_class}>
-				{squad.startTime ? <span>{squad.startTime}</span> : <span>{squad.name}</span>}
-				{squad.slots && <span>{squad.participants.length}/{squad.slots}</span>}
-			</div>
+			<this.SquadHeader squad={squad} />
 			<div className="rv-squad-list">
-				<this.Header />
-				{squad.participants.filter(p => this.match(p.name) || this.match(p.organization))
-					.sort((a, b) => a.position - b.position)
-					.map((p, i) => <this.Participant participant={p} key={p.id || i} index={p.id || i} />)}
+				<this.Spacer />
+				{members.sort((a, b) => a.position - b.position)
+					.flatMap((p, i) => <this.Participant participant={p} key={p.id || i} index={p.id || i} />)}
 			</div>
 		</div>;
 	}
@@ -143,6 +166,7 @@ export class RosterView extends React.Component {
 				<p id="filter-label">Söktext</p>
 				<input id="filter-input" value={this.state.filter} onChange={e => this.setState({ filter: e.target.value })} />
 			</div>
+			{this.Session.user !== "" && <button class="globaltool" onClick={this.saveChanges} >Spara</button>}
 			{this.state.events.map(e => <this.Event event={e} key={e.name} />)}
 		</div>
 	}
