@@ -36,16 +36,6 @@ export class RegAdminView extends React.Component {
 		</div>;
 	}
 
-	Lists = props => {
-		return <div>
-			<h2>Listor</h2>
-			<a href={`${this.Configuration.baseUrl}/excel/${this.Competition.id}/division`} download="true">Alla deltagare (vapenkontroll)</a><br />
-			{this.Competition.events.map(e => <a key={`d${e.id}`} href={`${this.Configuration.baseUrl}/excel/${e.id}/list`} download="true">{`Deltagare i ${e.name}`}<br /></a>)}
-			{this.Competition.events.map(e => <a key={`s${e.id}`} href={`${this.Configuration.baseUrl}/excel/${e.id}/squad`} download="true">{`Starttider i ${e.name}`}<br /></a>)}
-			{this.Competition.events.map(e => <a key={`r${e.id}`} href={`${this.Configuration.baseUrl}/excel/result/${e.id}`} download="true">Resultat för {e.name || this.Competition.name}<br /></a>)}
-		</div>;
-	}
-
 	Registrations = props => {
 		return <div>
 			<h2>Anmälningar</h2>
@@ -55,7 +45,6 @@ export class RegAdminView extends React.Component {
 
 	render() {
 		return <div className="content">
-			<this.Lists />
 			<this.Registrations />
 		</div>;
 	}

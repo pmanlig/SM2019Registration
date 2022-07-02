@@ -17,7 +17,7 @@ export class TeamAdminView extends React.Component {
 	}
 
 	componentDidMount() {
-		this.fire(this.Events.changeTitle, `Administrera anmälningar till ${this.Competition.name}`);
+		this.fire(this.Events.changeTitle, `Administrera lag till ${this.Competition.name}`);
 	}
 
 	resendMail = (reg) => {
@@ -34,25 +34,15 @@ export class TeamAdminView extends React.Component {
 		</div>;
 	}
 
-	Lists = props => {
-		return <div>
-			<h2>Listor</h2>
-			<a href={`${this.Configuration.baseUrl}/excel/${this.Competition.id}/team`} download="true">Alla lag</a><br />
-			{this.Competition.events.map(e => <a key={`d${e.id}`} href={`${this.Configuration.baseUrl}/excel/result/${e.id}`} download="true">{`Resultat för ${e.name}`}<br /></a>)}
-			{this.Competition.events.map(e => <a key={`s${e.id}`} href={`${this.Configuration.baseUrl}/excel/result/team/${e.id}`} download="true">{`Lagresultat för ${e.name}`}<br /></a>)}
-		</div>;
-	}
-
 	Registrations = props => {
 		return <div>
-			<h2>Anmälningar</h2>
+			<h2>Laganmälningar</h2>
 			{this.state.registrations.map(r => <this.Reg reg={r} key={r.token} />)}
 		</div>;
 	}
 
 	render() {
 		return <div className="content">
-			<this.Lists />
 			<this.Registrations />
 		</div>;
 	}

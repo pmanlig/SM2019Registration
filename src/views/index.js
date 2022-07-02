@@ -16,4 +16,5 @@ export { RegAdminView } from './RegAdminView';
 export { AdminView } from './AdminView';
 export { TeamView } from './TeamView';
 export { TeamAdminView } from './TeamAdminView';
+export { ExcelView } from './ExcelView';
 export { TabInfo, CompetitionTabs } from '../views/CompetitionTabs';
