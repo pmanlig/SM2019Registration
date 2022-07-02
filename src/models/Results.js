@@ -50,7 +50,7 @@ export class Results {
 	}
 
 	report(event, squad, stage) {
-		let scores = this.scores.filter(p => p.squad === squad.id).map(p => p.toJson(stage));
+		let scores = this.scores.filter(p => p.squad === squad.id).map(p => p.toStageJson(stage));
 		if (scores.length > 0) {
 			this.queue.push({
 				competition: this.competition,

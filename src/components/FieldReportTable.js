@@ -90,7 +90,7 @@ export class FieldReportTable extends React.Component {
 		return [
 			<div key={"pos" + id} className={this.participantClass("", p)}>{p.position}</div>,
 			<div key={"name" + id} className={this.participantClass("align-left", p)}>{p.name}</div>,
-			<div key={"sup" + id} className={this.participantClass("", p)}><input type="checkbox" tabIndex="-1" onClick={e => e.target.checked = !e.target.checked} /></div>,
+			<div key={"sup" + id} className={this.participantClass("", p)}><input type="checkbox" disabled tabIndex="-1" checked={p.support === 1} /></div>,
 			[...this.targets(stageDef, p, id, first)],
 			<div className="participant" key={"t" + id}>{p.getStageTotal(stageDef)}</div>,
 			<this.Value stageDef={stageDef} participant={p} key={"v" + id} />,

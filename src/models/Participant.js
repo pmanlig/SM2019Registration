@@ -35,7 +35,8 @@ export class Participant extends Person {
 			participant: {
 				name: this.name,
 				id: this.competitionId,
-				organization: this.organization
+				organization: this.organization,
+				support: this.registrationInfo.some(r => /VetÄ/.test(r.class)) ? 1 : 0
 			},
 			entries: this.registrationInfo.map(r => {
 				return {

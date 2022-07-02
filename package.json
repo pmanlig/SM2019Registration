@@ -1,6 +1,6 @@
 {
   "name": "competition-registration",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "private": true,
   "homepage": "https://anmalan.manlig.org",
   "dependencies": {

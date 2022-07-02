@@ -29,9 +29,10 @@ export class ReportView extends React.Component {
 		});
 	}
 
-	setEventList(eventList) {
-		this.setState({ eventList: eventList });
-		this.setEvent(eventList[0]);
+	changeEvent(newEvent) {
+		newEvent = parseInt(newEvent, 10);
+		newEvent = this.Competition.events.find(e => e.id === newEvent);
+		this.setEvent(newEvent);
 	}
 
 	setEvent(event) {
@@ -51,11 +52,6 @@ export class ReportView extends React.Component {
 
 	updateParticipants = participants => {
 		this.setState({ participants: participants });
-	}
-
-	changeEvent(newEvent) {
-		newEvent = parseInt(newEvent, 10);
-		this.setEvent(this.state.eventList.find(e => e.id === newEvent));
 	}
 
 	changeSquad = squadId => {
@@ -105,7 +101,7 @@ export class ReportView extends React.Component {
 	EventSelector = ({ events, event }) => {
 		if (events.length < 2) { return null; }
 		return <div id="event-selector">Resultat för deltävling:
-			<select value={event.id} onChange={e => this.setEvent(e.target.value)}>
+			<select value={event.id} onChange={e => this.changeEvent(e.target.value)}>
 				{events.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
 			</select></div>
 	}

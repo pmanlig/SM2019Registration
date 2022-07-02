@@ -166,7 +166,7 @@ export class RosterView extends React.Component {
 				<p id="filter-label">Söktext</p>
 				<input id="filter-input" value={this.state.filter} onChange={e => this.setState({ filter: e.target.value })} />
 			</div>
-			{this.Session.user !== "" && <button class="globaltool" onClick={this.saveChanges} >Spara</button>}
+			{this.Session.user !== "" && <button className="globaltool" onClick={this.saveChanges} >Spara</button>}
 			{this.state.events.map(e => <this.Event event={e} key={e.name} />)}
 		</div>
 	}

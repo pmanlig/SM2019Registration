@@ -3,7 +3,7 @@ export class ParticipantScore {
 	static E_INCORRECT_SPREAD = "Träffarna inte fördelade korrekt";
 	static E_TOO_MANY_HITS = "För många träffar";
 
-	constructor(id, name, org, squad, division, cls, scores, eventId, eventName, position, note, redo) {
+	constructor(id, name, org, squad, division, cls, scores, eventId, eventName, position, note, redo, support) {
 		this.id = id;
 		this.name = name;
 		this.organization = org;
@@ -16,6 +16,7 @@ export class ParticipantScore {
 		this.position = position;
 		this.note = note || "";
 		this.redo = redo || 0;
+		this.support = support || 0;
 	}
 
 	getScores(stage) {
@@ -80,7 +81,7 @@ export class ParticipantScore {
 		return true;
 	}
 
-	toJson(stage) {
+	toStageJson(stage) {
 		return { ...this, score: this.scores.filter(n => stage === undefined || n.stage === stage) };
 	}
 
@@ -102,7 +103,8 @@ export class ParticipantScore {
 			json.event_name,
 			parseInt(json.position, 10),
 			json.note,
-			parseInt(json.redo || "0", 10)
+			parseInt(json.redo, 10) || 0,
+			parseInt(json.support, 10) || 0
 		);
 	}
 }
