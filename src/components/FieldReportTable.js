@@ -1,5 +1,6 @@
 import './ReportTable.css';
 import React from 'react';
+import { Mode } from '../models';
 
 function Redo({ stage, participant, onChange }) {
 	return <div className="participant">
@@ -61,7 +62,7 @@ export class FieldReportTable extends React.Component {
 		return FieldReportTable.fieldTargetIds.map(i =>
 			i < stageDef.targets ?
 				<div key={"tgt" + id + i} className={this.participantClass("input", participant, i)}>
-					{this.props.mode === "computer" ?
+					{this.props.mode === Mode.computer ?
 						<this.ComputerTarget stageDef={stageDef} participant={participant} tgt={i} autoFocus={first && i === 0} /> :
 						<this.MobileTarget stageDef={stageDef} participant={participant} tgt={i} />}
 				</div> : <div key={"tgt" + id + i} />);

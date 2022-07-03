@@ -2,6 +2,73 @@ import './RosterView.css';
 import React from 'react';
 import { Permissions, Schedule, TabInfo } from '../models';
 
+function Participant({ participant, allowDrag, onDragStart }) {
+	return [
+		<div className="rv-participant" key="n" draggable={allowDrag}
+			onDragStart={e => onDragStart(e, participant)}> {participant.name}</div >,
+		<div className="rv-participant" key="o">{participant.organization}</div>,
+		<div className="rv-participant rv-class" key="d">{participant.division ? participant.division.replace(/^!/gm, '') : null}</div >];
+}
+
+function SquadHeader({ squad, dropTarget }) {
+	let headerClass = "rv-squad-header";
+	if (squad.slots !== undefined) {
+		if (squad.participants.length > squad.slots) headerClass = "rv-squad-header over-capacity";
+		if (squad.participants.length === squad.slots) headerClass = "rv-squad-header full";
+	}
+	// if (squad === this.dropTarget) headerClass = "rv-squad-header drop-target";
+	if (dropTarget) { headerClass += " drop-target"; }
+	return <div className={headerClass}>
+		{squad.startTime ? <span>{squad.startTime}</span> : <span>{squad.name}</span>}
+		{squad.slots && <span>{squad.participants.length}/{squad.slots}</span>}
+	</div>
+}
+
+function Spacer() {
+	let style = { gridRow: 1 };
+	return [<div key="h1" style={style} />, <div key="h2" style={style} />, <div key="h3" style={style} />];
+}
+
+class Squad extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = { dropTarget: false };
+		this.dropCount = 0;
+	}
+
+	render() {
+		let { squad, members, allowDrag, dropTarget, onDragStart, onDrag, onDrop } = this.props;
+		if (members.length === 0) { return null; }
+		return <div className="rv-squad"
+			onDragEnter={e => {
+				onDrag(e, squad);
+				if (dropTarget && this.dropCount++ === 0) {
+					this.setState({ dropTarget: true });
+				}
+			}}
+			onDragOver={e => {
+				e.preventDefault();
+				e.dataTransfer.dropEffect = "move";
+			}}
+			onDragLeave={e => {
+				if (dropTarget && --this.dropCount === 0) {
+					this.setState({ dropTarget: false });
+				}
+			}}
+			onDrop={e => {
+				this.setState({ dropTarget: false });
+				onDrop(e.dataTransfer.getData("text/json"), squad.id);
+			}}>
+			<SquadHeader squad={squad} dropTarget={this.state.dropTarget} />
+			<div className="rv-squad-list">
+				<Spacer />
+				{members.sort((a, b) => a.position - b.position)
+					.flatMap((p, i) => <Participant key={p.id || i} index={p.id || i} participant={p} allowDrag={allowDrag} onDragStart={onDragStart} />)}
+			</div>
+		</div>;
+	}
+}
+
 export class RosterView extends React.Component {
 	static register = { name: "RosterView" };
 	static wire = ["Competition", "Server", "Footers", "Session", "EventBus", "Events"];
@@ -70,11 +137,8 @@ export class RosterView extends React.Component {
 
 	dragStart = (e, participant) => {
 		e.dataTransfer.setData("text/json", JSON.stringify(participant));
-	}
-
-	dragOver = (ev, squad) => {
-		ev.preventDefault();
-		this.setState({ dropTarget: squad });
+		let event = this.state.events.find(e => e.schedule !== undefined && e.schedule.squads.some(s => s.participants.some(p => p.id === participant.id)));
+		this.setState({ dragEvent: event });
 	}
 
 	moveTo = (json, squadId) => {
@@ -93,70 +157,51 @@ export class RosterView extends React.Component {
 				}
 			}
 		});
-		this.setState({ dropTarget: null });
+		this.dropTarget = null;
+		this.setState({ dragEvent: null });
+		// this.setState({ dropTarget: null });
 	}
 
 	saveChanges = () => {
-		let changed = [];
 		this.state.events.forEach(e => {
 			if (e.schedule) {
+				let changed = [];
 				e.schedule.squads.forEach(s => {
-					if (s.dirty) { changed.push(s) }
+					if (s.dirty) {
+						s.dirty = false;
+						let position = 1;
+						s.participants.forEach(p => changed.push({
+							position: position++,
+							id: parseInt(p.id, 10),
+							squad_id: s.id
+						}));
+					}
 				});
+				if (changed.length > 0) {
+					console.log("Updating schedule", e, changed);
+					this.Server.updateParticipants(e.scheduleId, changed,
+						() => alert(`Schedule ${e.scheduleId} updated successfully!`),
+						err => alert(`Problem updating ${e.scheduleId}: ${err.message}`));
+				}
 			}
 		});
-		alert(`${changed.length} squads updated`);
-		console.log(changed);
 	}
 
 	match = s => {
 		return s.toUpperCase().includes(this.state.filter.toUpperCase());
 	}
 
-	Spacer = props => {
-		let style = { gridRow: 1 };
-		return [<div key="h1" style={style} />, <div key="h2" style={style} />, <div key="h3" style={style} />];
-	}
-
-	Participant = ({ participant }) => {
-		return [
-			<div className="rv-participant" key="n" draggable={this.Session.user !== "" ? "true" : "false"}
-				onDragStart={e => this.dragStart(e, participant)}>{participant.name}</div>,
-			<div className="rv-participant" key="o">{participant.organization}</div>,
-			<div className="rv-participant rv-class" key="d">{participant.division ? participant.division.replace(/^!/gm, '') : null}</div >];
-	}
-
-	SquadHeader = ({ squad }) => {
-		let headerClass = "rv-squad-header";
-		if (squad.slots !== undefined) {
-			if (squad.participants.length > squad.slots) headerClass = "rv-squad-header over-capacity";
-			if (squad.participants.length === squad.slots) headerClass = "rv-squad-header full";
-		}
-		if (squad === this.state.dropTarget) headerClass = "rv-squad-header drop-target";
-		return <div className={headerClass}>
-			{squad.startTime ? <span>{squad.startTime}</span> : <span>{squad.name}</span>}
-			{squad.slots && <span>{squad.participants.length}/{squad.slots}</span>}
-		</div>
-	}
-
-	Squad = ({ squad }) => {
-		let members = squad.participants.filter(p => this.match(p.name) || this.match(p.organization));
-		if (members.length === 0) { return null; }
-		return <div className="rv-squad" onDragOver={e => this.dragOver(e, squad)} onDrop={e => this.moveTo(e.dataTransfer.getData("text/json"), squad.id)}>
-			<this.SquadHeader squad={squad} />
-			<div className="rv-squad-list">
-				<this.Spacer />
-				{members.sort((a, b) => a.position - b.position)
-					.flatMap((p, i) => <this.Participant participant={p} key={p.id || i} index={p.id || i} />)}
-			</div>
-		</div>;
-	}
-
 	Event = ({ event }) => {
 		return <div className="rv-event">
 			<h3>{event.name}</h3>
 			<p className="subtitle">{event.schedule === undefined ? 0 : event.schedule.squads.map(c => c.participants.length).reduce((a, c) => a + c, 0)} starter</p>
-			{event.schedule && event.schedule.squads.map(s => <this.Squad key={s.id} squad={s} />)}
+			{event.schedule && event.schedule.squads.map(s =>
+				<Squad key={s.id} squad={s} members={s.participants.filter(p => this.match(p.name) || this.match(p.organization))}
+					allowDrag={this.Session.user !== ""}
+					dropTarget={event === this.state.dragEvent}
+					onDragStart={this.dragStart}
+					onDrag={e => this.dropTarget = s}
+					onDrop={this.moveTo} />)}
 		</div>;
 	}
 

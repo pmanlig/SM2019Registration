@@ -1,7 +1,7 @@
 import "./CompetitionView.css";
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Permissions } from '../models';
+import { Mode, Permissions } from '../models';
 
 export class CompetitionView extends React.Component {
 	static register = { name: "CompetitionView" };
@@ -45,7 +45,7 @@ export class CompetitionView extends React.Component {
 		if (Content === null) { return <Redirect to="/" />; }
 
 		return <div>
-			{this.Configuration.mode === "computer" && <div className="tabs" style={{ backgroundColor: group.background }}>
+			{this.Configuration.mode === Mode.computer && <div className="tabs" style={{ backgroundColor: group.background }}>
 				{tabs.length > 1 && tabs.map(t => {
 					if (operation === t.path) { return <p key={t.path} className="tab">{t.name}</p> }
 					return <Link key={t.path} className="tab" to={`/competition/${this.Competition.id}/${t.path}`}>{t.name}</Link>;

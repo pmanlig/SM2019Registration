@@ -1,10 +1,10 @@
 import gpk from './../gpk_logo_wht.png';
-// import xkretsen from './../gavleborg.png';
-// import sm2022 from './../sm_2022.png';
+import { Mode } from '../models';
 
 export class Configuration {
 	static register = { name: "Configuration", createInstance: true };
-	static wire = ["fire", "Events"];
+	static wire = ["fire", "Events", "Storage"];
+
 	loaded = false;
 	baseUrl = '';
 	site = '';
@@ -15,10 +15,12 @@ export class Configuration {
 
 	setMode(mode) {
 		this.mode = mode;
+		this.Storage.set(this.Storage.keys.programMode, mode);
 		this.fire(this.Events.modeChanged, mode);
 	}
 
 	initialize() {
+		this.mode = this.Storage.get(this.Storage.keys.programMode) || Mode.computer;
 		fetch("/config.json")
 			.then(res => res.json())
 			.then(json => {

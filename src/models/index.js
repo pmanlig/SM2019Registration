@@ -21,3 +21,8 @@ export { CompetitionGroup } from './CompetitionGroup';
 export { TeamRegistration } from './TeamRegistration';
 export { Team } from './Team';
 export { TabInfo } from './TabInfo';
+
+export class Mode {
+	static computer = "computer";
+	static mobile = "mobile";
+}

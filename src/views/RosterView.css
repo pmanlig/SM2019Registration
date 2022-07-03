@@ -19,6 +19,10 @@
 	border-radius: 3px;
 }
 
+.rv-squad.prevent-events * {
+	pointer-events: none;
+}
+
 .rv-squad-header {
 	color: white;
 	background-color: green;
@@ -43,17 +47,17 @@
 	text-align: right;
 }
 
-.drop-target {
-	color: black;
-	background-color: lightblue;
-}
-
 .full {
 	background-color: orange;
 }
 
 .over-capacity {
 	background-color: brown;
+}
+
+.drop-target {
+	color: black;
+	background-color: lightblue;
 }
 
 #roster-filter {

@@ -1,6 +1,7 @@
 import './Global.css';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Mode } from '../models';
 
 export class LoginLogout extends React.Component {
 	static register = { name: "LoginLogout" };
@@ -65,14 +66,13 @@ export class ModeSelector extends React.Component {
 	}
 
 	toggleMode = e => {
-		this.Configuration.setMode(this.Configuration.mode === "computer" ? "mobile" : "computer");
+		this.Configuration.setMode(this.Configuration.mode === Mode.computer ? Mode.mobile : Mode.computer);
 		e.preventDefault();
 		this.setState({});
 	}
 
 	render() {
-
-		return this.Configuration.mode === "computer" ?
+		return this.Configuration.mode === Mode.computer ?
 			<div className="slider globaltool">
 				<div className="globaltool disabled right">Mobil</div>
 				<Link to='' className='globaltool' onClick={this.toggleMode}>Dator</Link>

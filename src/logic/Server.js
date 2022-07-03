@@ -127,7 +127,8 @@ export class Server {
 		return {
 			createSchedule: (schedule, callback, error) => { this.send2(`schedules`, schedule, callback, error); },
 			getSchedule: (scheduleId, callback, error) => { this.load(`schedules/${scheduleId}`, callback, error); },
-			getParticipants: (scheduleId, callback, error) => { this.Busy.wrap(this.load, `schedules/${scheduleId}/squad`, callback, error) },
+			getParticipants: (scheduleId, callback, error) => { this.Busy.wrap(this.load, `schedules/${scheduleId}/squad`, callback, error); },
+			updateParticipants: (scheduleId, data, callback, error) => { this.update(`schedules/${scheduleId}/move`, data, callback, error); },
 			updateSchedule: (schedule, callback, error) => { this.update2(`schedules/${schedule.id}`, schedule, callback, error); },
 			deleteSchedule: (scheduleId, callback, error) => { this.delete2(`schedules/${scheduleId}`, callback, error); }
 		};
@@ -285,6 +286,10 @@ export class Server {
 
 	loadParticipants(scheduleId, callback, error) {
 		this.scheduleService.getParticipants(scheduleId, logFetchCallback(callback, "Loading participants"), logErrorHandler(error));
+	}
+
+	updateParticipants(scheduleId, data, callback, error) {
+		this.scheduleService.updateParticipants(scheduleId, logUpdateCallback(callback, data, "Updating participants"), data, logErrorHandler(error));
 	}
 
 	updateSchedule(schedule, callback, error) {
