@@ -54,6 +54,7 @@ export class Server {
 	update = (url, data, callback, error) => {
 		url = `${this.Configuration.baseUrl}/${url}`;
 		logUrl(url);
+		console.log("Update", url, data);
 		return fetch(url, {
 			crossDomain: true,
 			credentials: 'include',
@@ -289,7 +290,7 @@ export class Server {
 	}
 
 	updateParticipants(scheduleId, data, callback, error) {
-		this.scheduleService.updateParticipants(scheduleId, logUpdateCallback(callback, data, "Updating participants"), data, logErrorHandler(error));
+		this.scheduleService.updateParticipants(scheduleId, data, logUpdateCallback(callback, data, "Updating participants"), logErrorHandler(error));
 	}
 
 	updateSchedule(schedule, callback, error) {
