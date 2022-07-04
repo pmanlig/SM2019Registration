@@ -7,7 +7,7 @@ export class App extends React.Component {
 	static register = { name: "App" };
 	static wire = ["AppHeader", "BusyIndicator", "Footers", "Footer", "StoreQuestion", "Storage", "CompetitionList",
 		"LoginView", "CompetitionView", "ReportView", "CreateCompetition", "AboutView", "WithLogin", "HelpView", "Diagnostics",
-		"Configuration", "EventBus", "Events", "AdminView"];
+		"Configuration", "EventBus", "Events", "AdminView", "TiebreakerView"];
 
 	constructor(props) {
 		super(props);
@@ -40,6 +40,9 @@ export class App extends React.Component {
 						<Route path="/competition/:id/:operation" component={this.CompetitionView} />
 						<Route path="/competition/:id" component={this.CompetitionView} />
 						<Route path="/report/:id" component={this.ReportView} />
+						<Route path="/tiebreaker/:id/:eventId/:divisionId" component={this.TiebreakerView} />
+						<Route path="/tiebreaker/:id/:eventId" component={this.TiebreakerView} />
+						<Route path="/tiebreaker/:id" component={this.TiebreakerView} />
 						<Route path="/create" component={p => <this.WithLogin><this.CreateCompetition /></this.WithLogin>} />
 						<Route path="/about" component={this.AboutView} />
 						<Route path="/help" component={this.HelpView} />

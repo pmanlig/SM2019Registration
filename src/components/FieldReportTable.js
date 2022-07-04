@@ -46,8 +46,9 @@ export class FieldReportTable extends React.Component {
 	MobileTarget = (props) => {
 		let { stageDef, participant, tgt } = props;
 		let score = participant.getScore(stageDef.num, tgt);
+		const selected = v => (score !== undefined && score === v) ? " selected" : "";
 		return FieldReportTable.targetValues.filter(v => v <= stageDef.max).map(v =>
-			<input key={"tgt" + tgt + v} className={"score-button" + (score !== undefined && score === v ? " selected" : "")}
+			<input key={"tgt" + tgt + v} className={`score-button${selected(v)}`}
 				type="button" value={v} onClick={e => this.setScore(stageDef, participant, tgt, v)} />);
 	}
 
@@ -68,12 +69,38 @@ export class FieldReportTable extends React.Component {
 				</div> : <div key={"tgt" + id + i} />);
 	}
 
+	static singleValues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+	static tenValues = [10, 20, 30];
+
+	MobileValue = ({ stageDef, participant, score }) => {
+		let singles = score % 10 || 0;
+		let tens = Math.floor(score / 10) * 10 || 0;
+		let i = 0;
+		const selected = s => s ? " selected" : "";
+		const setValue = (v, present, other) => this.setValue(participant, stageDef, (v === present ? 0 : v) + other);
+		return [
+			<input key={`v${i++}`} className={`score-button${selected(score !== undefined && score === 0)}`} type="button" value={0}
+				onClick={e => this.setValue(participant, stageDef, 0)} />,
+			...FieldReportTable.singleValues.map(v => <input key={`v${i++}`} className={`score-button${selected(v === singles)}`}
+				type="button" value={v} onClick={() => setValue(v, singles, tens)} />),
+			...FieldReportTable.tenValues.map(v => <input key={`v${i++}`} className={`score-button${selected(v === tens)}`}
+				type="button" value={v} onClick={() => setValue(v, tens, singles)} />)
+		];
+	}
+
+	ComputerValue = ({ stageDef, participant, score }) => {
+		return <input className="score-text" type="text" size="2" value={score === undefined ? "" : score}
+			onChange={e => this.setValue(participant, stageDef, e.target.value)} />
+	}
+
 	Value = ({ stageDef, participant }) => {
 		if (!stageDef.value) return <div />;
 		let score = participant.getScore(stageDef.num, stageDef.targets);
 		return <div className={this.participantClass("input", participant, 1)}>
-			<input className="score-text" type="text" size="2" value={score === undefined ? "" : score}
-				onChange={e => this.setValue(participant, stageDef, e.target.value)} />
+			{this.props.mode === Mode.computer ?
+				<this.ComputerValue stageDef={stageDef} participant={participant} score={score} /> :
+				<this.MobileValue stageDef={stageDef} participant={participant} score={score} />
+			}
 		</div>;
 	}
 
