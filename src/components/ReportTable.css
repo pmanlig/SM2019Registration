@@ -81,3 +81,10 @@
 .score-sheet .participant.input:focus-within {
 	background-color: lightgreen;
 }
+
+.mobile-target {
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+	justify-items: center;
+}

@@ -33,7 +33,7 @@ export class AppHeader extends React.Component {
 	}
 
 	mobileHeader() {
-		return <header className="App-header mobile">
+		return <header className="App-header mobile" style={{ color: this.color(), backgroundColor: this.background() }}>
 			<h1 className="App-title">{this.state.title}</h1>
 			<div id="App-header-tools">
 				<div id="global-tools">

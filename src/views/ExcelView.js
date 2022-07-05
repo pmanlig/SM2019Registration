@@ -3,8 +3,12 @@ import { TabInfo, Permissions } from '../models';
 
 export class ExcelView extends React.Component {
 	static register = { name: "ListsView" }
-	static wire = ["Configuration", "Competition"];
+	static wire = ["Events", "EventBus", "Configuration", "Competition"];
 	static tabInfo = new TabInfo("Excel", "excel", 203, Permissions.Admin);
+
+	componentDidMount() {
+		this.EventBus.fire(this.Events.changeTitle, `Listor för ${this.Competition.name}`);
+	}
 
 	render() {
 		return <div className="content">

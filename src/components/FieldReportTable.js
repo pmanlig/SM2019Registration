@@ -78,14 +78,14 @@ export class FieldReportTable extends React.Component {
 		let i = 0;
 		const selected = s => s ? " selected" : "";
 		const setValue = (v, present, other) => this.setValue(participant, stageDef, (v === present ? 0 : v) + other);
-		return [
-			<input key={`v${i++}`} className={`score-button${selected(score !== undefined && score === 0)}`} type="button" value={0}
-				onClick={e => this.setValue(participant, stageDef, 0)} />,
-			...FieldReportTable.singleValues.map(v => <input key={`v${i++}`} className={`score-button${selected(v === singles)}`}
-				type="button" value={v} onClick={() => setValue(v, singles, tens)} />),
-			...FieldReportTable.tenValues.map(v => <input key={`v${i++}`} className={`score-button${selected(v === tens)}`}
-				type="button" value={v} onClick={() => setValue(v, tens, singles)} />)
-		];
+		return <div className="mobile-target">
+			<div>{FieldReportTable.tenValues.map(v => <input key={`v${i++}`} className={`score-button${selected(v === tens)}`}
+				type="button" value={v} onClick={() => setValue(v, tens, singles)} />)}</div>
+			<div>{FieldReportTable.singleValues.map(v => <input key={`v${i++}`} className={`score-button${selected(v === singles)}`}
+				type="button" value={v} onClick={() => setValue(v, singles, tens)} />)}</div>
+			<div><input key={`v${i++}`} className={`score-button${selected(score !== undefined && score === 0)}`} type="button" value={0}
+				onClick={e => this.setValue(participant, stageDef, 0)} /></div>
+		</div>;
 	}
 
 	ComputerValue = ({ stageDef, participant, score }) => {

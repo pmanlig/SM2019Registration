@@ -85,6 +85,7 @@ export class ReportView extends React.Component {
 			this.Results.report(event, squad, p3);
 			let i = (schedule.squads.findIndex(s => s === squad) + 1) % schedule.squads.length;
 			this.props.history.replace(`/competition/${id}/report/${p1}/${schedule.squads[i].id}/${p3}`);
+			this.Results.load(id, p1, true);
 		} else {
 			this.setState({});
 		}

@@ -13,8 +13,8 @@ export class Results {
 		setInterval(this.trySendResults, 1000 * 60);
 	}
 
-	load(competitionId, eventId) {
-		if (eventId !== this.lastEvent || this.lastTime === undefined || Date.now() - this.last > 10 * 1000) {
+	load(competitionId, eventId, force) {
+		if (force || eventId !== this.lastEvent || this.lastTime === undefined || ((Date.now() - this.last) > 10 * 1000)) {
 			this.lastEvent = eventId;
 			this.lastTime = Date.now();
 			this.Server.load(
@@ -78,6 +78,8 @@ export class Results {
 				},
 				error => { console.log("Error sending results", error, error.message, JSON.stringify(error)); }
 			);
+		} else {
+			this.load(this.Competition.id, this.lastEvent, true);
 		}
 	}
 
