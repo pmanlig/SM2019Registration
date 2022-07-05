@@ -74,13 +74,18 @@ export class Results {
 					if (window._debug) { console.log("Successfully sent results"); }
 					this.Storage.set(this.Storage.keys.resultsQueue, this.queue);
 					this.fire(this.Events.resultsUpdated);
-					this.trySendResults();
+					if (this.queue.length > 0) {
+						this.trySendResults();
+					} else {
+						if (this.lastEvent) {
+							this.load(this.Competition.id, this.lastEvent, true);
+						}
+					}
 				},
 				error => { console.log("Error sending results", error, error.message, JSON.stringify(error)); }
 			);
-		} else {
-			this.load(this.Competition.id, this.lastEvent, true);
 		}
+		// Do not periodically load results - that will screw up result entry
 	}
 
 	clearQueue() {
