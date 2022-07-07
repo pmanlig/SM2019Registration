@@ -145,6 +145,13 @@ export class ReportView extends React.Component {
 			return null;
 		}
 
+		if (this.Competition.permissions < Permissions.Admin) {
+			return <div className="content">
+				<h2>Du har inte behörighet att mata in resultat</h2>
+				<p><i>Har du loggat in? Blivit automatiskt utloggad?</i></p>
+			</div>;
+		}
+
 		let { events } = this.Competition;
 		if (p1 === undefined) {
 			return <Redirect to={`/competition/${id}/report/${events[0].id}`} />

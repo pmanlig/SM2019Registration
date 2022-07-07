@@ -164,6 +164,8 @@ export class ResultView extends React.Component {
 			</div>
 			<this.EventSelector />
 			<this.DivisionSelector event={event} active={p2} />
+			{parseInt(this.Competition.id, 10) === 205 && <p><i>Resultatlistorna är preliminära och resultat kan saknas för skyttar som ännu inte
+				skjutit klart, de slutgiltiga resultatlistorna kommer att publiceras på SM-sidan.</i></p>}
 			<EventResult competition={this.Competition} event={this.Competition.event(parseInt(p1, 10))} results={results} division={p2} filter={this.state.filter} />
 		</div>;
 	}
