@@ -54,7 +54,7 @@ export class ResultView extends React.Component {
 	}
 
 	eventClass(e) {
-		return e.id === parseInt(this.props.match.params.token, 10) ? "button" : "button white";
+		return e.id === parseInt(this.props.match.params.p1, 10) ? "button" : "button white";
 	}
 
 	updateEvent(event) {

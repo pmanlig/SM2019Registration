@@ -5,9 +5,14 @@ let sum = (a, b) => a + b;
 let tgt = x => x > 0;
 let sort = (a, b) => {
 	let pos = 0;
-	while (pos < a.length && pos < b.length) {
-		if (a[pos] === b[pos]) { pos++; }
-		else { return b[pos] - a[pos]; }
+	while (pos < a.total.length && pos < b.total.length) {
+		if (a.total[pos] === b.total[pos]) { pos++; }
+		else { return b.total[pos] - a.total[pos]; }
+	}
+	pos = a.scores.length;
+	while (pos-- > 0) {
+		if (a.scores[pos] !== b.scores[pos]) { return b.scores[pos] - a.scores[pos]; }
+		if (a.targets[pos] !== b.targets[pos]) { return b.targets[pos] - a.targets[pos]; }
 	}
 	return 0;
 }
@@ -95,7 +100,7 @@ export class FieldResult extends React.Component {
 				total: [scores.reduce(sum), targets.reduce(sum), value]
 			}
 		});
-		participants.sort((a, b) => sort(a.total, b.total));
+		participants.sort((a, b) => sort(a, b));
 		return this.assignStd(participants);
 	}
 
