@@ -23,15 +23,16 @@ export class Session {
 	keepAlive = () => {
 		let errorHandler = error => {
 			console.log("Error contacting server", error);
-			this.user = "";
-			deleteCookie("user");
-			this.login_token = "";
-			deleteCookie("login_token");
-			if (this.keepAliveTimer !== undefined) {
-				clearInterval(this.keepAliveTimer);
-				this.keepAliveTimer = undefined;
-			}
-			this.fire(Events.userChanged);
+			// Do not log out user on error from keepalive!!!
+			// this.user = "";
+			// deleteCookie("user");
+			// this.login_token = "";
+			// deleteCookie("login_token");
+			// if (this.keepAliveTimer !== undefined) {
+			// 	clearInterval(this.keepAliveTimer);
+			// 	this.keepAliveTimer = undefined;
+			// }
+			// this.fire(Events.userChanged);
 		}
 		fetch(`${this.Configuration.baseUrl}/keepalive`, {
 			crossDomain: true,
@@ -43,7 +44,6 @@ export class Session {
 				if (!res.ok) { errorHandler(res); } else
 					res.json()
 						.then(json => {
-							console.log("Kept alive");
 							this.login_token = json.login_token;
 							setCookie("login_token", json.login_token);
 						})
