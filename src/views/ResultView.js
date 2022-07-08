@@ -79,7 +79,7 @@ export class ResultView extends React.Component {
 	DivisionSelector = props => {
 		let { event, active } = props;
 		if (active === undefined) { return null; }
-		return <div className="toolbar">
+		return <div className="division-selector">
 			{this.divisionList(event).sort().map(d =>
 				<Link key={d} className={d === active ? "button" : "button white"} to={`/competition/${this.Competition.id}/results/${event.id}/${d}`}>{d}</Link>)}
 		</div>;
@@ -158,12 +158,14 @@ export class ResultView extends React.Component {
 		}
 
 		return <div id="result" className="content">
-			<div id="result-filter">
-				<p id="filter-label">Söktext</p>
-				<input id="filter-input" value={this.state.filter} onChange={e => this.setState({ filter: e.target.value })} />
+			<div id="result-tools">
+				<div id="result-filter">
+					<p id="filter-label">Söktext</p>
+					<input id="filter-input" value={this.state.filter} onChange={e => this.setState({ filter: e.target.value })} />
+				</div>
+				<this.EventSelector />
+				<this.DivisionSelector event={event} active={p2} />
 			</div>
-			<this.EventSelector />
-			<this.DivisionSelector event={event} active={p2} />
 			{parseInt(this.Competition.id, 10) === 205 && <p><i>Resultatlistorna är preliminära och resultat kan saknas för skyttar som ännu inte
 				skjutit klart, de slutgiltiga resultatlistorna kommer att publiceras på SM-sidan.</i></p>}
 			<EventResult competition={this.Competition} event={this.Competition.event(parseInt(p1, 10))} results={results} division={p2} filter={this.state.filter} />

@@ -11,7 +11,8 @@
 	padding-top: 20px;
 }
 
-#result th,td {
+#result th,
+td {
 	padding: 3px;
 	text-align: center;
 }
@@ -32,10 +33,18 @@
 	position: relative;
 }
 
+#result-tools {
+	display: grid;
+	grid-template-areas:
+		"event-selector result-filter"
+		"division-selector result-filter";
+}
+
 #result-filter {
-	position: absolute;
-	top: 5px;
-	right: 5px;
+	display: inline;
+	grid-area: result-filter;
+	justify-self: end;
+	align-self: start;
 	background-color: gray;
 	border: 1px solid lightgray;
 	padding: 5px;
@@ -52,3 +61,19 @@
 #roster-filter:hover {
 	opacity: 1;
 }
+
+#event-selector {
+	grid-area: event-selector;
+}
+
+#division-selector {
+	grid-area: division-selector;
+}
+
+@media only screen and (max-width:600px) {
+	#result-tools {
+		display: grid;
+		grid-template-areas:
+			"event-selector event-selector"
+			"division-selector result-filter";
+	}}
