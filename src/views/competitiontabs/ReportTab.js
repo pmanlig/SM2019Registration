@@ -1,9 +1,9 @@
-import './ReportView.css';
+import './Report.css';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Permissions, Schedule, TabInfo } from '../models';
+import { Permissions, Schedule, TabInfo } from '../../models';
 
-export class ReportView extends React.Component {
+export class ReportTab extends React.Component {
 	static register = { name: "ReportView" };
 	static wire = ["fire", "Competition", "Registration", "Results", "Server", "ReportTable",
 		"EventBus", "Events", "Footers", "Configuration", "ReportIndicator"];

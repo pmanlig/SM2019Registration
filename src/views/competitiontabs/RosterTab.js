@@ -1,6 +1,6 @@
-import './RosterView.css';
+import './Roster.css';
 import React from 'react';
-import { Permissions, Schedule, TabInfo } from '../models';
+import { Permissions, Schedule, TabInfo } from '../../models';
 
 function Participant({ participant, allowDrag, onDragStart }) {
 	return [
@@ -69,7 +69,7 @@ class Squad extends React.Component {
 	}
 }
 
-export class RosterView extends React.Component {
+export class RosterTab extends React.Component {
 	static register = { name: "RosterView" };
 	static wire = ["Competition", "Server", "Footers", "Session", "EventBus", "Events"];
 	static tabInfo = new TabInfo("Startlista", "roster", 3, Permissions.Any);
@@ -114,7 +114,7 @@ export class RosterView extends React.Component {
 						]
 					};
 					this.setState({});
-				}, this.Footers.errorHandler(RosterView.E_CANNOT_LOAD_PARTICIPANTS));
+				}, this.Footers.errorHandler(RosterTab.E_CANNOT_LOAD_PARTICIPANTS));
 			} else {
 				this.Server.loadSchedule(e.scheduleId, json => {
 					this.Server.loadParticipants(e.scheduleId, pJson => {
@@ -129,8 +129,8 @@ export class RosterView extends React.Component {
 						});
 						e.schedule = { squads: Object.values(schedule) };
 						this.setState({});
-					}, this.Footers.errorHandler(RosterView.E_CANNOT_LOAD_PARTICIPANTS));
-				}, this.Footers.errorHandler(RosterView.E_CANNOT_LOAD_SCHEDULE));
+					}, this.Footers.errorHandler(RosterTab.E_CANNOT_LOAD_PARTICIPANTS));
+				}, this.Footers.errorHandler(RosterTab.E_CANNOT_LOAD_SCHEDULE));
 			}
 		});
 	}

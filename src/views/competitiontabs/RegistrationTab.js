@@ -1,10 +1,10 @@
-import './RegistrationView.css';
+import './Registration.css';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Permissions, Status, TabInfo } from '../models';
-import { Description, NewRegistrationContact } from '../components';
+import { Permissions, Status, TabInfo } from '../../models';
+import { Description, NewRegistrationContact } from '../../components';
 
-export class RegistrationView extends React.Component {
+export class RegistrationTab extends React.Component {
 	static register = { name: "RegistrationView" };
 	static wire = ["Competition", "EventBus", "Events", "Registration", "ParticipantPicker", "RegistrationToolbar",
 		"RegistrationForm", "Summary", "SquadPicker", "Server", "YesNoDialog", "ParticipantToolbar"];
@@ -14,8 +14,8 @@ export class RegistrationView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			dates: [...new Set(this.Competition.events.map(e => RegistrationView.dateFormat.format(e.date)))],
-			selected: RegistrationView.dateFormat.format(this.Competition.events[0].date)
+			dates: [...new Set(this.Competition.events.map(e => RegistrationTab.dateFormat.format(e.date)))],
+			selected: RegistrationTab.dateFormat.format(this.Competition.events[0].date)
 		};
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.registrationUpdated, () => this.setState({}));
@@ -58,7 +58,7 @@ export class RegistrationView extends React.Component {
 			return <Redirect to={`/competition/${this.props.match.params.id}/register/${this.Registration.token}`} />
 		}
 
-		let events = this.Competition.events.filter(e => RegistrationView.dateFormat.format(e.date) === this.state.selected);
+		let events = this.Competition.events.filter(e => RegistrationTab.dateFormat.format(e.date) === this.state.selected);
 
 		return <div>
 			<this.SquadPicker />

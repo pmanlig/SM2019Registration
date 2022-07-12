@@ -55,7 +55,7 @@ export class RegistrationRow extends React.Component {
 		if (event.classes && this.Competition.classes(event.classes)) {
 			controls.push(row === 0 ?
 				this.classDropdown(numRows, participant.id, event, eventInfo.class, this.Competition.classes(event.classes)) :
-				<td></td>);
+				<td key={`${participant.uniqueId}cls${event.id}`}></td>);
 		}
 		if (event.divisions && this.Competition.divisions(event.divisions)) {
 			controls.push(this.divisionDropdown(row, participant.id, event.id, eventInfo.rounds, this.Competition.divisions(event.divisions)));
@@ -76,7 +76,8 @@ export class RegistrationRow extends React.Component {
 	}
 
 	RegistrationControls = ({ row, num_rows, participant }) => {
-		return this.props.events.map(e => this.EventControls({ key: `ev${e.id}${row}`, row: row, num_rows: num_rows, participant: participant, event: e }));
+		return this.props.events.map(e =>
+			<this.EventControls key={`${participant.uniqueId}ev${e.id}${row}`} row={row} num_rows={num_rows} participant={participant} event={e} />);
 	}
 
 	NewRegistrationField = props => {
@@ -109,7 +110,7 @@ export class RegistrationRow extends React.Component {
 
 	ParticipantFields = ({ num_rows, participant }) => {
 		return this.Competition.participantHeaders().map(h =>
-			<this.RegistrationField key={h.field} value={participant[h.field]} placeholder={h.placeholder || h.name}
+			<this.RegistrationField key={participant.uniqueId + h.field} value={participant[h.field]} placeholder={h.placeholder || h.name}
 				style={{ width: h.width }} num_rows={num_rows} size={h.size}
 				onChange={e => this.Registration.setParticipantField(participant.id, h.field, e.target.value)}
 				club_selector={h.type}
@@ -119,8 +120,8 @@ export class RegistrationRow extends React.Component {
 	ParticipantRow = ({ row, num_rows, participant }) => {
 		let p = participant;
 		if (!p.uniqueId) p.uniqueId = RegistrationRow.pId++;
-		return <tr className={p.errors.length > 0 ? "error registration" : "registration"} key={p.uniqueId}>
-			{row === 0 ? this.ParticipantFields({ num_rows: num_rows, participant: p }) :
+		return <tr className={p.errors.length > 0 ? "error registration" : "registration"}>
+			{row === 0 ? this.ParticipantFields({ num_rows: num_rows, participant: p, }) :
 				<td colSpan={this.Competition.participantHeaders().length} />}
 			{this.RegistrationControls({ row: row, num_rows: num_rows, participant: p })}
 			{row === 0 && <td className="vcenter tooltip" style={{ position: "relative" }} tooltip="Ta bort deltagare" tooltip-position="top">

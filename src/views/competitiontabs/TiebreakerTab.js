@@ -12,7 +12,7 @@ let sort = (a, b) => {
 	return 0;
 }
 
-export class TiebreakerView extends React.Component {
+export class TiebreakerTab extends React.Component {
 	static register = { name: "TiebreakerView" };
 	static wire = ["Events", "EventBus", "Competition", "Results"];
 

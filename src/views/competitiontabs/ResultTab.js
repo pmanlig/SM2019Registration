@@ -1,10 +1,10 @@
-import './ResultView.css';
+import './Result.css';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Permissions, Status, TabInfo } from '../models';
-import { EventResult, Scorecard } from '../components';
+import { Permissions, Status, TabInfo } from '../../models';
+import { EventResult, Scorecard } from '../../components';
 
-export class ResultView extends React.Component {
+export class ResultTab extends React.Component {
 	static register = { name: "ResultView" };
 	static wire = ["EventBus", "Events", "Competition", "Results", "DivisionGroups"];
 	static tabInfo = new TabInfo("Resultat", "results", 4, Permissions.Any, Status.Closed);
