@@ -18,4 +18,5 @@ export { TeamView } from './TeamView';
 export { TeamAdminView } from './TeamAdminView';
 export { ExcelView } from './ExcelView';
 export { TiebreakerView } from './TiebreakerView';
-export { TabInfo, CompetitionTabs } from '../views/CompetitionTabs';
+export { competitionTabs } from './CompetitionTabs';
+export { ListAdminView } from './ListAdminView';

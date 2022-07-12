@@ -46,7 +46,8 @@ export class App extends React.Component {
 						<Route path="/create" component={p => <this.WithLogin><this.CreateCompetition /></this.WithLogin>} />
 						<Route path="/about" component={this.AboutView} />
 						<Route path="/help" component={this.HelpView} />
-						<Route path="/admin" component={p => <this.WithLogin><this.AdminView /></this.WithLogin>} />
+						<Route path="/admin/:operation" component={p => <this.WithLogin><this.AdminView {...p}/></this.WithLogin>} />
+						<Route path="/admin" component={p => <this.WithLogin><this.AdminView {...p}/></this.WithLogin>} />
 						<Route path="/test" component={ComponentTest} />
 						<Route path="/diagnostic" component={this.Diagnostics} />
 						<Route exact path="/" component={this.CompetitionList} />

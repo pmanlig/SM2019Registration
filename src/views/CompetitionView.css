@@ -1,27 +1,3 @@
-.tabs {
-	height: 30;
-	background-color: #222;
-}
-
-.tab {
-	display: inline-block;
-	text-decoration: none;
-	background-color: white;
-	margin: 2px 0px 0px 1px;
-	padding: 5px 15px;
-	border-top-right-radius: 5px;
-	border-top-left-radius: 5px;
-	border-bottom: 1px solid black;
-}
-
-p.tab {
-	border-bottom: 1px solid white;
-}
-
-.tabs > a:visited {
-	color: black;
-}
-
 h5 {
 	background-color: white;
 	margin: 0;

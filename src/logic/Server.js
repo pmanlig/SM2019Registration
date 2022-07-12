@@ -206,15 +206,24 @@ export class Server {
 
 	//#region Groups
 	loadCompetitionGroups(callback, error) {
-		this.Busy.setBusy(this, true);
+		const id = "lcg";
+		this.Busy.setBusy(id, true);
 		fetch("/groups.json")
 			.then(res => {
-				this.Busy.setBusy(this, false);
+				this.Busy.setBusy(id, false);
 				if (!res.ok) { this.handleSafely(res, error); } else
 					res.json()
 						.then(callback)
 						.catch(error);
 			})
+			.catch(() => {
+				this.Busy.setBusy(id, false);
+				error();
+			});
+	}
+
+	loadRemoteCompetitionGroups(callback, error) {
+		this.Busy.wrap(this.load, "group", callback, error);
 	}
 	//#endregion
 

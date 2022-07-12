@@ -2,10 +2,11 @@ import "./CompetitionList.css";
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Permissions, Status } from '../models';
+import { competitionTabs } from '.';
 
 export class CompetitionList extends React.Component {
 	static register = { name: "CompetitionList" };
-	static wire = ["Server", "Session", "Storage", "EventBus", "Events", "Footers", "YesNoDialog", "CompetitionGroups", "CompetitionTabs"];
+	static wire = ["Server", "Session", "Storage", "EventBus", "Events", "Footers", "YesNoDialog", "CompetitionGroups"];
 	static E_CANNOT_LOAD = "Kan inte hämta tävlingar";
 
 	constructor(props) {
@@ -70,7 +71,7 @@ export class CompetitionList extends React.Component {
 	}
 
 	Competition = ({ competition }) => {
-		let links = this.CompetitionTabs.tabs.map(t => t.tabInfo).filter(o => (
+		let links = competitionTabs().map(t => t.tabInfo).filter(o => (
 			(competition.permissions !== Permissions.Any) ||
 			(o.permissions === Permissions.Any && (o.status === undefined || o.status === competition.status))
 		));
