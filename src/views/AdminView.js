@@ -1,5 +1,5 @@
 import "./Tabs.css";
-import './AdminView.css';
+import './Admin.css';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import * as Admin from '.';
@@ -21,8 +21,9 @@ export class AdminView extends React.Component {
 	render() {
 		let { operation } = this.props.match.params;
 		let tabs = adminTabs();
-		if (operation === undefined) { return <Redirect to={`/admin/${tabs[0].path}`} /> }
+		if (operation === undefined) { return <Redirect to={`/admin/${tabs[0].adminTab.path}`} /> }
 		const Content = tabs.find(t => t.adminTab.path === operation);
+		if (Content === undefined) { return null; }
 		return <div>
 			{tabs.length > 0 && <div className="tabs">
 				{tabs.map(t => t.adminTab).map(t => operation === t.path ?

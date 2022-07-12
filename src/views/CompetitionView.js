@@ -3,7 +3,7 @@ import "./CompetitionView.css";
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Mode, Permissions } from '../models';
-import { competitionTabs } from ".";
+import { competitionTabs } from "./competitiontabs";
 
 export class CompetitionView extends React.Component {
 	static register = { name: "CompetitionView" };

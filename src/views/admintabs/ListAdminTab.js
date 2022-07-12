@@ -1,7 +1,7 @@
 import React from 'react';
-import { ClassGroup, DivisionGroup, TabInfo } from '../models';
+import { ClassGroup, DivisionGroup, TabInfo } from '../../models';
 
-export class ListAdminView extends React.Component {
+export class ListAdminTab extends React.Component {
 	static register = { name: "ListAdminView" };
 	static wire = ["fire", "Events", "ClassGroups", "DivisionGroups", "YesNoDialog"];
 	static adminTab = new TabInfo("Listor", "lists", 1);
@@ -125,7 +125,7 @@ export class ListAdminView extends React.Component {
 				<div>
 					<h3>Klassindelningar</h3>
 					{this.state.classGroups.map(cg => this.renderGroup(cg))}
-					<div className="add item"><button className="button-add small" /><p className="add" onClick={this.addClassGroup}>Skapa ny lista</p></div>
+					<div className="add item" onClick={this.addClassGroup}><button className="button-add small" /><p className="add">Skapa ny lista</p></div>
 				</div>
 				{this.state.selected && <div className="detail">
 					<input className="textbox-name" value={this.state.selected.description} onChange={e => this.updateProperty("description", e.target.value)} />
@@ -135,8 +135,9 @@ export class ListAdminView extends React.Component {
 				<div>
 					<h3>Vapengruppsindelningar</h3>
 					{this.state.divisionGroups.map(dg => this.renderGroup(dg))}
-					<div className="add item"><button className="button-add small" /><p className="add" onClick={this.addDivisionGroup}>Skapa ny lista</p></div>
+					<div className="add item" onClick={this.addDivisionGroup}><button className="button-add small" /><p className="add">Skapa ny lista</p></div>
 				</div>
-			</div></div>;
+			</div>
+		</div>;
 	}
 }

@@ -9,6 +9,5 @@ export { CompetitionAdminView } from './CompetitionAdminView';
 export { Diagnostics } from './Diagnostics';
 export { HelpView } from './HelpView';
 export { AdminView } from './AdminView';
-export { ListAdminView } from './ListAdminView';
-export { GroupAdminView } from './GroupAdminView';
+export * from './admintabs';
 export * from './competitiontabs';
