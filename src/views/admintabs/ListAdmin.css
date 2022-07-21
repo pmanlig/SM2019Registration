@@ -1,17 +1,23 @@
-#admin-view {
+#list-admin {
 	display: flex;
 	flex-direction: row;
 }
 
-#admin-view > div {
-	margin-right: 10px;
+#list-admin > div {
+	margin-right: 20px;
 }
 
-#admin-view > div.detail {
+#list-admin > div.detail {
 	margin: 8px 25px 0 0;
 }
 
-#admin-view input.textbox-name {
+#list-admin > button {
+	position: fixed;
+	bottom: 5px;
+	left: 5px;
+}
+
+#list-admin input.textbox-name {
 	display: block;
 	font-size: 18px;
 	width: 100%;
@@ -20,7 +26,7 @@
 	padding: 2px;
 }
 
-#admin-view input.textbox-header {
+#list-admin input.textbox-header {
 	display: block;
 	font-size: 12px;
 	width: 100%;
@@ -29,12 +35,12 @@
 	padding: 2px;
 }
 
-#admin-view textarea {
+#list-admin textarea {
 	display: block;
 	margin-bottom: 6px;
 }
 
-#admin-view div.item {
+#list-admin div.item {
 	margin: 0 0 2px 0;
 	padding: 4px;
 	border-radius: 4px;
@@ -43,43 +49,43 @@
 	flex-direction: row;
 }
 
-#admin-view div.select {
+#list-admin div.select {
 	cursor: grab;
 }
 
-#admin-view div.select:hover {
+#list-admin div.select:hover {
 	background-color: #a0cfff;
 	cursor: grab;
 }
 
-#admin-view div.selected {
+#list-admin div.selected {
 	background-color: #a0ffcf;
 }
 
-#admin-view textarea {
+#list-admin textarea {
 	resize: none;
 }
 
-#admin-view div.add {
+#list-admin div.add {
 	background-color: lightgray;
 	cursor: pointer;
 }
 
-#admin-view div.item button {
+#list-admin div.item button {
 	position: relative;
 	top: 2px;
 	cursor: pointer;
 }
 
-#admin-view div.add button {
+#list-admin div.add button {
 	margin-right: 5px;
 }
 
-#admin-view div.select button {
+#list-admin div.select button {
 	margin-left: 5px;
 }
 
-#admin-view p {
+#list-admin p {
 	display: inline;
 	margin: 0;
 	flex-grow: 1;

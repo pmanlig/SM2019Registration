@@ -28,3 +28,4 @@ export { TeamForm } from './TeamForm';
 export { TeamProperties } from './TeamProperties';
 export { SquadProperties } from './SquadProperties';
 export { Scorecard } from './Scorecard';
+export { GroupProperties } from './GroupProperties';

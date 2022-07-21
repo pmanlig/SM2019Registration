@@ -1,3 +1,4 @@
+import './ListAdmin.css';
 import React from 'react';
 import { ClassGroup, DivisionGroup, TabInfo } from '../../models';
 
@@ -120,8 +121,7 @@ export class ListAdminTab extends React.Component {
 	render() {
 		return <div className="content">
 			{this.state.deleteItem && <this.YesNoDialog title="Bekräfta borttagning" text={`Är du säker på att du vill radera ${this.state.deleteItem.description}?`} action={act => this.deleteItem(act)} />}
-			<button className={this.state.dirty ? "button" : "button disabled"} onClick={this.save}>Spara</button>
-			<div id="admin-view">
+			<div id="list-admin">
 				<div>
 					<h3>Klassindelningar</h3>
 					{this.state.classGroups.map(cg => this.renderGroup(cg))}
@@ -137,6 +137,7 @@ export class ListAdminTab extends React.Component {
 					{this.state.divisionGroups.map(dg => this.renderGroup(dg))}
 					<div className="add item" onClick={this.addDivisionGroup}><button className="button-add small" /><p className="add">Skapa ny lista</p></div>
 				</div>
+				<button className={"button" + (this.state.dirty ? "" : " disabled")} onClick={this.save}>Spara</button>
 			</div>
 		</div>;
 	}

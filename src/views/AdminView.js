@@ -1,5 +1,4 @@
 import "./Tabs.css";
-import './Admin.css';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import * as Admin from '.';

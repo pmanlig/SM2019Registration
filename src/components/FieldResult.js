@@ -108,10 +108,11 @@ export class FieldResult extends React.Component {
 		let { competition, event, division } = this.props;
 		let showValues = event.stages.some(s => s.value);
 		let linkBase = `/competition/${competition.id}/results/${event.id}/${division && isNaN(division) ? `${division}/` : ""}`;
+		filter = filter.toUpperCase();
 		return this
 			.calculateScores(results)
 			.map((p, i) => { return { ...p, pos: i + 1 } })
-			.filter(p => p.name.includes(filter) || p.organization.includes(filter))
+			.filter(p => p.name.toUpperCase().includes(filter) || p.organization.toUpperCase().includes(filter))
 			.map(p => <this.Participant key={p.id} pos={p.pos} event={event} data={p} showValues={showValues} linkBase={linkBase} />);
 		// .concat([<tr key={results[0].class}><td>&nbsp;</td></tr>]);
 	}
