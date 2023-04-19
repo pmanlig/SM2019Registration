@@ -13,3 +13,5 @@ export { LocalRegistrationService } from './LocalRegistrationService';
 export { Configuration } from './Configuration';
 export { CompetitionGroups } from './CompetitionGroups';
 export { Session } from './Session';
+export { StdFieldScore } from './StdFieldScore';
+export { PointFieldScore } from './PointFieldScore';

@@ -8,3 +8,4 @@ export { RosterTab as RosterView } from './RosterTab';
 export { TeamAdminTab as TeamAdminView } from './TeamAdminTab';
 export { TeamTab as TeamView } from './TeamTab';
 export { TiebreakerTab } from './TiebreakerTab';
+export { CompetitionAdminTab } from './CompetitionAdminTab'

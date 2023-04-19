@@ -71,6 +71,9 @@ export class CompetitionList extends React.Component {
 	}
 
 	Competition = ({ competition }) => {
+		if (competition.name === "Forsa Poängfältskjutning 230423") {
+			console.log("Competition", competition, competitionTabs());
+		}
 		let links = competitionTabs().map(t => t.tabInfo).filter(o => (
 			(competition.permissions !== Permissions.Any) ||
 			(o.permissions === Permissions.Any && (o.status === undefined || o.status === competition.status))

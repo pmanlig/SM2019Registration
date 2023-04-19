@@ -5,7 +5,6 @@ export { CompetitionView } from './CompetitionView';
 export { CreateCompetition } from './CreateCompetition';
 export { ComponentTest } from './ComponentTest';
 export { AboutView } from './AboutView';
-export { CompetitionAdminView } from './CompetitionAdminView';
 export { Diagnostics } from './Diagnostics';
 export { HelpView } from './HelpView';
 export { AdminView } from './AdminView';

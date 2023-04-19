@@ -1,8 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 
-let sum = (a, b) => a + b;
-let tgt = x => x > 0;
 let sort = (a, b) => {
 	let pos = 0;
 	while (pos < a.total.length && pos < b.total.length) {
@@ -49,15 +47,15 @@ export class FieldResult extends React.Component {
 			<td className="left">{organization}</td>
 			{event.classes > 0 && <td>{data.class}</td>}
 			{txts}
-			<td>{total[0]}/{total[1]}</td>
+			<td>{total[0]}</td>
 			{props.showValues && <td>{total[2]}p</td>}
 			<td>{std}</td>
 		</tr>
 	}
 
 	assignStd(scores) {
-		let sBreak = (scores.length / 9) - 1;
-		let bBreak = (scores.length / 3) - 1;
+		let sBreak = Math.floor(scores.length / 9);
+		let bBreak = Math.floor(scores.length / 3);
 		let sLim = 48, bLim = 48;
 		scores.forEach((s, i) => {
 			if (i < sBreak || s.total[0] === sLim) {
@@ -72,45 +70,13 @@ export class FieldResult extends React.Component {
 		return scores;
 	}
 
-	calculateScores(results) {
-		let { event } = this.props;
-		let stages = [];
-		event.stages.forEach(s => stages[s.num] = s);
-		let participants = results.map(p => {
-			let scores = [], targets = [], value = 0;
-			for (let i = 0; i < event.scores; i++) {
-				scores[i] = 0;
-				targets[i] = 0;
-			}
-			p.scores.forEach(s => {
-				if (s.stage <= event.scores) {
-					let score = [...s.values];
-					if (stages[s.stage].value) { value += score.pop(); }
-					scores[s.stage - 1] = score.reduce(sum);
-					targets[s.stage - 1] = score.filter(tgt).length;
-				}
-			});
-			return {
-				id: p.id,
-				name: p.name,
-				organization: p.organization,
-				scores: scores,
-				targets: targets,
-				class: p.class,
-				total: [scores.reduce(sum), targets.reduce(sum), value]
-			}
-		});
-		participants.sort((a, b) => sort(a, b));
-		return this.assignStd(participants);
-	}
-
 	scores(results, filter) {
 		let { competition, event, division } = this.props;
 		let showValues = event.stages.some(s => s.value);
 		let linkBase = `/competition/${competition.id}/results/${event.id}/${division && isNaN(division) ? `${division}/` : ""}`;
 		filter = filter.toUpperCase();
-		return this
-			.calculateScores(results)
+		return results
+			.sort((a, b) => sort(a, b))
 			.map((p, i) => { return { ...p, pos: i + 1 } })
 			.filter(p => p.name.toUpperCase().includes(filter) || p.organization.toUpperCase().includes(filter))
 			.map(p => <this.Participant key={p.id} pos={p.pos} event={event} data={p} showValues={showValues} linkBase={linkBase} />);
@@ -118,13 +84,15 @@ export class FieldResult extends React.Component {
 	}
 
 	render() {
-		let { event, filter } = this.props;
+		let { event, filter, scorer } = this.props;
 		let showValues = event.stages.some(s => s.value);
-		return <table>
+		let results = this.props.results.map(r => scorer.calculateScores(r, event));
+		this.assignStd(results.flat().sort((a, b) => sort(a, b)));
+		return < table >
 			<this.Header event={event} showValues={showValues} />
 			<tbody>
-				{this.props.results.flatMap(r => this.scores(r, filter))}
+				{results.flatMap(r => this.scores(r, filter))}
 			</tbody>
-		</table>;
+		</table >;
 	}
 }
