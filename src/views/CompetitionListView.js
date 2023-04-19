@@ -90,7 +90,7 @@ export class CompetitionList extends React.Component {
 	Group = ({ group }) => {
 		return <div className="competition-tile open competition-group">
 			<div style={{ width: "40px" }}>
-				{group.icon && <img src={group.icon} className="group-icon" alt={group.icon} />}
+				{group.iconPath && <img src={group.iconPath} className="group-icon" alt={group.icon} />}
 			</div>
 			<div className="group-text">
 				<div className="event-title">

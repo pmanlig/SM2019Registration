@@ -17,6 +17,10 @@
 	left: 5px;
 }
 
+#list-admin h3 {
+	margin-top: 0;
+}
+
 #list-admin input.textbox-name {
 	display: block;
 	font-size: 18px;

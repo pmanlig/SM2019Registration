@@ -31,12 +31,12 @@ export class GroupAdminTab extends React.Component {
 	}
 
 	changeGroup = (group, prop, value) => {
-		group[prop] = value;
+		this.CompetitionGroups.updateGroup(group,prop,value);
 		this.setState({ dirty: true });
 	}
 
 	save = () => {
-		alert("Saving!");
+		this.CompetitionGroups.save();
 		this.setState({ dirty: false });
 	}
 
@@ -44,7 +44,7 @@ export class GroupAdminTab extends React.Component {
 		return <div id="group-admin" className="content">
 			<GroupList groups={this.CompetitionGroups.groups} selected={this.state.selected}
 				onSelect={g => this.setState({ selected: g })} />
-			<GroupProperties group={this.state.selected} onChange={this.changeGroup} />
+			<GroupProperties groups={this.CompetitionGroups} selected={this.state.selected} onChange={this.changeGroup} />
 			<button className={"button" + (this.state.dirty ? "" : " disabled")} onClick={this.save}>Spara</button>
 		</div>;
 	}

@@ -13,6 +13,10 @@
 	left: 5px;
 }
 
+#group-admin h3 {
+	margin-top: 0;
+}
+
 #group-admin div.item {
 	margin: 0 0 2px 0;
 	padding: 4px;
@@ -75,7 +79,7 @@
 	width: 300px;
 }
 
-#group-admin input {
+#group-admin input, #group-admin select {
 	border-radius: 5px;
 }
 

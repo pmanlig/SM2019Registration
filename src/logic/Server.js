@@ -225,6 +225,10 @@ export class Server {
 	loadRemoteCompetitionGroups(callback, error) {
 		this.Busy.wrap(this.load, "group", callback, error);
 	}
+
+	createCompetitionGroup(callback, error) {
+		
+	}
 	//#endregion
 
 	//#region Competition

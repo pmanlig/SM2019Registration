@@ -1,14 +1,15 @@
 import React from 'react';
+import { Events } from '../logic';
 
 export class Footers {
 	static register = { name: "Footers", createInstance: true };
-	static wire = ["fire", "subscribe", "Events"];
+	static wire = ["fire", "subscribe"];
 
 	messageId = 1;
 	footers = [];
 
 	initialize() {
-		this.subscribe(this.Events.addFooter, (msg, type, timeout) => this.addFooter(msg, type, timeout));
+		this.subscribe(Events.addFooter, (msg, type, timeout) => this.addFooter(msg, type, timeout));
 	}
 
 	addCustomFooter(content) {
@@ -17,7 +18,7 @@ export class Footers {
 			id: myId,
 			content: content
 		}]);
-		this.fire(this.Events.footersChanged, myId);
+		this.fire(Events.footersChanged, myId);
 	}
 
 	addFooter(msg, type = "error", timeout = 3000) {
@@ -29,12 +30,12 @@ export class Footers {
 			this.deleteFooter(myId);
 			clearTimeout(timer);
 		}, timeout);
-		this.fire(this.Events.footersChanged, myId);
+		this.fire(Events.footersChanged, myId);
 	}
 
 	deleteFooter(id) {
 		this.footers = this.footers.filter(f => f.id !== id);
-		this.fire(this.Events.footersChanged, id);
+		this.fire(Events.footersChanged, id);
 	}
 
 	errorHandler(msg) {
@@ -52,12 +53,12 @@ export class Footers {
 
 export class Footer extends React.Component {
 	static register = { name: "Footer" };
-	static wire = ["Footers", "subscribe", "EventBus", "Events"];
+	static wire = ["Footers", "subscribe", "EventBus"];
 
 	constructor(props) {
 		super(props);
 		this.EventBus.manageEvents(this);
-		this.subscribe(this.Events.footersChanged, () => this.setState({}));
+		this.subscribe(Events.footersChanged, () => this.setState({}));
 	}
 
 	render() {

@@ -10,6 +10,10 @@ tr.picker {
 	cursor: pointer;
 }
 
+table.picker > tbody {
+	overflow-y: scroll;
+}
+
 tbody > tr.picker:hover {
 	background-color: yellow;
 }

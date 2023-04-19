@@ -57,7 +57,7 @@ export class CompetitionGroups {
 					this.groups.push(d);
 				}
 			});
-			this.groups.forEach(g => g.icon = this.icons[g.icon] || gpk);
+			this.groups.forEach(g => g.iconPath = this.icons[g.icon] || gpk);
 			this.fire(this.Events.competitionGroupsUpdated);
 			this.Server.loadRemoteCompetitionGroups(json => {
 				// TODO: Implement!!!
@@ -76,5 +76,14 @@ export class CompetitionGroups {
 
 	findGroup(label) {
 		return this.groups.find(g => g.label === label) || this.defaultGroup;
+	}
+
+	updateGroup(group, prop, value) {
+		console.log("Group update", group, prop, value);
+		group[prop] = value;
+	}
+
+	save() {
+
 	}
 }
