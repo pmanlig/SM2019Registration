@@ -30,4 +30,8 @@ export class StdFieldScore {
 			}
 		});
 	}
+
+	static finalScore(total) {
+		return `${total[0]}/${total[1]}`;
+	}
 }

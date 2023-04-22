@@ -30,4 +30,8 @@ export class PointFieldScore {
 			}
 		});
 	}
+
+	static finalScore(total) {
+		return `${total[0]}`;
+	}
 }

@@ -34,6 +34,7 @@ export class FieldResult extends React.Component {
 	}
 
 	Participant = props => {
+		let { scorer } = this.props;
 		let { data, pos, event } = props;
 		let { id, name, organization, scores, targets, total, std } = data;
 		let txts = [];
@@ -47,7 +48,7 @@ export class FieldResult extends React.Component {
 			<td className="left">{organization}</td>
 			{event.classes > 0 && <td>{data.class}</td>}
 			{txts}
-			<td>{total[0]}</td>
+			<td>{scorer.finalScore(total)}</td>
 			{props.showValues && <td>{total[2]}p</td>}
 			<td>{std}</td>
 		</tr>
