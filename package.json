@@ -5,7 +5,7 @@
   "homepage": "https://anmalan.manlig.org",
   "dependencies": {
     "immer": "^8.0.1",
-    "npm": "^7.19.0",
+    "npm": "^9.8.0",
     "react": "^17.0.2",
     "react-date-picker": "^8.0.7",
     "react-dev-utils": "^5.0.3",
