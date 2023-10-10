@@ -12,9 +12,8 @@ export class Server {
 	}
 
 	//#region Main fetch/send methods and helpers
-	load = (url, callback, error) => {
+	load = async (url, callback, error) => {
 		url = `${this.Configuration.baseUrl}/${url}`;
-		logUrl(url);
 		fetch(url, {
 			crossDomain: true,
 			credentials: 'include',
@@ -51,7 +50,7 @@ export class Server {
 		this.Busy.wrap(this.send, url, data, callback, error);
 	}
 
-	update = (url, data, callback, error) => {
+	update = async (url, data, callback, error) => {
 		url = `${this.Configuration.baseUrl}/${url}`;
 		logUrl(url);
 		console.log("Update", url, data);
@@ -72,7 +71,7 @@ export class Server {
 		this.Busy.wrap(this.update, url, data, callback, error);
 	}
 
-	delete = (url, callback, error) => {
+	delete = async (url, callback, error) => {
 		url = `${this.Configuration.baseUrl}/${url}`;
 		logUrl(url);
 		return fetch(url, {
@@ -205,7 +204,7 @@ export class Server {
 	//#endregion
 
 	//#region Groups
-	loadCompetitionGroups(callback, error) {
+	async loadCompetitionGroups(callback, error) {
 		const id = "lcg";
 		this.Busy.setBusy(id, true);
 		fetch("/groups.json")

@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://anmalan.manlig.org",
   "dependencies": {
-    "immer": "^8.0.1",
+    "immer": "^9.0.6",
     "npm": "^7.19.0",
     "react": "^17.0.2",
     "react-date-picker": "^8.0.7",

@@ -61,13 +61,20 @@ export class AutoInjector {
 					console.log(`ERROR: Cannot inject entity ${i} into ${c.name}`);
 				}
 			});
+		});
+		// Initialize objects only after all injections have been done
+		this.injectList.forEach(c => {
 			if (c.register && c.register.createInstance) {
 				if (_INJECTOR_LOGLEVEL === "details") {
 					console.log(`Creating instance for class ${c.name}`);
 				}
 				let i = this[c.register.name || c.name];
-				if (i.initialize && (typeof i.initialize === "function")) {
-					i.initialize();
+				try {
+					if (i.initialize && (typeof i.initialize === "function")) {
+						i.initialize();
+					}
+				} catch (e) {
+					console.log("Error: Unable to initialize class", e, i);
 				}
 			}
 		});

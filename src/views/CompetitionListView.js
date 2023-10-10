@@ -105,8 +105,10 @@ export class CompetitionList extends React.Component {
 	}
 
 	Groups = ({ group_id }) => {
-		if (group_id === undefined || group_id === "")
-			return this.state.groups.filter(g => this.Session.user === "patrik" || g.status !== Status.Hidden).map(g => <this.Group key={g.label} group={g} />);
+		if (group_id === undefined || group_id === "") {
+			const Group = this.Group;
+			return this.state.groups.filter(g => this.Session.user === "patrik" || g.status !== Status.Hidden).map(g => <Group key={g.label} group={g} />);
+		}
 		return null;
 	}
 
@@ -118,7 +120,8 @@ export class CompetitionList extends React.Component {
 
 	Competitions = ({ competitions, loggedIn }) => {
 		if (competitions.length === 0) return null;
-		return competitions.map(c => <this.Competition key={c.id} competition={c} />);
+		const Competition = this.Competition;
+		return competitions.map(c => <Competition key={c.id} competition={c} />);
 	}
 
 	CreateCompetition = ({ competitions }) => {
@@ -153,6 +156,7 @@ export class CompetitionList extends React.Component {
 		} else {
 			competitions = competitions.filter(c => c.group === undefined || c.group === "");
 		}
+
 		return <div id='competitions' className='content'>
 			<this.DeleteCompetitionDialog />
 			<h1>Tävlingar{this.groupName(group_id)}{this.Server.local && " (felsökning)"}</h1>
