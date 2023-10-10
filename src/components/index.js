@@ -20,6 +20,7 @@ export { SquadPicker } from './SquadPicker';
 export { YesNoDialog } from './YesNoDialog';
 export { ClubSelector } from './ClubSelector';
 export { StageProperties } from './StageProperties';
+export { StageSelector } from './StageSelector';
 export { ReportIndicator } from './ReportIndicator';
 export { EventResult } from './EventResult';
 export { TextInput, ClubSelectorInput, NewRegistrationContact, Dropdown, Spinner } from './Inputs';

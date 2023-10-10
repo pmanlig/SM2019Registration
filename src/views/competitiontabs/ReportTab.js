@@ -1,7 +1,8 @@
 import './Report.css';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Permissions, Schedule, TabInfo } from '../../models';
+import { Discipline, Permissions, Schedule, TabInfo } from '../../models';
+import { StageSelector } from '../../components';
 
 export class ReportTab extends React.Component {
 	static register = { name: "ReportView" };
@@ -126,15 +127,6 @@ export class ReportTab extends React.Component {
 		this.props.history.replace(`/competition/${id}/report/${p1}/${p2}/${stage}`);
 	}
 
-	StageSelector = ({ stages, stage }) => {
-		if (stages.length === 0) { return null; }
-		return <div id="stage-selector">Serie/station:
-			<select value={stage.num} onChange={e => this.setStage(parseInt(e.target.value, 10))}>
-				{stages.map(s => <option key={s.num} value={s.num}>{s.num}</option>)}
-			</select>
-		</div>
-	}
-
 	render() {
 		let { id, p1, p2, p3 } = this.props.match.params;
 		let { schedule } = this.state;
@@ -178,9 +170,10 @@ export class ReportTab extends React.Component {
 		p3 = parseInt(p3, 10);
 		let squad = schedule.squads.find(s => s.id === p2);
 
-		if (event.stages == null || event.stages.length === 0) { return <div>Fel! Inga serier/stationer!</div> }
+		let hasStages = Discipline.hasStages.includes(event.discipline);
+		if (hasStages && (event.stages == null || event.stages.length === 0)) { return <div>Fel! Inga serier/stationer!</div> }
 		let stageDefs = event.stages;
-		let stageDef = event.stages.find(s => s.num === p3);
+		let stageDef = hasStages ? event.stages.find(s => s.num === p3) : [];
 		let scores = this.Results.getScores(squad.id);
 		scores = scores.sort((a, b) => a.position - b.position);
 		scores.forEach((s, i) => s.position = i + 1);
@@ -189,7 +182,7 @@ export class ReportTab extends React.Component {
 			<div id="selections">
 				<this.EventSelector events={events} event={event} />
 				<this.SquadSelector schedule={schedule} squad={squad} />
-				<this.StageSelector stages={stageDefs} stage={stageDef} />
+				<StageSelector stages={stageDefs} stage={stageDef} setStage={this.setStage} />
 				{stageDef && <div>Figurer: {stageDef.targets}</div>}
 				{stageDef && <div>Maxträff: {stageDef.max}</div>}
 				{stageDef && stageDef.min > 0 && <div>Min: {stageDef.min}</div>}
