@@ -2,7 +2,44 @@ import './Report.css';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Discipline, Permissions, Schedule, TabInfo } from '../../models';
-import { StageSelector } from '../../components';
+
+function EventSelector({ events, event, changeEvent }) {
+	if (events.length < 2) { return null; }
+	return <div id="event-selector">Resultat för deltävling:
+		<select value={event.id} onChange={e => changeEvent(e.target.value)}>
+			{events.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
+		</select></div>
+}
+
+function SquadSelector({ schedule, squad, setSquad }) {
+	if (schedule === undefined) { return null; }
+	return <div id="squad-selector">Skjutlag/patrull:
+		<select value={squad.id} onChange={e => setSquad(e.target.value)}>
+			{schedule.squads.map(s => <option key={s.id} value={s.id}>{s.startTime.split(':').slice(0, 2).join(':')}</option>)}
+		</select>
+	</div>
+}
+
+function StageSelector({ stage, stages, setStage }) {
+	if (stages === 0) { return null; }
+	return <div id="stage-selector">Serie/station:
+		<select value={stage} onChange={e => setStage(parseInt(e.target.value, 10))}>
+			{new Array(stages).fill(null).map(((a, i) => <option key={i} value={i + 1}>{i + 1}</option>))}
+		</select>
+	</div>
+}
+
+function StageInfo({ stage, event }) {
+	if (!Discipline.hasStages.includes(event.discipline)) { return null; }
+	if (event.stages == null || event.stages.length === 0) { return <div>Fel! Inga serier/stationer!</div> }
+	let stageDef = event.stages.find(s => s.num === stage);
+
+	return [
+		stageDef && <div key="sifig">Figurer: {stageDef.targets}</div>,
+		stageDef && <div key="simax">Maxträff: {stageDef.max}</div>,
+		stageDef && stageDef.min > 0 && <div key="simin">Min: {stageDef.min}</div>,
+		stageDef && stageDef.values && <div key="sipts">Poängräkning</div>]
+}
 
 export class ReportTab extends React.Component {
 	static register = { name: "ReportView" };
@@ -100,26 +137,9 @@ export class ReportTab extends React.Component {
 		return <div id="queue-button"><this.ReportIndicator /></div>;
 	}
 
-	EventSelector = ({ events, event }) => {
-		if (events.length < 2) { return null; }
-		return <div id="event-selector">Resultat för deltävling:
-			<select value={event.id} onChange={e => this.changeEvent(e.target.value)}>
-				{events.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
-			</select></div>
-	}
-
 	setSquad(squadId) {
 		let { id, p1, p3 } = this.props.match.params;
 		this.props.history.replace(`/competition/${id}/report/${p1}/${squadId}/${p3}`);
-	}
-
-	SquadSelector = ({ schedule, squad }) => {
-		if (schedule === undefined) { return null; }
-		return <div id="squad-selector">Skjutlag/patrull:
-			<select value={squad.id} onChange={e => this.setSquad(e.target.value)}>
-				{schedule.squads.map(s => <option key={s.id} value={s.id}>{s.startTime.split(':').slice(0, 2).join(':')}</option>)}
-			</select>
-		</div>
 	}
 
 	setStage = stage => {
@@ -170,26 +190,19 @@ export class ReportTab extends React.Component {
 		p3 = parseInt(p3, 10);
 		let squad = schedule.squads.find(s => s.id === p2);
 
-		let hasStages = Discipline.hasStages.includes(event.discipline);
-		if (hasStages && (event.stages == null || event.stages.length === 0)) { return <div>Fel! Inga serier/stationer!</div> }
-		let stageDefs = event.stages;
-		let stageDef = hasStages ? event.stages.find(s => s.num === p3) : [];
 		let scores = this.Results.getScores(squad.id);
 		scores = scores.sort((a, b) => a.position - b.position);
 		scores.forEach((s, i) => s.position = i + 1);
 
 		return <div id="results" className="content">
 			<div id="selections">
-				<this.EventSelector events={events} event={event} />
-				<this.SquadSelector schedule={schedule} squad={squad} />
-				<StageSelector stages={stageDefs} stage={stageDef} setStage={this.setStage} />
-				{stageDef && <div>Figurer: {stageDef.targets}</div>}
-				{stageDef && <div>Maxträff: {stageDef.max}</div>}
-				{stageDef && stageDef.min > 0 && <div>Min: {stageDef.min}</div>}
-				{stageDef && stageDef.values && <div>Poängräkning</div>}
+				<EventSelector events={events} event={event} changeEvent={this.changeEvent} />
+				<SquadSelector schedule={schedule} squad={squad} setSquad={this.setSquad} />
+				<StageSelector stages={event.scores} stage={p3} setStage={this.setStage} />
+				<StageInfo stage={p3} event={event} results={this.Results} />
 				<div id="spacer" style={{ flexGrow: 1 }} />
 			</div>
-			{stageDef && <this.ReportTable mode={this.Configuration.mode} event={event} stageDef={stageDef} scores={scores} />}
+			<this.ReportTable mode={this.Configuration.mode} event={event} stage={p3} scores={scores} />
 			<this.NextButton />
 			<this.QueueButton />
 		</div>;

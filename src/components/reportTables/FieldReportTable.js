@@ -1,6 +1,5 @@
-import './ReportTable.css';
 import React from 'react';
-import { Mode } from '../models';
+import { Discipline, Mode } from '../../models';
 
 function Redo({ stage, participant, onChange }) {
 	return <div className="participant">
@@ -129,7 +128,8 @@ export class FieldReportTable extends React.Component {
 	}
 
 	render() {
-		let { stageDef, scores } = this.props;
+		let { event, stage, scores } = this.props;
+		let stageDef = event.stages.find(s => s.num === stage);
 		let id = 0;
 		return <div className={"score-sheet field"}>
 			<div className="header">Pos</div>
@@ -145,3 +145,5 @@ export class FieldReportTable extends React.Component {
 		</div>;
 	}
 }
+
+FieldReportTable.disciplines = [Discipline.fieldP, Discipline.fieldK];
