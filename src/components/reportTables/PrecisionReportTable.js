@@ -12,16 +12,13 @@ function Note({ participant, onChange }) {
 	return <div className="participant"><input type="text" value={participant.note || ""} onChange={onChange} /></div>;
 }
 
-export class FieldReportTable extends React.Component {
-	static fieldTargets = ["1", "2", "3", "4", "5", "6"];
-	static fieldTargetIds = [0, 1, 2, 3, 4, 5];
-	static targetValues = [0, 1, 2, 3, 4, 5, 6];
+export class PrecisionReportTable extends React.Component {
+	static shots = ["1", "2", "3", "4", "5"];
+	static shotValues = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "X"];
 
-	headers(stageDef) {
-		return FieldReportTable.fieldTargetIds.map(i =>
-			(stageDef !== undefined && i < stageDef.targets) ?
-				<div key={"hdr" + i} className="header">{FieldReportTable.fieldTargets[i]}</div> :
-				<div key={"hdr" + i} className="null" />
+	headers() {
+		return PrecisionReportTable.shots.map(i =>
+				<div key={"hdr" + i} className="header">{i}</div>
 		);
 	}
 
@@ -128,21 +125,18 @@ export class FieldReportTable extends React.Component {
 
 	render() {
 		let { event, stage, scores } = this.props;
-		let stageDef = event.stages.find(s => s.num === stage);
-		let id = 0;
 		return <div className={"score-sheet field"}>
 			<div className="header">Pos</div>
 			<div className="header align-left">Namn</div>
 			<div className="header">Stöd</div>
-			{this.headers(stageDef)}
+			{this.headers()}
 			<div className="header">Total</div>
-			{stageDef.value ? <div className="header">Poäng</div> : <div className="null" />}
 			<div className="header">Omskj.</div>
 			<div className="header align-left">Anteckning</div>
 			<div className="null align-left">{/* Error */}</div>
-			{scores.map((p, i) => this.participantRow(stageDef, p, id++, i === 0)).flat()}
+			{/* scores.map((p, i) => this.participantRow(p, i, i === 0)).flat() */}
 		</div>;
 	}
 }
 
-FieldReportTable.disciplines = [Discipline.fieldP, Discipline.fieldK, Discipline.scoredP, Discipline.scoredK];
+PrecisionReportTable.disciplines = [Discipline.target];
