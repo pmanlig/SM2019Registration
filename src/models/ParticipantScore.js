@@ -44,6 +44,15 @@ export class ParticipantScore {
 		return `${values.filter(v => v !== undefined).reduce((a, b) => a + b, 0)}/${values.filter(s => s > 0).length}`;
 	}
 
+	getPrecisionTotal(stage) {
+		let score = this.getScores(stage);
+		if (score == null) return "0";
+		return `${score.values
+			.filter(v => v !== undefined)
+			.map(x => x === "X" ? 10 : x)
+			.reduce((a, b) => a + b, 0)}`;
+	}
+
 	getTotal() {
 		return "0";
 	}

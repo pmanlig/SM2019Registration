@@ -1,5 +1,5 @@
 export function setCookie(name, value, expiration) {
-	document.cookie = `${name}=${value}; ${(expiration ? expiration + "; " : "")}path=/`;
+	document.cookie = `${name}=${value}; ${(expiration ? expiration + "; " : "")}path=/;SameSite=Lax`;
 }
 
 export function getCookie(name, defaultValue = null) {
