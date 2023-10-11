@@ -1,7 +1,7 @@
 import './Report.css';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Discipline, Permissions, Schedule, TabInfo } from '../../models';
+import { Discipline, Permissions, Schedule, ScoringModels, TabInfo } from '../../models';
 
 function EventSelector({ events, event, changeEvent }) {
 	if (events.length < 2) { return null; }
@@ -103,10 +103,10 @@ export class ReportTab extends React.Component {
 		p2 = parseInt(p2, 10);
 		p3 = parseInt(p3, 10)
 		let event = this.Competition.events.find(e => e.id === p1);
-		let stageDef = event.stages.find(s => s.num === p3);
+		let scoring = ScoringModels.getModel(event.discipline);
 		let participants = this.Results.getScores(p2);
 		let squad = this.state.schedule.squads.find(s => s.id === p2);
-		let errors = participants.filter(p => p.squad === squad.id).filter(p => !p.validateScore(stageDef));
+		let errors = participants.filter(p => p.squad === squad.id).filter(p => !scoring.validateScore(p, event, p3));
 		if (errors.length > 0) { console.log(errors); }
 		return errors.length > 0;
 	}
@@ -137,7 +137,7 @@ export class ReportTab extends React.Component {
 		return <div id="queue-button"><this.ReportIndicator /></div>;
 	}
 
-	setSquad(squadId) {
+	setSquad = (squadId) => {
 		let { id, p1, p3 } = this.props.match.params;
 		this.props.history.replace(`/competition/${id}/report/${p1}/${squadId}/${p3}`);
 	}

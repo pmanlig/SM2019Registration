@@ -1,25 +1,26 @@
+export { ClassGroups, ClassGroup } from './ClassGroups';
+export { Clubs } from './Clubs';
+export { Competition, Permissions, Status, Operations } from './Competition';
+export { CompetitionGroup } from './CompetitionGroup';
+export { Discipline } from './Discipline';
+export { DivisionGroups, DivisionGroup } from './DivisionGroups';
+export { Event } from './Event';
 export { Events } from '../logic';
 export { Participant } from './Participant';
+export { ParticipantScore } from './ParticipantScore';
 export { Person } from './Person';
-export { Registry } from './Registry';
-export { Competition, Permissions, Status, Operations } from './Competition';
 export { Registration } from './Registration';
+export { Registry } from './Registry';
 export { Results } from './Results';
 export { Schedule } from './Schedule';
+export { ScoringModels } from './ScoringModels';
 export { Squad } from './Squad';
-export { Event } from './Event';
-export { Discipline } from './Discipline';
-export { ClassGroups, ClassGroup } from './ClassGroups';
-export { DivisionGroups, DivisionGroup } from './DivisionGroups';
-export { Tokens } from './Tokens';
-export { Clubs } from './Clubs';
 export { StageDef } from './StageDef';
-export { TeamDef } from './TeamDef';
-export { ParticipantScore } from './ParticipantScore';
-export { CompetitionGroup } from './CompetitionGroup';
+export { TabInfo } from './TabInfo';
 export { TeamRegistration } from './TeamRegistration';
 export { Team } from './Team';
-export { TabInfo } from './TabInfo';
+export { TeamDef } from './TeamDef';
+export { Tokens } from './Tokens';
 
 export class Mode {
 	static computer = "computer";
