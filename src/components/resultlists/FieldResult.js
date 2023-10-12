@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from 'react-router-dom';
+import { Discipline } from "../../models";
+import { PointFieldScore, StdFieldScore } from "../../logic";
 
 let sort = (a, b) => {
 	let pos = 0;
@@ -16,6 +18,14 @@ let sort = (a, b) => {
 }
 
 export class FieldResult extends React.Component {
+	static disciplines = [Discipline.fieldP, Discipline.scoredP];
+
+	constructor(props) {
+		super(props);
+		this.scorer = props.event.discipline === Discipline.fieldP ?
+			StdFieldScore : PointFieldScore;
+	}
+
 	Header = props => {
 		let scores = [], s = 0;
 		while (s++ < props.event.scores) { scores.push(<th key={s}>{s}</th>); }
@@ -34,7 +44,6 @@ export class FieldResult extends React.Component {
 	}
 
 	Participant = props => {
-		let { scorer } = this.props;
 		let { data, pos, event } = props;
 		let { id, name, organization, scores, targets, total, std } = data;
 		let txts = [];
@@ -48,7 +57,7 @@ export class FieldResult extends React.Component {
 			<td className="left">{organization}</td>
 			{event.classes > 0 && <td>{data.class}</td>}
 			{txts}
-			<td>{scorer.finalScore(total)}</td>
+			<td>{this.scorer.finalScore(total)}</td>
 			{props.showValues && <td>{total[2]}p</td>}
 			<td>{std}</td>
 		</tr>
@@ -85,9 +94,9 @@ export class FieldResult extends React.Component {
 	}
 
 	render() {
-		let { event, filter, scorer } = this.props;
+		let { event, filter } = this.props;
 		let showValues = event.stages.some(s => s.value);
-		let results = this.props.results.map(r => scorer.calculateScores(r, event));
+		let results = this.props.results.map(r => this.scorer.calculateScores(r, event));
 		this.assignStd(results.flat().sort((a, b) => sort(a, b)));
 		return < table >
 			<this.Header event={event} showValues={showValues} />
