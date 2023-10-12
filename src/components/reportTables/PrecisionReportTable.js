@@ -58,8 +58,8 @@ export class PrecisionReportTable extends React.Component {
 	}
 
 	targets(stage, participant, id) {
-		return PrecisionReportTable.shots.map(i =>
-			<div key={"tgt" + id + i} className={this.participantClass("input", participant, i)}>
+		return PrecisionReportTable.shots.map((num, i) =>
+			<div key={"tgt" + id + num} className={this.participantClass("input", participant, i)}>
 				{this.props.mode === Mode.computer ?
 					this.computerTarget(stage, participant, i, id === 0 && i === 0) :
 					this.mobileTarget(stage, participant, i)}

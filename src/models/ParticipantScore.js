@@ -1,8 +1,4 @@
 export class ParticipantScore {
-	static E_MISSING_VALUE = "Värde saknas";
-	static E_INCORRECT_SPREAD = "Träffarna inte fördelade korrekt";
-	static E_TOO_MANY_HITS = "För många träffar";
-
 	constructor(id, name, org, squad, division, cls, scores, eventId, eventName, position, note, redo, support) {
 		this.id = id;
 		this.name = name;
@@ -57,39 +53,6 @@ export class ParticipantScore {
 		return "0";
 	}
 
-	validateScore(stageDef) {
-		this.error = null;
-		let score = this.getScores(stageDef.num);
-		if (score == null) {
-			this.error = ParticipantScore.E_MISSING_VALUE;
-			return false;
-		}
-		let length = stageDef.targets + (stageDef.value ? 1 : 0);
-		let values = score.values;
-		if (values.length < length) {
-			this.error = ParticipantScore.E_MISSING_VALUE;
-			return false;
-		} else for (let t = 0; t < length; t++) {
-			if (values[t] == null) {
-				this.error = ParticipantScore.E_MISSING_VALUE;
-				return false;
-			}
-		}
-		if (stageDef.min > 0) {
-			let max = stageDef.shots + values.filter(t => t < stageDef.min).map(t => t - stageDef.min).reduce((a, b) => a + b, 0);
-			if (values.reduce((a, b) => a + b, 0) > max) {
-				this.error = ParticipantScore.E_INCORRECT_SPREAD;
-				return false;
-			}
-		}
-		values = values.slice(0, stageDef.targets);
-		if (values.some(t => t > stageDef.max) || values.reduce((a, b) => a + b, 0) > stageDef.shots) {
-			this.error = ParticipantScore.E_TOO_MANY_HITS;
-			return false;
-		}
-		return true;
-	}
-
 	toStageJson(stage) {
 		return { ...this, score: this.scores.filter(n => stage === undefined || n.stage === stage) };
 	}
@@ -105,7 +68,7 @@ export class ParticipantScore {
 			json.score.map(s => {
 				return {
 					stage: parseInt(s.stage, 10),
-					values: s.values.map(n => parseInt(n, 10))
+					values: s.values.map(n => n === "X" ? "X" : parseInt(n, 10))
 				}
 			}),
 			parseInt(json.event_id, 10),
