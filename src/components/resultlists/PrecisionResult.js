@@ -55,22 +55,22 @@ export class PrecisionResult extends React.Component {
 		</tr>
 	}
 
-	getBreaks(event, group) {
+	getBreaks(event, division) {
 		if (Discipline.target === event.discipline)
-			if (["M1", "M2", "M3", "M4"].includes(group)) return { s: 282, b: 274 }
-		if ("M5" === group) return { s: 294, b: 288 }
-		if (["M6", "M7"].includes(group)) return { s: 270, b: 253 }
-		if ("A" === group) {
+			if (["M1", "M2", "M3", "M4"].includes(division)) return { s: 282, b: 274 }
+		if ("M5" === division) return { s: 294, b: 288 }
+		if (["M6", "M7"].includes(division)) return { s: 270, b: 253 }
+		if ("A" === division) {
 			if (6 === event.scores) return { s: 277, b: 267 }
 			if (7 === event.scores) return { s: 323, b: 312 }
 			if (10 === event.scores) return { s: 461, b: 445 }
 		}
-		if ("B" === group) {
+		if ("B" === division) {
 			if (6 === event.scores) return { s: 282, b: 273 }
 			if (7 === event.scores) return { s: 329, b: 319 }
 			if (10 === event.scores) return { s: 470, b: 455 }
 		}
-		if ("C" === group) {
+		if ("C" === division) {
 			if (6 === event.scores) return { s: 283, b: 276 }
 			if (7 === event.scores) return { s: 330, b: 322 }
 			if (10 === event.scores) return { s: 471, b: 460 }
