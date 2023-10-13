@@ -55,18 +55,41 @@ export class PrecisionResult extends React.Component {
 		</tr>
 	}
 
+	getBreaks(discipline, group) {
+		switch (discipline) {
+			case Discipline.target:
+				switch (group) {
+					case "M1":
+					case "M2":
+					case "M3":
+					case "M4":
+						return { s: 282, b: 274 }
+					case "M5":
+						return { s: 294, b: 288 }
+					case "M6":
+					case "M7":
+						return { s: 270, b: 253 }
+					default:
+						return { s: 1000, b: 1000 }
+				}
+			default:
+				return { s: 1000, b: 1000 }
+		}
+	}
+
 	assignStd(scores) {
+		let fixedBreaks = this.getBreaks(this.props.event.discipline, this.props.division);
 		let sBreak = Math.floor(scores.length / 9);
 		let bBreak = Math.floor(scores.length / 3);
-		let sLim = -1, bLim = -1;
+		let sLim = fixedBreaks.s, bLim = fixedBreaks.b;
 		scores.forEach((s, i) => {
-			if (i < sBreak || s.total[0] === sLim) {
+			if (i < sBreak || s.total[0] >= sLim) {
 				s.std = "S";
-				sLim = s.total[0];
-				bLim = s.total[0];
-			} else if (i < bBreak || s.total[0] === bLim) {
+				if (s.total[0] < sLim) { sLim = s.total[0]; }
+				if (s.total[0] < bLim) { bLim = s.total[0]; }
+			} else if (i < bBreak || s.total[0] >= bLim) {
 				s.std = "B";
-				bLim = s.total[0];
+				if (s.total[0] < bLim) { bLim = s.total[0]; }
 			}
 		});
 		return scores;
@@ -84,7 +107,7 @@ export class PrecisionResult extends React.Component {
 		// .concat([<tr key={results[0].class}><td>&nbsp;</td></tr>]);
 	}
 
-	calculateScores(results, event) {
+	calculateScores(results) {
 		const sum = (a, b) => a + b;
 		return results.map(p => {
 			let scores = [];
@@ -107,8 +130,8 @@ export class PrecisionResult extends React.Component {
 
 	render() {
 		let { event, filter } = this.props;
-		let results = this.props.results.map(r => this.calculateScores(r, event));
-		this.assignStd(results.flat().sort((a, b) => sort(a, b)));
+		let results = this.props.results.map(r => this.calculateScores(r));
+		this.assignStd(results.flat().sort((a, b) => sort(a, b)), event);
 		return < table >
 			<this.Header event={event} />
 			<tbody>
