@@ -90,7 +90,7 @@ export class PrecisionResult extends React.Component {
 			let scores = [];
 			let Xs = 0;
 			p.scores.forEach(s => {
-				scores[s.stage - 1] = s.values.map(v => v === "X" ? 10 : v).reduce(sum, 0);
+				scores[s.stage - 1] = s.values.filter(v => v !== undefined).map(v => v === "X" ? 10 : v).reduce(sum, 0);
 				Xs += s.values.filter(s => s === "X").length;
 			});
 			return {

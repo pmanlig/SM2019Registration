@@ -1,7 +1,7 @@
 import './Result.css';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Permissions, Status, TabInfo } from '../../models';
+import { Permissions, ScoringModels, Status, TabInfo } from '../../models';
 import { EventResult, Scorecard } from '../../components';
 
 export class ResultTab extends React.Component {
@@ -107,10 +107,11 @@ export class ResultTab extends React.Component {
 		if (!isNaN(scorecard)) {
 			let event = this.Competition.events.find(e => e.id === parseInt(p1, 10));
 			let participant = this.Results.scores.find(s => s.id === scorecard);
+			let model = ScoringModels.getModel(event.discipline);
 			for (const score of participant.scores) {
-				let stageDef = event.stages.find(s => s.num === score.stage);
-				if (!participant.validateScore(stageDef)) {
-					alert(`Station ${score.stage} - ${participant.error}`);
+				console.log("ResultTab::updateScorecard", score);
+				if (!model.validateScore(participant, event, score.stage)) {
+					alert(`Station/serie ${score.stage} - ${participant.error}`);
 					participant.error = undefined;
 					return;
 				}
@@ -148,7 +149,7 @@ export class ResultTab extends React.Component {
 		if (this.Results.scores === undefined) { return null; }
 
 		let results = this.filterScores(event, p2);
-		let scorecard = parseInt(p2, 10) || parseInt(p3, 10);
+		let scorecard = parseInt(p3, 10) || parseInt(p2, 10);
 		if (!isNaN(scorecard)) {
 			return <div id="result" className="content">
 				<Scorecard competition={this.Competition} event={event} show={scorecard} results={results} />

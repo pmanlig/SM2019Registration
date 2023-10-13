@@ -23,12 +23,14 @@ export class PrecisionReportTable extends React.Component {
 	}
 
 	setScore = (stage, participant, target, value) => {
-		if (value.toUpperCase() === "X") {
+		if (value === "") {
+			participant.setScore(stage, target, undefined);
+		} else if (value.toUpperCase() === "X") {
 			participant.setScore(stage, target, "X");
 		} else {
 			value = parseInt(value, 10);
-			if (value >= 0 && value <= 10) {
-				participant.setScore(stage, target, isNaN(value) ? undefined : value);
+			if (!isNaN(value) && value >= 0 && value <= 10) {
+				participant.setScore(stage, target, value);
 			}
 		}
 		this.setState({});

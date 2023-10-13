@@ -8,11 +8,15 @@ class PrecisionScoring {
 	static validateScore(participant, event, stage) {
 		participant.error = null;
 		let score = participant.getScores(stage);
-		if (score == null || score.values.length < 5 || score.values.some(s => s === null)) {
+		if (score == null || score.values.length < 5 || score.values.some(s => s === null || s === undefined)) {
 			participant.error = E_MISSING_VALUE;
 			return false;
 		}
 		return true;
+	}
+
+	static total(participant, event) {
+		return 0;
 	}
 }
 
@@ -49,6 +53,10 @@ class FieldScoring {
 			return false;
 		}
 		return true;
+	}
+
+	static total(participant, event) {
+		
 	}
 }
 

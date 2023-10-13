@@ -121,8 +121,13 @@ export class ReportTab extends React.Component {
 		let squad = schedule.squads.find(s => s.id === p2);
 		if (!this.hasErrors()) {
 			this.Results.report(event, squad, p3);
-			let i = (schedule.squads.findIndex(s => s === squad) + 1) % schedule.squads.length;
-			this.props.history.replace(`/competition/${id}/report/${p1}/${schedule.squads[i].id}/${p3}`);
+			const newSquad = Discipline.hasStages.includes(event.discipline) ?
+				schedule.squads[(schedule.squads.findIndex(s => s === squad) + 1) % schedule.squads.length].id :
+				squad.id;
+			const newStage = Discipline.hasStages.includes(event.discipline) ?
+				p3 :
+				(p3 % event.scores) + 1;
+			this.props.history.replace(`/competition/${id}/report/${p1}/${newSquad}/${newStage}`);
 			this.Results.load(id, p1, true);
 		} else {
 			this.setState({});
