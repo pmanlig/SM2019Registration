@@ -55,30 +55,31 @@ export class PrecisionResult extends React.Component {
 		</tr>
 	}
 
-	getBreaks(discipline, group) {
-		switch (discipline) {
-			case Discipline.target:
-				switch (group) {
-					case "M1":
-					case "M2":
-					case "M3":
-					case "M4":
-						return { s: 282, b: 274 }
-					case "M5":
-						return { s: 294, b: 288 }
-					case "M6":
-					case "M7":
-						return { s: 270, b: 253 }
-					default:
-						return { s: 1000, b: 1000 }
-				}
-			default:
-				return { s: 1000, b: 1000 }
+	getBreaks(event, group) {
+		if (Discipline.target === event.discipline)
+			if (["M1", "M2", "M3", "M4"].includes(group)) return { s: 282, b: 274 }
+		if ("M5" === group) return { s: 294, b: 288 }
+		if (["M6", "M7"].includes(group)) return { s: 270, b: 253 }
+		if ("A" === group) {
+			if (6 === event.scores) return { s: 277, b: 267 }
+			if (7 === event.scores) return { s: 323, b: 312 }
+			if (10 === event.scores) return { s: 461, b: 445 }
 		}
+		if ("B" === group) {
+			if (6 === event.scores) return { s: 282, b: 273 }
+			if (7 === event.scores) return { s: 329, b: 319 }
+			if (10 === event.scores) return { s: 470, b: 455 }
+		}
+		if ("C" === group) {
+			if (6 === event.scores) return { s: 283, b: 276 }
+			if (7 === event.scores) return { s: 330, b: 322 }
+			if (10 === event.scores) return { s: 471, b: 460 }
+		}
+		return { s: 1000, b: 1000 }
 	}
 
 	assignStd(scores) {
-		let fixedBreaks = this.getBreaks(this.props.event.discipline, this.props.division);
+		let fixedBreaks = this.getBreaks(this.props.event, this.props.division);
 		let sBreak = Math.floor(scores.length / 9);
 		let bBreak = Math.floor(scores.length / 3);
 		let sLim = fixedBreaks.s, bLim = fixedBreaks.b;
