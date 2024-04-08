@@ -43,7 +43,9 @@ export class ScheduleProperties extends React.Component {
 		schedule = Schedule.fromJson(schedule);
 		let newState = this.schedules[schedule.id] || this.newScheduleInformation(event, schedule);
 		newState.duration = schedule.duration;
+		let allDiv = this.allDivisions(event)
 		newState.allDivisions = this.allDivisions(event);
+		newState.schedule.squads.forEach(s => s.divisions = s.divisions.filter(d => allDiv && allDiv.some(a => a === d)));
 		this.setState(newState);
 	}
 
