@@ -77,4 +77,8 @@ export class Session {
 			}, this.Footers.errorHandler(Session.E_LOGOUT_ERROR));
 		}
 	}
+
+	isAdmin() {
+		return this.user === "patrik";
+	}
 }

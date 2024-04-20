@@ -60,7 +60,7 @@ export class CompetitionGroups {
 			this.groups.forEach(g => g.iconPath = this.icons[g.icon] || gpk);
 			this.fire(this.Events.competitionGroupsUpdated);
 			this.Server.loadRemoteCompetitionGroups(json => {
-				// TODO: Implement!!!
+				// TODO: Implement remote groups!!!
 				console.log("Remote groups", json);
 			}, this.Footers.errorHandler(CompetitionGroups.E_CANNOT_FETCH));
 		},

@@ -2,7 +2,7 @@ import "./Tabs.css";
 import "./CompetitionView.css";
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Mode, Permissions } from '../models';
+import { Mode } from '../models';
 import { competitionTabs } from "./competitiontabs";
 
 export class CompetitionView extends React.Component {
@@ -29,14 +29,7 @@ export class CompetitionView extends React.Component {
 		if (this.Competition.id !== id) { return <div className="content"><p>Hämtar tävling...</p></div>; }
 
 		let group = this.CompetitionGroups.findGroup(this.Competition.group);
-		let tabs = competitionTabs().map(t => t.tabInfo).filter(t =>
-			this.Competition.permissions === Permissions.Own ||
-			(
-				t.permissions <= this.Competition.permissions &&
-				(
-					t.status === undefined ||
-					t.status === this.Competition.status
-				)));
+		let tabs = competitionTabs().map(t => t.tabInfo).filter(t => t.show(this.Competition));
 
 		if (tabs.length === 0) { return <Redirect to="/" />; }
 

@@ -3,10 +3,17 @@ import React from 'react';
 import { Permissions, Status, ParticipantScore, Team, TabInfo } from '../../models';
 import { Description, NewRegistrationContact, TeamForm } from '../../components';
 
+class TeamTabInfo extends TabInfo {
+	show(competition) {
+		return false;
+		// return super.show(competition) && competition.events && competition.events.some(e => e.teams && e.teams.length > 0);
+	}
+}
+
 export class TeamTab extends React.Component {
 	static register = { name: "TeamView" };
 	static wire = ["EventBus", "Events", "Server", "Busy", "Competition", "Footers", "Registration", "TeamRegistration", "Busy"];
-	static tabInfo = new TabInfo("Laganmälan", "teams", 2, Permissions.Admin, Status.Open);
+	static tabInfo = new TeamTabInfo("Laganmälan", "teams", 2, Permissions.Any, Status.Open);
 
 	static BUSY_LOAD_PARTICIPANTS = "loadTeamParticipants";
 	static BUSY_LOAD_REGISTRATION = "loadTeamRegistration";

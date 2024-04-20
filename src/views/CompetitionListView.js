@@ -71,13 +71,12 @@ export class CompetitionList extends React.Component {
 	}
 
 	Competition = ({ competition }) => {
-		if (competition.name === "Forsa Poängfältskjutning 230423") {
-			console.log("Competition", competition, competitionTabs());
+		console.log("List", competition);
+		let links = competitionTabs().map(t => t.tabInfo).filter(o => o.show(competition));
+		if (competition.name === "Testtävling SM") {
+			let reg = competitionTabs().map(t => t.tabInfo).find(i => i.path === "register");
+			console.log("Register", competition.name, reg.show(competition), reg);
 		}
-		let links = competitionTabs().map(t => t.tabInfo).filter(o => (
-			(competition.permissions !== Permissions.Any) ||
-			(o.permissions === Permissions.Any && (o.status === undefined || o.status === competition.status))
-		));
 		return <div key={competition.id} className={"competition-tile " + this.getState(competition)}>
 			<div className="event-title">
 				<Link className="competition-link" to={`/competition/${competition.id}`}>{competition.name.split("$")[0]}</Link>
@@ -107,7 +106,7 @@ export class CompetitionList extends React.Component {
 	Groups = ({ group_id }) => {
 		if (group_id === undefined || group_id === "") {
 			const Group = this.Group;
-			return this.state.groups.filter(g => this.Session.user === "patrik" || g.status !== Status.Hidden).map(g => <Group key={g.label} group={g} />);
+			return this.state.groups.filter(g => this.Session.isAdmin() || g.status !== Status.Hidden).map(g => <Group key={g.label} group={g} />);
 		}
 		return null;
 	}
@@ -148,10 +147,10 @@ export class CompetitionList extends React.Component {
 	render() {
 		let group_id = this.props.match.params.group_id;
 		// ToDo: fix filtering of hidden competitions in server
-		let competitions = this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own || this.Session.user === "patrik"));
+		let competitions = this.state.competitions.filter(h => (h.status !== Status.Hidden || h.permissions === Permissions.Own || this.Session.isAdmin()));
 		if (group_id) {
 			competitions = competitions.filter(c => c.group === group_id);
-		} else if (this.Session.user === "patrik") {
+		} else if (this.Session.isAdmin()) {
 			competitions = competitions.filter(c => c.group === undefined || !this.state.groups.some(g => g.label === c.group));
 		} else {
 			competitions = competitions.filter(c => c.group === undefined || c.group === "");
