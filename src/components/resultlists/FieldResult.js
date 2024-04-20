@@ -18,11 +18,11 @@ let sort = (a, b) => {
 }
 
 export class FieldResult extends React.Component {
-	static disciplines = [Discipline.fieldP, Discipline.scoredP];
+	static disciplines = [Discipline.fieldP, Discipline.fieldK, Discipline.scoredP, Discipline.scoredK];
 
 	constructor(props) {
 		super(props);
-		this.scorer = props.event.discipline === Discipline.fieldP ?
+		this.scorer = (props.event.discipline === Discipline.fieldP || props.event.discipline) ?
 			StdFieldScore : PointFieldScore;
 	}
 

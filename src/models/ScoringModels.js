@@ -56,7 +56,13 @@ class FieldScoring {
 	}
 
 	static total(participant, event) {
-		
+
+	}
+}
+
+class PointFieldScoring extends FieldScoring {
+	static total(participant, event) {
+
 	}
 }
 
@@ -68,6 +74,9 @@ export class ScoringModels {
 			case Discipline.fieldP:
 			case Discipline.fieldK:
 				return FieldScoring;
+			case Discipline.scoredP:
+			case Discipline.scoredK:
+				return PointFieldScoring;
 			default:
 				return null;
 		}

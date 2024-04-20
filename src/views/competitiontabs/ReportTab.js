@@ -104,6 +104,10 @@ export class ReportTab extends React.Component {
 		p3 = parseInt(p3, 10)
 		let event = this.Competition.events.find(e => e.id === p1);
 		let scoring = ScoringModels.getModel(event.discipline);
+		if (scoring === null) {
+			console.log("No scoring model for discupline");
+			return true;
+		}
 		let participants = this.Results.getScores(p2);
 		let squad = this.state.schedule.squads.find(s => s.id === p2);
 		let errors = participants.filter(p => p.squad === squad.id).filter(p => !scoring.validateScore(p, event, p3));

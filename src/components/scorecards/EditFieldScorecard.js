@@ -3,7 +3,7 @@ import { TextInput } from '../Inputs';
 import { Discipline } from '../../models';
 
 export class EditFieldScorecard extends React.Component {
-	static disciplines = [Discipline.fieldP];
+	static disciplines = [Discipline.fieldP, Discipline.fieldK, Discipline.scoredP, Discipline.scoredK];
 	static editable = true;
 	static targets = [1, 2, 3, 4, 5, 6];
 

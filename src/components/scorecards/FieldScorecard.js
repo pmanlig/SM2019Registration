@@ -2,7 +2,7 @@ import React from 'react';
 import { Discipline } from '../../models';
 
 export class FieldScorecard extends React.Component {
-	static disciplines = [Discipline.fieldP];
+	static disciplines = [Discipline.fieldP, Discipline.fieldK, Discipline.scoredP, Discipline.scoredK];
 	static targets = [1, 2, 3, 4, 5, 6];
 
 	Header = () => {
