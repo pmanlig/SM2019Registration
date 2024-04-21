@@ -22,7 +22,7 @@ export class FieldResult extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.scorer = (props.event.discipline === Discipline.fieldP || props.event.discipline) ?
+		this.scorer = (props.event.discipline === Discipline.fieldP || props.event.discipline === Discipline.fieldK) ?
 			StdFieldScore : PointFieldScore;
 	}
 
