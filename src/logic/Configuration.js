@@ -24,8 +24,10 @@ export class Configuration {
 		fetch("/config.json")
 			.then(res => res.json())
 			.then(json => {
-				this.site = json.useSite || 'real';
-				this.baseUrl = this.site === 'test' ? json.baseUrlTest : json.baseUrlReal;
+				if (json.useSite) {
+					this.site = json.useSite || 'real';
+					this.baseUrl = (this.site === 'test' ? json.baseUrlTest : json.baseUrlReal) || json.baseUrl;
+				} else this.baseUrl = json.baseUrl;
 				this.loaded = true;
 				window._debug = this.site !== 'production';
 				this.fire(this.Events.configurationLoaded);
