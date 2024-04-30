@@ -1,5 +1,6 @@
 import './Team.css';
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { Permissions, Status, ParticipantScore, Team, TabInfo } from '../../models';
 import { Description, NewRegistrationContact, TeamForm } from '../../components';
 
@@ -80,6 +81,10 @@ export class TeamTab extends React.Component {
 	}
 
 	render() {
+		let { id, p1 } = this.props.match.params;
+		if (!p1 && this.Registration.token) {
+			return <Redirect to={`/competition/${id}/teams/${this.Registration.token}`} />
+		}
 		let { participants, teamDefs } = this.state;
 		let { name, organization, email, account } = this.Registration.contact;
 		if (participants !== undefined) { participants = participants.filter(p => p.organization === organization); }

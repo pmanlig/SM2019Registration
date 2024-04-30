@@ -233,10 +233,12 @@ export class Registration {
 		let errors = new Validation(this.Competition).validate(this.participants);
 		if (errors.length === 0) {
 			this.Server.sendRegistration(this.toJson(), res => {
-				this.token = res.token;
-				this.Tokens.setToken(this.Competition.id, res.token);
 				this.Footers.addFooter(this.countEvents() + " starter registrerade", "info");
-				this.fire(this.Events.registrationUpdated, this);
+				if (this.token !== res.token) {
+					this.token = res.token;
+					this.Tokens.setToken(this.Competition.id, res.token);
+					this.fire(this.Events.registrationUpdated, this);
+					}
 			}, error => {
 				this.Footers.addFooter(`Registreringen misslyckades! (${error.message || error})`);
 			});
@@ -250,11 +252,13 @@ export class Registration {
 		this.Storage.set(this.Storage.keys.registrationContact, this.contact);
 		let errors = new TeamValidation(this.Competition).validate(this.teams);
 		if (errors.length === 0) {
-			this.Server.updateRegistration(this.token, this.toJson(), res => {
-				// this.token = res.token;
-				// this.Tokens.setToken(this.Competition.id, res.token);
+			this.Server.sendRegistration(this.toJson(), res => {
 				this.Footers.addFooter(`${this.teams.length} lag registrerade`, "info")
-				// this.fire(this.Events.registrationUpdated, this);
+				if (this.token !== res.token) {
+					this.token = res.token;
+					this.Tokens.setToken(this.Competition.id, res.token);
+					this.fire(this.Events.registrationUpdated, this);
+					}
 			}, error => {
 				this.Footers.addFooter(`Registreringen misslyckades! (${error.message || error})`);
 			});

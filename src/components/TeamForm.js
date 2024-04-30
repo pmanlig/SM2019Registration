@@ -54,7 +54,7 @@ export class TeamForm extends React.Component {
 			<div key="th2" className='registration-header major-header' style={{ gridColumnEnd: `span ${members + alternates}` }}>Medlemmar</div>,
 			<div key="d1" style={{ gridRow: 1 }} />,
 			<div key="th3" className='team-name-header minor-header'>Lagnamn*</div>,
-			<div key="th4" className='team-selection-header minor-header'>Lag</div>
+			<div key="th4" className='team-selection-header minor-header'>Grupp</div>
 		];
 		for (let i = 0; i < members;) {
 			hdr.push(<div key={`tm-${i}`} className='team-member-header minor-header'>{`Skytt ${++i}*`}</div>);

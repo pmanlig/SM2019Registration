@@ -2,10 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Permissions, TabInfo } from '../../models';
 
+class TeamAdminTabInfo extends TabInfo {
+	show(competition) {
+		return false; // Tab is deprecated
+	}
+}
+
 export class TeamAdminTab extends React.Component {
 	static register = { name: "TeamAdminTab" };
 	static wire = ["Server", "Competition", "Configuration", "Events", "EventBus", "Footers"];
-	static tabInfo = new TabInfo("Administrera lag", "teamadmin", 202, Permissions.Admin);
+	static tabInfo = new TeamAdminTabInfo("Administrera lag", "teamadmin", 202, Permissions.Admin);
 
 	constructor(props) {
 		super(props);
