@@ -138,7 +138,6 @@ export class Competition {
 			this.events = obj.events ? obj.events.map(e => Event.fromJson(e)) : this.events;
 			this.nextNewEvent = Math.max(...this.events.filter(e => e.id < 1000).map(e => e.id), 0) + 1;
 
-			console.log("Competition::fromJson", obj, this.Session.user);
 			this.permissions = obj.permissions ? parseInt(obj.permissions.toString(), 10) :
 				(this.Session.user === "" || this.Session.user === undefined ? Permissions.Any : Permissions.Own);
 
