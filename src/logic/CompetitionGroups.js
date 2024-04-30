@@ -5,7 +5,7 @@ import { CompetitionGroup } from '../models';
 
 export class CompetitionGroups {
 	static register = { name: "CompetitionGroups", createInstance: true };
-	static wire = ["fire", "Events", "Server", "Footers"];
+	static wire = ["fire", "subscribe", "Events", "Server", "Footers"];
 	static E_CANNOT_FETCH = "Kan inte hämta grupper";
 	defaultGroup = {
 		name: "Tävlingsanmälan",
@@ -48,7 +48,13 @@ export class CompetitionGroups {
 	icons = { GPK: gpk, XKRETSEN: xkretsen, SM2022: sm2022 }
 	active = null;
 
+	loadGroups = () => {
+		console.log("Load groups");
+	}
+
 	initialize() {
+		this.subscribe(this.Events.configurationLoaded, this.loadGroups);
+
 		this.active = this.defaultGroup;
 		this.Server.loadCompetitionGroups(json => {
 			this.groups = json.map(g => CompetitionGroup.fromJson(g));
@@ -59,10 +65,12 @@ export class CompetitionGroups {
 			});
 			this.groups.forEach(g => g.iconPath = this.icons[g.icon] || gpk);
 			this.fire(this.Events.competitionGroupsUpdated);
+			/*
 			this.Server.loadRemoteCompetitionGroups(json => {
 				// TODO: Implement remote groups!!!
 				console.log("Remote groups", json);
 			}, this.Footers.errorHandler(CompetitionGroups.E_CANNOT_FETCH));
+			*/
 		},
 			this.Footers.errorHandler(CompetitionGroups.E_CANNOT_FETCH));
 	}
