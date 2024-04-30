@@ -41,7 +41,7 @@ export class ParticipantPicker extends React.Component {
 						</tr>
 					</thead>
 					<tbody>
-						{this.Registry.competitors.map(p =>
+						{this.Registry.competitors.sort((a,b) => a.name.localeCompare(b.name)).map(p =>
 							<this.Competitor key={p.competitionId} person={p} onClick={e => {
 								this.setState({ visible: false });
 								this.Registration.addParticipant(p);
