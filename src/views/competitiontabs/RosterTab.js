@@ -70,7 +70,7 @@ class Squad extends React.Component {
 }
 
 export class RosterTab extends React.Component {
-	static register = { name: "RosterView" };
+	static register = { name: "RosterTab" };
 	static wire = ["Competition", "Server", "Footers", "Session", "EventBus", "Events"];
 	static tabInfo = new TabInfo("Startlista", "roster", 3, Permissions.Any);
 

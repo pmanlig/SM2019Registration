@@ -5,7 +5,7 @@ import { Permissions, ScoringModels, Status, TabInfo } from '../../models';
 import { EventResult, Scorecard } from '../../components';
 
 export class ResultTab extends React.Component {
-	static register = { name: "ResultView" };
+	static register = { name: "ResultTab" };
 	static wire = ["EventBus", "Events", "Competition", "Results", "DivisionGroups"];
 	static tabInfo = new TabInfo("Resultat", "results", 4, Permissions.Any, Status.Closed);
 

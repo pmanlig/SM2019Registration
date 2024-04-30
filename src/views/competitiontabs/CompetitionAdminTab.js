@@ -2,7 +2,7 @@ import React from 'react';
 import { Permissions, TabInfo } from '../../models';
 
 export class CompetitionAdminTab extends React.Component {
-	static register = { name: "CompetitionAdminView" };
+	static register = { name: "CompetitionAdminTab" };
 	static wire = ["fire", "Events", "EventBus", "Server", "CompetitionProperties", "Competition", "Footers"];
 	static tabInfo = new TabInfo("Inställningar", "admin", 204, Permissions.Admin);
 

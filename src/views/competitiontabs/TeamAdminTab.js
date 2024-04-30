@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Permissions, TabInfo } from '../../models';
 
 export class TeamAdminTab extends React.Component {
-	static register = { name: "TeamAdminView" };
+	static register = { name: "TeamAdminTab" };
 	static wire = ["Server", "Competition", "Configuration", "Events", "EventBus", "Footers"];
 	static tabInfo = new TabInfo("Administrera lag", "teamadmin", 202, Permissions.Admin);
 

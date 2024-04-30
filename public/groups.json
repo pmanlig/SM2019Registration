@@ -11,6 +11,17 @@
 		"status": 1
 	},
 	{
+		"id": 4,
+		"label": "hille",
+		"name": "Hille Skyttegille",
+		"description": "Träningar och interna tävlingar Hille HSG",
+		"icon": "HILLE",
+		"url": "/group/hille",
+		"background": "#CFCFCF",
+		"color": "#000000",
+		"status": 1
+	},
+	{
 		"id": 2,
 		"label": "xkretsen",
 		"name": "X-kretsen",

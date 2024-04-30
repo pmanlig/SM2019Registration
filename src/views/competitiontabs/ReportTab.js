@@ -42,7 +42,7 @@ function StageInfo({ stage, event }) {
 }
 
 export class ReportTab extends React.Component {
-	static register = { name: "ReportView" };
+	static register = { name: "ReportTab" };
 	static wire = ["fire", "Competition", "Registration", "Results", "Server", "ReportTable",
 		"EventBus", "Events", "Footers", "Configuration", "ReportIndicator"];
 	static tabInfo = new TabInfo("Rapportera", "report", 200, Permissions.Admin);

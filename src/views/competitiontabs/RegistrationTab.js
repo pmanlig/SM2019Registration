@@ -5,7 +5,7 @@ import { Permissions, Status, TabInfo } from '../../models';
 import { Description, NewRegistrationContact } from '../../components';
 
 export class RegistrationTab extends React.Component {
-	static register = { name: "RegistrationView" };
+	static register = { name: "RegistrationTab" };
 	static wire = ["Competition", "EventBus", "Events", "Registration", "ParticipantPicker", "RegistrationToolbar",
 		"RegistrationForm", "Summary", "SquadPicker", "Server", "YesNoDialog", "ParticipantToolbar"];
 	static dateFormat = new Intl.DateTimeFormat('sv-SV');

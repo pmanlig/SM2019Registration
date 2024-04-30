@@ -1,6 +1,7 @@
 import gpk from './../gpk_logo_wht.png';
 import xkretsen from './../gavleborg.png';
 import sm2022 from './../sm_2022.png';
+import hille from './../hille.png';
 import { CompetitionGroup } from '../models';
 
 export class CompetitionGroups {
@@ -25,6 +26,17 @@ export class CompetitionGroups {
 		status: 1
 	},
 	{
+		id: 4,
+		label: "hille",
+		name: "Hille Skyttegille",
+		description: "Träningar och interna tävlingar Hille HSG",
+		icon: "HILLE",
+		url: "/group/hille",
+		background: "#CFCFCF",
+		color: "#000000",
+		status: 1
+	},
+	{
 		id: 2,
 		label: "xkretsen",
 		name: "X-kretsen",
@@ -45,7 +57,7 @@ export class CompetitionGroups {
 		status: 0
 	}];
 	groups = [];
-	icons = { GPK: gpk, XKRETSEN: xkretsen, SM2022: sm2022 }
+	icons = { GPK: gpk, XKRETSEN: xkretsen, SM2022: sm2022, HILLE: hille }
 	active = null;
 
 	loadGroups = () => {

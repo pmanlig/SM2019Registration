@@ -2,7 +2,7 @@ import React from 'react';
 import { TabInfo, Permissions } from '../../models';
 
 export class ExcelTab extends React.Component {
-	static register = { name: "ListsView" }
+	static register = { name: "ListsTab" }
 	static wire = ["Events", "EventBus", "Configuration", "Competition"];
 	static tabInfo = new TabInfo("Excel", "excel", 203, Permissions.Admin);
 
