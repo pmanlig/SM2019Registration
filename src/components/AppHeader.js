@@ -85,7 +85,7 @@ export class AppHeader extends React.Component {
 					<Link to="/about" className='globaltool'>Om...</Link>
 					<this.ModeSelector />
 				</div>
-				<p className="version">version {process.env.REACT_APP_VERSION}{this.Configuration.loaded && this.Configuration.site === "utveckling" && " (utveckling)"}</p>
+				<p className="version">version {process.env.REACT_APP_VERSION}{this.Configuration.loaded && this.Configuration.site === "test" && " (utveckling)"}</p>
 			</div>
 		</header>
 	}
