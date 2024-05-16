@@ -37,13 +37,12 @@ export class Server {
 			method: 'POST',
 			body: JSON.stringify(data),
 			headers: new Headers({ 'Content-Type': 'application/json' })
-		})
-			.then(res => {
-				if (!res.ok) { this.handleSafely(res, error); } else
-					res.json()
-						.then(callback)
-						.catch(() => callback(true)); // res.ok but no JSON returned
-			});
+		}).then(res => {
+			if (!res.ok) { this.handleSafely(res, error); } else
+				res.json()
+					.then(callback)
+					.catch(() => callback(true)); // res.ok but no JSON returned
+		});
 	}
 
 	send2(url, data, callback, error) {
@@ -155,6 +154,12 @@ export class Server {
 			loadStageDefs: (competitionId, eventId, callback, error) => { this.Busy.wrap(this.load, `competition/${competitionId}/stages/${eventId}`, callback, error); }
 		}
 	}
+
+	remoteTeamsService() {
+		return {
+			loadTeams: (competitionId, eventId, callback, error) => { this.load(`competition/${competitionId}/event/${eventId}/team`, callback, error); }
+		}
+	}
 	//#endregion
 
 	//#region Local Services
@@ -183,6 +188,7 @@ export class Server {
 			this.categoryService = this.remoteCategoryService();
 		}
 		this.stagesService = this.remoteStagesService();
+		this.teamsService = this.remoteTeamsService();
 		this.Storage.set(this.Storage.keys.serverMode, this.local);
 		this.fire(this.Events.serverChanged);
 	}
@@ -226,7 +232,7 @@ export class Server {
 	}
 
 	createCompetitionGroup(callback, error) {
-		
+
 	}
 	//#endregion
 
@@ -259,6 +265,12 @@ export class Server {
 	//#region Results
 	loadResults(competitionId, eventId, callback, error) {
 		this.resultService.loadResults(competitionId, eventId, logFetchCallback(callback, `Loading competition results for ${competitionId}/${eventId}`), logErrorHandler(error));
+	}
+	//#endregion
+
+	//#region Teams
+	loadTeams(competitionId, eventId, callback, error) {
+		this.teamsService.loadTeams(competitionId, eventId, logFetchCallback(callback, `Loading teams for ${competitionId}/${eventId}`), logErrorHandler(error));
 	}
 	//#endregion
 

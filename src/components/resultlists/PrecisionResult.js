@@ -133,7 +133,7 @@ export class PrecisionResult extends React.Component {
 		let { event, filter } = this.props;
 		let results = this.props.results.map(r => this.calculateScores(r));
 		this.assignStd(results.flat().sort((a, b) => sort(a, b)), event);
-		return < table >
+		return <table className="score-table">
 			<this.Header event={event} />
 			<tbody>
 				{results.flatMap(r => this.scores(r, filter))}

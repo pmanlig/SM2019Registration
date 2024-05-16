@@ -5,7 +5,7 @@ export { ClubSelectorInput, TextInput, NewRegistrationContact, Dropdown, Spinner
 export { CompetitionProperties } from './CompetitionProperties';
 export { Description } from './Description';
 export { EventProperties } from './EventProperties';
-export { EventResult } from './EventResult';
+export { ParticipantResult, TeamResult } from './Results';
 export { Footer, Footers } from './Footer';
 export { GroupProperties } from './GroupProperties';
 export { LoginControl } from './LoginControl';

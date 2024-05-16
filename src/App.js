@@ -6,7 +6,7 @@ import { ComponentTest } from './views';
 export class App extends React.Component {
 	static register = { name: "App" };
 	static wire = ["AppHeader", "BusyIndicator", "Footers", "Footer", "StoreQuestion", "Storage", "CompetitionList",
-		"LoginView", "CompetitionView", "ReportView", "CreateCompetition", "AboutView", "WithLogin", "HelpView", "Diagnostics",
+		"LoginView", "CompetitionView", "ReportTab", "CreateCompetition", "AboutView", "WithLogin", "HelpView", "Diagnostics",
 		"Configuration", "EventBus", "Events", "AdminView", "TiebreakerView"];
 
 	constructor(props) {
@@ -39,7 +39,7 @@ export class App extends React.Component {
 						<Route path="/competition/:id/:operation/:p1" component={this.CompetitionView} />
 						<Route path="/competition/:id/:operation" component={this.CompetitionView} />
 						<Route path="/competition/:id" component={this.CompetitionView} />
-						<Route path="/report/:id" component={this.ReportView} />
+						<Route path="/report/:id" component={this.ReportTab} />
 						<Route path="/tiebreaker/:id/:eventId/:divisionId" component={this.TiebreakerView} />
 						<Route path="/tiebreaker/:id/:eventId" component={this.TiebreakerView} />
 						<Route path="/tiebreaker/:id" component={this.TiebreakerView} />

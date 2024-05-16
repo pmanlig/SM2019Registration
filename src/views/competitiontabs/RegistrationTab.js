@@ -13,6 +13,7 @@ export class RegistrationTab extends React.Component {
 
 	constructor(props) {
 		super(props);
+		let { id, p1 } = props.match.params;
 		this.state = {
 			dates: [...new Set(this.Competition.events.map(e => RegistrationTab.dateFormat.format(e.date)))],
 			selected: RegistrationTab.dateFormat.format(this.Competition.events[0].date)
@@ -20,7 +21,8 @@ export class RegistrationTab extends React.Component {
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.registrationUpdated, () => this.setState({}));
 		this.subscribe(this.Events.deleteParticipant, (id) => this.showDeleteDialog(id));
-		this.Registration.load(props.match.params.id, props.match.params.p1);
+		console.log("Mounting registration tab", id, p1, this.Registration.token);
+		this.Registration.load(id, p1);
 	}
 
 	componentDidMount() {
@@ -49,6 +51,9 @@ export class RegistrationTab extends React.Component {
 
 	render() {
 		let { name, organization, email, account } = this.Registration.contact;
+
+		console.log("Registration tab", this.Registration);
+		console.log("Registration tab", this.Registration.token, this.props.match.params.p1);
 
 		if (this.Registration.token === undefined && this.props.match.params.p1 !== undefined) {
 			return <Redirect to={`/competition/${this.props.match.params.id}/register`} />

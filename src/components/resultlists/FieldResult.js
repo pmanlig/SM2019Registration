@@ -98,11 +98,11 @@ export class FieldResult extends React.Component {
 		let showValues = event.stages.some(s => s.value);
 		let results = this.props.results.map(r => this.scorer.calculateScores(r, event));
 		this.assignStd(results.flat().sort((a, b) => sort(a, b)));
-		return < table >
+		return <table className="score-table">
 			<this.Header event={event} showValues={showValues} />
 			<tbody>
 				{results.flatMap(r => this.scores(r, filter))}
 			</tbody>
-		</table >;
+		</table>;
 	}
 }

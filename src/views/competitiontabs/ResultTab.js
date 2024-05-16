@@ -2,11 +2,11 @@ import './Result.css';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Permissions, ScoringModels, Status, TabInfo } from '../../models';
-import { EventResult, Scorecard } from '../../components';
+import { ParticipantResult, TeamResult, Scorecard } from '../../components';
 
 export class ResultTab extends React.Component {
 	static register = { name: "ResultTab" };
-	static wire = ["EventBus", "Events", "Competition", "Results", "DivisionGroups"];
+	static wire = ["Server", "EventBus", "Events", "Competition", "Results", "DivisionGroups"];
 	static tabInfo = new TabInfo("Resultat", "results", 4, Permissions.Any, Status.Closed);
 
 	constructor(props) {
@@ -16,6 +16,7 @@ export class ResultTab extends React.Component {
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.competitionUpdated, () => {
 			this.updateTitle();
+			this.loadTeams();
 			this.setState({});
 		});
 		this.loadResults();
@@ -31,6 +32,13 @@ export class ResultTab extends React.Component {
 
 	updateResults = () => {
 		this.setState({});
+	}
+
+	loadTeams = () => {
+		let { id, p1 } = this.props.match.params;
+		const callback = (json) => { this.setState({ teams: json }); }
+		const error = () => { }
+		this.Server.loadTeams(id, p1, callback, error);
 	}
 
 	updateTitle() {
@@ -122,19 +130,20 @@ export class ResultTab extends React.Component {
 
 	render() {
 		let { id, p1, p2, p3 } = this.props.match.params;
+		let competition = this.Competition;
 
 		if (id === undefined) { return <div>Fel - ingen tävling angiven!</div>; }
-		if (this.Competition.id !== id) {
-			this.Competition.load(id);
+		if (competition.id !== id) {
+			competition.load(id);
 			return null;
 		}
 
 		if (p1 === undefined) {
-			return <Redirect to={`/competition/${this.Competition.id}/results/${this.Competition.events[0].id}`} />;
+			return <Redirect to={`/competition/${competition.id}/results/${competition.events[0].id}`} />;
 		}
 
 		p1 = parseInt(p1, 10);
-		let event = this.Competition.events.find(e => e.id === p1);
+		let event = competition.event(p1);
 		if (this.Results.event !== event.id) {
 			this.Results.load(id, p1);
 			return null;
@@ -152,9 +161,9 @@ export class ResultTab extends React.Component {
 		let scorecard = parseInt(p3, 10) || parseInt(p2, 10);
 		if (!isNaN(scorecard)) {
 			return <div id="result" className="content">
-				<Scorecard competition={this.Competition} event={event} show={scorecard} results={results} />
+				<Scorecard competition={competition} event={event} show={scorecard} results={results} />
 				<button className="globaltool" onClick={() => this.props.history.replace(`/competition/${id}/results/${p1}${p2 && isNaN(p2) ? `/${p2}` : ""}`)}>&lt; Tillbaka</button>
-				{this.Competition.permissions >= Permissions.Admin && <button className="globaltool" onClick={this.updateScorecard}>Spara</button>}
+				{competition.permissions >= Permissions.Admin && <button className="globaltool" onClick={this.updateScorecard}>Spara</button>}
 			</div>
 		}
 
@@ -168,10 +177,11 @@ export class ResultTab extends React.Component {
 				<this.DivisionSelector event={event} active={p2} />
 			</div>
 			{ // Custom code for SM 2022
-				parseInt(this.Competition.id, 10) === 205 &&
+				parseInt(competition.id, 10) === 205 &&
 				<p><i>Resultatlistorna är preliminära och resultat kan saknas för skyttar som ännu inte
 					skjutit klart, de slutgiltiga resultatlistorna kommer att publiceras på SM-sidan.</i></p>}
-			<EventResult competition={this.Competition} event={this.Competition.event(parseInt(p1, 10))} results={results} division={p2} filter={this.state.filter} />
+			<ParticipantResult competition={competition} event={event} results={results} division={p2} filter={this.state.filter} />
+			<TeamResult competition={competition} event={event} results={results} division={p2} teams={this.state.teams} filter={this.state.filter} />
 		</div>;
 	}
 }

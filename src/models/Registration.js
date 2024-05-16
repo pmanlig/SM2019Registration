@@ -238,7 +238,7 @@ export class Registration {
 					this.token = res.token;
 					this.Tokens.setToken(this.Competition.id, res.token);
 					this.fire(this.Events.registrationUpdated, this);
-					}
+				}
 			}, error => {
 				this.Footers.addFooter(`Registreringen misslyckades! (${error.message || error})`);
 			});
@@ -258,7 +258,7 @@ export class Registration {
 					this.token = res.token;
 					this.Tokens.setToken(this.Competition.id, res.token);
 					this.fire(this.Events.registrationUpdated, this);
-					}
+				}
 			}, error => {
 				this.Footers.addFooter(`Registreringen misslyckades! (${error.message || error})`);
 			});
