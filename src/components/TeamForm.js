@@ -4,10 +4,13 @@ import { TextInput, Dropdown } from '.';
 export class TeamForm extends React.Component {
 	constructor(props) {
 		super(props);
-		let { teamDefs } = props;
+		let { teamDefs, competition } = props;
 		let members = 0, alternates = 0;
 		teamDefs.forEach((t, i) => {
-			t.description = [t.event, t.division, t.class].filter(x => x !== undefined && x !== "").join(" - ");
+			let event = competition.events.find(e => e.id === t.eventId);
+			t.description = t.event +
+				((event.divisions && t.division !== undefined) ? ` - ${t.division}` : "") +
+				((event.classes && t.class !== undefined) ? ` - ${t.class}` : "");
 			t.id = i;
 			if (t.members > members) { members = t.members; }
 			if (t.alternates > alternates) { alternates = t.alternates; }
@@ -68,15 +71,15 @@ export class TeamForm extends React.Component {
 
 	TeamRow = props => {
 		let { members, alternates } = this.state;
-		let { teamDefs } = this.props;
+		let { teamDefs, competition } = this.props;
 		let participants = this.props.participants || [];
 		let { team, index } = props;
 		let teamDef = teamDefs[team.teamDef || 0];
-		participants = participants.filter(p => p.eventName === teamDef.event); // ToDo: use ID instead
-		if (teamDef.division !== undefined) { participants = participants.filter(p => p.division === teamDef.division); }
-		if (teamDef.class !== undefined) { participants = participants.filter(p => p.class === teamDef.class); }
-		participants = participants.map(p => { return { id: p.id, description: p.name } });
-
+		let event = competition.events.find(e => e.id === teamDef.eventId);
+		participants = participants.filter(p => p.eventId === teamDef.eventId);
+		if (event.divisions && teamDef.division !== undefined) { participants = participants.filter(p => p.division === teamDef.division); }
+		if (event.classes && teamDef.class !== undefined) { participants = participants.filter(p => p.class === teamDef.class); }
+		participants = participants.map(p => ({ id: p.id, description: p.name }));
 		let row = [
 			<div key={`team-${index}`} className="team-header">{`Lag ${index}`}</div>,
 			<TextInput id={`team-name-${index}`} key={`team-name-${index}`} name="Lagnamn" placeholder="Lagnamn" value={team.name} onChange={e => this.updateTeamName(index, e.target.value)} />,
@@ -86,20 +89,24 @@ export class TeamForm extends React.Component {
 			let id = `member-${index}-${i}`;
 			if (i < teamDef.members) {
 				let name = `Skytt ${i + 1}`;
+				let selected = team.members[i];
+				if (isNaN(selected) || selected === undefined) { selected = 0; }
 				let list = [{ id: 0, description: "Ingen", empty: true }].concat(participants.filter(p => p.id === team.members[i] || (!team.members.includes(p.id) && !team.alternates.includes(p.id))));
 				row.push(<Dropdown id={id} key={id} name={name} placeholder={name}
-					value={team.members[i]} list={list} onChange={e => this.updateMember(index, i, e.target.value)} />);
+					value={selected} list={list} onChange={e => this.updateMember(index, i, e.target.value)} />);
 			} else {
 				row.push(<div key={id} />);
 			}
 		}
 		for (let i = 0; i < alternates; i++) {
 			let id = `alt-${index}-${i}`;
+			let selected = team.alternates[i];
+			if (isNaN(selected) || selected === undefined) { selected = 0; }
 			let list = [{ id: 0, description: "Ingen", empty: true }].concat(participants.filter(p => p.id === team.alternates[i] || (!team.members.includes(p.id) && !team.alternates.includes(p.id))));
 			if (i < teamDef.alternates) {
 				let name = `Reserv ${i + 1}`;
 				row.push(<Dropdown id={id} key={id} name={name} placeholder={name}
-					value={team.alternates[i]} list={list} onChange={e => this.updateAlternate(index, i, e.target.value)} />);
+					value={selected} list={list} onChange={e => this.updateAlternate(index, i, e.target.value)} />);
 			} else {
 				row.push(<div key={id} />);
 			}

@@ -34,6 +34,6 @@ export class Configuration {
 				this.loaded = true;
 				window._debug = this.site !== 'real';
 				this.fire(this.Events.configurationLoaded);
-			});
+			}).catch(() => { console.log("Could not load configuration") });
 	}
 }
