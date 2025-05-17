@@ -67,7 +67,7 @@ export class ReportTab extends React.Component {
 		});
 	}
 
-	changeEvent(newEvent) {
+	changeEvent = (newEvent) => {
 		newEvent = parseInt(newEvent, 10);
 		newEvent = this.Competition.events.find(e => e.id === newEvent);
 		this.setEvent(newEvent);
