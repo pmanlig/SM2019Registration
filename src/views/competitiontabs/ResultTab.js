@@ -117,7 +117,6 @@ export class ResultTab extends React.Component {
 			let participant = this.Results.scores.find(s => s.id === scorecard);
 			let model = ScoringModels.getModel(event.discipline);
 			for (const score of participant.scores) {
-				console.log("ResultTab::updateScorecard", score);
 				if (!model.validateScore(participant, event, score.stage)) {
 					alert(`Station/serie ${score.stage} - ${participant.error}`);
 					participant.error = undefined;
@@ -181,7 +180,7 @@ export class ResultTab extends React.Component {
 				<p><i>Resultatlistorna är preliminära och resultat kan saknas för skyttar som ännu inte
 					skjutit klart, de slutgiltiga resultatlistorna kommer att publiceras på SM-sidan.</i></p>}
 			<ParticipantResult competition={competition} event={event} results={results} division={p2} filter={this.state.filter} />
-			<TeamResult competition={competition} event={event} results={results} division={p2} teams={this.state.teams} filter={this.state.filter} />
+			{/*<TeamResult competition={competition} event={event} results={results} division={p2} teams={this.state.teams} filter={this.state.filter} />*/}
 		</div>;
 	}
 }

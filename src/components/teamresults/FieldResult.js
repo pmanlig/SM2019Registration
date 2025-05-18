@@ -90,6 +90,7 @@ export class FieldResult extends React.Component {
 		// Determine team members
 		// TODO: Remove members that belong to other teams?!
 		let teamDef = event.teams[parseInt(team.team_definition_id, 10)];
+		if (teamDef === undefined) {console.log("teamDef is undefined", event.teams, team.team_definition_id);}
 		let i = team.scores.length - 1;
 		while (team.scores.length > teamDef.members) {
 			if (i > -1) {

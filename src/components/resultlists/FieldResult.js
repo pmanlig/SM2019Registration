@@ -81,6 +81,7 @@ export class FieldResult extends React.Component {
 	}
 
 	scores(results, filter) {
+		console.log("FieldResult::scores");
 		let { competition, event, division } = this.props;
 		let showValues = event.stages.some(s => s.value);
 		let linkBase = `/competition/${competition.id}/results/${event.id}/${division && isNaN(division) ? `${division}/` : ""}`;

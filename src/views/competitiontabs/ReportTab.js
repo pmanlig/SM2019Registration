@@ -146,6 +146,13 @@ export class ReportTab extends React.Component {
 		return <div id="queue-button"><this.ReportIndicator /></div>;
 	}
 
+	Buttons = props => {
+		return <div className="report-buttons">
+			<this.NextButton />
+			<this.QueueButton />
+		</div>
+	}
+
 	setSquad = (squadId) => {
 		let { id, p1, p3 } = this.props.match.params;
 		this.props.history.replace(`/competition/${id}/report/${p1}/${squadId}/${p3}`);
@@ -212,8 +219,7 @@ export class ReportTab extends React.Component {
 				<div id="spacer" style={{ flexGrow: 1 }} />
 			</div>
 			<this.ReportTable mode={this.Configuration.mode} event={event} stage={p3} scores={scores} />
-			<this.NextButton />
-			<this.QueueButton />
+			<this.Buttons />
 		</div>;
 	}
 }

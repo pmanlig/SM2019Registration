@@ -29,14 +29,10 @@
 	margin-right: 15px;
 }
 
-#next-button {
-	position: fixed;
-	bottom: 10px;
-	right: 10px;
-}
-
-#queue-button {
+.report-buttons {
 	position: fixed;
 	bottom: 10px;
 	left: 10px;
+	display: flex;
+	flex-direction: row;
 }
