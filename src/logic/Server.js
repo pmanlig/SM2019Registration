@@ -196,16 +196,7 @@ export class Server {
 
 	//#region Clubs
 	loadClubs(callback, error) {
-		error = logErrorHandler(error);
-		this.Busy.setBusy(this, true);
-		fetch("/clubs.json")
-			.then(res => {
-				this.Busy.setBusy(this, false);
-				if (!res.ok) { this.handleSafely(res, error); } else
-					res.json()
-						.then(callback)
-						.catch(error);
-			})
+		this.Busy.wrap(this.load, "clubs", callback, logErrorHandler(error));
 	}
 	//#endregion
 

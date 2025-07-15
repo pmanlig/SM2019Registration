@@ -15,7 +15,7 @@ export class ClubSelector extends React.Component {
 		return <span>
 			<input {...this.props} list="clubs" />
 			<datalist id="clubs">
-				{this.state.data.map(s => <option key={s.id} value={s.name} />)}
+				{this.state.data.map((c, i) => <option key={i} value={c} />)}
 			</datalist>
 		</span>;
 	}

@@ -21,7 +21,7 @@ export class RegistrationTab extends React.Component {
 		this.EventBus.manageEvents(this);
 		this.subscribe(this.Events.registrationUpdated, () => this.setState({}));
 		this.subscribe(this.Events.deleteParticipant, (id) => this.showDeleteDialog(id));
-		console.log("Mounting registration tab", id, p1, this.Registration.token);
+		if (window._debug) { console.log("Mounting registration tab", id, p1, this.Registration.token); }
 		this.Registration.load(id, p1);
 	}
 
@@ -52,8 +52,10 @@ export class RegistrationTab extends React.Component {
 	render() {
 		let { name, organization, email, account } = this.Registration.contact;
 
-		console.log("Registration tab", this.Registration);
-		console.log("Registration tab", this.Registration.token, this.props.match.params.p1);
+		if (window._debug) {
+			console.log("Registration tab", this.Registration);
+			console.log("Registration tab", this.Registration.token, this.props.match.params.p1);
+		}
 
 		if (this.Registration.token === undefined && this.props.match.params.p1 !== undefined) {
 			return <Redirect to={`/competition/${this.props.match.params.id}/register`} />
