@@ -1,20 +1,17 @@
 import React from 'react';
 import { Discipline } from '../../models';
 
+const six_targets = [1, 2, 3, 4, 5, 6];
+
 export class FieldScorecard extends React.Component {
 	static disciplines = [Discipline.fieldP, Discipline.fieldK, Discipline.scoredP, Discipline.scoredK];
-	static targets = [1, 2, 3, 4, 5, 6];
+	targets = six_targets;
 
 	Header = () => {
 		let i = 1;
 		return [
 			<div key={"h" + i++} className="header">Station</div>,
-			<div key={"h" + i++} className="header">1</div>,
-			<div key={"h" + i++} className="header">2</div>,
-			<div key={"h" + i++} className="header">3</div>,
-			<div key={"h" + i++} className="header">4</div>,
-			<div key={"h" + i++} className="header">5</div>,
-			<div key={"h" + i++} className="header">6</div>,
+			...this.targets.map(n => <div key={"h" + i++} className="header">{n}</div>),
 			<div key={"h" + i++} className="header">Totalt</div>,
 			<div key={"h" + i++} className="header">Poäng</div>,
 			<div key={"h" + i++} className="header">Omskjutning</div>
@@ -38,7 +35,7 @@ export class FieldScorecard extends React.Component {
 		let score = participant.scores.find(s => s.stage === stage.num) || [];
 		return [
 			<div key={"" + stage.num + i++}>{stage.num}</div>,
-			FieldScorecard.targets.map(t => <this.Target key={"" + stage.num + i++} stage={stage} tgt={t} score={score.values[t - 1]} />),
+			this.targets.map(t => <this.Target key={"" + stage.num + i++} stage={stage} tgt={t} score={score.values[t - 1]} />),
 			<div key={"" + stage.num + i++}>{participant.getStageTotal(stage)}</div>,
 			<this.Value key={"" + stage.num + i++} stage={stage} score={score} />,
 			<div key={"" + stage.num + i++}>{participant.redo === stage.num ? "Ja" : ""}</div>

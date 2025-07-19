@@ -70,6 +70,8 @@ export class ScoringModels {
 	static getModel(discipline) {
 		switch (discipline) {
 			case Discipline.target:
+			case Discipline.sport5:
+			case Discipline.sport10:
 				return PrecisionScoring;
 			case Discipline.fieldP:
 			case Discipline.fieldK:
