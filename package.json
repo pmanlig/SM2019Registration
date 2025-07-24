@@ -1,6 +1,6 @@
 {
   "name": "competition-registration",
-  "version": "2.9.5",
+  "version": "2.9.6",
   "private": true,
   "homepage": "https://anmalan.manlig.org",
   "dependencies": {
@@ -28,5 +28,8 @@
     ">0.2%",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@types/react-router-dom": "^5.3.3"
+  }
 }

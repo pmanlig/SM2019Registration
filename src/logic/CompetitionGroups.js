@@ -2,12 +2,14 @@ import gpk from './../gpk_logo_wht.png';
 import xkretsen from './../gavleborg.png';
 import sm2022 from './../sm_2022.png';
 import hille from './../hille.png';
+import missing from './../missing.png';
 import { CompetitionGroup } from '../models';
 
 export class CompetitionGroups {
 	static register = { name: "CompetitionGroups", createInstance: true };
 	static wire = ["fire", "subscribe", "Events", "Server", "Footers"];
 	static E_CANNOT_FETCH = "Kan inte hämta grupper";
+	static E_CANNOT_UPDATE = "Kan inte spara ändringar";
 	defaultGroup = {
 		name: "Tävlingsanmälan",
 		description: "Anmälningssystem Gävle PK",
@@ -15,76 +17,22 @@ export class CompetitionGroups {
 		background: "#000000",
 		color: "#FFFFFF"
 	}
-	defaults = [{
-		id: 1,
-		label: "traning_gpk",
-		name: "Gävle PK",
-		description: "Träningar och interna tävlingar Gävle PK",
-		icon: "GPK",
-		background: "#000000",
-		color: "#FFFFFF",
-		status: 1
-	},
-	{
-		id: 4,
-		label: "hille",
-		name: "Hille Skyttegille",
-		description: "Träningar och interna tävlingar Hille HSG",
-		icon: "HILLE",
-		url: "/group/hille",
-		background: "#CFCFCF",
-		color: "#000000",
-		status: 1
-	},
-	{
-		id: 2,
-		label: "xkretsen",
-		name: "X-kretsen",
-		description: "Kretstävlingar Gävleborg",
-		icon: "XKRETSEN",
-		background: "#CFCFFF",
-		color: "#000000",
-		status: 1
-	},
-	{
-		id: 3,
-		label: "sm_2022",
-		name: "SM Fält 2022",
-		description: "Anmälan SM Fält 2022",
-		icon: "SM2022",
-		background: "#206196",
-		color: "#000000",
-		status: 0
-	}];
 	groups = [];
 	icons = { GPK: gpk, XKRETSEN: xkretsen, SM2022: sm2022, HILLE: hille }
 	active = null;
 
 	loadGroups = () => {
-		console.log("Load groups");
+		this.Server.loadCompetitionGroups(json => {
+			this.groups = json.map(g => CompetitionGroup.fromJson(g));
+			this.groups.forEach(g => g.iconPath = this.icons[g.icon] || missing);
+			this.fire(this.Events.competitionGroupsUpdated);
+		},
+			this.Footers.errorHandler(CompetitionGroups.E_CANNOT_FETCH));
 	}
 
 	initialize() {
 		this.subscribe(this.Events.configurationLoaded, this.loadGroups);
-
 		this.active = this.defaultGroup;
-		this.Server.loadCompetitionGroups(json => {
-			this.groups = json.map(g => CompetitionGroup.fromJson(g));
-			this.defaults.forEach(d => {
-				if (!this.groups.some(g => g.id === d.id)) {
-					this.groups.push(d);
-				}
-			});
-			this.groups.forEach(g => g.iconPath = this.icons[g.icon] || gpk);
-			this.fire(this.Events.competitionGroupsUpdated);
-			/*
-			this.Server.loadRemoteCompetitionGroups(json => {
-				// TODO: Implement remote groups!!!
-				console.log("Remote groups", json);
-			}, this.Footers.errorHandler(CompetitionGroups.E_CANNOT_FETCH));
-			*/
-		},
-			this.Footers.errorHandler(CompetitionGroups.E_CANNOT_FETCH));
 	}
 
 	setGroup(group) {
@@ -99,11 +47,37 @@ export class CompetitionGroups {
 	}
 
 	updateGroup(group, prop, value) {
-		console.log("Group update", group, prop, value);
 		group[prop] = value;
+		group.dirty = true;
+	}
+
+	deleteGroup(group) {
+		this.Server.deleteCompetitionGroup(group,
+			() => { this.loadGroups(); },
+			this.Footers.errorHandler(CompetitionGroups.E_CANNOT_UPDATE));
+	}
+
+	newGroup() {
+		let nG = {
+			name: "Ny grupp",
+			dirty: true
+		};
+		this.groups.push(nG);
+		this.fire(this.Events.competitionGroupsUpdated);
+		return nG;
 	}
 
 	save() {
-
+		this.groups.forEach(g => {
+			if (g.id === undefined) {
+				this.Server.createCompetitionGroup(CompetitionGroup.toJson(g),
+					() => { this.loadGroups(); },
+					this.Footers.errorHandler(CompetitionGroups.E_CANNOT_UPDATE));
+			} else if (g.dirty) {
+				this.Server.updateCompetitionGroup(CompetitionGroup.toJson(g),
+					() => { g.dirty = false; },
+					this.Footers.errorHandler(CompetitionGroups.E_CANNOT_UPDATE));
+			}
+		});
 	}
 }

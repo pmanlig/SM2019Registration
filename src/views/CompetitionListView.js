@@ -71,7 +71,6 @@ export class CompetitionList extends React.Component {
 	}
 
 	Competition = ({ competition }) => {
-		console.log("List", competition);
 		let links = competitionTabs().map(t => t.tabInfo).filter(o => o.show(competition));
 		if (competition.name === "Testtävling SM") {
 			let reg = competitionTabs().map(t => t.tabInfo).find(i => i.path === "register");
@@ -90,7 +89,7 @@ export class CompetitionList extends React.Component {
 	}
 
 	Group = ({ group }) => {
-		return <div className="competition-tile open competition-group">
+		return <div className={"competition-tile competition-group " + this.getState(group)}>
 			<div style={{ width: "40px" }}>
 				{group.iconPath && <img src={group.iconPath} className="group-icon" alt={group.icon} />}
 			</div>
@@ -106,7 +105,7 @@ export class CompetitionList extends React.Component {
 	Groups = ({ group_id }) => {
 		if (group_id === undefined || group_id === "") {
 			const Group = this.Group;
-			return this.state.groups.filter(g => this.Session.isAdmin() || g.status !== Status.Hidden).map(g => <Group key={g.label} group={g} />);
+			return this.state.groups.filter(g => this.Session.isAdmin() || g.status === Status.Open).map(g => <Group key={g.label} group={g} />);
 		}
 		return null;
 	}

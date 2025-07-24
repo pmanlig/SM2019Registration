@@ -1,11 +1,12 @@
 import React from 'react';
 import { TextInput, Dropdown } from '.';
+import { Status } from '../models';
 
 export class GroupProperties extends React.Component {
 	render() {
 		let { groups, selected, onChange } = this.props;
 		let icons = ["Ingen"].concat(Object.keys(groups.icons));
-		let status = [{ id: 0, description: "Gömd" }, { id: 1, description: "Synlig" }];
+		let status = [{ id: Status.Hidden, description: "Gömd" }, { id: Status.Open, description: "Synlig" }];
 		if (selected === undefined) { return null; }
 		return <div id="group-props">
 			<div className="group-header">

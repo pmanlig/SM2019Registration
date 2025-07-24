@@ -28,6 +28,10 @@ export class Server {
 		// .finally(() => this.Busy.setBusy(Server.id, false));
 	}
 
+	load2 = (url, callback, error) => {
+		this.Busy.wrap(this.load, url, callback, error);
+	}
+
 	send = (url, data, callback, error) => {
 		url = `${this.Configuration.baseUrl}/${url}`;
 		logUrl(url);
@@ -107,18 +111,18 @@ export class Server {
 	//#region Remote Services
 	remoteCompetitionService() {
 		return {
-			loadCompetitionList: (callback, error) => { this.Busy.wrap(this.load, "competition", callback, error); },
-			loadCompetition: (id, callback, error) => { this.Busy.wrap(this.load, isNaN(parseInt(id, 10)) ? this.jsonFile(id) : `competition/${id}`, callback, error); },
-			createCompetition: (competition, callback, error) => { this.Busy.wrap(this.send, "competition", competition, callback, error); },
-			updateCompetition: (competition, callback, error) => { this.Busy.wrap(this.update, `competition/${competition.id}`, competition, callback, error); },
-			deleteCompetition: (id, callback, error) => { this.Busy.wrap(this.delete, `competition/${id}`, callback, error); },
+			loadCompetitionList: (callback, error) => { this.load2("competition", callback, error); },
+			loadCompetition: (id, callback, error) => { this.load2(isNaN(parseInt(id, 10)) ? this.jsonFile(id) : `competition/${id}`, callback, error); },
+			createCompetition: (competition, callback, error) => { this.send2("competition", competition, callback, error); },
+			updateCompetition: (competition, callback, error) => { this.update2(`competition/${competition.id}`, competition, callback, error); },
+			deleteCompetition: (id, callback, error) => { this.delete2(`competition/${id}`, callback, error); },
 			getParticipants: (id, callback, error) => { this.load(`competition/${id}/list`, callback, error); }
 		};
 	}
 
 	remoteResultService() {
 		return {
-			loadResults: (competitionId, eventId, callback, error) => { this.Busy.wrap(this.load, `competition/${competitionId}/scores/${eventId}`, callback, error); }
+			loadResults: (competitionId, eventId, callback, error) => { this.load2(`competition/${competitionId}/scores/${eventId}`, callback, error); }
 		};
 	}
 
@@ -201,7 +205,7 @@ export class Server {
 	//#endregion
 
 	//#region Groups
-	async loadCompetitionGroups(callback, error) {
+	async loadLocalCompetitionGroups(callback, error) {
 		const id = "lcg";
 		this.Busy.setBusy(id, true);
 		fetch("/groups.json")
@@ -218,12 +222,20 @@ export class Server {
 			});
 	}
 
-	loadRemoteCompetitionGroups(callback, error) {
-		this.Busy.wrap(this.load, "group", callback, error);
+	loadCompetitionGroups(callback, error) {
+		this.load2("group", callback, error);
 	}
 
-	createCompetitionGroup(callback, error) {
+	createCompetitionGroup(group, callback, error) {
+		this.send2(`group`, group, callback, error);
+	}
 
+	updateCompetitionGroup(group, callback, error) {
+		this.update2(`group/${group.id}`, group, callback, error);
+	}
+
+	deleteCompetitionGroup(group, callback, error) {
+		this.delete2(`group/${group.id}`, callback, error);
 	}
 	//#endregion
 
