@@ -1,10 +1,6 @@
 #group-admin {
 	display: flex;
-	flex-direction: row;
-}
-
-#group-admin > div {
-	margin-right: 20px;
+	flex-direction: column;
 }
 
 #group-admin > button {
@@ -89,4 +85,27 @@
 
 #group-admin .group-header input {
 	font-size: 18pt;
+}
+
+.group-layout {
+	display: flex;
+	flex-direction: row;
+}
+
+.group-layout > div {
+	margin-right: 20px;
+}
+
+.group-list {
+	display: flex;
+	flex-direction: column;
+}
+
+.group-controls {
+	display: flex;
+	flex-direction: column;
+}
+
+.group-controls > button {
+	margin-bottom: 10px;
 }

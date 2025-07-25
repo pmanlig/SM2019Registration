@@ -4,8 +4,8 @@ import { Status } from '../models';
 
 export class GroupProperties extends React.Component {
 	render() {
-		let { groups, selected, onChange } = this.props;
-		let icons = ["Ingen"].concat(Object.keys(groups.icons));
+		let { icons, selected, onChange } = this.props;
+		icons = icons ? ["Ingen"].concat(Object.keys(icons)) : ["Ingen"];
 		let status = [{ id: Status.Hidden, description: "Gömd" }, { id: Status.Open, description: "Synlig" }];
 		if (selected === undefined) { return null; }
 		return <div id="group-props">

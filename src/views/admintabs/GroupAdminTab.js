@@ -23,10 +23,9 @@ export class GroupAdminTab extends React.Component {
 	}
 
 	GroupList = () => {
-		let selected = this.selected;
-		return <div>
-			<h3>Grupper</h3>
-			{this.CompetitionGroups.groups.map(g => <div key={g.id} className={"item select" + (g === selected ? " selected" : "")} onClick={e => this.selectGroup(g)}>
+		if (!this.CompetitionGroups) { return null; }
+		return <div className="group-list-items">
+			{this.CompetitionGroups.groups.map(g => <div key={g.id} className={"item select" + (g === this.selected ? " selected" : "")} onClick={e => this.selectGroup(g)}>
 				<p>{g.name}</p>
 				<button className="button-close small red" onClick={e => { this.deleteGroup(g); }} />
 			</div>)}
@@ -35,6 +34,20 @@ export class GroupAdminTab extends React.Component {
 				<p className="add">Skapa ny grupp</p>
 			</div>
 		</div>
+	}
+
+	GroupControls = () => {
+		if (!this.selected) { return null; }
+		return <div className="group-controls">
+			<button className="button-collapse" onClick={() => {
+				this.CompetitionGroups.moveUp(this.selected.index);
+				this.setState({dirty: true});
+			}} />
+			<button className="button-expand" onClick={() => {
+				this.CompetitionGroups.moveDown(this.selected.index);
+				this.setState({dirty: true});
+			}} />
+		</div>;
 	}
 
 	selectGroup(group) {
@@ -63,8 +76,12 @@ export class GroupAdminTab extends React.Component {
 
 	render() {
 		return <div id="group-admin" className="content">
-			<this.GroupList />
-			<GroupProperties groups={this.CompetitionGroups} selected={this.selected} onChange={this.changeGroup} />
+			<h3>Grupper</h3>
+			<div className="group-layout">
+				<this.GroupList />
+				<GroupProperties icons={this.CompetitionGroups.icons} selected={this.selected} onChange={this.changeGroup} />
+				<this.GroupControls />
+			</div>
 			<button className={"button" + (this.state.dirty ? "" : " disabled")} onClick={this.save}>Spara</button>
 		</div>;
 	}

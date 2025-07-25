@@ -3,6 +3,9 @@ import xkretsen from './../gavleborg.png';
 import sm2022 from './../sm_2022.png';
 import hille from './../hille.png';
 import missing from './../missing.png';
+import lulea from './../Luleå.png';
+import dalarna from './../Dalakretsen.png';
+import uppsala from './../Uppsala.png';
 import { CompetitionGroup } from '../models';
 
 export class CompetitionGroups {
@@ -18,13 +21,20 @@ export class CompetitionGroups {
 		color: "#FFFFFF"
 	}
 	groups = [];
-	icons = { GPK: gpk, XKRETSEN: xkretsen, SM2022: sm2022, HILLE: hille }
+	icons = { GPK: gpk, XKRETSEN: xkretsen, SM2022: sm2022, HILLE: hille, LULEA: lulea, DALARNA: dalarna, UPPSALA: uppsala }
 	active = null;
 
 	loadGroups = () => {
 		this.Server.loadCompetitionGroups(json => {
 			this.groups = json.map(g => CompetitionGroup.fromJson(g));
 			this.groups.forEach(g => g.iconPath = this.icons[g.icon] || missing);
+			this.sort();
+			for (let i = 0; i < this.groups.length; i++) {
+				if (this.groups[i].index === undefined) {
+					this.groups[i].dirty = true;
+				}
+				this.groups[i].index = i;
+			}
 			this.fire(this.Events.competitionGroupsUpdated);
 		},
 			this.Footers.errorHandler(CompetitionGroups.E_CANNOT_FETCH));
@@ -55,6 +65,32 @@ export class CompetitionGroups {
 		this.Server.deleteCompetitionGroup(group,
 			() => { this.loadGroups(); },
 			this.Footers.errorHandler(CompetitionGroups.E_CANNOT_UPDATE));
+	}
+
+	moveUp(index) {
+		if (index > 0) {
+			this.groups[index].dirty = true;
+			this.groups[index--].index--;
+			this.groups[index].dirty = true;
+			this.groups[index].index++;
+			this.sort();
+			this.fire(this.Events.competitionGroupsUpdated);
+		}
+	}
+
+	moveDown(index) {
+		if (index < this.groups.length - 1) {
+			this.groups[index].dirty = true;
+			this.groups[index++].index++;
+			this.groups[index].dirty = true;
+			this.groups[index].index--;
+			this.sort();
+			this.fire(this.Events.competitionGroupsUpdated);
+		}
+	}
+
+	sort() {
+		this.groups.sort((a, b) => a.index - b.index);
 	}
 
 	newGroup() {
