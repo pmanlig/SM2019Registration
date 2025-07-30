@@ -1,4 +1,5 @@
 import gpk from './../gpk_logo_wht.png';
+import gpkcolor from './../gpk_logo_color.png';
 import xkretsen from './../gavleborg.png';
 import sm2022 from './../sm_2022.png';
 import hille from './../hille.png';
@@ -21,7 +22,7 @@ export class CompetitionGroups {
 		color: "#FFFFFF"
 	}
 	groups = [];
-	icons = { GPK: gpk, XKRETSEN: xkretsen, SM2022: sm2022, HILLE: hille, LULEA: lulea, DALARNA: dalarna, UPPSALA: uppsala }
+	icons = { GPK: gpk, GPKCOLOR: gpkcolor, XKRETSEN: xkretsen, SM2022: sm2022, HILLE: hille, LULEA: lulea, DALARNA: dalarna, UPPSALA: uppsala }
 	active = null;
 
 	loadGroups = () => {
