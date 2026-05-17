@@ -8,6 +8,7 @@ export class Discipline {
 	static PPC = 6;
 	static sport5 = 7;
 	static sport10 = 8;
+	static rapidFinal = 9;
 
 	static list = [
 		{ id: Discipline.none, description: "Ingen gren vald" },
@@ -18,7 +19,8 @@ export class Discipline {
 		{ id: Discipline.scoredK, description: "Poängfält (K-pist & Karbin)" },
 		{ id: Discipline.PPC, description: "PPC" },
 		{ id: Discipline.sport5, description: "Sport 5-skott" },
-		{ id: Discipline.sport10, description: "Sport 10-skott" }
+		{ id: Discipline.sport10, description: "Sport 10-skott" },
+		{ id: Discipline.rapidFinal, description: "Final Snabbpistol" }
 	];
 
 	static hasStages = [

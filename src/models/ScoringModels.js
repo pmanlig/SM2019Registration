@@ -3,6 +3,7 @@ import { Discipline } from "./Discipline";
 const E_MISSING_VALUE = "Värde saknas";
 const E_INCORRECT_SPREAD = "Träffarna inte fördelade korrekt";
 const E_TOO_MANY_HITS = "För många träffar";
+const E_INVALID_SCORE = "Ogiltigt värde";
 
 class PrecisionScoring {
 	static validateScore(participant, event, stage) {
@@ -10,6 +11,10 @@ class PrecisionScoring {
 		let score = participant.getScores(stage);
 		if (score == null || score.values.length < 5 || score.values.some(s => s === null || s === undefined)) {
 			participant.error = E_MISSING_VALUE;
+			return false;
+		}
+		if (score.values.some(s => s !== 'X' && typeof (s) !== "number")) {
+			participant.error = E_INVALID_SCORE;
 			return false;
 		}
 		return true;
@@ -62,7 +67,27 @@ class FieldScoring {
 
 class PointFieldScoring extends FieldScoring {
 	static total(participant, event) {
+		return 0;
+	}
+}
 
+class RapidFinalScoring {
+	static validateScore(participant, event, stage) {
+		participant.error = null;
+		let score = participant.getScores(stage);
+		if (score == null || score.values.length < 5 || score.values.some(s => s === null || s === undefined || s === "-")) {
+			participant.error = E_MISSING_VALUE;
+			return false;
+		}
+		if (score.values.some(s => typeof (s) !== "number" || s < -1 || s > 1)) {
+			participant.error = E_INVALID_SCORE;
+			return false;
+		}
+		return true;
+	}
+
+	static total(participant, event) {
+		return 0;
 	}
 }
 
@@ -79,6 +104,8 @@ export class ScoringModels {
 			case Discipline.scoredP:
 			case Discipline.scoredK:
 				return PointFieldScoring;
+			case Discipline.rapidFinal:
+				return RapidFinalScoring;
 			default:
 				return null;
 		}

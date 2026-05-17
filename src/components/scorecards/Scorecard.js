@@ -2,11 +2,12 @@ import React from 'react';
 import { Discipline } from '../../models';
 import { TextInput } from '../Inputs';
 
-const five_targets = [1, 2, 3, 4, 5];
-const ten_targets = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+export const five_targets = [1, 2, 3, 4, 5];
+export const ten_targets = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 export class Scorecard extends React.Component {
 	targets = [];
+	tiebreaker = false;
 
 	Header = () => {
 		let i = 1;
@@ -20,19 +21,22 @@ export class Scorecard extends React.Component {
 	Target = (num, i, participant, score) => <div key={"shot" + num + "-" + i}>{score || ""}</div>
 
 	stage(num) {
-		let { participant } = this.props;
+		let { participant, event } = this.props;
 		let score = participant.scores.find(s => s.stage === num) || [];
+		let text = (this.tiebreaker && num > event.scores) ? "Sär" : num;
 		return [
-			<div key={"name" + num}>{num}</div>,
+			<div key={"name" + num}>{text}</div>,
 			this.targets.map((t, i) => this.Target(num, i, participant, score.values[i] === undefined ? "" : score.values[i])),
 			<div key={"tot" + num}>{participant.getPrecisionTotal(num)}</div>,
 		]
 	}
 
 	render() {
+		let scores = this.props.event.scores;
+		if (this.tiebreaker) { scores++; }
 		return <div className="scorecard">
 			<this.Header />
-			{new Array(this.props.event.scores).fill(null).flatMap((n, i) => this.stage(i + 1, this.props.participant))}
+			{new Array(scores).fill(null).flatMap((n, i) => this.stage(i + 1, this.props.participant))}
 		</div>
 	}
 }
